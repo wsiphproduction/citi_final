@@ -1,0 +1,578 @@
+[
+   {
+      "name": "Stripping Charge",
+      "fields": [
+         {
+            "name": "Vendor" ,
+            "type": "select" 
+         },         
+         {
+            "name": "SLPS No",
+            "type": "text"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         }       
+      ],
+      "has_attachment_section": true,
+      "add_multiple": true ,
+      "table_fields": {
+         "rows"      : [ "SLPS No", "Plate No", "Trucker", "Rate", "Charge to store", "Amount", "Action"] ,
+         "actions"   : [ "edit", "remove" ]
+      }
+   },
+   {
+      "name": "Production Cost Clearing",
+      "fields": [
+         {
+            "name": "Job Request No",
+            "type": "text"
+         },
+         {
+            "name": "Project Name",
+            "type": "text"
+         },
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Project Type",
+            "type": "text"
+         },
+         {
+            "name": "Quantity",
+            "type": "number"
+         },
+         {
+            "name": "Brand",
+            "type": "text"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Delivery Charges",
+      "fields": [
+         {
+            "name": "Delivery Date",
+            "type": "date"
+         },
+         {
+            "name": "From POS",
+            "type": "checkbox"
+         },
+         {
+            "name": "DI No",
+            "type": "text"
+         },
+         {
+            "name": "POS Transaction No",
+            "type": "text"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         },
+         {
+            "name": "POS of Items",
+            "type": "text"
+         },
+         {
+            "name": "Attachment",
+            "type": "file"
+         },
+         {
+            "name": "POS Counter",
+            "type": "text"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": true ,
+      "table_fields": {
+         "rows"      : [ "Barcode", "Description", "Qty for Installation", "Action"] ,
+         "actions"   : [ "edit", "remove" ]
+      }
+   },
+   {
+      "name": "Extra Labor",
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Rate per Day",
+            "type": "number"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         },
+         {
+            "name": "No of Laborers",
+            "type": "number"
+         },
+         {
+            "name": "No of Days ",
+            "type": "number"
+         },
+         {
+            "name": "Description",
+            "type": "textarea"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Installation",
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "POS Transaction No",
+            "type": "text"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         },
+         {
+            "name": "Rate Per Install",
+            "type": "number"
+         },
+         {
+            "name": "Quantity",
+            "type": "number"
+         },
+         {
+            "name": "Description",
+            "type": "textarea"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": true ,
+      "table_fields": {
+         "rows"      : [ "Barcode", "Description", "Qty for Installation", "Action"] ,
+         "actions"   : [ "edit", "remove" ]
+      }
+   },
+   {
+      "name": "Staff House Rental",
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         },
+         {
+            "name": "Bill Date From",
+            "type": "date"
+         },
+         {
+            "name": "Bill Date To",
+            "type": "date"
+         },
+         {
+            "name": "Description",
+            "type": "textarea"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Pakyawan",
+      "fields": [
+         {
+            "name": "Completion No",
+            "type": "text"
+         },
+         {
+            "name": "Charge To Store",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         },
+         {
+            "name": "Quantity",
+            "type": "number"
+         },
+         {
+            "name": "Rate",
+            "type": "number"
+         },
+         {
+            "name": "Description",
+            "type": "textarea"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Staff House LPG",
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         },
+         {
+            "name": "Description",
+            "type": "textarea"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Repair & Maintenance",
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         },
+         {
+            "name": "Description",
+            "type": "textarea"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Internet & Cable",
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         },
+         {
+            "name": "Due Date",
+            "type": "date"
+         },
+         {
+            "name": "Past Due Amount",
+            "type": "number"
+         },
+         {
+            "name": "Description",
+            "type": "textarea"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Meals",
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Per Diem",
+            "type": "text"
+         },
+         {
+            "name": "No of Days",
+            "type": "number"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         },
+         {
+            "name": "Description",
+            "type": "textarea"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Transportation",
+      "fields": [
+         {
+            "name": "No of Days",
+            "type": "number"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         },
+         {
+            "name": "Description",
+            "type": "textarea"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Interbranch Deliveries",
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         },
+         {
+            "name": "Description",
+            "type": "textarea"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Water Bill",
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Past Due Amount",
+            "type": "number"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         },
+         {
+            "name": "Due Date",
+            "type": "date"
+         },
+         {
+            "name": "Period From",
+            "type": "date"
+         },
+         {
+            "name": "Period To",
+            "type": "date"
+         },
+         {
+            "name": "Description",
+            "type": "textarea"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Garbage Disposal",
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         },
+         {
+            "name": "Rate Per Load",
+            "type": "number"
+         },
+         {
+            "name": "No Of Loads",
+            "type": "number"
+         },
+         {
+            "name": "Description",
+            "type": "textarea"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Staff House Electric",
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "No of Empyolees",
+            "type": "number"
+         },
+         {
+            "name": "Non Empyolees",
+            "type": "number"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         },
+         {
+            "name": "Period From",
+            "type": "date"
+         },
+         {
+            "name": "Period To",
+            "type": "date"
+         },
+         {
+            "name": "Kwh Consumption",
+            "type": "number"
+         },
+         {
+            "name": "Description",
+            "type": "textarea"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Overtime",
+      "fields": [
+         {
+            "name": "OT Date",
+            "type": "date"
+         },
+         {
+            "name": "No Of Pax",
+            "type": "number"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         },
+         {
+            "name": "Description",
+            "type": "textarea"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Staff House Water",
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "No Of Empyolees",
+            "type": "number"
+         },
+         {
+            "name": "Non Empyolees",
+            "type": "number"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         },
+         {
+            "name": "Period From",
+            "type": "date"
+         },
+         {
+            "name": "Period To",
+            "type": "date"
+         },
+         {
+            "name": "CBM Consumption",
+            "type": "text"
+         },
+         {
+            "name": "Description",
+            "type": "textarea"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Staff House Cleaning",
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "No of Days Stay",
+            "type": "number"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         },
+         {
+            "name": "No of Empyolees",
+            "type": "number"
+         },
+         {
+            "name": "Non Empyolees",
+            "type": "number"
+         },
+         {
+            "name": "Description",
+            "type": "textarea"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Charge to Consignor",
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         },
+         {
+            "name": "Description",
+            "type": "textarea"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   }
+]
