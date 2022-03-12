@@ -67,13 +67,14 @@
 					<input type="{{$field['type']}}" class="form-control custom-inputs">
 
 				@elseif($field['type'] == 'file')
-
-					<input type="{{$field['type']}}" data-name="{{ strtolower(str_replace(' ', '_', $field['name'])) }}"  
-						class="document-f" data-from="account">
-					<input type="hidden" class="custom-inputs" 
-						data-name="{{ strtolower(str_replace(' ', '_', $field['name'])) }}"  
-						id="{{ strtolower(str_replace(' ', '_', $field['name'])) }}_attachment">
-
+					<div class="col-lg-12">
+						<input type="{{$field['type']}}" data-name="{{ strtolower(str_replace(' ', '_', $field['name'])) }}"  
+							class="custom-file-input document-f" data-from="account">
+						<label class="custom-file-label" for="document">Choose file</label>						
+						<input type="hidden" class="custom-inputs" 
+							data-name="{{ strtolower(str_replace(' ', '_', $field['name'])) }}"  
+							id="{{ strtolower(str_replace(' ', '_', $field['name'])) }}_attachment">
+					</div>
 				@endif
 
 
@@ -85,7 +86,7 @@
 
 @if($account_data['add_multiple'])
 	
-	@if($account_data['name'] != 'Delivery Charges')
+	@if($account_data['name'] != 'Installation')
 		<div class="col-lg-12 mg-b-20">
 
 			<button type="button" class="btn btn-brand-01 d-inline wd-150 tx-13 mg-t-20" id="btn-add-account-details">
@@ -95,8 +96,6 @@
 			</button>
 		
 		</div>
-	@else
-		<div class="col-lg-12 mg-t-50"></div>
 	@endif
 
 	<div class="col-lg-12">

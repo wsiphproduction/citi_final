@@ -27,7 +27,7 @@ use App\Http\Controllers\BranchGroupController;
 use App\Http\Controllers\TruckersController;
 use App\Http\Controllers\AccountMatrixController;
 use App\Http\Controllers\BranchDepartmentController;
-
+use App\Http\Controllers\JobRequestController;
 
 
 
@@ -245,6 +245,13 @@ Route::middleware(['web', 'auth'])->group(function () {
     Route::prefix('pos-transactions')->group(function() {
 
         Route::get('search', [PosTransactionController::class, 'search'])->name('pos-transactions.search');
+
+    });
+
+
+    Route::prefix('job-request')->group(function() {
+
+        Route::get('search', [JobRequestController::class, 'search'])->name('job-request.search');
 
     });
 

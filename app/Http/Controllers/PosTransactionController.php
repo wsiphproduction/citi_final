@@ -12,10 +12,7 @@ class PosTransactionController extends Controller
 
     public function search(Request $request) {
 
-        $transactions = TempPosTransaction::where('pos_no', $request->search)
-            ->get();
-
-        return response()->json($transactions);
+        return response()->json(TempPosTransaction::where('pos_no', $request->search)->get());
 
     }
 

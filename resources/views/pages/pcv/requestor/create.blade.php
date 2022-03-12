@@ -238,6 +238,28 @@
 			</div>
 		</div>
 	</div><!-- Copy From Modal -->
+
+	<div class="modal fade effect-scale" id="for_message" tabindex="-1" 
+		role="dialog" aria-labelledby="for_message" aria-modal="true">
+
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content tx-14">
+				
+				<div class="modal-header">
+					<h6 class="modal-title" id="exampleModalLabel3" id="message_title">Confirmation Message</h6>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">×</span>
+					</button>
+				</div>
+
+				<div class="modal-body">
+					<p class="mb-0" id="message_content"></p>
+				</div>
+
+			</div>
+		</div>
+
+	</div>
 	
 @endsection
 
@@ -369,6 +391,7 @@
 			          	$(_that).next().html(res);
 
 					} else {
+						$(_that).next().html(res);
 						$('#'+_that.data('name')+'_attachment').val(res);
 					}
 
@@ -381,23 +404,77 @@
 
 			var ctr = 0;
 			account_attachments = [];
-
+			account_transactions = [];
+			var _account_name = $('#account_name').val().trim();
 			// format data of account
 
-			if($('#btn-add-account-details').length > 0) {} else {
+			if($('#btn-add-account-details').length > 0) {
+
+				if( _account_name == 'Stripping Charge' || 
+					_account_name == 'Delivery Charges' ) {
+
+					$('#account-transactions-list tbody').find('tr').each(function(i, e) {
+						
+						let _account_trans = {};
+
+						$(this).find('td').each(function(o , p) {
+
+							let _acc_name = $(this).data('name');
+
+							if(_acc_name == undefined) return false;
+
+							if($(this).find('input').length) {					
+								
+								_account_trans[_acc_name] = $(this).find('input').val();
+
+							} else {
+
+								_account_trans[_acc_name] = $(this).text();
+
+							}
+
+						});
+
+						account_transactions.push(_account_trans);
+
+					});
+
+				}
+
+			} else {
 				
-				let _account_name 	= $('#account_name').val();
-				let _data 	 		= {};
+				let _data 	 = {};
+				let _items 	 = {};
 
 				$('.custom-inputs').each(function() {
 					let _name = $(this).data('name');
 					_data[_name] = $(this).val();
 				});
 
+				if( _account_name == 'Installation' ) {
+
+					$('#account-transactions-list tbody').find('tr').each(function(i, e) {
+
+						$(this).find('td').each(function(o , p) {
+
+							let _acc_name = $(this).data('name');
+							if(_acc_name != undefined) {
+								_items[_acc_name] = $(this).text(); 
+							}
+
+						});
+
+					});
+
+					_data['items'] = _items;
+				}
+
 				account_transactions.push(_data);
 				
 			}
 
+			console.log(account_transactions);
+			return false;
 			$('#pcv_accounts').val(JSON.stringify(account_transactions));
 
 			// format data of attachments
@@ -445,6 +522,69 @@
 
 			// check if can save multiple transaction accounts
 			$('#pcv_form').submit();
+
+		});
+
+		$(document).on('click', '#btn-add-account-details', function () {
+
+			let _account_name 	= $('#account_name').val();
+			let _data 	 		= {};
+
+			if(_account_name == 'Stripping Charge') return false;
+
+			$('.custom-inputs').each(function() {
+				let _name = $(this).data('name');
+				_data[_name] = $(this).val();
+			});
+
+
+			let _html = '';		
+
+			_html += '<tr>';	
+
+			$('.tbl-header').each(function(i, o) {
+					
+				let _row_name = $(this).data('rowname').trim();
+
+				if( _row_name != "action" && _row_name != "line_no") {
+					_html += '<td data-name="'+$(this).data('rowname')+'">' + _data[$(this).data('rowname')] + '</td>';							
+				} else if(_row_name == 'line_no') {
+					_html += '<td data-name="'+$(this).data('rowname')+'">' + (account_transactions.length+1) + '</td>';	
+				}			
+
+			});
+
+			_html += '<td>';
+			_html += '<nav class="nav table-options justify-content-start">';
+			_html += '<a class="nav-link p-0 pl-2 remove_account_attachment" href="javascript:void(0);" title="Remove">'; 
+			_html += '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
+			_html += '</a></nav>';
+			_html += '</td>';
+			_html += '</tr>';
+
+			$('#account-transactions-list tbody').append(_html);
+
+			if($('#account-transactions-list tfoot').length>0){}else {
+				$('#account-transactions-list').append(
+					`<tfoot>
+	                    <tr role="row">
+	                      <td class="sorting_1"></td>
+	                      <td></td>
+	                      <td></td>
+	                      <td></td>
+	                      <td></td>
+	                      <td class="tx-bold text-right align-middle">Total Amount</td>
+	                      <td>
+	                        <input type="number" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" value="00000.00" readonly id="total_amount" name="total_amount">
+	                      </td>
+	                      <td></td>
+	                    </tr>
+	                  </tfoot>`);
+			}
+
+			account_transactions.push(_data);
+			calculateTotal();
+			resetAccountForm();
 
 		});
 
@@ -579,6 +719,7 @@
 			pos_items 		= [];
 			$('#account-transactions-list tfoot').remove();
 			$('#account-transactions-list tbody').empty();
+
 			$('#pop_ups_inner tbody tr').each(function(i, data){
 			
 				let _isCheck 	= false;				
@@ -610,8 +751,6 @@
 
 					} 
 
-					console.log($('#account_name').val());
-
 					if($('#account_name').val() == 'Stripping Charge') {
 						_pos_items['slps_no'] = $(this).parent().data('slps');
 					}
@@ -624,7 +763,6 @@
 				}
 
 			});
-			console.log(pos_items);
 
 
 			let _account_name 	= $('#account_name').val();
@@ -640,17 +778,22 @@
 						if($(this).data('rowname').trim() == 'slps_no' || 
 							$(this).data('rowname').trim() == 'plate_no' || 
 							$(this).data('rowname').trim() == 'trucker'  ) { 
-							_html += '<td>' + pos_items[e][$(this).data('rowname')] + '</td>';							
+							_html += '<td data-name="'+$(this).data('rowname')+'">' + pos_items[e][$(this).data('rowname')] + '</td>';							
 						} else if( $(this).data('rowname').trim() != 'action' ){
 
 							if(e == 0) {
-								_html += '<td><input data-name="'+$(this).data('rowname')+'" type="number" min="0"'; 
+								_html += '<td data-name="'+$(this).data('rowname')+'"><input data-name="'+$(this).data('rowname')+'" type="number" min="0"'; 
 								_html += 'class="form-control account-user-input" id="'+ $(this).data('rowname') +'" ></td>';
 							} else {
-								_html += '<td><input data-name="'+$(this).data('rowname')+'" type="number" min="0"'; 							
+								_html += '<td data-name="'+$(this).data('rowname')+'"><input data-name="'+$(this).data('rowname')+'" type="number" min="0"'; 							
 								_html += 'class="form-control account-user-input" id="'+ $(this).data('rowname') +e+'" ></td>';
 							}
 
+						}
+					} else {
+
+						if( $(this).data('rowname').trim() != 'action' ){
+							_html += '<td data-name="'+$(this).data('rowname')+'">'+ pos_items[e][$(this).data('rowname')]  +'</td>';
 						}
 					}
 
@@ -668,20 +811,22 @@
 
 			$('#account-transactions-list tbody').append(_html);
 
-			$('#account-transactions-list').append(
-				`<tfoot>
-                    <tr role="row">
-                      <td class="sorting_1"></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td class="tx-bold text-right align-middle">Total Amount</td>
-                      <td>
-                        <input type="number" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" value="00000.00" readonly id="slps_total" name="slps_no">
-                      </td>
-                      <td></td>
-                    </tr>
-                  </tfoot>`);
+			if(_account_name != 'Installation') {
+				$('#account-transactions-list').append(
+					`<tfoot>
+	                    <tr role="row">
+	                      <td class="sorting_1"></td>
+	                      <td></td>
+	                      <td></td>
+	                      <td></td>
+	                      <td class="tx-bold text-right align-middle">Total Amount</td>
+	                      <td>
+	                        <input type="number" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" value="00000.00" readonly id="total_amount" name="total_amount">
+	                      </td>
+	                      <td></td>
+	                    </tr>
+	                  </tfoot>`);
+			}
 
 			resetAccountForm();
 
@@ -757,6 +902,16 @@
 								show 	 : true
 							});						
 
+						} else {
+
+							$('#message_content').text('No Items Found');
+							$('#for_message').modal({
+								backdrop : 'static' ,
+								show 	 : true
+							});
+
+							setTimeout(function(){ $('#for_message').modal('hide');}, 3000);
+
 						}
 
 					}
@@ -812,6 +967,70 @@
 					}
 
 				});
+			} else if( type == 'job_request_no' ) {
+
+				$.ajax({
+
+					url 	: '{!! env("APP_URL") !!}' + '/job-request/search?search='+val ,
+					method 	: 'GET' ,
+					success : function (res) {
+
+						if( res != '' ) {
+
+							$('.custom-inputs[data-name="project_name"]').val(res.project_name);
+							$('.custom-inputs[data-name="project_type"]').val(res.project_type);
+							$('.custom-inputs[data-name="brand"]').val(res.brand);
+
+						} else {
+
+							$('.custom-inputs[data-name="job_request_no"]').val('');
+							$('.custom-inputs[data-name="project_name"]').val('');
+							$('.custom-inputs[data-name="project_type"]').val('');
+							$('.custom-inputs[data-name="brand"]').val('');
+
+							$('#message_content').text('Job Request No. '+val+' does not exist');
+							$('#for_message').modal({
+								backdrop : 'static' ,
+								show 	 : true
+							});
+
+							setTimeout(function(){ $('#for_message').modal('hide');}, 3000);
+
+						}
+
+					}
+				});
+
+			} else if (type == 'pos_of_items') {
+
+				$.ajax({
+
+					url 		: "{!! route('pos-transactions.search') !!}" + "?search="+val ,
+					method 		: "GET" ,
+					success 	: function(res) {
+
+						if( res.length > 0) {
+
+							$('.custom-inputs[data-name="delivery_fee"]').val(200);
+
+						} else {
+
+							$('.custom-inputs[data-name="pos_of_items"]').val('');
+
+							$('#message_content').text('POS No. '+val+' does not exist');
+							$('#for_message').modal({
+								backdrop : 'static' ,
+								show 	 : true
+							});
+
+							setTimeout(function(){ $('#for_message').modal('hide');}, 3000);
+
+						}
+
+					}
+
+				});
+
 			}
 
 		}
@@ -822,15 +1041,24 @@
 			let _base_url = "{!! env('APP_URL') !!}";
 
 			$.each(_account_transactions, function(i, data){
-				
+
 				if($('#btn-add-account-details').length > 0) {
 							
 					let _html = '<tr>';
 
 					$('.tbl-header').each(function(ii, res) {
+						let _row_name = $(this).data('rowname').trim();
 
-						if($(this).data('rowname').trim() != 'action') { 
-							_html += '<td>' + data[$(this).data('rowname')] + '</td>';							
+						if( _row_name != 'action') { 
+							if( _row_name == 'rate' ||
+								_row_name == 'charge_to_store' ||
+								_row_name == 'amount' ) {
+								_html += '<td data-name="'+_row_name+'" >'; 
+								_html += '<input type="text" value="'+data[$(this).data('rowname')]+'" class="form-control account-user-input">'; 
+								_html += '</td>';	
+							} else {
+								_html += '<td data-name="'+_row_name+'" >' + data[$(this).data('rowname')] + '</td>';							
+							}
 						}						
 
 					});
@@ -924,12 +1152,14 @@
 	    function resetAccountForm() {
 
 	    	$('.custom-inputs').each(function() {
-
 	    		if($(this).is("select")) {
 	    			$(this).val($(this).find("option:first-child").val());
+	    		} else if($(this).attr('type') == 'date') {
+	    			let _date = moment.now();
+					$(this).val(moment(_date).format('YYYY-MM-DD'));
 	    		} else if($(this).is('type') != 'date') {
 	    			$(this).val('');
-	    		}
+	    		} 
 
 	    	});
 
@@ -938,19 +1168,32 @@
 	    function calculateTotal() {
 
 	    	let _total = 0;
-	    	$('.account-user-input[data-name="amount"]').each(function(e) {
+	    	if($('#account_name').val() == 'Stripping Charge') {
+		    	$('.account-user-input[data-name="amount"]').each(function(e) {
 
-				let _amount = parseFloat($(this).val()); 
+					let _amount = parseFloat($(this).val()); 
 
-				if( isNaN(_amount) ) {
-					_amount = 0;
-				}
+					if( isNaN(_amount) ) {
+						_amount = 0;
+					}
 
-				_total = parseFloat(_total) +  _amount;
+					_total = parseFloat(_total) +  _amount;
 
-			});
+				});
+		    } else {
 
-			$('#slps_total').val(_total);
+		    	$('#account-transactions-list tr').find('td').each(function() {
+
+		    		if($(this).data('name') == 'amount') {
+			    		_total = _total + parseFloat($(this).text());
+			    	}
+
+		    	});
+
+
+		    }
+
+			$('#total_amount').val(_total);
 
 	    }
 

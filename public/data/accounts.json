@@ -65,23 +65,15 @@
             "type": "date"
          },
          {
-            "name": "From POS",
-            "type": "checkbox"
+            "name": "POS of Items",
+            "type": "text"
          },
          {
             "name": "DI No",
             "type": "text"
          },
          {
-            "name": "POS Transaction No",
-            "type": "text"
-         },
-         {
-            "name": "Amount",
-            "type": "number"
-         },
-         {
-            "name": "POS of Items",
+            "name": "Delivery Fee",
             "type": "text"
          },
          {
@@ -89,14 +81,14 @@
             "type": "file"
          },
          {
-            "name": "POS Counter",
-            "type": "text"
+            "name": "Amount",
+            "type": "number"
          }
       ],
       "has_attachment_section": true,
       "add_multiple": true ,
       "table_fields": {
-         "rows"      : [ "Barcode", "Description", "Qty for Installation", "Action"] ,
+         "rows"      : [ "Line No", "Delivery Date", "DI No", "Delivery Fee", "pos of items", "Attachment", "Amount", "Action"] ,
          "actions"   : [ "edit", "remove" ]
       }
    },
@@ -148,10 +140,6 @@
          },
          {
             "name": "Rate Per Install",
-            "type": "number"
-         },
-         {
-            "name": "Quantity",
             "type": "number"
          },
          {
