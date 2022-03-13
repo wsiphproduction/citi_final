@@ -67,6 +67,14 @@
                                         <i data-feather="external-link"></i>
                                     </a>
                                 </nav>
+
+                                @if($slip->status == 'saved')
+                                    <nav class="nav table-options">
+                                        <a class="nav-link p-0 pl-2" href="{{ route('requestor.ts.edit', $slip->id) }}" title="View Request">
+                                            <i data-feather="external-link"></i>
+                                        </a>
+                                    </nav>
+                                @endif
                             </td>                            
                         </tr>
                     @empty

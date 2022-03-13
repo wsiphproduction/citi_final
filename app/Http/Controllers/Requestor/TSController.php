@@ -51,9 +51,42 @@ class TSController extends Controller
 
     public function show($id) {
 
-        $ts = TemporarySlip::find($id);
+        $ts = TemporarySlip::find($id);        
 
         return view('pages.ts.requestor.show', compact('ts'));
+
+    }
+
+
+    public function edit($id) {
+
+        $ts = TemporarySlip::find($id);
+        $jsonString = file_get_contents(base_path('public/data/accounts.json'));
+        $accounts = json_decode($jsonString, true);
+
+        return view('pages.ts.requestor.edit', compact('ts','accounts'));
+
+    }
+
+
+    public function update($id, Request $request) {
+
+        $this->validate($request, [
+            'amount'        => 'required' ,
+            'description'   => 'required' ,
+            'received_by'   => 'required' ,
+            
+        ]);
+
+        $ts = TemporarySlip::find($id);
+
+        $request['ts_no']               = TemporarySlip::generateTSNumber();
+        $request['running_balance']     = $request->amount;
+        $request['user_id']             = auth()->user()->id;
+
+        $ts->update($request->except('_token','method'));
+
+        return redirect()->route('requestor.ts.index')->with('success','Temporary slip has been created!');
 
     }
 

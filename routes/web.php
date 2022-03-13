@@ -153,9 +153,11 @@ Route::middleware(['web', 'auth'])->group(function () {
             Route::get('create', [RequestorTs::class, 'create'])->name('requestor.ts.create');
             Route::get('ts-search', [RequestorTs::class, 'search'])->name('requestor.ts.search');
             Route::get('show/{id}', [RequestorTs::class, 'show'])->name('requestor.ts.show');
+            Route::get('edit/{id}', [RequestorTs::class, 'edit'])->name('requestor.ts.edit');
 
             Route::post('store', [RequestorTs::class, 'store'])->name('requestor.ts.store');
 
+            Route::put('update/{id}', [RequestorTs::class, 'update'])->name('requestor.ts.update');
             Route::put('status-update/{id}', [RequestorTs::class, 'statusUpdate'])->name('requestor.ts.status-update');
 
         });
