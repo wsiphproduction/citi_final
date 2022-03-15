@@ -12,6 +12,7 @@ use App\Http\Controllers\Approver\PCVController as ApproverPCVController;
 use App\Http\Controllers\Payable\PCVController as PayablePCVController;
 use App\Http\Controllers\Requestor\PCFRController as RequestorPCFRController;
 use App\Http\Controllers\Approver\PCFRController as ApproverPCFRController;
+use App\Http\Controllers\Payable\PCFRController as PayablePCFRController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\ModulesController;
@@ -96,6 +97,7 @@ Route::middleware(['web', 'auth'])->group(function () {
         Route::get('/', [VendorsController::class, 'index'])->name('vendors.index');
         Route::get('create', [VendorsController::class, 'create'])->name('vendors.create');
         Route::get('edit/{id}', [VendorsController::class, 'edit'])->name('vendors.edit');
+        Route::get('show/{id}', [VendorsController::class, 'show'])->name('vendors.show');
 
         Route::post('store', [VendorsController::class, 'store'])->name('vendors.store');
 
@@ -231,6 +233,21 @@ Route::middleware(['web', 'auth'])->group(function () {
             Route::put('disapprove/{id}', [ApproverPCFRController::class, 'disapprove'])->name('approver.pcfr.disapprove');
             Route::put('approve/{id}', [ApproverPCFRController::class, 'approve'])->name('approver.pcfr.approve');
             Route::put('approve-with-code/{id}', [ApproverPCFRController::class, 'approveWithCode'])->name('approver.pcfr.approve-with-code');
+
+        });
+
+
+        Route::prefix('payables')->group(function() {
+
+            Route::get('/', [PayablePCFRController::class, 'index'])->name('payable.pcfr.index');
+            Route::get('show/{id}', [PayablePCFRController::class, 'show'])->name('payable.pcfr.show');
+
+            Route::put('disapprove/{id}', [PayablePCFRController::class, 'disapprove'])->name('payable.pcfr.disapprove');
+            Route::put('approve/{id}', [PayablePCFRController::class, 'approve'])->name('payable.pcfr.approve');
+
+            Route::put('pcv/{id}/remove', [PayablePCFRController::class, 'pcvRemove'])->name('payable.pcfr.pcv-remove');
+
+            // Route::put('approve-with-code/{id}', [ApproverPCFRController::class, 'approveWithCode'])->name('approver.pcfr.approve-with-code');
 
         });
 

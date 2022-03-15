@@ -29,7 +29,7 @@ class PCVController extends Controller
             $pcvs = Pcv::whereIn('status', ['submitted', 'confirmed']);
         } else {
             if($user->position == 'division head' ){ 
-                $pcvs = Pcv::whereIn('status', ['approved']);
+                $pcvs = Pcv::whereIn('status', ['approved','confirmed']);
             } else {
                 $pcvs = Pcv::whereIn('status', ['submitted', 'confirmed']);
             }
@@ -42,7 +42,7 @@ class PCVController extends Controller
                 });
         } else {
             if($user->position == 'division head') {
-                $pcvs = $pcvs->whereNull('tl_approved');
+                $pcvs = $pcvs->where('tl_approved',1);
             } else {
                 $pcvs = $pcvs->whereNull('tl_approved');
             }
@@ -71,11 +71,21 @@ class PCVController extends Controller
             ->with(['attachments', 'account_transactions'])
             ->first();
 
-        $area_manager = User::where('position', 'area head')
-            ->whereHas('branch_group', function($query) use ($pcv) {
-                $branch = Branch::find($pcv->user->assign_to);
-                $query->where('branch', 'LIKE', "%{$branch->name}%");
-            })->get();
+        $user = auth()->user();
+        
+        if($user->getUserAssignTo() != 'ssc') {
+            $area_manager = User::where('position', 'area head')
+                ->whereHas('branch_group', function($query) use ($pcv) {
+                    $branch = Branch::find($pcv->user->assign_to);
+                    $query->where('branch', 'LIKE', "%{$branch->name}%");
+                })->get();
+        } else {
+            $area_manager = User::where('position', 'division head')
+                ->whereHas('branch_group', function($query) use ($pcv) {
+                    $branch = Branch::find($pcv->user->assign_to);
+                    $query->where('branch', 'LIKE', "%{$branch->name}%");
+                })->get();
+        }
 
         return view('pages.pcv.approver.show', compact('pcv', 'area_manager'));
 
@@ -95,33 +105,70 @@ class PCVController extends Controller
     public function approve($id, Request $request) {
 
         $pcv = Pcv::find($id);
+        $user = auth()->user();
 
         $matrix = AccountMatrix::where('name', $pcv->account_name)
             ->where('amount', '=', $pcv->amount)
             ->where('status', 1)
             ->orWhere(function($query) use ($pcv) {
-                $query->where('amount', '<', $pcv->amount)
+                $query->where('name', $pcv->account_name)
+                    ->where('amount', '<', $pcv->amount)
                     ->where('beyond', 1)
                     ->where('status', 1);
             })
             ->orWhere(function($query) use ($pcv) {
-                $query->where('regardless', 1)
+                $query->where('name', $pcv->account_name)
+                    ->where('regardless', 1)
                     ->where('status', 1);
             })
             ->get();
 
         if(count($matrix)) {
 
-            $pcv->update(['status'   => 'confirmed']);
+            if($user->getUserAssignTo() == 'ssc') {
+                
+                if( $user->position == 'department head') {
+
+                    $pcv->update([
+                            'status'        => 'confirmed' ,
+                            'tl_approved'   => 1
+                        ]);
+
+                    return response()->json([
+                        'status'        => 'confirmed' ,
+                        'need_code'     => false ,
+                        'message'   => "{$pcv->pcv_no} was successfully confirmed. The requested amount requires an Approval Code. Input Approval Code."
+                    ]);
+
+                } else {
+
+                    $pcv->update([
+                        'status'        => 'confirmed' ,
+                        'dh_approved'   => 1
+                    ]);
+
+                    return response()->json([
+                        'status'        => 'confirmed' ,
+                        'need_code'     => true ,
+                        'message'   => "{$pcv->pcv_no} was successfully confirmed. The requested amount requires an Approval Code. Input Approval Code."
+                    ]);
+
+                }
+
+            }
+
+            $pcv->update([
+                'status'        => 'confirmed' 
+            ]);
 
             return response()->json([
-                'status'    => 'confirmed' ,
-                'need_code' => true ,
+                'status'        => 'confirmed' ,
+                'need_code'     => false ,
                 'message'   => "{$pcv->pcv_no} was successfully confirmed. The requested amount requires an Approval Code. Input Approval Code."
             ]);
 
         }
-
+        
         $pcv->update([
             'tl_approved'       => 1 ,
             'status'            => 'approved' ,
@@ -160,8 +207,22 @@ class PCVController extends Controller
     public function disapprove($id, Request $request) {
 
         $pcv = Pcv::find($id);
+
+        $user = auth()->user();
+        $disapprove = 'disapproved';
+
+        if($user->getUserAssignTo() == 'ssc') {
+            if($user->position == 'division head') {
+                $disapprove = 'disapproved dh';
+            } else {
+                $disapprove = 'disapproved dept head';
+            }
+        } else {
+            $disapprove = 'disapproved tl';
+        }
+
         $pcv->update([
-            'status'            => 'disapproved' ,
+            'status'            => $disapprove ,
             'cancelled_by'      => auth()->user()->username ,
             'cancelled_date'    => \Carbon\Carbon::now()
         ]);

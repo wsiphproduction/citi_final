@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Storage;
 
 use Illuminate\Http\Request;
 use App\Models\Pcv;
+use App\Models\User;
+use App\Models\Branch;
 use App\Models\Attachment;
 use App\Models\TemporarySlip;
 use Illuminate\Validation\Rule;
@@ -31,7 +33,7 @@ class PCVController extends Controller
         $pcv = Pcv::where('pcv_no', $pcv)
             ->with(['attachments', 'account_transactions'])
             ->first();
-
+            
         return view('pages.pcv.requestor.show', compact('pcv'));
 
     }
@@ -39,7 +41,7 @@ class PCVController extends Controller
     public function copyPCV($pcv) {
 
         $pcv = Pcv::where('pcv_no', $pcv)
-            ->with(['account_transactions', 'attachments'])
+            ->with(['account_transactions'])
             ->first();
 
         return response()->json($pcv);
@@ -50,8 +52,13 @@ class PCVController extends Controller
 
         $jsonString = file_get_contents(base_path('public/data/accounts.json'));
         $accounts = json_decode($jsonString, true);
+        $area_manager = User::where('position', 'area head')
+            ->whereHas('branch_group', function($query) {
+                $branch = Branch::find(auth()->user()->assign_to);
+                $query->where('branch', 'LIKE', "%{$branch->name}%");
+            })->get();
 
-        return view('pages.pcv.requestor.create', compact('accounts'));
+        return view('pages.pcv.requestor.create', compact('accounts', 'area_manager'));
 
     }
 
@@ -71,8 +78,24 @@ class PCVController extends Controller
                         return $query->where('ts_no', '=', $request->ts_no);
                     })
                 ] ,
-            'change'    => 'required|numeric'
+            'change'        => 'required|numeric',
+            'description'   => 'required'
         ]);
+
+
+        if($request->has('withslip')) {
+
+            $ts = TemporarySlip::where('ts_no', $request->ts_no)->first();
+
+
+            if( $ts->running_balance -  ( $request->total_amount + $request->change ) < 0 ) {
+                return redirect()->back()->withInput()->with('danger', 'Temporary Slip amount is less than the amount inputed on the account');
+            }
+
+            $ts->running_balance = $ts->running_balance -  ( $request->total_amount + $request->change );
+            $ts->save();            
+
+        }
 
         // save pcv transaction
         $pcv_transaction = Pcv::create([
@@ -82,13 +105,14 @@ class PCVController extends Controller
             'pcv_no'        => Pcv::generatePCVNumber() ,
             'slip_no'       => $request->has('withslip') ? $request->ts_no : null ,
             'status'        => $request->pcv_action ,
-            'user_id'       => auth()->user()->id
+            'user_id'       => auth()->user()->id ,
+            'description'   => $request->description
         ]);
 
-        if( $request->has('withslip') ) {
-            $ts = TemporarySlip::where('ts_no', $request->ts_no)->first();
-            $total_amount = $total_amount + $ts->running_balance;
-        }
+        // if( $request->has('withslip') ) {
+        //     $ts = TemporarySlip::where('ts_no', $request->ts_no)->first();
+        //     $total_amount = $total_amount + $ts->running_balance;
+        // }
 
         // add pcv reference to attachments
         // move attachment from temporary folder to original folder
@@ -132,17 +156,17 @@ class PCVController extends Controller
                     'remarks'       => array_key_exists('remarks', $account_transaction) ? $account_transaction['remarks'] : null 
                 ]);
 
-                if(array_key_exists("quantity", $account_transaction)) {
-                    $total_amount = $total_amount + ($account_transaction ['amount'] * $account_transaction['quantity']);
-                } else {
-                    $total_amount = $total_amount + $account_transaction ['amount'];
-                }
+                // if(array_key_exists("quantity", $account_transaction)) {
+                //     $total_amount = $total_amount + ($account_transaction ['amount'] * $account_transaction['quantity']);
+                // } else {
+                //     $total_amount = $total_amount + $account_transaction ['amount'];
+                // }
 
             }
 
         }
 
-        $pcv_transaction->amount = $total_amount;
+        $pcv_transaction->amount = $request->total_amount + $request->change;
         $pcv_transaction->save();
 
         return redirect()->route('requestor.pcv.index')->with('success','PCV has been created!');
@@ -217,9 +241,12 @@ class PCVController extends Controller
 
     public function cancelled() {
 
-        $pcv = Pcv::whereIn('status', ['cancelled', 'saved'])
-                    ->with(['attachments', 'account_transactions'])
-                    ->get();
+        $pcv = Pcv::whereIn('status', ['cancelled'])
+            ->whereHas('user', function(Builder $builder) {
+                $builder->where('assign_to', auth()->user()->assign_to);
+            })
+            ->with(['account_transactions'])
+            ->get();
 
         return response()->json($pcv);
 

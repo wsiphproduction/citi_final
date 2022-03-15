@@ -28,7 +28,7 @@ class PCFRController extends Controller
             $pcfr = Pcfr::whereIn('status', ['submitted', 'confirmed']);
         } else {
             if($user->position == 'division head' ){ 
-                $pcfr = Pcfr::whereIn('status', ['approved']);
+                $pcfr = Pcfr::where('status', ['approved']);
             } else {
                 $pcfr = Pcfr::whereIn('status', ['submitted', 'confirmed']);
             }
@@ -41,7 +41,7 @@ class PCFRController extends Controller
                 });
         } else {
             if($user->position == 'division head') {
-                $pcfr = $pcfr->whereNull('tl_approved');
+                $pcfr = $pcfr->where('tl_approved', 1);
             } else {
                 $pcfr = $pcfr->whereNull('tl_approved');
             }
@@ -92,8 +92,21 @@ class PCFRController extends Controller
     public function disapprove($id, Request $request) {
 
         $pcfr = Pcfr::find($id);
+        $user = auth()->user();
+        $disapprove = 'disapproved';
+
+        if($user->getUserAssignTo() == 'ssc') {
+            if($user->position == 'division head') {
+                $disapprove = 'disapproved dh';
+            } else {
+                $disapprove = 'disapproved dept head';
+            }
+        } else {
+            $disapprove = 'disapproved tl';
+        }
+
         $pcfr->update([
-            'status'            => 'disapproved' ,
+            'status'            => $disapprove ,
             'cancelled_by'      => auth()->user()->username ,
             'cancelled_date'    => \Carbon\Carbon::now() ,
         ]);
@@ -108,44 +121,79 @@ class PCFRController extends Controller
     public function approve($id, Request $request) {
 
         $pcfr = Pcfr::find($id);
+        $user = auth()->user();
 
-        $matrix = AccountMatrix::where('name', $pcfr->account_name)
-            ->where('amount', '=', $pcfr->amount)
-            ->where('status', 1)
-            ->orWhere(function($query) use ($pcfr) {
-                $query->where('amount', '<', $pcfr->amount)
-                    ->where('beyond', 1)
-                    ->where('status', 1);
-            })
-            ->orWhere(function($query) use ($pcfr) {
-                $query->where('regardless', 1)
-                    ->where('status', 1);
-            })
-            ->get();
+        // $matrix = AccountMatrix::where('name', $pcfr->account_name)
+        //     ->where('amount', '=', $pcfr->amount)
+        //     ->where('status', 1)
+        //     ->orWhere(function($query) use ($pcfr) {
+        //         $query->where('amount', '<', $pcfr->amount)
+        //             ->where('beyond', 1)
+        //             ->where('status', 1);
+        //     })
+        //     ->orWhere(function($query) use ($pcfr) {
+        //         $query->where('regardless', 1)
+        //             ->where('status', 1);
+        //     })
+        //     ->get();
 
-        if(count($matrix)) {
+        // if(count($matrix)) {
 
-            $pcfr->update(['status'   => 'confirmed']);
+        //     $pcfr->update(['status'   => 'confirmed']);
+
+        //     return response()->json([
+        //         'status'    => 'confirmed' ,
+        //         'need_code' => true ,
+        //         'message'   => "{$pcfr->pcfr_no} was successfully confirmed. The requested amount requires an Approval Code. Input Approval Code."
+        //     ]);
+
+        // }
+
+        if($user->getUserAssignTo() == 'ssc') {
+                
+            if( $user->position == 'department head') {
+
+                $pcfr->update([
+                    'tl_approved'       => 1 ,
+                    'status'            => 'approved' ,
+                    'approved_by'       => auth()->user()->username ,
+                    'approved_date'     => \Carbon\Carbon::now() ,
+                ]);
+
+                return response()->json([
+                    'need_code' =>  false ,
+                    'message'   => "{$pcfr->pcfr_no} was successfully approved."
+                ]);
+
+            } else {
+
+                $pcfr->update([
+                    'dh_approved'       => 1 
+                ]);
+
+                return response()->json([
+                    'need_code' =>  false ,
+                    'message'   => "{$pcfr->pcfr_no} was successfully approved."
+                ]);
+
+            }
+
+        } else {
+
+            $pcfr->update([
+                    'tl_approved'       => 1 ,
+                    'status'            => 'approved' ,
+                    'approved_by'       => auth()->user()->username ,
+                    'approved_date'     => \Carbon\Carbon::now() ,
+                ]);
 
             return response()->json([
-                'status'    => 'confirmed' ,
-                'need_code' => true ,
-                'message'   => "{$pcfr->pcfr_no} was successfully confirmed. The requested amount requires an Approval Code. Input Approval Code."
+                'need_code' =>  false ,
+                'message'   => "{$pcfr->pcfr_no} was successfully approved."
             ]);
 
         }
 
-        $pcfr->update([
-            'tl_approved'       => 1 ,
-            'status'            => 'approved' ,
-            'approved_by'       => auth()->user()->username ,
-            'approved_date'     => \Carbon\Carbon::now() ,
-        ]);
-
-        return response()->json([
-            'need_code' =>  false ,
-            'message'   => "{$pcfr->pcfr_no} was successfully approved."
-        ]);
 
     }
 

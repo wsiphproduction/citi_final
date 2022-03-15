@@ -73,7 +73,7 @@
             
                 <ul>
                 
-                    <li><a href="treasury-pcfr.html">PCFR</a></li>
+                    <li><a href="#">PCFR</a></li>
                     <li><a href="treasury-for-approval.html">For Approval</a></li>
                     <li><a href="treasury-temporary-slip.html">Temporary Slip</a></li>
                     <li><a href="treasury-pcv.html">PCV</a></li>
@@ -90,7 +90,7 @@
         
             <ul>
 
-                <li><a href="#">Approved</a></li>
+                <li><a href="{{ route('payable.pcfr.index') }}">Approved</a></li>
                 <li><a href="payables-for-replenishment.html">For Replenishment</a></li>
                 <li><a href="payables-replenished.html">Replenished</a></li>
 

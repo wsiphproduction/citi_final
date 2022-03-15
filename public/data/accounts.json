@@ -3,16 +3,8 @@
       "name": "Stripping Charge",
       "fields": [
          {
-            "name": "Vendor" ,
-            "type": "select" 
-         },         
-         {
             "name": "SLPS No",
             "type": "text"
-         },
-         {
-            "name": "Amount",
-            "type": "number"
          }       
       ],
       "has_attachment_section": true,
@@ -46,12 +38,12 @@
             "type": "number"
          },
          {
-            "name": "Brand",
-            "type": "text"
-         },
-         {
             "name": "Amount",
             "type": "number"
+         },
+         {
+            "name": "Brand",
+            "type": "text"
          }
       ],
       "has_attachment_section": true,
@@ -77,12 +69,12 @@
             "type": "text"
          },
          {
-            "name": "Attachment",
-            "type": "file"
-         },
-         {
             "name": "Amount",
             "type": "number"
+         },
+         {
+            "name": "Attachment",
+            "type": "file"
          }
       ],
       "has_attachment_section": true,
@@ -104,10 +96,6 @@
             "type": "number"
          },
          {
-            "name": "Amount",
-            "type": "number"
-         },
-         {
             "name": "No of Laborers",
             "type": "number"
          },
@@ -118,6 +106,10 @@
          {
             "name": "Description",
             "type": "textarea"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
          }
       ],
       "has_attachment_section": true,

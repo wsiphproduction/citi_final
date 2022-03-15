@@ -104,13 +104,15 @@
                 <div class="form-group row">
                   	<label for="period-date-from" class="col-lg-5 col-form-label">Period Date From</label>
                   	<div class="col-lg-7">
-                    	<input type="text" class="form-control" id="periodDateFrom" name="period_date_from" placeholder="From">
+                    	<input type="text" class="form-control" id="periodDateFrom" name="period_date_from" placeholder="From"
+                    		value="{{ \Carbon\Carbon::parse($pcv_first->date_created)->format('Y-m-d') }}">
                   	</div>
                 </div>
                 <div class="form-group row mb-0">
                   	<label for="period-date-to" class="col-lg-5 col-form-label">Period Date To</label>
                   	<div class="col-lg-7">
-                    	<input type="text" class="form-control" id="periodDateTo" name="period_date_to" placeholder="To">
+                    	<input type="text" class="form-control" id="periodDateTo" name="period_date_to" placeholder="To"
+                    		value="{{ \Carbon\Carbon::parse($pcv_last->date_created)->format('Y-m-d') }}">
                   	</div>
                 </div>
             </div>
@@ -134,7 +136,34 @@
                   	</thead>
                   	<tbody>
                     	
+                  		@foreach($pcvs as $pcv)
+
+                  			<tr>
+								<td>{{ $pcv->pcv_no }}</td>
+								<td>{{ $pcv->description }}</td>
+								<td>{{ $pcv->account_name }}</td>
+								<td>{{ $pcv->user->branch->name }}</td>
+								<td>{{ $pcv->amount }}</td>
+							</tr>
+
+                  		@endforeach
+
                   	</tbody>
+
+                  	<tfoot>
+	                    <tr role="row">
+	                      <td class="sorting_1"></td>
+	                      <td></td>
+	                      <td></td>
+	                      <td class="tx-bold text-right align-middle">Total Amount</td>
+	                      <td>
+	                        <input type="number" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" 
+	                        	value="{{ $pcvs_sum }}" readonly="" name="amount" id="amount">
+	                      </td>
+	                      <td></td>
+	                    </tr>
+	                  </tfoot>
+
                 </table>
             </div>
         </div>
@@ -148,7 +177,7 @@
                 <label for="temporary-slip" class="col-lg-5 col-form-label">Temporary Slip</label>
                 <div class="col-lg-7">
                   	<input type="number" class="form-control bd-0 bd-bottom text-right" 
-                  		id="temporary_slip" name="temporary_slip" value="0.00" readonly>
+                  		id="temporary_slip" name="temporary_slip" value="{{ $unliquidated_ts1 }}" readonly>
                 </div>
             </div>
         </div>
@@ -178,7 +207,7 @@
                 <label for="pending-replenishment" class="col-lg-5 col-form-label">Pending Replenishment</label>
                 <div class="col-lg-7">
                   	<input type="number" class="form-control bd-0 bd-bottom text-right" 
-                  		id="pending_replenishment" name="pending_replenishment" value="0.00" readonly>
+                  		id="pending_replenishment" name="pending_replenishment" value="{{ $for_replenishment1 }}" readonly>
                 </div>
             </div>
         </div>
@@ -197,7 +226,7 @@
                 <label for="unreplenished" class="col-lg-5 col-form-label">Unreplenished</label>
                 <div class="col-lg-7">
                   	<input type="number" class="form-control bd-0 bd-bottom text-right" id="unreplenished" 
-                  		name="unreplenished" value="0.00" readonly>
+                  		name="unreplenished" value="{{ $unreplenished1 }}" readonly>
                 </div>
             </div>
         </div>
@@ -207,7 +236,7 @@
                 <label for="pcf-accounted-for" class="col-lg-5 col-form-label">PCF Accounted For</label>
                 <div class="col-lg-7">
                   	<input type="number" class="form-control bd-0 bd-bottom text-right" 
-                  		id="pcf_accounted_for" name="pcf_accounted_for" value="0.00" readonly>
+                  		id="pcf_accounted_for" name="pcf_accounted_for" value="{{ $pcv_accounted }}" readonly>
                 </div>
             </div>
         </div>
@@ -217,7 +246,7 @@
 	            <label for="unapproved-pcvs" class="col-lg-5 col-form-label">Unapproved PCVs</label>
 	            <div class="col-lg-7">
 	              	<input type="number" class="form-control bd-0 bd-bottom text-right" 
-	              		id="unapproved_pcvs" name="unapproved_pcvs" value="0.00" readonly>
+	              		id="unapproved_pcvs" name="unapproved_pcvs" value="{{ $unapproved_pcvs1 }}" readonly>
 	            </div>
           	</div>
         </div>
@@ -227,7 +256,7 @@
 	            <label for="pcf-accountability" class="col-lg-5 col-form-label">PCF Accountability</label>
 	            <div class="col-lg-7">
 	              	<input type="number" class="form-control bd-0 bd-bottom text-right" 
-	              		id="pcf_accountability" name="pcf_accountability" value="0.00" readonly>
+	              		id="pcf_accountability" name="pcf_accountability" value="{{ $pcv_accountability }}" readonly>
 	            </div>
 	        </div>
         </div>
@@ -237,7 +266,7 @@
                 <label for="returned-pcvs" class="col-lg-5 col-form-label">Returned PCVs</label>
                 <div class="col-lg-7">
                   	<input type="number" class="form-control bd-0 bd-bottom text-right" 
-                  		id="returned_pcvs" name="returned_pcvs" value="0.00" readonly>
+                  		id="returned_pcvs" name="returned_pcvs" value="{{ $returned_pcvs1 }}" readonly>
                 </div>
             </div>
         </div>
@@ -247,7 +276,7 @@
 	            <label for="overage-shortage" class="col-lg-5 col-form-label">Overage/Shortage</label>
 	            <div class="col-lg-7">
 	              	<input type="number" class="form-control bd-0 bd-bottom text-right" 
-	              		id="overage_shortage" name="overage_shortage" value="0.00" readonly>
+	              		id="overage_shortage" name="overage_shortage" value="{{ $overage_shortage }}" readonly>
 	            </div>
           	</div>
         </div>
@@ -352,7 +381,7 @@
 		var dateFormat = 'mm/dd/yy';
 		var account_attachments = [];
 		var current_id = 0;
-		var pcv_ids = [];
+		var pcv_ids = {!! $pcvs->pluck('id') !!};
 
       	periodFrom = $('#periodDateFrom')
 	      	.datepicker().on('change', function() {

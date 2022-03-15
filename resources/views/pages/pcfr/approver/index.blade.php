@@ -52,7 +52,7 @@
                             <td>{{ $pcfrr->pcfr_no }}</td>
                             <td>{{ $pcfrr->batch_no }}</td>
                             <td>{{ $pcfrr->vendor }}</td>
-                            <td>{{ $pcfrr->requested_by }}</td>
+                            <td>{{ $pcfrr->user->username }}</td>
                             <td>{{ $pcfrr->status }}</td>
                             <td>
                             	<nav class="nav table-options">

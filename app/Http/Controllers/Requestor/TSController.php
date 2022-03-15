@@ -6,6 +6,7 @@ use File;
 use Illuminate\Http\Request;
 use App\Models\TemporarySlip;
 use App\Http\Controllers\Controller;
+use Illuminate\Database\Eloquent\Builder;
 
 class TSController extends Controller
 {
@@ -86,15 +87,21 @@ class TSController extends Controller
 
         $ts->update($request->except('_token','method'));
 
-        return redirect()->route('requestor.ts.index')->with('success','Temporary slip has been created!');
+        return redirect()->route('requestor.ts.index')->with('success','Temporary slip has been updated!');
 
     }
 
 
     public function search(Request $request) {
 
+        $user = auth()->user();
+
         $temporary_slips = TemporarySlip::where('ts_no', 'LIKE', "%{$request->ts_no}%")
-            ->where('status', '!=', 'disapproved')->get();
+            ->where('status','approved')
+            ->whereHas('user', function(Builder $builder) use($user) {
+                $builder->where('assign_to', $user->assign_to);
+            })
+            ->get();
 
         return $temporary_slips;
 

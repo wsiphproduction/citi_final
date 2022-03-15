@@ -20,15 +20,25 @@ class TSController extends Controller
 
         $user = auth()->user();
 
-        $temporary_slips = TemporarySlip::whereIn('status', ['confirmed', 'submitted'])
-            ->whereHas('user', function(Builder $query) use ($user) {
-                if($user->getUserAssignTo() == 'ssc') {
-                    $query->where('assign_to', $user->assign_to)
-                        ->where('assign_name', $user->assign_name);
-                } else {
-                    $query->where('assign_to', $user->assign_to);
-                }
-            })->get();
+        if($user->getUserAssignTo() != 'ssc') {
+            $temporary_slips = TemporarySlip::whereIn('status', ['confirmed', 'submitted']);
+        } else {
+            if($user->position == 'division head') {
+                $temporary_slips = TemporarySlip::whereIn('status', ['confirmed', 'approved'])
+                    ->where('tl_approved', 1);
+            } else {
+                $temporary_slips = TemporarySlip::whereIn('status', ['confirmed', 'submitted']);
+            }
+        }
+
+        $temporary_slips = $temporary_slips->whereHas('user', function(Builder $query) use ($user) {
+            if($user->getUserAssignTo() == 'ssc') {
+                $query->where('assign_to', $user->assign_to)
+                    ->where('assign_name', $user->assign_name);
+            } else {
+                $query->where('assign_to', $user->assign_to);
+            }
+        })->get();
 
         return view('pages.ts.approver.index', compact('temporary_slips'));
 
@@ -37,12 +47,21 @@ class TSController extends Controller
     public function show($id) {
 
         $ts = TemporarySlip::find($id);
+        $user = auth()->user();
 
-        $area_manager = User::where('position', 'area head')
-            ->whereHas('branch_group', function($query) use ($ts) {
-                $branch = Branch::find($ts->user->assign_to);
-                $query->where('branch', 'LIKE', "%{$branch->name}%");
-            })->get();
+        if($user->getUserAssignTo() != 'ssc') {
+            $area_manager = User::where('position', 'area head')
+                ->whereHas('branch_group', function($query) use ($ts) {
+                    $branch = Branch::find($ts->user->assign_to);
+                    $query->where('branch', 'LIKE', "%{$branch->name}%");
+                })->get();
+        } else {
+            $area_manager = User::where('position', 'division head')
+                ->whereHas('branch_group', function($query) use ($ts) {
+                    $branch = Branch::find($ts->user->assign_to);
+                    $query->where('branch', 'LIKE', "%{$branch->name}%");
+                })->get();
+        }
 
         return view('pages.ts.approver.show', compact('ts', 'area_manager'));
 
@@ -61,22 +80,55 @@ class TSController extends Controller
     public function approve($id, Request $request) {
 
         $ts = TemporarySlip::find($id);
+        $user = auth()->user();
 
         $matrix = AccountMatrix::where('name', $ts->account_name)
             ->where('amount', '=', $ts->amount)
             ->where('status', 1)
             ->orWhere(function($query) use ($ts) {
-                $query->where('amount', '<', $ts->amount)
+                $query->where('name', $ts->account_name)
+                    ->where('amount', '<', $ts->amount)
                     ->where('beyond', 1)
                     ->where('status', 1);
             })
             ->orWhere(function($query) use ($ts) {
-                $query->where('regardless', 1)
+                $query->where('name', $ts->account_name)
+                    ->where('regardless', 1)
                     ->where('status', 1);
             })
             ->get();
 
         if(count($matrix)) {
+
+            if($user->getUserAssignTo() == 'ssc') {
+
+                if( $user->position == 'department head') {
+                    $ts->update([
+                        'status'        => 'confirmed' ,
+                        'tl_approved'   => 1
+                    ]);
+
+                    return response()->json([
+                        'status'        => 'confirmed' ,
+                        'need_code'     => false ,
+                        'message'       => "{$ts->ts_no} was successfully confirmed. The requested amount requires an Approval Code. Input Approval Code."
+                    ]);
+
+                } else {
+                    $ts->update([
+                        'status'        => 'confirmed' ,
+                        'dh_approved'   => 1
+                    ]);
+
+                    return response()->json([
+                        'status'        => 'confirmed' ,
+                        'need_code'     => true ,
+                        'message'       => "{$ts->ts_no} was successfully confirmed. The requested amount requires an Approval Code. Input Approval Code."
+                    ]);
+
+                }
+   
+            }
 
             $ts->update(['status'   => 'confirmed']);
 
@@ -124,8 +176,21 @@ class TSController extends Controller
     public function disapprove($id, Request $request) {
 
         $ts = TemporarySlip::find($id);
+        $user = auth()->user();
+        $disapprove = 'disapproved';
+
+        if($user->getUserAssignTo() == 'ssc') {
+            if($user->position == 'division head') {
+                $disapprove = 'disapproved dh';
+            } else {
+                $disapprove = 'disapproved dept head';
+            }
+        } else {
+            $disapprove = 'disapproved tl';
+        }
+
         $ts->update([
-            'status' => 'disapproved' ,
+            'status' => $disapprove ,
             'cancelled_by'      => auth()->user()->username ,
             'cancelled_date'    => \Carbon\Carbon::now()
         ]);

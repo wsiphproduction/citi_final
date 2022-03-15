@@ -49,6 +49,7 @@
                 <tbody>
 
                     @forelse( $branch as $bran )
+
                         <tr>
                             <td> {{ $bran->name }} </td>
                             <td> {{ number_format($bran->budget, 2) }} </td>
@@ -62,8 +63,7 @@
                                 @endif
                             </td>
                             <td> 
-                                <a href="{{ route('branch.edit', $bran->id) }}" > Edit </a>
-                                <a href="javascript:void(0);" > Delete </a> 
+                                <a href="{{ route('branch.edit', $bran->id) }}" > Edit </a>                               
                             </td>
                         </tr>
                     @empty

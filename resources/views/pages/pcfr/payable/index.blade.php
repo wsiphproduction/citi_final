@@ -23,12 +23,6 @@
 			<h4 class="mg-b-0 tx-spacing--1">Petty Cash Fund Replenishments</h4>
 		</div>
 
-		<div class="d-md-block mt-4 mt-lg-0">
-            <a class="btn btn-sm pd-x-15 btn-primary btn-uppercase" href="{{ route('requestor.pcfr.create') }}">
-            	<i data-feather="plus" class="wd-10 mg-r-5"></i> Create PCFR
-            </a>
-        </div>
-
 	</div>	
 
 	<div class="row">
@@ -62,7 +56,7 @@
                             <td>{{ $pcfrr->status }}</td>
                             <td>
                             	<nav class="nav table-options">
-	                                <a class="nav-link p-0 pl-2" href="{{ route('requestor.pcfr.show', $pcfrr->pcfr_no) }}" title="View Request">
+	                                <a class="nav-link p-0 pl-2" href="{{ route('payable.pcfr.show', $pcfrr->pcfr_no) }}" title="View Request">
 	                                    <i data-feather="external-link"></i>
 	                                </a>
 	                            </nav>

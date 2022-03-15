@@ -102,7 +102,41 @@
 
 		<div class="col-lg-6"></div>
 
-		@if($ts->status != 'disapproved' && $ts->status != 'approved')
+		@if($ts->user->getUserAssignTo() == 'ssc')
+
+	        @if( auth()->user()->position == 'department head' && $ts->status == 'submitted' )
+
+	        	<div class="col-lg-12 mg-t-20">
+					<button type="button" class="btn btn-white mr-lg-1 mb-2 mb-lg-0 d-block d-lg-inline wd-100p wd-lg-150 btn-submit-approve"
+						data-action="approved" data-id="{{ $ts->id }}">
+						<i class="mg-r-5" data-feather="thumbs-up"></i> Approved
+					</button>
+					<button type="button" class="btn btn-brand-01 d-block d-lg-inline wd-100p wd-lg-150 btn-submit-disapprove"
+						data-action="disapprove" data-id="{{ $ts->id }}" data-target="#tsDisapprove" data-backdrop="static" 
+						data-toggle="modal" data-dismiss="modal">
+						<i class="mg-r-5" data-feather="thumbs-down"></i> Disapproved
+					</button>
+				</div>
+
+	        @elseif( auth()->user()->position == 'division head' &&  ( $ts->status == 'confirmed' || $ts->status == 'approved' ) 
+            && $ts->tl_approved == 1 && $ts->dh_approved != 1 )
+
+            	<div class="col-lg-12 mg-t-20">
+					<button type="button" class="btn btn-white mr-lg-1 mb-2 mb-lg-0 d-block d-lg-inline wd-100p wd-lg-150 btn-submit-approve"
+						data-action="approved" data-id="{{ $ts->id }}">
+						<i class="mg-r-5" data-feather="thumbs-up"></i> Approved
+					</button>
+					<button type="button" class="btn btn-brand-01 d-block d-lg-inline wd-100p wd-lg-150 btn-submit-disapprove"
+						data-action="disapprove" data-id="{{ $ts->id }}" data-target="#tsDisapprove" data-backdrop="static" 
+						data-toggle="modal" data-dismiss="modal">
+						<i class="mg-r-5" data-feather="thumbs-down"></i> Disapproved
+					</button>
+				</div>
+
+	        @endif
+
+		@elseif($ts->status != 'disapproved' && $ts->status != 'approved')
+
 			<div class="col-lg-12 mg-t-20">
 				<button type="button" class="btn btn-white mr-lg-1 mb-2 mb-lg-0 d-block d-lg-inline wd-100p wd-lg-150 btn-submit-approve"
 					data-action="approved" data-id="{{ $ts->id }}">
@@ -114,6 +148,7 @@
 					<i class="mg-r-5" data-feather="thumbs-down"></i> Disapproved
 				</button>
 			</div>
+
 		@endif
 
     </div>

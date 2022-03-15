@@ -16,6 +16,8 @@
 
     </div>  
 
+    @include('components.messages')
+
     <div class="row">
         
         <div class="col-lg-6">
@@ -120,7 +122,8 @@
                             <th class="wd-20p tx-uppercase">Account</th>
                             <th class="wd-20p tx-uppercase">Store</th>
                             <th class="wd-20p tx-uppercase">Amount</th>
-                            @if(auth()->user()->position == 'payables staff')
+                            @if(auth()->user()->position == 'payables staff'
+                                && is_null($pcfr->py_staff_approved) && count($pcfr->pcv) )
                                 <th class="wd-20p tx-uppercase">Action</th>
                             @endif
                         </tr>
@@ -129,17 +132,67 @@
                         @forelse( $pcfr->pcv as $pcv ) 
                             <tr>
                                 <td> {{ $pcv->pcv_no }} </td>
-                                <td> {{ $pcv->description }} </td>
+                                <td> {{$pcv->description }} </td>
                                 <td> {{ $pcv->account_name }} </td>
                                 <td> {{ $pcv->user->branch->name }} </td>
                                 <td> {{ $pcv->amount }} </td>
-                                @if(auth()->user()->position == 'payables staff')
+                                @if(auth()->user()->position == 'payables staff' 
+                                    && is_null($pcfr->py_staff_approved ))
                                 <td> 
-                                    <nav class="nav table-options justify-content-start mg-t-15">
-                                        <a class="nav-link p-0 pl-2 remove_attachment" href="javascript:void(0);" title="Remove">
+
+                                    <nav class="nav table-options justify-content-start">
+                                        <a class="nav-link p-0 pl-2 remove_attachment" href="javascript:void(0);" title="Remove" data-target="#pcvRemove{{$pcv->id}}" data-toggle="modal" data-dismiss="modal">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                                         </a>
                                     </nav>
+
+                                    <div class="modal fade" id="pcvRemove{{$pcv->id}}" tabindex="-1" role="dialog" 
+                                        aria-labelledby="pcvRemove{{$pcv->id}}" aria-modal="true">
+
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content tx-14">
+                                                
+                                                <div class="modal-header">
+                                                    <h6 class="modal-title" id="exampleModalLabel3">Input Remarks</h6>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">×</span>
+                                                    </button>
+                                                </div>
+
+                                                <div class="modal-body">                                                        
+                                                    
+                                                    <form action="{{ route('payable.pcfr.pcv-remove', $pcv->id) }}" method="POST">
+                                                        @csrf
+                                                        @method('PUT')
+                                                    
+                                                        <div class="row">
+                                                            <div class="col-lg-12">
+                                                                <div class="form-group">
+                                                                    <label for="remarks" class="d-block">Remarks</label>
+                                                                    <textarea id="disapprove-remarks" name="remarks" 
+                                                                        class="form-control" rows="3"></textarea>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <div class="col-lg-12 text-right">
+                                                                <button class="btn btn-brand-01 d-inline-block tx-13 tx-uppercase">Remove</button>
+                                                                <button type="button" class="btn btn-white tx-13 tx-uppercase" 
+                                                                    data-target="#pcvRemove{{$pcv->id}}" data-toggle="modal" 
+                                                                    data-dismiss="modal">
+                                                                    Cancel
+                                                                </button>
+                                                            </div>
+                                                        </div>  
+
+                                                    </form>
+                                                     
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+
                                 </td>
                                 @endif
                             </tr>
@@ -315,7 +368,7 @@
                                 <td>{{ \Carbon\Carbon::parse($attachment->date)->toFormattedDateString() }}</td>
                             </tr>
                         @endforeach
-                    </tbody>
+                    </tbody>                    
                 </table>
                 
             </div>
@@ -323,22 +376,7 @@
 
         @if($pcfr->user->getUserAssignTo() == 'ssc')
 
-            @if( auth()->user()->position == 'department head' && $pcfr->status == 'submitted' )
-
-                <div class="col-lg-12 mg-t-20">
-                    <button type="button" class="btn btn-white mr-lg-1 mb-2 mb-lg-0 d-block d-lg-inline wd-100p wd-lg-150 btn-submit-approve"
-                        data-action="approved" data-id="{{ $pcfr->id }}">
-                        <i class="mg-r-5" data-feather="thumbs-up"></i> Approved
-                    </button>
-                    <button type="button" class="btn btn-brand-01 d-block d-lg-inline wd-100p wd-lg-150 btn-submit-disapprove"
-                        data-action="disapproved" data-id="{{ $pcfr->id }}" data-target="#pcfrDisapprove" data-backdrop="static" 
-                        data-toggle="modal" data-dismiss="modal">
-                        <i class="mg-r-5" data-feather="thumbs-down"></i> Disapproved
-                    </button>
-                </div>
-
-            @elseif( auth()->user()->position == 'division head' &&  ( $pcfr->status == 'confirmed' || $pcfr->status == 'approved' ) 
-            && $pcfr->tl_approved == 1 && is_null($pcfr->dh_approved) )
+            @if( ($pcfr->status == 'submitted' || $pcfr->status == 'confirmed') || ($pcfr->status == 'approved' && $pcfr->dh_approved) )
 
                 <div class="col-lg-12 mg-t-20">
                     <button type="button" class="btn btn-white mr-lg-1 mb-2 mb-lg-0 d-block d-lg-inline wd-100p wd-lg-150 btn-submit-approve"
@@ -356,7 +394,8 @@
 
         @else
 
-            @if($pcfr->status == 'submitted' || $pcfr->status == 'confirmed' )
+            @if($pcfr->status == 'approved' && $pcfr->tl_approved == 1 && is_null($pcfr->py_staff_approved) )
+
                 <div class="col-lg-12 mg-t-20">
                     <button type="button" class="btn btn-white mr-lg-1 mb-2 mb-lg-0 d-block d-lg-inline wd-100p wd-lg-150 btn-submit-approve"
                         data-action="approved" data-id="{{ $pcfr->id }}">
@@ -372,10 +411,10 @@
 
         @endif
 
-        @include('_partials.pcfr_popups')
-
     </div>
     
+    @include('_partials.payable_pcfr_popups')
+
 @endsection
 
 @section('pagejs')
@@ -388,10 +427,11 @@
 
             e.preventDefault();
             let _url = "";
+            let _pcfr_id = {!! $pcfr->id !!};
 
             $.ajax({
 
-                url     : "{!! env('APP_URL') !!}/pcfr/approver/disapprove/"+$('#pcfr_id').val() ,
+                url     : "{!! env('APP_URL') !!}/pcfr/payables/disapprove/"+_pcfr_id,
                 method  : 'PUT' ,
                 data    : { _token : "{!! csrf_token() !!}" , remarks : $('#disapprove-remarks').val() } ,
                 success : function (res) {
@@ -419,12 +459,13 @@
 
             e.preventDefault();
             let _url = "";
+            let _pcfr_id = {!! $pcfr->id !!};
 
             $('#confirm-footer').show();
            
             $.ajax({
 
-                url     : "{!! env('APP_URL') !!}/pcfr/approver/approve/"+$(this).data('id') ,
+                url     : "{!! env('APP_URL') !!}/pcfr/payables/approve/"+_pcfr_id ,
                 method  : 'PUT' ,
                 data    : { _token : "{!! csrf_token() !!}" , action : $(this).data('action') } ,
                 success : function (res) {
@@ -443,49 +484,6 @@
                     });
 
                     $('#pcfr_message').text(res.message);
-
-                }
-
-            })
-            
-        });
-
-        $(document).on('click', '#btn_approval_code', function(e) {
-
-            e.preventDefault();
-            let _url = "";
-
-            $.ajax({
-
-                url     : "{!! env('APP_URL') !!}/pcfr/approver/approve-with-code/"+$('#pcfr_id').val(),
-                method  : 'PUT' ,
-                data    : { 
-                    _token  : "{!! csrf_token() !!}" ,
-                    code    : $('#approval_code').val() ,
-                    name    : $('#approver_name').val() ,
-                    remarks : $('#remarks').val()
-                } ,
-                success : function (res) {
-                
-                    $('#pcfr_message').text(res.message);
-
-                    $('#pcfr_confirm_message').modal({
-                        backdrop : 'static' ,
-                        show : true
-                    });
-
-                    $('#approval_code').val('');
-                    $('#approval_code').val('');
-                    $('#remarks').val('');
-
-                    $('#confirm-footer').hide();
-
-                    $('#pcfrInputApprovalCode').modal('hide');
-
-                    setTimeout(function(){
-                        $('#pcfr_confirm_message').modal('hide');
-                        location.reload();
-                    }, 3000);
 
                 }
 

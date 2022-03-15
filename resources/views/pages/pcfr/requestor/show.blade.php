@@ -137,6 +137,19 @@
                     		</tr>
                     	@endforelse
                   	</tbody>
+                    <tfoot>
+                        <tr role="row">
+                          <td class="sorting_1"></td>
+                          <td></td>
+                          <td></td>
+                          <td class="tx-bold text-right align-middle">Total Amount</td>
+                          <td>
+                            <input type="number" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" 
+                                value="{{ $pcfr->pcv()->sum('amount') }}" readonly="" name="amount" id="amount">
+                          </td>
+                          <td></td>
+                        </tr>
+                      </tfoot>
                 </table>
             </div>
         </div>
@@ -170,7 +183,7 @@
             <div class="form-group row">
                 <label for="atm-balance" class="col-lg-5 col-form-label">ATM Balance</label>
                 <div class="col-lg-7">
-                  	<input type="number" class="form-control" id="atm_balance" name="atm_balance"
+                  	<input type="number" class="form-control text-right" id="atm_balance" name="atm_balance"
                   		readonly value="{{ $pcfr->atm_balance }}">
                 </div>
             </div>
@@ -191,7 +204,7 @@
             <div class="form-group row">
                 <label for="cash-on-hand" class="col-lg-5 col-form-label">Cash on Hand</label>
                 <div class="col-lg-7">
-                  	<input type="number" class="form-control" id="cash_on_hand" name="cash_on_hand"
+                  	<input type="number" class="form-control text-right" id="cash_on_hand" name="cash_on_hand"
                   		value="{{ $pcfr->cash_on_hand }}" readonly>
                 </div>
             </div>

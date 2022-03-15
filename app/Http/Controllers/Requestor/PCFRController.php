@@ -28,10 +28,126 @@ class PCFRController extends Controller
     public function create() {
 
         $vendors = Vendor::where('status', 1)->get();
+        $user = auth()->user();
+        $branch = $user->branch;
 
-        return view('pages.pcfr.requestor.create', compact('vendors'));
+        // Unliquidated ts
+        $unliquidated_ts = TemporarySlip::where('running_balance', '>', 0)
+            ->where('status', 'approved');
+        // for replenishment
+        $for_rep_pcfr = Pcfr::where('status', 'for replenishment');
+        // Pending Replenishment 
+        $pending_rep_pcv = Pcv::where('status', 'approved');
+        // Unreplenished
+        $unreplenished = Pcfr::where('status', 'unreplenishment');
+        // Unapproved pcv
+        $unapproved_pcvs = Pcv::where('status', 'disapproved tl');
+        // Returned pcv
+        $returned_pcvs = Pcv::where('status', 'cancelled');
+        // pcvs 
+        $pcvs = Pcv::where('status', 'approved');
+
+        $cash_on_hand = 0;
+        $atm_bal = 0;
+
+        // PCF Accountability
+        $pcv_accountability = $branch->budget;
+
+
+        if( $user->getUserAssignTo() == 'ssc' ) {
+
+            $for_replenishment = $for_rep_pcfr->whereHas('user', function(Builder $query) use ($user) {
+                $query->where('assign_to', $user->assign_to)
+                    ->where('assign_name', $user->assign_name);
+            });
+
+            $pending_rep_pcv = $pending_rep_pcv->whereHas('user', function(Builder $query) use ($user) {
+                $query->where('assign_to', $user->assign_to)
+                    ->where('assign_name', $user->assign_name);
+            });
+
+            $unreplenished = $unreplenished->whereHas('user', function(Builder $query) use ($user) {
+                $query->where('assign_to', $user->assign_to)
+                    ->where('assign_name', $user->assign_name);
+            });
+
+            $unapproved_pcvs = $unapproved_pcvs->whereHas('user', function(Builder $query) use ($user) {
+                $query->where('assign_to', $user->assign_to)
+                    ->where('assign_name', $user->assign_name);
+            });
+
+            $pcvs = $pcvs->whereHas('user', function(Builder $query) use ($user) {
+                $query->where('assign_to', $user->assign_to)
+                    ->where('assign_name', $user->assign_name);
+            });
+
+            $unliquidated_ts = $unliquidated_ts->whereHas('user', function(Builder $query) use ($user) {
+                $query->where('assign_to', $user->assign_to)
+                    ->where('assign_name', $user->assign_name);
+            });
+
+        } else {
+
+            $for_replenishment = $for_rep_pcfr->whereHas('user', function(Builder $query) use ($user) {
+                $query->where('assign_to', $user->assign_to);
+            });
+
+            $pending_rep_pcv = $pending_rep_pcv->whereHas('user', function(Builder $query) use ($user) {
+                $query->where('assign_to', $user->assign_to);
+            });
+
+            $unreplenished = $unreplenished->whereHas('user', function(Builder $query) use ($user) {
+                $query->where('assign_to', $user->assign_to);
+            });
+
+            $unapproved_pcvs = $unapproved_pcvs->whereHas('user', function(Builder $query) use ($user) {
+                $query->where('assign_to', $user->assign_to);
+            });
+
+            $pcvs = $pcvs->whereHas('user', function(Builder $query) use ($user) {
+                $query->where('assign_to', $user->assign_to);
+            });
+
+            $unliquidated_ts = $unliquidated_ts->whereHas('user', function(Builder $query) use ($user) {
+                $query->where('assign_to', $user->assign_to);
+            });
+
+        }
+
+        // For replenishment
+        $for_replenishment1 = $for_replenishment->sum('amount');
+        // pending for replenishment
+        $pending_rep_pcv1 = $pending_rep_pcv->sum('amount');
+        // unreplenished
+        $unreplenished1 = $unreplenished->sum('amount');
+        // unapproved pcv
+        $unapproved_pcvs1 = $unapproved_pcvs->sum('amount');
+        // return pcv
+        $returned_pcvs1 = $returned_pcvs->sum('amount');
+        // unliquidated ts
+        $unliquidated_ts1 = $unliquidated_ts->sum('running_balance');
+
+        // PCF Accounted For
+        $pcv_accounted = $unliquidated_ts1 + $for_replenishment1 + $atm_bal + $cash_on_hand + $pending_rep_pcv1 + $unreplenished1 + $returned_pcvs1;
+
+        // overage / shortage
+        $overage_shortage = $pcv_accountability - $pcv_accounted;
+
+        // pcv_first
+        $pcv_first = $pending_rep_pcv->first();
+        // pcv_last
+        $pcv_last = $pending_rep_pcv->latest()->first();
+        // pcvs
+        $pcvs = $pcvs->get();
+
+        $pcvs_sum = $pcvs->sum('amount');
+
+        return view('pages.pcfr.requestor.create', compact('vendors', 'pcvs', 'for_replenishment1', 
+                'pcv_first', 'pcv_last', 'overage_shortage', 'pcvs_sum', 'pending_rep_pcv1', 'unreplenished1', 
+                'unapproved_pcvs1', 'returned_pcvs1', 'unliquidated_ts1', 'pcv_accountability', 'pcv_accounted'));
 
     }
+
 
     public function store(Request $request) {
 
@@ -180,7 +296,7 @@ class PCFRController extends Controller
 
         }
 
-        $pcvs = $pcv_new->with('user.branch')->get();
+//        $pcvs = $pcv_new->with('user.branch')->get();
         $unliquidated_ts = $unliquidated_ts->sum('running_balance');
         $for_replenishment = $for_replenishment->sum('amount');
 

@@ -131,13 +131,37 @@
 
                                         <tr>
                                             @foreach( $transaction['details'] as $detail )
-                                                <td>{{ $detail }}</td>
+                                                
+                                                @if(is_array($detail)) 
+
+                                                    <td>{{ json_encode($detail) }}</td>
+
+                                                @else
+
+                                                    <td>{{ $detail }}</td>
+
+                                                @endif
+
                                             @endforeach
                                         </tr>
 
                                     @endforeach
 
                                 </tbody>
+
+                                <tr role="row">
+                                  <td class="sorting_1"></td>
+                                  <td></td>
+                                  <td></td>
+                                  <td></td>
+                                  <td class="tx-bold text-right align-middle">Total Amount</td>
+                                  <td>
+                                    <input type="number" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" 
+                                        value="{{ $pcv->amount - $pcv->change }}" readonly="" name="amount" id="amount">
+                                  </td>
+                                  <td></td>
+                                </tr>
+                              </tfoot>
 
                             </table>
                         
@@ -207,7 +231,22 @@
 
     @if($pcv->user->getUserAssignTo() == 'ssc')
 
-        @if( ($pcv->status == 'submitted' || $pcv->status == 'confirmed') || ($pcv->status == 'approved' && $pcv->dh_approved) )
+        @if( auth()->user()->position == 'department head' && $pcv->status == 'submitted' )
+
+            <div class="col-lg-12 mg-t-20">
+                <button type="button" class="btn btn-white mr-lg-1 mb-2 mb-lg-0 d-block d-lg-inline wd-100p wd-lg-150 btn-submit-approve"
+                    data-action="approved" data-id="{{ $pcv->id }}">
+                    <i class="mg-r-5" data-feather="thumbs-up"></i> Approved
+                </button>
+                <button type="button" class="btn btn-brand-01 d-block d-lg-inline wd-100p wd-lg-150 btn-submit-disapprove"
+                    data-action="disapproved" data-id="{{ $pcv->id }}" data-target="#pcvDisapprove" data-backdrop="static" 
+                    data-toggle="modal" data-dismiss="modal">
+                    <i class="mg-r-5" data-feather="thumbs-down"></i> Disapproved
+                </button>
+            </div>
+
+        @elseif( auth()->user()->position == 'division head' &&  ( $pcv->status == 'confirmed' || $pcv->status == 'approved' ) 
+            && $pcv->tl_approved == 1 && is_null($pcv->dh_approved) )
 
             <div class="col-lg-12 mg-t-20">
                 <button type="button" class="btn btn-white mr-lg-1 mb-2 mb-lg-0 d-block d-lg-inline wd-100p wd-lg-150 btn-submit-approve"

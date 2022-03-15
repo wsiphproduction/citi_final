@@ -465,8 +465,7 @@
 
 			// if($('#btn-add-account-details').length > 0) {
 
-			if( _account_name == 'Stripping Charge' ||
-				_account_name == 'Delivery Charges') {
+			if( _account_name == 'Stripping Charge') {
 				account_transactions = [];
 				account_attachments = [];
 				$('#account-transactions-list tbody').find('tr').each(function(i, e) {
@@ -576,25 +575,6 @@
 
 			if($('#total_amount_display').length > 0){}else {
 				$('#total_amount').val($('.custom-inputs[data-name="amount"]').val());
-			}
-
-			let is_null_val = false;
-
-			$.each(account_transactions, function(i, e) {
-				$.each(e, function(o, u){
-					if(u =='' || u == undefined) is_null_val = true;
-				});
-			});
-
-			$.each(account_attachments, function(i, e) {
-				$.each(e, function(o, u){
-					if(u =='' || u == undefined) is_null_val = true;
-				});
-			});
-
-			if(is_null_val) {
-				alert('Some data on your request is missing please check it again');
-				return false;
 			}
 
 			// check if can save multiple transaction accounts
@@ -764,6 +744,7 @@
 					$('#account_name').val(res.account_name);
 					$('#date_created').val(moment(res.date_created).format('YYYY-MM-DD'));
 
+					$('#pcv_attachments').val(JSON.stringify(res.attachments));
 					$('#pcv_accounts').val(JSON.stringify(_aTransactions));
 
 
@@ -1117,7 +1098,6 @@
 
 		function getAccountTransactions() {
 
-			let _account_name = $('#account_name').val();
 			let _account_transactions = JSON.parse($('#pcv_accounts').val());
 			let _base_url = "{!! env('APP_URL') !!}";
 
@@ -1135,12 +1115,7 @@
 								_row_name == 'charge_to_store' ||
 								_row_name == 'amount' ) {
 								_html += '<td data-name="'+_row_name+'" >'; 
-								_html += '<input type="text" value="'+data[$(this).data('rowname')]+'"';
-								if(ii == 0) {
-									_html += 'class="form-control account-user-input" id="amount" data-name="'+$(this).data('rowname')+'">'; 
-								} else {
-									_html += 'class="form-control account-user-input" id="amount'+ii+'" data-name="'+$(this).data('rowname')+'">'; 
-								}
+								_html += '<input type="text" value="'+data[$(this).data('rowname')]+'" class="form-control account-user-input">'; 
 								_html += '</td>';	
 							} else {
 								_html += '<td data-name="'+_row_name+'" >' + data[$(this).data('rowname')] + '</td>';							
@@ -1168,28 +1143,6 @@
 				}
 
 			});
-
-			if($('#btn-add-account-details').length > 0) {
-			if(_account_name != 'Installation') {
-				$('#account-transactions-list').append(
-					`<tfoot>
-	                    <tr role="row">
-	                      <td class="sorting_1"></td>
-	                      <td></td>
-	                      <td></td>
-	                      <td></td>
-	                      <td class="tx-bold text-right align-middle">Total Amount</td>
-	                      <td>
-	                        <input type="number" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" value="00000.00" readonly id="total_amount_display">
-	                      </td>
-	                      <td></td>
-	                    </tr>
-	                  </tfoot>`);
-
-				calculateTotal();
-			}}
-
-
 
 		}
 
@@ -1259,20 +1212,18 @@
 
 	    function populateAccountsTable() {
 
-	    	$('#account-transactions-list tfoot').remove();
-	    	$('#account-transactions-list tbody').empty();
-
 			let _html = '';		
 
-
+			_html += '<tr>';	
 
 			$.each(account_transactions, function (x, y) {
-	
-				_html += '<tr>';	
-	
+
 				$('.tbl-header').each(function(i, o) {
 						
 					let _row_name = $(this).data('rowname').trim();
+
+					console.log(y);
+					console.log(_row_name);
 
 					if( _row_name != "action" && _row_name != "line_no") {
 						_html += '<td data-name="'+$(this).data('rowname')+'">' + account_transactions[x][_row_name] + '</td>';							
@@ -1282,15 +1233,15 @@
 
 				});
 
-				_html += '<td>';
-				_html += '<nav class="nav table-options justify-content-start">';
-				_html += '<a class="nav-link p-0 pl-2 remove_account_attachment" href="javascript:void(0);" title="Remove">'; 
-				_html += '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
-				_html += '</a></nav>';
-				_html += '</td>';
-				_html += '</tr>';
-
 			});
+
+			_html += '<td>';
+			_html += '<nav class="nav table-options justify-content-start">';
+			_html += '<a class="nav-link p-0 pl-2 remove_account_attachment" href="javascript:void(0);" title="Remove">'; 
+			_html += '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
+			_html += '</a></nav>';
+			_html += '</td>';
+			_html += '</tr>';
 
 			$('#account-transactions-list tbody').append(_html);
 

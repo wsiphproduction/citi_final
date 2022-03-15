@@ -131,14 +131,38 @@
                                         @foreach( $pcv->account_transactions as $transaction )
 
                                             <tr>
-                                                @foreach( $transaction['details'] as $detail )
-                                                    <td>{{ $detail }}</td>
+                                                @foreach( $transaction['details'] as $detail ) 
+
+                                                    @if(is_array($detail)) 
+
+                                                        <td>{{ json_encode($detail) }}</td>
+
+                                                    @else
+
+                                                        <td>{{ $detail }}</td>
+
+                                                    @endif
+
                                                 @endforeach
                                             </tr>
 
                                         @endforeach
 
                                     </tbody>
+                                    <tfoot>
+                        <tr role="row">
+                          <td class="sorting_1"></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td class="tx-bold text-right align-middle">Total Amount</td>
+                          <td>
+                            <input type="number" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" 
+                                value="{{ $pcv->amount - $pcv->change }}" readonly="" name="amount" id="amount">
+                          </td>
+                          <td></td>
+                        </tr>
+                      </tfoot>
 
                                 </table>
                             
@@ -217,15 +241,6 @@
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-send mg-r-5"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>Submit
                 </button>                           
             </form>
-        @endif
-
-        @if(is_null($pcv->ts_no) && is_null($pcv->received_by))
-
-            <button type="button" class="btn btn-white mr-lg-1 mb-2 mb-lg-0 d-lg-inline wd-100p wd-lg-150" id="btn-received"
-                data-target="#pcvReceived" data-toggle="modal" data-dismiss="modal"> 
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-download mg-r-5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>Received
-            </button>    
-
         @endif
     </div>
 
