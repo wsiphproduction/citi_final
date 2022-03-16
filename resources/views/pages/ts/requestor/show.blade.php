@@ -100,7 +100,7 @@
 			</div>
 		</div>
 
-		@if($ts->status == 'saved')
+		@if( $ts->status == 'saved' )
 		<div class="col-lg-12 mg-t-20">	
 			<form action="{{ route('requestor.ts.status-update', $ts->id) }}" method="POST">
 				@csrf

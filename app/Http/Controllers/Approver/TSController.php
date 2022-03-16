@@ -17,32 +17,22 @@ class TSController extends Controller
 
 
     public function index() {
-
         $user = auth()->user();
-
-        if($user->getUserAssignTo() != 'ssc') {
-            $temporary_slips = TemporarySlip::whereIn('status', ['confirmed', 'submitted']);
-        } else {
-            if($user->position == 'division head') {
-                $temporary_slips = TemporarySlip::whereIn('status', ['confirmed', 'approved'])
-                    ->where('tl_approved', 1);
-            } else {
-                $temporary_slips = TemporarySlip::whereIn('status', ['confirmed', 'submitted']);
-            }
-        }
-
-        $temporary_slips = $temporary_slips->whereHas('user', function(Builder $query) use ($user) {
-            if($user->getUserAssignTo() == 'ssc') {
-                if($user->position == 'department head') {
-                    $query->where('assign_to', $user->assign_to);
+        $temporary_slips = TemporarySlip::whereIn('status', ['confirmed', 'submitted','approved'])
+            ->whereHas('user', function(Builder $query) use($user) {
+                if($user->getUserAssignTo() == 'ssc') {
+                    if($user->position == 'department head') {
+                        $query->where('assign_to', $user->assign_to);
+                    } else {
+                        $query->where('assign_to', $user->assign_to)
+                            ->where('assign_name', $user->assign_name);
+                    }
                 } else {
-                    $query->where('assign_to', $user->assign_to)
-                        ->where('assign_name', $user->assign_name);
+                    $query->where('assign_to', $user->assign_to);
                 }
-            } else {
-                $query->where('assign_to', $user->assign_to);
-            }
-        })->get();
+            })
+            ->orderBy('created_at', 'DESC')
+            ->get();
 
         return view('pages.ts.approver.index', compact('temporary_slips'));
 
@@ -134,7 +124,10 @@ class TSController extends Controller
    
             }
 
-            $ts->update(['status'   => 'confirmed']);
+            $ts->update([
+                'status'        => 'confirmed' ,
+                'tl_approved'   => 1
+            ]);
 
             return response()->json([
                 'status'    => 'confirmed' ,
@@ -145,6 +138,7 @@ class TSController extends Controller
         }
 
         $ts->update([
+            'tl_approved'       => 1 ,
             'status'            => 'approved' ,
             'approved_by'       => auth()->user()->username ,
             'approved_date'     => \Carbon\Carbon::now() ,

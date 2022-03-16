@@ -14,8 +14,17 @@ class TSController extends Controller
 
     public function index() {
 
-        $temporary_slips = TemporarySlip::where('user_id', auth()->user()->id)
-            ->whereIn('status', ['saved', 'approved', 'submitted'])
+        $temporary_slips = TemporarySlip::whereIn('status', 
+                ['saved', 'approved', 'submitted','confirmed', 'disapproved','disapproved tl', 'disapproved dept head', 'disapproved dh'])
+            ->whereHas('user' , function(Builder $builder) {
+                if(auth()->user()->getUserAssignTo() == 'ssc') {
+                    $builder->where('assign_to', auth()->user()->assign_to)
+                        ->where('assign_name', auth()->user()->assign_name);
+                } else {
+                    $builder->where('assign_to', auth()->user()->assign_to);
+                }
+            })
+            ->orderBy('created_at', 'DESC')
             ->get();
 
         return view('pages.ts.requestor.index', compact('temporary_slips'));
@@ -105,16 +114,6 @@ class TSController extends Controller
             ->get();
 
         return $temporary_slips;
-
-    }
-
-
-    public function approverAction($id, Request $request) {
-
-        $ts = TemporarySlip::find($id);
-
-        dd($request->all());
-
 
     }
 

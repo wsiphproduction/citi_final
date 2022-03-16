@@ -91,8 +91,8 @@
             <ul>
 
                 <li><a href="{{ route('payable.pcfr.index') }}">Approved</a></li>
-                <li><a href="payables-for-replenishment.html">For Replenishment</a></li>
-                <li><a href="payables-replenished.html">Replenished</a></li>
+                <li><a href="{{ route('payable.pcfr.for-replenished') }}">For Replenishment</a></li>
+                <li><a href="{{ route('payable.pcfr.replenished') }}">Replenished</a></li>
 
             </ul>
         

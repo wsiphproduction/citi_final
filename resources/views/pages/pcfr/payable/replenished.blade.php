@@ -20,7 +20,7 @@
 					<li class="breadcrumb-item active">Petty Cash Fund Replenishment</li>
 				</ol>
 			</nav>
-			<h4 class="mg-b-0 tx-spacing--1">Approved PCFR</h4>
+			<h4 class="mg-b-0 tx-spacing--1">Replenished PCFR</h4>
 		</div>
 
 	</div>	

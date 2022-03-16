@@ -18,42 +18,41 @@ class PCFRController extends Controller
 
 
     public function index() {
-
-        $user = auth()->user();
-
-        if( $user->getUserAssignTo() != 'ssc' ) {          
-            $pcfr = Pcfr::where('status', 'approved')
-                ->where('tl_approved', 1);
-        } else {
-            if($user->position == 'division head' ){ 
-                $pcfr = Pcfr::where('status', 'approved')
-                    ->where('tl_approved', 1);
-            } else {
-                $pcfr = Pcfr::where('status', 'approved')
-                    ->where('tl_approved', 1);
-            }
-        }
-
-        if( $user->getUserAssignTo() != 'ssc' ) {            
-            $pcfr = $pcfr->whereHas('user', function(Builder $query) use ($user) {
-                    $query->where('assign_to', $user->assign_to);
-                });
-        } else {
-
-            $pcfr = $pcfr->whereHas('user', function(Builder $query) use ($user) {
-                if($user->position == 'division head' ) {
-                    $query->where('assign_to', $user->assign_to);
-                } else {
-                    $query->where('assign_to', $user->assign_to)
-                        ->where('assign_name', $user->assign_name);
-                }
-            });
-
-        }
-
-        $pcfr = $pcfr->get();
+        
+        $pcfr = Pcfr::where('status', 'approved')
+            ->where('tl_approved', 1)
+            ->whereHas('user', function(Builder $query) {
+                    $query->where('assign_to', auth()->user()->assign_to);
+            })   
+            ->get();
 
         return view('pages.pcfr.payable.index', compact('pcfr'));
+
+    }
+
+
+    public function forReplenished() {
+
+        $pcfr = Pcfr::where('status', 'posted to ebs')
+            ->whereHas('user', function(Builder $builder) {
+                $builder->where('assign_to', auth()->user()->assign_to);
+            })
+            ->get();
+
+        return view('pages.pcfr.payable.for-replenished', compact('pcfr'));
+
+    }
+
+
+    public function replenished() {
+
+        $pcfr = Pcfr::where('status', 'replenished')
+            ->whereHas('user', function(Builder $builder) {
+                $builder->where('assign_to', auth()->user()->assign_to);
+            })
+            ->get();
+
+        return view('pages.pcfr.payable.replenished', compact('pcfr'));
 
     }
 

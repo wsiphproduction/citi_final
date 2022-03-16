@@ -24,6 +24,9 @@
 		<form action="{{ route('requestor.ts.update', $ts->id) }}" method="POST">
 			@csrf
 			@method('PUT')
+			@if(\Str::contains($ts->status , 'disapproved'))
+				<input type="hidden" name="status" value="submitted">
+			@endif
 
 			<div class="row">
 

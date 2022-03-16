@@ -21,7 +21,8 @@ class PCVController extends Controller
 
     public function index() {
 
-        $pcvs = Pcv::where('user_id', auth()->user()->id)->get();
+        $pcvs = Pcv::where('assign_to', auth()->user()->assign_to)
+            ->get();
 
         return view('pages.pcv.requestor.index', compact('pcvs'));
 

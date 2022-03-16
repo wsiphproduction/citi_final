@@ -243,6 +243,8 @@ Route::middleware(['web', 'auth'])->group(function () {
         Route::prefix('payables')->group(function() {
 
             Route::get('/', [PayablePCFRController::class, 'index'])->name('payable.pcfr.index');
+            Route::get('for-replenished', [PayablePCFRController::class, 'forReplenished'])->name('payable.pcfr.for-replenished');
+            Route::get('replenished', [PayablePCFRController::class, 'replenished'])->name('payable.pcfr.replenished');
             Route::get('show/{id}', [PayablePCFRController::class, 'show'])->name('payable.pcfr.show');
 
             Route::put('disapprove/{id}', [PayablePCFRController::class, 'disapprove'])->name('payable.pcfr.disapprove');
