@@ -92,14 +92,9 @@
 				lengthMenu: 'Show _MENU_ entries',
 				},
 				columnDefs: [
-				{ targets: 6, orderable: false }
+				{ targets: 5, orderable: false }
 				],
 				dom: 'lf<"dataTables_responsive"t>ip'
-			});
-
-			// Select2
-			$('.dataTables_length select').select2({ 
-				minimumResultsForSearch: Infinity 
 			});
 		});
     </script>

@@ -30,8 +30,9 @@ class BranchController extends Controller
     public function store(Request $request) {
 
         $this->validate($request, [
-            'name'      => 'required' ,
-            'budget'    => 'required'
+            'name'              => 'required' ,
+            'budget'            => 'required' ,
+            'company_name'      => 'required'
         ]);
 
         $request['created_by'] = auth()->user()->username;
@@ -55,8 +56,9 @@ class BranchController extends Controller
     public function update($id, Request $request) {
 
         $this->validate($request, [
-            'name'      => 'required' ,
-            'budget'    => 'required'
+            'name'              => 'required' ,
+            'budget'            => 'required' ,
+            'company_name'      => 'required'
         ]);
 
         $request['updated_by'] = auth()->user()->username;

@@ -537,7 +537,7 @@
       "add_multiple": false
    },
    {
-      "name": "Charge to Consignor",
+      "name": "Others",
       "fields": [
          {
             "name": "Vendor",

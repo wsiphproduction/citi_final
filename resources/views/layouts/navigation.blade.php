@@ -125,9 +125,9 @@
                 </ul>
             </li>
 
-            <li class="nav-item">
+            {{-- <li class="nav-item">
                 <a href="{{ route('accounts.index') }}" class="nav-link"><i data-feather="users"></i> <span>Accounts</span></a>
-            </li>
+            </li> --}}
 
             <li class="nav-item">
                 <a href="{{ route('vendors.index') }}" class="nav-link"><i data-feather="users"></i> <span>Vendors</span></a>

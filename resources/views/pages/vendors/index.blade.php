@@ -100,7 +100,7 @@
     			lengthMenu: 'Show _MENU_ entries',
     			},
     			columnDefs: [
-    			{ targets: 7, orderable: false }
+    			{ targets: 6, orderable: false }
     			],
     			dom: 'lf<"dataTables_responsive"t><"dataTables_total d-flex justify-content-end">ip'
     		});
@@ -109,7 +109,7 @@
     		$('.dataTables_length select').select2({ 
                 minimumResultsForSearch: Infinity 
             });
-    		$(".dataTables_total").append('<label class="tx-bold">Total <input type="number" class="form-control ml-2 tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" value="00000.00" disabled></label>');
+            
 		});
     </script>
 

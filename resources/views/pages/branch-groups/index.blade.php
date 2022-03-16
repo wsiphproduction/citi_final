@@ -67,7 +67,6 @@
                             <td> {{ $bran->updated_at->toFormattedDateString() }} </td>
                             <td> 
                                 <a href="{{ route('branch-group.edit', $bran->id) }}" > Edit </a>
-                                <a href="javascript:void(0);" > Delete </a> 
                             </td>
                         </tr>
                     @empty
@@ -103,7 +102,7 @@
     			lengthMenu: 'Show _MENU_ entries',
     			},
     			columnDefs: [
-    			{ targets: 7, orderable: false }
+    			{ targets: 6, orderable: false }
     			],
     			dom: 'lf<"dataTables_responsive"t><"dataTables_total d-flex justify-content-end">ip'
     		});

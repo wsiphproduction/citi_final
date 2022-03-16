@@ -33,8 +33,12 @@ class TSController extends Controller
 
         $temporary_slips = $temporary_slips->whereHas('user', function(Builder $query) use ($user) {
             if($user->getUserAssignTo() == 'ssc') {
-                $query->where('assign_to', $user->assign_to)
-                    ->where('assign_name', $user->assign_name);
+                if($user->position == 'department head') {
+                    $query->where('assign_to', $user->assign_to);
+                } else {
+                    $query->where('assign_to', $user->assign_to)
+                        ->where('assign_name', $user->assign_name);
+                }
             } else {
                 $query->where('assign_to', $user->assign_to);
             }
@@ -62,7 +66,7 @@ class TSController extends Controller
                     $query->where('branch', 'LIKE', "%{$branch->name}%");
                 })->get();
         }
-
+        
         return view('pages.ts.approver.show', compact('ts', 'area_manager'));
 
     }

@@ -41,7 +41,8 @@
                     <tr>
                         <th >Name</th>
                         <th >Code</th>
-                        <th >Type</th>                        
+                        <th >Type</th>          
+                        <th> Date Created </th>              
                         <th >Action</th>
                     </tr>
                 </thead>
@@ -56,12 +57,11 @@
                             <td> {{ $charge->created_at->toFormattedDateString() }} </td>
                             <td> 
                                 <a href="{{ route('charges.edit', $charge->id) }}" > Edit </a>
-                                <a href="javascript:void(0);" > Delete </a> 
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4" class="text-center"> No Charges Found </td>
+                            <td colspan="5" class="text-center"> No Charges Found </td>
                         </tr>
                     @endforelse
                                                         
@@ -92,7 +92,7 @@
     			lengthMenu: 'Show _MENU_ entries',
     			},
     			columnDefs: [
-    			{ targets: 7, orderable: false }
+    			{ targets: 4, orderable: false }
     			],
     			dom: 'lf<"dataTables_responsive"t><"dataTables_total d-flex justify-content-end">ip'
     		});
@@ -101,7 +101,7 @@
     		$('.dataTables_length select').select2({ 
                 minimumResultsForSearch: Infinity 
             });
-    		$(".dataTables_total").append('<label class="tx-bold">Total <input type="number" class="form-control ml-2 tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" value="00000.00" disabled></label>');
+
 		});
     </script>
 
