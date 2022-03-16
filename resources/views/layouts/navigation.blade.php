@@ -66,17 +66,17 @@
             </li>
         @endhasanyrole
 
-        @hasanyrole('Administrator')
+        @hasanyrole('Administrator|Treasury Staff|Treasury Head')
             <li class="nav-item with-sub">
                 
                 <a href="#" class="nav-link"><i data-feather="briefcase"></i> <span>Treasury</span></a>
             
                 <ul>
                 
-                    <li><a href="#">PCFR</a></li>
-                    <li><a href="treasury-for-approval.html">For Approval</a></li>
-                    <li><a href="treasury-temporary-slip.html">Temporary Slip</a></li>
-                    <li><a href="treasury-pcv.html">PCV</a></li>
+                    <li><a href="{{ route('treasury.pcfr.index') }}">PCFR</a></li>
+                    <li><a href="{{ route('treasury.pcfr.for-approval') }}">For Approval</a></li>
+                    <li><a href="{{ route('treasury.pcfr.temp-slips') }}">Temporary Slip</a></li>
+                    <li><a href="{{ route('treasury.pcfr.pcvs') }}">PCV</a></li>
                 
                 </ul>
 

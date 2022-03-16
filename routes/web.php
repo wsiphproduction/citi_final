@@ -13,6 +13,7 @@ use App\Http\Controllers\Payable\PCVController as PayablePCVController;
 use App\Http\Controllers\Requestor\PCFRController as RequestorPCFRController;
 use App\Http\Controllers\Approver\PCFRController as ApproverPCFRController;
 use App\Http\Controllers\Payable\PCFRController as PayablePCFRController;
+use App\Http\Controllers\Treasury\PCFRController as TreasuryPCFRController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\ModulesController;
@@ -248,6 +249,20 @@ Route::middleware(['web', 'auth'])->group(function () {
             Route::put('pcv/{id}/remove', [PayablePCFRController::class, 'pcvRemove'])->name('payable.pcfr.pcv-remove');
 
             // Route::put('approve-with-code/{id}', [ApproverPCFRController::class, 'approveWithCode'])->name('approver.pcfr.approve-with-code');
+
+        });
+
+
+        Route::prefix('treasury')->group(function() {
+
+            Route::get('/', [TreasuryPCFRController::class, 'index'])->name('treasury.pcfr.index');
+            Route::get('create', [TreasuryPCFRController::class, 'create'])->name('treasury.pcfr.create');
+            Route::get('for-approval', [TreasuryPCFRController::class, 'forApproval'])->name('treasury.pcfr.for-approval');
+            Route::get('temp-slips', [TreasuryPCFRController::class, 'tempSlips'])->name('treasury.pcfr.temp-slips');
+            Route::get('pcvs', [TreasuryPCFRController::class, 'pcvs'])->name('treasury.pcfr.pcvs');
+            Route::get('show-pcfr/{id}', [TreasuryPCFRController::class, 'showPcfr'])->name('treasury.pcfr.show-pcfr');
+
+            Route::post('store', [TreasuryPCFRController::class, 'store'])->name('treasury.pcfr.store');
 
         });
 
