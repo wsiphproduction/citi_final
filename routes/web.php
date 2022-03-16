@@ -34,7 +34,9 @@ use App\Http\Controllers\JobRequestController;
 
 
 Route::get('/', function () {
-    return view('welcome');
+    
+    redirect('login');
+
 });
 
 
