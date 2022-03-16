@@ -163,7 +163,7 @@ class PCVController extends Controller
 
             return response()->json([
                 'status'        => 'confirmed' ,
-                'need_code'     => false ,
+                'need_code'     => true ,
                 'message'   => "{$pcv->pcv_no} was successfully confirmed. The requested amount requires an Approval Code. Input Approval Code."
             ]);
 

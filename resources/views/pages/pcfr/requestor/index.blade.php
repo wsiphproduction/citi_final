@@ -30,7 +30,7 @@
         </div>
 
 	</div>	
-
+    @include('components.messages')	
 	<div class="row">
 
         <div class="col-lg-12">

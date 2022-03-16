@@ -264,6 +264,8 @@ Route::middleware(['web', 'auth'])->group(function () {
 
             Route::post('store', [TreasuryPCFRController::class, 'store'])->name('treasury.pcfr.store');
 
+            Route::put('pcv/{id}/remove', [TreasuryPCFRController::class, 'pcvRemove'])->name('treasury.pcfr.pcv-remove');
+
         });
 
     });

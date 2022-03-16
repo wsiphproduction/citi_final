@@ -114,10 +114,90 @@ class PCFRController extends Controller
         ]);
 
         // update pcfr auto calculations
+        $pcfr = Pcfr::find($request->pcfr_no);
+        $this->recomputePcfr($pcfr);
 
         return redirect()->back()->with('success', "{$pcv->pcv_no} successfully removed");
 
     }
+
+
+    public function recomputePcfr($pcfr) {
+
+        $user = auth()->user();
+        $branch = $user->branch;
+        $cash_on_hand = 0;
+        $atm_bal = 0;
+
+        // PCF Accountability
+        $pcv_accountability = $branch->budget;
+
+        // for replenishment
+        $for_replenishment = Pcfr::where('status', 'for replenishment')
+            ->whereHas('user', function(Builder $query) use ($user) {
+                $query->where('assign_to', $user->assign_to);
+            })->sum('amount');
+
+        // Pending Replenishment 
+        $pending_rep_pcv = Pcv::where('status', 'approved')
+            ->whereHas('user', function(Builder $query) use ($user) {
+                $query->where('assign_to', $user->assign_to);
+            })
+            ->sum('amount');
+
+        // Unreplenished
+        $unreplenished = Pcfr::where('status', 'unreplenished')
+            ->whereHas('user', function(Builder $query) use ($user) {
+                $query->where('assign_to', $user->assign_to);
+            })
+            ->sum('amount');
+
+        // Unapproved pcv
+        $unapproved_pcvs = Pcv::where('status', 'disapproved tl')
+            ->whereHas('user', function(Builder $query) use ($user) {
+                $query->where('assign_to', $user->assign_to);
+            })->sum('amount');
+
+        // Unliquidated ts
+        $unliquidated_ts = TemporarySlip::where('running_balance', '>', 0)
+            ->where('status', 'approved')
+            ->whereHas('user', function(Builder $query) use ($user) {
+                $query->where('assign_to', $user->assign_to);
+            })->sum('running_balance');
+
+        // Returned pcv
+        $returned_pcvs = Pcv::where('status', 'cancelled')
+            ->whereHas('user', function(Builder $query) use ($user) {
+                $query->where('assign_to', $user->assign_to);
+            })
+            ->sum('amount');
+        
+
+        // PCF Accounted For
+        $pcv_accounted = $unliquidated_ts + $for_replenishment + $atm_bal + $cash_on_hand + $pending_rep_pcv + $unreplenished + $returned_pcvs + $unapproved_pcvs;
+
+        // overage / shortage
+        $overage_shortage = $pcv_accountability - $pcv_accounted;
+
+        // pcvs 
+        $pcvs = Pcv::where('status', 'approved')
+            ->whereHas('user', function(Builder $query) use ($user) {
+                $query->where('assign_to', $user->assign_to);
+            })->sum('amount');
+
+        $pcfr->update([
+            'total_temp_slip'               => $unliquidated_ts ,
+            'total_replenishment'           => $for_replenishment ,
+            'total_unreplenished'           => $unreplenished ,
+            'total_unapproved_pcv'          => $unapproved_pcvs ,
+            'total_returned_pcv'            => $returned_pcvs ,
+            'total_accounted'               => $pcv_accounted ,
+            'total_pending_replenishment'   => $pending_rep_pcv ,
+            'pcf_diff'                      => $overage_shortage
+        ]);
+
+    }
+
 
     public function statusUpdate($id, Request $request){
 

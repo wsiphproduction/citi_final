@@ -24,7 +24,7 @@
             <div class="form-group row">
                 <label for="pcfr-no" class="col-lg-5 col-form-label">PCFR No.</label>
                 <div class="col-lg-7">
-                    <input type="text" class="form-control" id="pcfr_no" name="pcfr_no" readonly
+                    <input type="text" class="form-control" readonly
                         value="{{ $pcfr->pcfr_no }}">
                 </div>
             </div>
@@ -164,7 +164,8 @@
                                                     <form action="{{ route('payable.pcfr.pcv-remove', $pcv->id) }}" method="POST">
                                                         @csrf
                                                         @method('PUT')
-                                                    
+                                                        <input type="hidden" name="pcfr_no" value="{{ $pcfr->id }}">
+
                                                         <div class="row">
                                                             <div class="col-lg-12">
                                                                 <div class="form-group">

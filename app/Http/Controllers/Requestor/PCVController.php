@@ -82,17 +82,19 @@ class PCVController extends Controller
             'description'   => 'required'
         ]);
 
-
+        $total_amount = $request->total_amount - $request->change;
         if($request->has('withslip')) {
 
             $ts = TemporarySlip::where('ts_no', $request->ts_no)->first();
 
 
-            if( $ts->running_balance -  ( $request->total_amount + $request->change ) < 0 ) {
+            if( $ts->running_balance -  ( $request->total_amount - $request->change ) < 0 ) {
                 return redirect()->back()->withInput()->with('danger', 'Temporary Slip amount is less than the amount inputed on the account');
             }
 
-            $ts->running_balance = $ts->running_balance -  ( $request->total_amount + $request->change );
+            
+
+            $ts->running_balance = $ts->running_balance -  $total_amount;
             $ts->save();            
 
         }
@@ -166,7 +168,7 @@ class PCVController extends Controller
 
         }
 
-        $pcv_transaction->amount = $request->total_amount + $request->change;
+        $pcv_transaction->amount = $total_amount;
         $pcv_transaction->save();
 
         return redirect()->route('requestor.pcv.index')->with('success','PCV has been created!');

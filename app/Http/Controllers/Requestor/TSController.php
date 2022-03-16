@@ -15,6 +15,7 @@ class TSController extends Controller
     public function index() {
 
         $temporary_slips = TemporarySlip::where('user_id', auth()->user()->id)
+            ->whereIn('status', ['saved', 'approved', 'submitted'])
             ->get();
 
         return view('pages.ts.requestor.index', compact('temporary_slips'));

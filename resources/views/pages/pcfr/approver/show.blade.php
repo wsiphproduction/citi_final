@@ -321,55 +321,18 @@
             </div>
         </div>
 
-        @if($pcfr->user->getUserAssignTo() == 'ssc')
-
-            @if( auth()->user()->position == 'department head' && $pcfr->status == 'submitted' )
-
-                <div class="col-lg-12 mg-t-20">
-                    <button type="button" class="btn btn-white mr-lg-1 mb-2 mb-lg-0 d-block d-lg-inline wd-100p wd-lg-150 btn-submit-approve"
-                        data-action="approved" data-id="{{ $pcfr->id }}">
-                        <i class="mg-r-5" data-feather="thumbs-up"></i> Approved
-                    </button>
-                    <button type="button" class="btn btn-brand-01 d-block d-lg-inline wd-100p wd-lg-150 btn-submit-disapprove"
-                        data-action="disapproved" data-id="{{ $pcfr->id }}" data-target="#pcfrDisapprove" data-backdrop="static" 
-                        data-toggle="modal" data-dismiss="modal">
-                        <i class="mg-r-5" data-feather="thumbs-down"></i> Disapproved
-                    </button>
-                </div>
-
-            @elseif( auth()->user()->position == 'division head' &&  ( $pcfr->status == 'confirmed' || $pcfr->status == 'approved' ) 
-            && $pcfr->tl_approved == 1 && is_null($pcfr->dh_approved) )
-
-                <div class="col-lg-12 mg-t-20">
-                    <button type="button" class="btn btn-white mr-lg-1 mb-2 mb-lg-0 d-block d-lg-inline wd-100p wd-lg-150 btn-submit-approve"
-                        data-action="approved" data-id="{{ $pcfr->id }}">
-                        <i class="mg-r-5" data-feather="thumbs-up"></i> Approved
-                    </button>
-                    <button type="button" class="btn btn-brand-01 d-block d-lg-inline wd-100p wd-lg-150 btn-submit-disapprove"
-                        data-action="disapproved" data-id="{{ $pcfr->id }}" data-target="#pcfrDisapprove" data-backdrop="static" 
-                        data-toggle="modal" data-dismiss="modal">
-                        <i class="mg-r-5" data-feather="thumbs-down"></i> Disapproved
-                    </button>
-                </div>
-
-            @endif
-
-        @else
-
-            @if($pcfr->status == 'submitted' || $pcfr->status == 'confirmed' )
-                <div class="col-lg-12 mg-t-20">
-                    <button type="button" class="btn btn-white mr-lg-1 mb-2 mb-lg-0 d-block d-lg-inline wd-100p wd-lg-150 btn-submit-approve"
-                        data-action="approved" data-id="{{ $pcfr->id }}">
-                        <i class="mg-r-5" data-feather="thumbs-up"></i> Approved
-                    </button>
-                    <button type="button" class="btn btn-brand-01 d-block d-lg-inline wd-100p wd-lg-150 btn-submit-disapprove"
-                        data-action="disapproved" data-id="{{ $pcfr->id }}" data-target="#pcfrDisapprove" data-backdrop="static" 
-                        data-toggle="modal" data-dismiss="modal">
-                        <i class="mg-r-5" data-feather="thumbs-down"></i> Disapproved
-                    </button>
-                </div>
-            @endif
-
+        @if($pcfr->status == 'submitted' || $pcfr->status == 'confirmed' )
+            <div class="col-lg-12 mg-t-20">
+                <button type="button" class="btn btn-white mr-lg-1 mb-2 mb-lg-0 d-block d-lg-inline wd-100p wd-lg-150 btn-submit-approve"
+                    data-action="approved" data-id="{{ $pcfr->id }}">
+                    <i class="mg-r-5" data-feather="thumbs-up"></i> Approved
+                </button>
+                <button type="button" class="btn btn-brand-01 d-block d-lg-inline wd-100p wd-lg-150 btn-submit-disapprove"
+                    data-action="disapproved" data-id="{{ $pcfr->id }}" data-target="#pcfrDisapprove" data-backdrop="static" 
+                    data-toggle="modal" data-dismiss="modal">
+                    <i class="mg-r-5" data-feather="thumbs-down"></i> Disapproved
+                </button>
+            </div>
         @endif
 
         @include('_partials.pcfr_popups')

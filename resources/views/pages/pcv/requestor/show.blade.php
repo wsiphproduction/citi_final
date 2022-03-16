@@ -158,7 +158,7 @@
                           <td class="tx-bold text-right align-middle">Total Amount</td>
                           <td>
                             <input type="number" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" 
-                                value="{{ $pcv->amount - $pcv->change }}" readonly="" name="amount" id="amount">
+                                value="{{ $pcv->amount + $pcv->charge }}" readonly>
                           </td>
                           <td></td>
                         </tr>
