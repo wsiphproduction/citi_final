@@ -14,14 +14,25 @@ use App\Models\TemporarySlip;
 use Illuminate\Validation\Rule;
 use App\Models\AccountTransaction;
 use App\Http\Controllers\Controller;
+use Illuminate\Database\Eloquent\Builder;
     
 class PCVController extends Controller
 {
 
 
     public function index() {
-
-        $pcvs = Pcv::where('assign_to', auth()->user()->assign_to)
+        $user = auth()->user();
+        $pcvs = Pcv::whereIn('status', [
+            'saved', 'approved', 'submitted','confirmed', 'disapproved','disapproved tl', 'disapproved dept head', 'disapproved dh'
+        ])->whereHas('user' , function(Builder $builder) use($user) {
+                if($user->getUserAssignTo() == 'ssc') {
+                    $builder->where('assign_to', $user->assign_to)
+                        ->where('assign_name', $user->assign_name);
+                } else {
+                    $builder->where('assign_to', $user->assign_to);
+                }
+            })
+            ->orderBy('created_at', 'DESC')
             ->get();
 
         return view('pages.pcv.requestor.index', compact('pcvs'));
@@ -82,20 +93,16 @@ class PCVController extends Controller
             'change'        => 'required|numeric',
             'description'   => 'required'
         ]);
-
-        $total_amount = $request->total_amount - $request->change;
+        
         if($request->has('withslip')) {
 
             $ts = TemporarySlip::where('ts_no', $request->ts_no)->first();
 
-
-            if( $ts->running_balance -  ( $request->total_amount - $request->change ) < 0 ) {
+            if( ( $ts->running_balance - $request->total_amount ) < 0 ) {
                 return redirect()->back()->withInput()->with('danger', 'Temporary Slip amount is less than the amount inputed on the account');
             }
 
-            
-
-            $ts->running_balance = $ts->running_balance -  $total_amount;
+            $ts->running_balance = $request->change;
             $ts->save();            
 
         }
@@ -111,11 +118,6 @@ class PCVController extends Controller
             'user_id'       => auth()->user()->id ,
             'description'   => $request->description
         ]);
-
-        // if( $request->has('withslip') ) {
-        //     $ts = TemporarySlip::where('ts_no', $request->ts_no)->first();
-        //     $total_amount = $total_amount + $ts->running_balance;
-        // }
 
         // add pcv reference to attachments
         // move attachment from temporary folder to original folder
@@ -134,7 +136,11 @@ class PCVController extends Controller
                     'attachment'    => $attachment['attachment'] 
                 ]);
 
-                Storage::move("public/temp/{$user->id}/pcv/{$attachment['attachment']}", 
+                if(Storage::exists("public/pcv/{$pcv_transaction->pcv_no}/{$attachment['attachment']}")) {
+                    Storage::delete("public/pcv/{$pcv_transaction->pcv_no}/{$attachment['attachment']}");
+                }
+
+                Storage::copy("public/temp/{$user->id}/pcv/{$attachment['attachment']}", 
                     "public/pcv/{$pcv_transaction->pcv_no}/{$attachment['attachment']}");
 
                 //Storage::deleteDirectory("public/temp/{$pcv_transaction->pcv_no}");
@@ -159,17 +165,11 @@ class PCVController extends Controller
                     'remarks'       => array_key_exists('remarks', $account_transaction) ? $account_transaction['remarks'] : null 
                 ]);
 
-                // if(array_key_exists("quantity", $account_transaction)) {
-                //     $total_amount = $total_amount + ($account_transaction ['amount'] * $account_transaction['quantity']);
-                // } else {
-                //     $total_amount = $total_amount + $account_transaction ['amount'];
-                // }
-
             }
 
         }
 
-        $pcv_transaction->amount = $total_amount;
+        $pcv_transaction->amount = $request->total_amount;
         $pcv_transaction->save();
 
         return redirect()->route('requestor.pcv.index')->with('success','PCV has been created!');
@@ -178,15 +178,13 @@ class PCVController extends Controller
 
     public function edit($pcv) {
 
-        $pcv = Pcv::where('pcv_no', $pcv)
-            ->with(['attachments', 'account_transactions'])
-            ->first();
+        $pcv = Pcv::find($pcv);
 
-        return view('pages.pcv.edit', compact('pcv'));
+        return view('pages.pcv.requestor.edit', compact('pcv'));
 
     }
 
-    public function update($pcv, Request $request) {
+    public function update($id, Request $request) {
 
         $this->validate($request, [
             'ts_no'     => [ 
@@ -196,24 +194,111 @@ class PCVController extends Controller
                         return $query->where('ts_no', '=', $request->ts_no);
                     })
                 ] ,
-            'change'    => 'required|numeric'
+            'change'        => 'required|numeric',
+            'description'   => 'required'
         ]);
 
-        $pcv = Pcv::where('pcv_no', $pcv)->first();
+        $pcv = Pcv::find($id); 
+        $user = auth()->user();
 
         $attachments = json_decode($request->pcv_attachments, true);
         $account_transactions = json_decode($request->pcv_accounts, true);
         $total_amount = 0;
 
+        // revert back the ts balance 
+        // if diff ts used upon updating       
+        if(!is_null($pcv->slip_no)) {
+
+            $ts = TemporarySlip::where('ts_no', $pcv->slip_no)->first();
+            $last_log = $ts->audits()->latest()->first();
+
+            if(array_key_exists("running_balance", $last_log->old_values)) {
+                $ts->running_balance = $last_log->old_values['running_balance'];
+                $ts->save();        
+            }
+        }
+
+        if($request->has('withslip')) {
+
+            $ts = TemporarySlip::where('ts_no', $request->ts_no)->first();
+
+            if( ( $ts->running_balance - $request->total_amount ) < 0 ) {
+                return redirect()->back()->withInput()->with('danger', 'Temporary Slip amount is less than the amount inputed on the account');
+            }
+
+            $ts->running_balance = $request->change;
+            $ts->save();            
+
+        }
+
+        $pcv->attachments()->delete();
+        $pcv->account_transactions()->delete();
         $pcv->update([
             'account_name'  => $request->account_name ,
             'change'        => $request->change ,
             'date_created'  => $request->date_created ,
             'slip_no'       => $request->has('withslip') ? $request->ts_no : null ,
             'status'        => $request->pcv_action ,
-            'user_id'       => auth()->user()->id
+            'user_id'       => auth()->user()->id ,
+            'description'   => $request->description
         ]);
 
+        // add pcv reference to attachments
+        // move attachment from temporary folder to original folder
+        if(count($attachments)) {
+
+            foreach( $attachments as $attachment ) {
+
+                if($attachment['attachment'] == '') continue;
+
+                Attachment::create([
+                    'from'          => 'pcv' ,
+                    'from_ref'      => $pcv->id , 
+                    'type'          => $attachment['type'] ,
+                    'ref'           => $attachment['ref'] ,
+                    'date'          => \Carbon\Carbon::parse($attachment['date']) ,
+                    'attachment'    => $attachment['attachment'] 
+                ]);
+
+                if(Storage::exists("public/pcv/{$pcv->pcv_no}/{$attachment['attachment']}")) {
+                    Storage::delete("public/pcv/{$pcv->pcv_no}/{$attachment['attachment']}");
+                }
+
+                Storage::copy("public/temp/{$user->id}/pcv/{$attachment['attachment']}", 
+                    "public/pcv/{$pcv->pcv_no}/{$attachment['attachment']}");
+
+            }
+
+        }
+
+        // add pcv reference to account transactions
+        if(count($account_transactions)) {
+
+            foreach($account_transactions as $account_transaction) {
+
+                AccountTransaction::create([
+                    'name'          => $request->account_name ,
+                    'details'       => $account_transaction , 
+                    'pcv_id'        => $pcv->id ,
+                    'status'        => 'approved' ,
+                    'approval_code' => array_key_exists('code', $account_transaction) ? $account_transaction['code'] : null ,
+                    'approved_by'   => array_key_exists('by', $account_transaction) ? $account_transaction['by'] : null ,
+                    'approved_date' => array_key_exists('date', $account_transaction) ? $account_transaction['date'] : null ,
+                    'remarks'       => array_key_exists('remarks', $account_transaction) ? $account_transaction['remarks'] : null 
+                ]);
+
+            }
+
+        }
+
+        $pcv->amount = $request->total_amount;
+        if($request->action=='submitted') {
+            $pcv->tl_approved = null;
+            $pcv->dh_approved = null;
+        }
+        $pcv->save();
+
+        return redirect()->route('requestor.pcv.index')->with('success','PCV has been updated!');
 
     }
 

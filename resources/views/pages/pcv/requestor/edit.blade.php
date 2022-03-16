@@ -31,21 +31,23 @@
 	</div>	
 	@include('components.messages')
 	<div class="row">
-		
-		<form role="form" method="POST" action="{{ route('requestor.pcv.store') }}" class="col-lg-12" id="pcv_form">
-			@csrf
 
-			<input type="hidden" name="pcv_attachments" id="pcv_attachments" value="{{ old('pcv_attachments') }}" />
-			<input type="hidden" name="pcv_accounts" id="pcv_accounts" value="{{ old('pcv_accounts') }}" />
-			<input type="hidden" name="pcv_action" id="pcv_action" value="{{ old('pcv_action') }}" />
-			<input type="hidden" name="total_amount" id="total_amount" value="{{ old('total_amount') }}" />
+		<form role="form" method="POST" action="{{ route('requestor.pcv.update', $pcv->id) }}" class="col-lg-12" id="pcv_form">
+			@csrf
+			@method('PUT')
+
+			<input type="hidden" name="pcv_attachments" id="pcv_attachments" value="{{ old('pcv_attachments', $pcv->attachments) }}" />
+			<input type="hidden" name="pcv_accounts" id="pcv_accounts" 
+				value="{{ old('pcv_accounts', $pcv->account_transactions()->pluck('details')) }}" />
+			<input type="hidden" name="pcv_action" id="pcv_action" value="{{ old('pcv_action', $pcv->status) }}" />			
+			<input type="hidden" name="total_amount" id="total_amount" value="{{ old('total_amount', $pcv->amount) }}" />
 
 		<div class="row">
 
 			<div class="col-lg-12 mg-b-20">
 				<div class="custom-control custom-checkbox">
 					<input type="checkbox" class="custom-control-input static-inputs" id="with-temporary-slip" name="withslip"
-						@if(old('withslip')) checked @endif>
+						@if(!is_null($pcv->slip_no)) checked @endif>
 					<label class="custom-control-label" for="with-temporary-slip">With Temporary Slip</label>
 				</div>
 			</div>
@@ -55,7 +57,7 @@
 					<label for="slip-no" class="col-lg-5 col-form-label">Slip No.</label>
 					<div class="col-lg-7">
 						<input list="tsNo" type="text" class="form-control static-inputs" id="ts_no" name="ts_no"
-							@if(!old('withslip')) disabled @endif value="{{ old('ts_no') }}">
+							@if(is_null($pcv->slip_no)) disabled @endif value="{{ old('ts_no', $pcv->slip_no) }}">
 						<datalist id="tsNo">
 
 						</datalist>
@@ -68,7 +70,7 @@
 					<label for="change" class="col-lg-5 col-form-label">Change</label>
 					<div class="col-lg-7">
 						<input type="number" class="form-control static-inputs" id="change" name="change" 
-							value="{{ old('change') }}" step="1" min="0" placeholder="0.00">
+							value="{{ old('change', $pcv->change) }}" step="1" min="0" >
 					</div>
 				</div>
 			</div>
@@ -84,7 +86,8 @@
 						<select class="custom-select static-inputs" id="account_name" name="account_name">
 							<option value="">Select Account</option>
 							@foreach( \App\Models\Account::getAccounts() as $account )
-								<option value="{{ $account['name'] }}" @if(old('account_name')==$account['name']) selected @endif> 
+								<option value="{{ $account['name'] }}" 
+									@if(old('account_name', $pcv->account_name)==$account['name']) selected @endif> 
 									{{ $account['name'] }} 
 								</option>
 							@endforeach
@@ -100,7 +103,7 @@
 	                	<label for="date_created" class="col-lg-2 col-form-label">Date</label>
 	                	<div class="col-lg-10">
 	                  		<input type="date" class="form-control static-inputs" id="date_created" name="date_created" 
-	                  			value="{{ old('date_created' , date('Y-m-d')) }}">
+	                  			value="{{ old('date_created' , \Carbon\Carbon::parse($pcv->date_created)->format('Y-m-d')) }}">
 	                	</div>
 	              	</div>
 	            </div>
@@ -118,7 +121,7 @@
 		            <label for="pcv_no" class="col-lg-5 col-form-label">PCV No.</label>
 		            <div class="col-lg-7">
 		              	<input type="text" class="form-control" id="pcv_no" name="pcv_no"
-		              		value="{{ old('pcv_no' ,\App\Models\Pcv::generatePCVNumber()) }}" readonly>
+		              		value="{{ old('pcv_no' , $pcv->pcv_no) }}" readonly>
 		            </div>
 	          	</div>
 	        </div>
@@ -127,7 +130,7 @@
 	          	<div class="form-group row">
 		            <label for="pcv_no" class="col-lg-5 col-form-label">Description</label>
 		            <div class="col-lg-7">
-		              	<textarea class="form-control" name="description" rows="5">{{ old('description') }}</textarea>
+		              	<textarea class="form-control" name="description" rows="5">{{ old('description', $pcv->description) }}</textarea>
 		            </div>
 	          	</div>
 	        </div>
@@ -149,13 +152,14 @@
 	        </div>
 
 	        <div class="col-lg-12 mg-t-20">
-	          	<button type="button" class="btn btn-white mr-lg-1 mb-2 mb-lg-0 d-block d-lg-inline wd-100p wd-lg-150 btn-savesubmit"
-	          		data-action="saved">
-	            	<i class="mg-r-5" data-feather="save"></i> Save
-	          	</button>
+	        	@if(\Str::contains($pcv->status , 'disapproved'))
 	          	<button type="submit" class="btn btn-brand-01 d-block d-lg-inline wd-100p wd-lg-150 btn-savesubmit"
 	          		data-action="submitted">
-	            	<i class="mg-r-5" data-feather="send"></i> Submit
+	          	@else
+	          	<button type="submit" class="btn btn-brand-01 d-block d-lg-inline wd-100p wd-lg-150 btn-savesubmit"
+	          		data-action="{{ $pcv->status }}">
+	          	@endif
+	            	<i class="mg-r-5" data-feather="send"></i> Update
 	          	</button>
 	        </div>
 
@@ -165,164 +169,12 @@
 
     </div>
 
-    <!-- Copy From Modal -->
-	<div class="modal fade" id="copyFrom" tabindex="-1" role="dialog" aria-labelledby="copyFromModal" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered modal-xl mw-100 px-3 px-lg-5" role="document">
-			<div class="modal-content tx-14">
-			
-				<div class="modal-header">
-					<h6 class="modal-title" id="exampleModalLabel3">Cancelled PCVs</h6>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-
-				<div class="modal-body">
-					<div class="dataTables_responsive">
-						
-						<table class="table dataTable no-footer" id="cancelled-pcvs">
-							
-							<thead>
-								<tr role="row">
-									<th class="wd-10p sorting_1 tx-uppercase">PCV No.</th>
-									<th class="wd-20p tx-uppercase">Description</th>
-									<th class="wd-15p tx-uppercase">Date Cancelled</th>
-									<th class="wd-15p tx-uppercase">Cancelled By</th>
-									<th class="wd-10p tx-uppercase">Remarks</th>
-									<th class="wd-15p tx-uppercase">Date Approved</th>
-									<th class="wd-15p tx-uppercase">Approved By</th>
-								</tr>
-							</thead>
-						<tbody>
-
-						</tbody>
-
-						</table>
-
-					</div>
-				</div>
-
-			</div>
-		</div>
-	</div><!-- Copy From Modal -->
-
-	<!-- Copy From Modal -->
-	<div class="modal fade" id="pop_ups_wrap" tabindex="-1" role="dialog" aria-labelledby="copyFromModal" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered modal mw-100 px-3 px-lg-5" role="document">
-			<div class="modal-content tx-14">
-			
-				<div class="modal-header">
-					<h6 class="modal-title" id="pop_ups_label">POS Transactions</h6>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-
-				<div class="modal-body">
-					<div class="dataTables_responsive">
-						
-						<table class="table dataTable no-footer" id="pop_ups_inner">
-														
-
-						</table>						
-
-					</div>
-					<br>
-
-					<div class="text-right">
-						<button class="btn btn-primary" id="btn-save-pos-trans"> Save </button>
-						<div class="clearfix"></div>
-					</div>
-				
-				</div>
-
-			</div>
-		</div>
-	</div><!-- Copy From Modal -->
-
-	<div class="modal fade effect-scale" id="for_message" tabindex="-1" 
-		role="dialog" aria-labelledby="for_message" aria-modal="true">
-
-		<div class="modal-dialog modal-dialog-centered" role="document">
-			<div class="modal-content tx-14">
-				
-				<div class="modal-header">
-					<h6 class="modal-title" id="exampleModalLabel3" id="message_title">Confirmation Message</h6>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">×</span>
-					</button>
-				</div>
-
-				<div class="modal-body">
-					<p class="mb-0" id="message_content"></p>
-				</div>
-
-			</div>
-		</div>
-
-	</div>
-
-	<div class="modal fade" id="deliveryChargeModal" tabindex="-1" role="dialog" 
-		aria-labelledby="deliveryChargeModal" aria-modal="true">
-
-		<div class="modal-dialog modal-dialog-centered" role="document">
-			<div class="modal-content tx-14">
-				
-				<div class="modal-header">
-					<h6 class="modal-title" id="exampleModalLabel3">Input Approval Code</h6>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">×</span>
-					</button>
-				</div>
-
-				<div class="modal-body">
-					<div class="row">
-						
-						<div class="col-lg-12">
-							<div class="form-group">
-								<label for="approval-code" class="d-block">Approval Code</label>
-								<input type="text" class="form-control" id="approval_code">
-							</div>
-						</div>
-
-						<div class="col-lg-12">
-							<div class="form-group">
-								<label for="approver-name" class="d-block">Approver's Name</label>
-								<select class="custom-select" id="approver_name">
-									<option selected="">--Select--</option>
-									@foreach($area_manager as $manager) 
-										<option value="{{ $manager->username }}"> {{ $manager->username }} </option>
-									@endforeach
-								</select>
-							</div>
-						</div>
-
-						<div class="col-lg-12">
-							<div class="form-group">
-								<label for="remarks" class="d-block">Remarks</label>
-								<textarea id="remarks" name="remarks" class="form-control" rows="3"></textarea>
-							</div>
-						</div>
-
-					</div>
-				</div>
-
-				<div class="modal-footer">
-					<button class="btn btn-brand-01 d-inline-block tx-13 tx-uppercase" id="btn_approval_code">Approve</button>
-					<button type="button" class="btn btn-white tx-13 tx-uppercase" id="btn_disapprove_code" data-target="#deliveryChargeModal" data-toggle="modal" data-dismiss="modal">Cancel</button>
-				</div>
-			</div>
-		</div>
-
-	</div>
-	
 @endsection
 
 @section('pagejs')
 	
 	<script type="text/javascript" src="{{ asset('js/moment.js') }}"></script>
 	<script type="text/javascript">
-		
 		var current_id = 0;
 		var account_transactions = [];
 		var account_attachments = [];
@@ -465,7 +317,8 @@
 
 			// if($('#btn-add-account-details').length > 0) {
 
-			if( _account_name == 'Stripping Charge') {
+			if( _account_name == 'Stripping Charge' ||
+				_account_name == 'Delivery Charges') {
 				account_transactions = [];
 				account_attachments = [];
 				$('#account-transactions-list tbody').find('tr').each(function(i, e) {
@@ -575,6 +428,25 @@
 
 			if($('#total_amount_display').length > 0){}else {
 				$('#total_amount').val($('.custom-inputs[data-name="amount"]').val());
+			}
+
+			let is_null_val = false;
+
+			$.each(account_transactions, function(i, e) {
+				$.each(e, function(o, u){
+					if(u =='' || u == undefined) is_null_val = true;
+				});
+			});
+
+			$.each(account_attachments, function(i, e) {
+				$.each(e, function(o, u){
+					if(u =='' || u == undefined) is_null_val = true;
+				});
+			});
+
+			if(is_null_val) {
+				alert('Some data on your request is missing please check it again');
+				return false;
 			}
 
 			// check if can save multiple transaction accounts
@@ -744,7 +616,6 @@
 					$('#account_name').val(res.account_name);
 					$('#date_created').val(moment(res.date_created).format('YYYY-MM-DD'));
 
-					$('#pcv_attachments').val(JSON.stringify(res.attachments));
 					$('#pcv_accounts').val(JSON.stringify(_aTransactions));
 
 
@@ -1098,6 +969,7 @@
 
 		function getAccountTransactions() {
 
+			let _account_name = $('#account_name').val();
 			let _account_transactions = JSON.parse($('#pcv_accounts').val());
 			let _base_url = "{!! env('APP_URL') !!}";
 
@@ -1115,7 +987,12 @@
 								_row_name == 'charge_to_store' ||
 								_row_name == 'amount' ) {
 								_html += '<td data-name="'+_row_name+'" >'; 
-								_html += '<input type="text" value="'+data[$(this).data('rowname')]+'" class="form-control account-user-input">'; 
+								_html += '<input type="text" value="'+data[$(this).data('rowname')]+'"';
+								if(ii == 0) {
+									_html += 'class="form-control account-user-input" id="amount" data-name="'+$(this).data('rowname')+'">'; 
+								} else {
+									_html += 'class="form-control account-user-input" id="amount'+ii+'" data-name="'+$(this).data('rowname')+'">'; 
+								}
 								_html += '</td>';	
 							} else {
 								_html += '<td data-name="'+_row_name+'" >' + data[$(this).data('rowname')] + '</td>';							
@@ -1144,6 +1021,28 @@
 
 			});
 
+			if($('#btn-add-account-details').length > 0) {
+			if(_account_name != 'Installation') {
+				$('#account-transactions-list').append(
+					`<tfoot>
+	                    <tr role="row">
+	                      <td class="sorting_1"></td>
+	                      <td></td>
+	                      <td></td>
+	                      <td></td>
+	                      <td class="tx-bold text-right align-middle">Total Amount</td>
+	                      <td>
+	                        <input type="number" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" value="00000.00" readonly id="total_amount_display">
+	                      </td>
+	                      <td></td>
+	                    </tr>
+	                  </tfoot>`);
+
+				calculateTotal();
+			}}
+
+
+
 		}
 
 		function getAttachments() {
@@ -1160,11 +1059,13 @@
 					if(i<10){
 						$('#type_0'+i).val(data.type);
 						$('#docrefstring_0'+i).val(data.attachment);
+						$('#docrefstring_0'+i).siblings("label").text(data.attachment);
 						$('#docdata_0'+i).val(moment(data.date).format('YYYY-MM-DD'));
 						$('#docref_0'+i).val(data.ref);
 					} else {
 						$('#type_'+i).val(data.type);
 						$('#docrefstring_'+i).val(data.attachment);
+						$('#docrefstring_'+i).siblings("label").text(data.attachment);
 						$('#docdate_'+i).val(moment(data.date).format('YYYY-MM-DD'));
 						$('#docref_'+i).val(data.ref);
 					}
@@ -1173,6 +1074,7 @@
 
 					$('#type').val(data.type);
 					$('#docrefstring').val(data.attachment);
+					$('#docrefstring').siblings("label").text(data.attachment);
 					$('#docdate').val(moment(data.date).format('YYYY-MM-DD'));
 					$('#docref').val(data.ref);
 
@@ -1212,18 +1114,20 @@
 
 	    function populateAccountsTable() {
 
+	    	$('#account-transactions-list tfoot').remove();
+	    	$('#account-transactions-list tbody').empty();
+
 			let _html = '';		
 
-			_html += '<tr>';	
+
 
 			$.each(account_transactions, function (x, y) {
-
+	
+				_html += '<tr>';	
+	
 				$('.tbl-header').each(function(i, o) {
 						
 					let _row_name = $(this).data('rowname').trim();
-
-					console.log(y);
-					console.log(_row_name);
 
 					if( _row_name != "action" && _row_name != "line_no") {
 						_html += '<td data-name="'+$(this).data('rowname')+'">' + account_transactions[x][_row_name] + '</td>';							
@@ -1233,15 +1137,15 @@
 
 				});
 
-			});
+				_html += '<td>';
+				_html += '<nav class="nav table-options justify-content-start">';
+				_html += '<a class="nav-link p-0 pl-2 remove_account_attachment" href="javascript:void(0);" title="Remove">'; 
+				_html += '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
+				_html += '</a></nav>';
+				_html += '</td>';
+				_html += '</tr>';
 
-			_html += '<td>';
-			_html += '<nav class="nav table-options justify-content-start">';
-			_html += '<a class="nav-link p-0 pl-2 remove_account_attachment" href="javascript:void(0);" title="Remove">'; 
-			_html += '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
-			_html += '</a></nav>';
-			_html += '</td>';
-			_html += '</tr>';
+			});
 
 			$('#account-transactions-list tbody').append(_html);
 

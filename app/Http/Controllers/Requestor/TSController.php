@@ -13,15 +13,15 @@ class TSController extends Controller
 
 
     public function index() {
-
+        $user = auth()->user();
         $temporary_slips = TemporarySlip::whereIn('status', 
                 ['saved', 'approved', 'submitted','confirmed', 'disapproved','disapproved tl', 'disapproved dept head', 'disapproved dh'])
-            ->whereHas('user' , function(Builder $builder) {
-                if(auth()->user()->getUserAssignTo() == 'ssc') {
-                    $builder->where('assign_to', auth()->user()->assign_to)
-                        ->where('assign_name', auth()->user()->assign_name);
+            ->whereHas('user' , function(Builder $builder) use($user) {
+                if($user->getUserAssignTo() == 'ssc') {
+                    $builder->where('assign_to', $user->assign_to)
+                        ->where('assign_name', $user->assign_name);
                 } else {
-                    $builder->where('assign_to', auth()->user()->assign_to);
+                    $builder->where('assign_to', $user->assign_to);
                 }
             })
             ->orderBy('created_at', 'DESC')

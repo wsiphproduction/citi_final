@@ -5,12 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class TemporarySlip extends Model
+use OwenIt\Auditing\Contracts\Auditable;
+
+class TemporarySlip extends Model implements Auditable
 {
+	use \OwenIt\Auditing\Auditable;
 
 	protected $guarded = [];
 
 	protected $dates = ['date_created', 'received_date'];
+
+
+	protected $auditExclude  = [];
+
 
 	public static function generateTSNumber() {
 

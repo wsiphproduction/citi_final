@@ -65,14 +65,12 @@ class PCVController extends Controller
     }
 
 
-    public function show($pcv) {
+    public function show($id) {
 
-        $pcv = Pcv::where('pcv_no', $pcv)
-            ->with(['attachments', 'account_transactions'])
-            ->first();
+        $pcv = Pcv::find($id);
 
         $user = auth()->user();
-        
+
         if($user->getUserAssignTo() != 'ssc') {
             $area_manager = User::where('position', 'area head')
                 ->whereHas('branch_group', function($query) use ($pcv) {
@@ -158,7 +156,8 @@ class PCVController extends Controller
             }
 
             $pcv->update([
-                'status'        => 'confirmed' 
+                'status'        => 'confirmed' ,
+                'tl_approved'   => 1
             ]);
 
             return response()->json([
@@ -168,13 +167,27 @@ class PCVController extends Controller
             ]);
 
         }
-        
-        $pcv->update([
-            'tl_approved'       => 1 ,
-            'status'            => 'approved' ,
-            'approved_by'       => auth()->user()->username ,
-            'approved_date'     => \Carbon\Carbon::now() ,
-        ]);
+
+        if( $user->position == 'division head') {
+
+            $pcv->update([
+                'dh_approved'       => 1 ,
+                'status'            => 'approved' ,
+                'approved_by'       => auth()->user()->username ,
+                'approved_date'     => \Carbon\Carbon::now() ,
+            ]);
+
+
+        } else {
+
+            $pcv->update([
+                'tl_approved'       => 1 ,
+                'status'            => 'approved' ,
+                'approved_by'       => auth()->user()->username ,
+                'approved_date'     => \Carbon\Carbon::now() ,
+            ]);
+
+        }
 
         return response()->json([
             'need_code' =>  false ,
@@ -193,8 +206,7 @@ class PCVController extends Controller
             'remarks'           => $request->remarks ,
             'status'            => 'approved' ,
             'approved_by'       => auth()->user()->username ,
-            'approved_date'     => \Carbon\Carbon::now() ,
-            'tl_approved'       => 1
+            'approved_date'     => \Carbon\Carbon::now()
         ]);
 
         return response()->json([

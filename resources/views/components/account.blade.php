@@ -149,9 +149,14 @@
 							
 							<select class="custom-select" id="type">
 								<option selected="">--Select--</option>
-								<option value="ATM Slip">ATM Slip</option>
-								<option value="Withdrawal Slip">Withdrawal Slip</option>
-								<option value="Cash Count Sheet">Cash Count Sheet</option>
+								<option value="official receipt/sales invoice">Official Receipt/Sales Invoice</option>
+								<option value="acknowledgement receipt">Acknowledgement Receipt</option>
+								<option value="temporary slip">Temporary Slip</option>
+								<option value="delivery instruction">Delivery Instruction</option>
+								<option value="statement of account/bill">Statement of Account/Bill</option>
+								<option value="extra labor summary">Extra Labor Summary</option>
+								<option value="completion report">Completion Report</option>
+								<option value="signed pcvs">Signed PCVs</option>
 							</select>
 
 							</div>

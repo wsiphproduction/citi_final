@@ -68,7 +68,7 @@
 					<label for="change" class="col-lg-5 col-form-label">Change</label>
 					<div class="col-lg-7">
 						<input type="number" class="form-control static-inputs" id="change" name="change" 
-							value="{{ old('change') }}" step="1" min="0" placeholder="0.00">
+							value="{{ old('change', 0) }}" step="1" min="0" placeholder="0.00">
 					</div>
 				</div>
 			</div>
@@ -1207,11 +1207,13 @@
 					if(i<10){
 						$('#type_0'+i).val(data.type);
 						$('#docrefstring_0'+i).val(data.attachment);
+						$('#docrefstring_0'+i).siblings("label").text(data.attachment);
 						$('#docdata_0'+i).val(moment(data.date).format('YYYY-MM-DD'));
 						$('#docref_0'+i).val(data.ref);
 					} else {
 						$('#type_'+i).val(data.type);
 						$('#docrefstring_'+i).val(data.attachment);
+						$('#docrefstring_'+i).siblings("label").text(data.attachment);
 						$('#docdate_'+i).val(moment(data.date).format('YYYY-MM-DD'));
 						$('#docref_'+i).val(data.ref);
 					}
@@ -1220,6 +1222,7 @@
 
 					$('#type').val(data.type);
 					$('#docrefstring').val(data.attachment);
+					$('#docrefstring').siblings("label").text(data.attachment);
 					$('#docdate').val(moment(data.date).format('YYYY-MM-DD'));
 					$('#docref').val(data.ref);
 
