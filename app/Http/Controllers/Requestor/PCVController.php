@@ -40,11 +40,9 @@ class PCVController extends Controller
     }
 
 
-    public function show($pcv) {
+    public function show($id) {
 
-        $pcv = Pcv::where('pcv_no', $pcv)
-            ->with(['attachments', 'account_transactions'])
-            ->first();
+        $pcv = Pcv::find($id);
             
         return view('pages.pcv.requestor.show', compact('pcv'));
 
