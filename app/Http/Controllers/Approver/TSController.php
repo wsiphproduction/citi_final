@@ -21,7 +21,7 @@ class TSController extends Controller
         $temporary_slips = TemporarySlip::whereIn('status', ['confirmed', 'submitted','approved'])
             ->whereHas('user', function(Builder $query) use($user) {
                 if($user->getUserAssignTo() == 'ssc') {
-                    if($user->position == 'department head') {
+                    if($user->position == 'division head') {
                         $query->where('assign_to', $user->assign_to);
                     } else {
                         $query->where('assign_to', $user->assign_to)

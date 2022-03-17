@@ -131,7 +131,9 @@
                     <tbody>
                         @forelse( $pcfr->pcv as $pcv ) 
                             <tr>
-                                <td> {{ $pcv->pcv_no }} </td>
+                                <td> 
+                                    <a href="#" target="_blank"> {{ $pcv->pcv_no }} </a>
+                                </td>
                                 <td> {{$pcv->description }} </td>
                                 <td> {{ $pcv->account_name }} </td>
                                 <td> {{ $pcv->user->branch->name }} </td>

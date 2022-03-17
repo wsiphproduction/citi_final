@@ -18,11 +18,13 @@ class PCFRController extends Controller
 
 
     public function index() {
-        
-        $pcfr = Pcfr::where('status', 'approved')
+    
+        $user = auth()->user();
+
+        $pcfr = Pcfr::whereIn('status', ['approved', 'approved'])
             ->where('tl_approved', 1)
             ->whereHas('user', function(Builder $query) {
-                    $query->where('assign_to', auth()->user()->assign_to);
+                $query->where('assign_to', auth()->user()->assign_to);
             })   
             ->get();
 
@@ -33,7 +35,7 @@ class PCFRController extends Controller
 
     public function forReplenished() {
 
-        $pcfr = Pcfr::where('status', 'posted to ebs')
+        $pcfr = Pcfr::where('status', 'post to ebs')
             ->whereHas('user', function(Builder $builder) {
                 $builder->where('assign_to', auth()->user()->assign_to);
             })
@@ -57,11 +59,9 @@ class PCFRController extends Controller
     }
 
 
-    public function show($pcfr) {
+    public function show($id) {
 
-        $pcfr = Pcfr::where('pcfr_no', $pcfr)
-            ->with('pcv', 'attachments')
-            ->first();
+        $pcfr = Pcfr::find($id);
 
         return view('pages.pcfr.payable.show', compact('pcfr'));
 
@@ -72,7 +72,7 @@ class PCFRController extends Controller
 
         $pcfr = Pcfr::find($id);
         $pcfr->update([
-            'status'            => 'disapproved' ,
+            'status'            => 'disapproved py' ,
             'cancelled_by'      => auth()->user()->username ,
             'cancelled_date'    => \Carbon\Carbon::now() ,
             'py_staff_approved' => 0 

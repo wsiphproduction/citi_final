@@ -58,7 +58,7 @@
                             </td>
                             <td>
                             	<nav class="nav table-options">
-	                                <a class="nav-link p-0 pl-2" href="{{ route('approver.pcfr.show', $pcfrr->pcfr_no) }}" title="View Request">
+	                                <a class="nav-link p-0 pl-2" href="{{ route('approver.pcfr.show', $pcfrr->id) }}" title="View Request">
 	                                    <i data-feather="external-link"></i>
 	                                </a>
 	                            </nav>

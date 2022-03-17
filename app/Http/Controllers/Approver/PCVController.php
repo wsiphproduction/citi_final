@@ -49,16 +49,18 @@ class PCVController extends Controller
 
             $pcvs = $pcvs->whereHas('user', function(Builder $query) use ($user) {
                 if($user->position == 'division head' ) {
-                    $query->where('assign_to', $user->assign_to);
+                    $query->where('assign_to', $user->assign_to);                        
                 } else {
                     $query->where('assign_to', $user->assign_to)
                         ->where('assign_name', $user->assign_name);
+                        
                 }
             });
 
         }
 
-        $pcvs = $pcvs->get();
+        $pcvs = $pcvs->doesntHave('pcfr')
+            ->get();
 
         return view('pages.pcv.approver.index', compact('pcvs'));
 

@@ -53,16 +53,22 @@
                     <span>Approval</span>
                 </a>           
                 <ul>
+
                     @can('ts view')
                         <li><a href="{{ route('approver.ts.index') }}">Temporary Slip</a></li>
                     @endcan
+
                     @can('pcv view')
                         <li><a href="{{ route('approver.pcv.index') }}">PCV</a></li>
                     @endcan
-                    @can('pcfr view')
-                        <li><a href="{{ route('approver.pcfr.index') }}">PCFR</a></li>
-                    @endcan
-                </ul>
+                
+                    @hasanyrole('TL Approver|Division Head')
+                        @can('pcfr view')
+                            <li><a href="{{ route('approver.pcfr.index') }}">PCFR</a></li>
+                        @endcan
+                    @endhasanyrole
+
+                 </ul>
             </li>
         @endhasanyrole
 
@@ -72,7 +78,7 @@
                 <a href="#" class="nav-link"><i data-feather="briefcase"></i> <span>Treasury</span></a>
             
                 <ul>
-                
+                    
                     <li><a href="{{ route('treasury.pcfr.index') }}">PCFR</a></li>
                     <li><a href="{{ route('treasury.pcfr.for-approval') }}">For Approval</a></li>
                     <li><a href="{{ route('treasury.pcfr.temp-slips') }}">Temporary Slip</a></li>

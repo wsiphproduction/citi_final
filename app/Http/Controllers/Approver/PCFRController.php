@@ -23,51 +23,21 @@ class PCFRController extends Controller
     public function index() {
 
         $user = auth()->user();
-
-        if( $user->getUserAssignTo() != 'ssc' ) {          
-            $pcfr = Pcfr::whereIn('status', ['submitted', 'confirmed']);
-        } else {
-            if($user->position == 'division head' ){ 
-                $pcfr = Pcfr::where('status', ['approved']);
-            } else {
-                $pcfr = Pcfr::whereIn('status', ['submitted', 'confirmed']);
-            }
-        }
-
-        if( $user->getUserAssignTo() != 'ssc' ) {            
-            $pcfr = $pcfr->whereNull('tl_approved')
+       
+        $pcfr = Pcfr::whereIn('status', ['submitted', 'confirmed'])
+            ->whereNull('tl_approved')
                 ->whereHas('user', function(Builder $query) use ($user) {
                     $query->where('assign_to', $user->assign_to);
-                });
-        } else {
-            if($user->position == 'division head') {
-                $pcfr = $pcfr->where('tl_approved', 1);
-            } else {
-                $pcfr = $pcfr->whereNull('tl_approved');
-            }
-
-            $pcfr = $pcfr->whereHas('user', function(Builder $query) use ($user) {
-                if($user->position == 'division head' ) {
-                    $query->where('assign_to', $user->assign_to);
-                } else {
-                    $query->where('assign_to', $user->assign_to)
-                        ->where('assign_name', $user->assign_name);
-                }
-            });
-
-        }
-
-        $pcfr = $pcfr->get();
+                })
+                ->get();
 
         return view('pages.pcfr.approver.index', compact('pcfr'));
 
     }
 
-    public function show($pcfr) {
+    public function show($id) {
 
-        $pcfr = Pcfr::where('pcfr_no', $pcfr)
-            ->with('pcv', 'attachments')
-            ->first();
+        $pcfr = Pcfr::find($id);
 
         $area_manager = User::where('position', 'area head')
             ->whereHas('branch_group', function($query) use ($pcfr) {
@@ -107,6 +77,7 @@ class PCFRController extends Controller
 
         $pcfr->update([
             'status'            => $disapprove ,
+            'remarks'           => $request->remarks ,
             'cancelled_by'      => auth()->user()->username ,
             'cancelled_date'    => \Carbon\Carbon::now() ,
         ]);
@@ -122,32 +93,6 @@ class PCFRController extends Controller
 
         $pcfr = Pcfr::find($id);
         $user = auth()->user();
-
-        // $matrix = AccountMatrix::where('name', $pcfr->account_name)
-        //     ->where('amount', '=', $pcfr->amount)
-        //     ->where('status', 1)
-        //     ->orWhere(function($query) use ($pcfr) {
-        //         $query->where('amount', '<', $pcfr->amount)
-        //             ->where('beyond', 1)
-        //             ->where('status', 1);
-        //     })
-        //     ->orWhere(function($query) use ($pcfr) {
-        //         $query->where('regardless', 1)
-        //             ->where('status', 1);
-        //     })
-        //     ->get();
-
-        // if(count($matrix)) {
-
-        //     $pcfr->update(['status'   => 'confirmed']);
-
-        //     return response()->json([
-        //         'status'    => 'confirmed' ,
-        //         'need_code' => true ,
-        //         'message'   => "{$pcfr->pcfr_no} was successfully confirmed. The requested amount requires an Approval Code. Input Approval Code."
-        //     ]);
-
-        // }
 
         if($user->getUserAssignTo() == 'ssc') {
                 

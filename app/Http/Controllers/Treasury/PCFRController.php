@@ -23,9 +23,12 @@ class PCFRController extends Controller
 
         $user = auth()->user();
 
-        $pcfr = Pcfr::whereHas('user', function(Builder $builder) {
-            $builder->where('assign_to', auth()->user()->assign_to);
-        })->get();
+        $pcfr = Pcfr::whereIn('status', [
+                'saved', 'submitted', 'approved', 'post to ebs', 'for replenishment', 'disapproved tl', 'disapproved dh'
+            ])
+            ->whereHas('user', function(Builder $builder) {
+                $builder->where('assign_to', auth()->user()->assign_to);
+            })->get();
 
         return view('pages.pcfr.treasury.index', compact('pcfr'));
 
@@ -119,17 +122,25 @@ class PCFRController extends Controller
         $pcvs = Pcv::where('status', 'approved')
             ->whereHas('user', function(Builder $query) use ($user) {
                 $query->where('assign_to', $user->assign_to);
-            })->doesntHave('pcfr'); //->get();
+            })->doesntHave('pcfr')->get();
 
+        $pcv_first = Pcv::where('status', 'approved')
+            ->whereHas('user', function(Builder $query) use ($user) {
+                $query->where('assign_to', $user->assign_to);
+            })->doesntHave('pcfr')->first();
+        $pcv_last = Pcv::where('status', 'approved')
+            ->whereHas('user', function(Builder $query) use ($user) {
+                $query->where('assign_to', $user->assign_to);
+            })->doesntHave('pcfr')->latest()->first();
 
-        $pcv_first = $pcvs->first();
-        $pcv_last = $pcvs->latest()->first();
-        $pcvss = $pcvs->get();
-        $pcvs_sum = $pcvs->sum('amount');
+        $pcvs_sum = Pcv::where('status', 'approved')
+            ->whereHas('user', function(Builder $query) use ($user) {
+                $query->where('assign_to', $user->assign_to);
+            })->doesntHave('pcfr')->sum('amount');
 
         if(!$pcv_first) return redirect()->back()->with('danger', 'No pcv found. Please create pcv first.');
 
-        return view('pages.pcfr.treasury.create', compact('vendors', 'pcvss', 'pcv_first', 'pcv_last', 'pcvs_sum',
+        return view('pages.pcfr.treasury.create', compact('vendors', 'pcvs', 'pcv_first', 'pcv_last', 'pcvs_sum',
                 'overage_shortage', 'unreplenished', 'total_replenishment', 'pending_replenishment', 'pcf_accounted_for', 
                 'unapproved_pcvs', 'returned_pcvs', 'unliquidated_ts', 'pcv_accountability'));
 

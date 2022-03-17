@@ -136,7 +136,7 @@
                   	</thead>
                   	<tbody>
                     	
-                  		@foreach($pcvss as $pcv)
+                  		@foreach($pcvs as $pcv)
 
                   			<tr>
 								<td>{{ $pcv->pcv_no }}</td>
@@ -381,7 +381,7 @@
 		var dateFormat = 'mm/dd/yy';
 		var account_attachments = [];
 		var current_id = 0;
-		var pcv_ids = {!! $pcvss->pluck('id') !!};
+		var pcv_ids = {!! $pcvs->pluck('id') !!};
 
       	periodFrom = $('#periodDateFrom')
 	      	.datepicker().on('change', function() {

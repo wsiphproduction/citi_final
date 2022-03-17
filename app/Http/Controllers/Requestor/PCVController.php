@@ -32,6 +32,7 @@ class PCVController extends Controller
                     $builder->where('assign_to', $user->assign_to);
                 }
             })
+            ->doesntHave('pcfr')
             ->orderBy('created_at', 'DESC')
             ->get();
 

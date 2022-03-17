@@ -251,7 +251,7 @@
          },
          {
             "name": "Charge To",
-            "type": "select"
+            "type": "text"
          },
          {
             "name": "Amount",
@@ -328,7 +328,7 @@
          },
          {
             "name": "Charge To",
-            "type": "select"
+            "type": "text"
          },
          {
             "name": "Amount",
