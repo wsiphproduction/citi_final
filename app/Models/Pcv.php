@@ -24,6 +24,9 @@ class Pcv extends Model
 
     }
 
+    public function ts() {
+        return $this->belongsTo(TemporarySlip::class);
+    }
 
     public function account_transactions() {
 

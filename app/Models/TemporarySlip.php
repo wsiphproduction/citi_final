@@ -36,4 +36,8 @@ class TemporarySlip extends Model implements Auditable
 
 	}
 
+	public function pcv() {
+		return $this->hasMany(Pcv::class, 'slip_no', 'ts_no');
+	}
+
 }

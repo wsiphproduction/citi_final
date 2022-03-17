@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('pagecss')
+	<link href="{{ asset('lib/select2/css/select2.min.css') }}" rel="stylesheet">
+@endsection
+
 @section('content')
 	
 	<div class="d-flex flex-column flex-lg-row justify-content-between mg-b-20 mg-lg-b-25 mg-xl-b-30">
@@ -148,7 +152,7 @@
 					<div class="form-group row">
 						<label for="access" class="col-lg-3 col-form-label">Access</label>
 						<div class="col-lg-7">
-							<select class="form-control" name="access">
+							<select class="form-control" name="access[]" id="access" multiple>
 								<option value=""> Select Position </option>
 								@foreach( $roles as $role )
 									<option value="{{ $role->name }}" @if($user->hasrole($role->name)) selected @endif> {{ $role->name }} </option>
@@ -175,6 +179,7 @@
 
 @section('pagejs')
 
+	<script src="{{ asset('lib/select2/js/select2.min.js') }}"></script>
 	<script type="text/javascript">
 			
 		$(document).ready(function(){
@@ -211,6 +216,11 @@
 			})
 
 		});
+
+		$("#access").select2({
+		    tags: true,
+		    tokenSeparators: [',']
+		})
 
 	</script>
 

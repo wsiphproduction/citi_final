@@ -105,59 +105,73 @@
         </li>
         @endhasanyrole
 
-        <li class="nav-item"><a href="#" class="nav-link">
-            <i data-feather="clipboard"></i> 
-            <span>Report</span></a>
-        </li>
+        @hasanyrole('Administrator')
+            <li class="nav-item"><a href="#" class="nav-link">
+                <i data-feather="clipboard"></i> 
+                <span>Report</span></a>
+            </li>
+        @endhasanyrole
 
-        @hasrole('Administrator')
+        @hasrole('Administrator|Manage Vendor')
 
             <li class="nav-label mg-t-25">Maintenance</li>
 
-            <li class="nav-item with-sub">
-                <a href="#" class="nav-link"><i data-feather="users"></i> <span>Users</span></a>
-                <ul>
-                    <li><a href="{{ route('users.index') }}">Manage Users</a></li>
-                    <li><a href="{{ route('users.create') }}">Add New User</a></li>
-                </ul>
-            </li>
+            @can('user ts')
+                <li class="nav-item with-sub">
+                    <a href="#" class="nav-link"><i data-feather="users"></i> <span>Users</span></a>
+                    <ul>
+                        <li><a href="{{ route('users.index') }}">Manage Users</a></li>
+                        <li><a href="{{ route('users.create') }}">Add New User</a></li>
+                    </ul>
+                </li>
+            @endcan
 
-            <li class="nav-item with-sub">
-                <a href="#" class="nav-link"><i data-feather="user"></i> <span>Account Management</span></a>
-                <ul>
-                    <li><a href="{{ route('roles.index') }}">Roles</a></li>
-                    <li><a href="{{ route('permissions.index') }}">Permissions</a></li>
-                    <li><a href="{{ route('modules.index') }}">Modules</a></li>                
-                </ul>
-            </li>
+            @can('account manage view')
+                <li class="nav-item with-sub">
+                    <a href="#" class="nav-link"><i data-feather="user"></i> <span>Account Management</span></a>
+                    <ul>
+                        <li><a href="{{ route('roles.index') }}">Roles</a></li>
+                        <li><a href="{{ route('permissions.index') }}">Permissions</a></li>
+                        <li><a href="{{ route('modules.index') }}">Modules</a></li>                
+                    </ul>
+                </li>
+            @endcan
 
             {{-- <li class="nav-item">
                 <a href="{{ route('accounts.index') }}" class="nav-link"><i data-feather="users"></i> <span>Accounts</span></a>
             </li> --}}
 
-            <li class="nav-item">
-                <a href="{{ route('vendors.index') }}" class="nav-link"><i data-feather="users"></i> <span>Vendors</span></a>
-            </li>
+            @can('vendor view')
+                <li class="nav-item">
+                    <a href="{{ route('vendors.index') }}" class="nav-link"><i data-feather="users"></i> <span>Vendors</span></a>
+                </li>
+            @endcan
 
-            <li class="nav-item">
-                <a href="{{ route('charges.index') }}" class="nav-link"><i data-feather="users"></i> <span>Charges</span></a>
-            </li>
+            @can('charge view')
+                <li class="nav-item">
+                    <a href="{{ route('charges.index') }}" class="nav-link"><i data-feather="users"></i> <span>Charges</span></a>
+                </li>
+            @endcan
 
-            <li class="nav-item with-sub">
-                <a href="#" class="nav-link"><i data-feather="user"></i> <span>Branch Management</span></a>
-                <ul>
-                    <li class="nav-item">
-                        <a href="{{ route('branch.index') }}"><span>Branch</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ route('branch-group.index') }}"><span>Group</span></a>
-                    </li>
-                </ul>
-            </li>
+            @can('branch manage view')
+                <li class="nav-item with-sub">
+                    <a href="#" class="nav-link"><i data-feather="user"></i> <span>Branch Management</span></a>
+                    <ul>
+                        <li class="nav-item">
+                            <a href="{{ route('branch.index') }}"><span>Branch</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('branch-group.index') }}"><span>Group</span></a>
+                        </li>
+                    </ul>
+                </li>
+            @endcan
 
-            <li class="nav-item">
-                <a href="{{ route('account-matrix.index') }}" class="nav-link"><i data-feather="users"></i> <span>Account Matrix</span></a>
-            </li>
+            @can('account matrix view')
+                <li class="nav-item">
+                    <a href="{{ route('account-matrix.index') }}" class="nav-link"><i data-feather="users"></i> <span>Account Matrix</span></a>
+                </li>
+            @endcan
 
         @endhasrole
 

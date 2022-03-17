@@ -13,7 +13,18 @@ class VendorsController extends Controller
 
     public function index() {
 
-        $vendors = Vendor::all();
+        if( auth()->user()->position == 'administrator') {
+
+            $vendors = Vendor::where('status', 1)->get();
+
+        } else { 
+
+            $vendors = Vendor::where('branch_id', auth()->user()->assign_to)
+                ->orWhereNull('branch_id')
+                ->where('status', 1)            
+                ->get();
+
+        }
 
         return view('pages.vendors.index', compact('vendors'));
 
@@ -49,6 +60,7 @@ class VendorsController extends Controller
 
         $request['attachment']  = $paths;
         $request['created_by']  = auth()->user()->username;
+        $request['branch_id']   = is_null(auth()->user()->assign_to) ? null : auth()->user()->assign_to;
 
         $vendor = Vendor::create($request->except('_token', 'attachments'));
 
