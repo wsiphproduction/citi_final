@@ -19,7 +19,20 @@ class PCFRController extends Controller
 
     public function index() {
 
-        $pcfr = Pcfr::where('user_id', auth()->user()->id)->get();
+        $user = auth()->user();
+
+        $pcfr = Pcfr::whereIn('status', [
+                'saved' , 'submitted', 'approved', 'for replenishment', 'replenished', 'disapproved tl'
+            ])->whereHas('user', function(Builder $builder) use($user) {
+                if($user->getUserAssignTo() == 'ssc'){
+                    $builder->where('assign_to', $user->assign_to)
+                        ->where('assign_name', $user->assign_name);
+                } else {
+                    $builder->where('assign_to', $user->assign_to);
+                }
+            })
+            ->orderBy('date_created', 'DESC')
+            ->get();
 
         return view('pages.pcfr.requestor.index', compact('pcfr'));
 
@@ -30,86 +43,63 @@ class PCFRController extends Controller
         $vendors = Vendor::where('status', 1)->get();
         $user = auth()->user();
         $branch = $user->branch;
-        $cash_on_hand = 0;
-        $atm_bal = 0;
 
         // PCF Accountability
         $pcv_accountability = $branch->budget;
 
-        // for replenishment
-        $for_replenishment = Pcfr::where('status', 'for replenishment')
-            ->whereHas('user', function(Builder $query) use ($user) {
-                $query->where('assign_to', $user->assign_to);
-            });
-
-        // Pending Replenishment 
-        $pending_rep_pcv = Pcv::where('status', 'approved')
-            ->whereHas('user', function(Builder $query) use ($user) {
-                $query->where('assign_to', $user->assign_to);
-            })->doesntHave('pcfr');
-
-        // Unreplenished
-        $unreplenished = Pcfr::where('status', 'unreplenishment')
-            ->whereHas('user', function(Builder $query) use ($user) {
-                $query->where('assign_to', $user->assign_to);
-            });
-
-        // Unapproved pcv
-        $unapproved_pcvs = Pcv::where('status', 'disapproved tl')
-            ->whereHas('user', function(Builder $query) use ($user) {
-                $query->where('assign_to', $user->assign_to);
-            });
-
-        // pcvs 
-        $pcvs = Pcv::where('status', 'approved')
-            ->whereHas('user', function(Builder $query) use ($user) {
-                $query->where('assign_to', $user->assign_to);
-            })->doesntHave('pcfr');
-
-        // Unliquidated ts
+        // unliquidated ts
         $unliquidated_ts = TemporarySlip::where('running_balance', '>', 0)
             ->where('status', 'approved')
             ->whereHas('user', function(Builder $query) use ($user) {
                 $query->where('assign_to', $user->assign_to);
-            });
+            })->sum('running_balance');
 
-        // Returned pcv
-        $returned_pcvs = Pcv::where('status', 'cancelled');
-        
+        $total_replenishment = Pcfr::where('status', 'post to ebs')
+            ->whereHas('user', function(Builder $query) use ($user) {
+                $query->where('assign_to', $user->assign_to);
+            })->sum('amount');
 
-        // For replenishment
-        $for_replenishment1 = $for_replenishment->sum('amount');
-        // pending for replenishment
-        $pending_rep_pcv1 = $pending_rep_pcv->sum('amount');
-        // unreplenished
-        $unreplenished1 = $unreplenished->sum('amount');
-        // unapproved pcv
-        $unapproved_pcvs1 = $unapproved_pcvs->sum('amount');
-        // return pcv
-        $returned_pcvs1 = $returned_pcvs->sum('amount');
-        // unliquidated ts
-        $unliquidated_ts1 = $unliquidated_ts->sum('running_balance');
+        $pending_replenishment = Pcv::where('status', 'approved')
+            ->whereHas('user', function(Builder $query) use ($user) {
+                $query->where('assign_to', $user->assign_to);
+            })->doesntHave('pcfr')->sum('amount');
 
-        // PCF Accounted For
-        $pcv_accounted = $unliquidated_ts1 + $for_replenishment1 + $atm_bal + $cash_on_hand + $pending_rep_pcv1 + $unreplenished1 + $returned_pcvs1;
+        $unreplenished = Pcfr::where('status', 'for replenishment')
+            ->whereHas('user', function(Builder $query) use ($user) {
+                $query->where('assign_to', $user->assign_to);
+            })->sum('amount');            
+
+        $unapproved_pcvs = Pcv::whereIn('status', ['disapproved tl', 'disapproved dh'])
+            ->whereHas('user', function(Builder $query) use ($user) {
+                $query->where('assign_to', $user->assign_to);
+            })->sum('amount');
+
+        $returned_pcvs = Pcv::where('status', 'disapproved py')
+            ->whereHas('user', function(Builder $query) use ($user) {
+                $query->where('assign_to', $user->assign_to);
+            })->sum('amount');            
+
+        $pcf_accounted_for = $unliquidated_ts + $total_replenishment + $pending_replenishment + $unreplenished + $unapproved_pcvs + $returned_pcvs;
 
         // overage / shortage
-        $overage_shortage = $pcv_accountability - $pcv_accounted;
+        $overage_shortage = $pcv_accountability - $pcf_accounted_for;
 
-        // pcv_first
-        $pcv_first = $pending_rep_pcv->first();
-        // pcv_last
-        $pcv_last = $pending_rep_pcv->latest()->first();
-        // pcvs
-        $pcvs = $pcvs->get();
+        $pcvs = Pcv::where('status', 'approved')
+            ->whereHas('user', function(Builder $query) use ($user) {
+                $query->where('assign_to', $user->assign_to);
+            })->doesntHave('pcfr'); //->get();
 
+
+        $pcv_first = $pcvs->first();
+        $pcv_last = $pcvs->latest()->first();
+        $pcvss = $pcvs->get();
         $pcvs_sum = $pcvs->sum('amount');
 
         if(!$pcv_first) return redirect()->back()->with('danger', 'No pcv found. Please create pcv first.');
 
-        return view('pages.pcfr.requestor.create', compact('vendors', 'pcvs', 'for_replenishment1', 
-                'pcv_first', 'pcv_last', 'overage_shortage', 'pcvs_sum', 'pending_rep_pcv1', 'unreplenished1', 
-                'unapproved_pcvs1', 'returned_pcvs1', 'unliquidated_ts1', 'pcv_accountability', 'pcv_accounted'));
+        return view('pages.pcfr.requestor.create', compact('vendors', 'pcvss', 'pcv_first', 'pcv_last', 'pcvs_sum',
+                'overage_shortage', 'unreplenished', 'total_replenishment', 'pending_replenishment', 'pcf_accounted_for', 
+                'unapproved_pcvs', 'returned_pcvs', 'unliquidated_ts', 'pcv_accountability'));
 
     }
 

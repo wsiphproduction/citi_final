@@ -126,8 +126,8 @@
                     	@forelse( $pcfr->pcv as $pcv ) 
                     		<tr>
                     			<td> {{ $pcv->pcv_no }} </td>
-                    			<td> to be addedd </td>
-                    			<td> {{ $pcv->account_name }} </td>
+                    			<td> {{ $pcv->description }} </td>
+                    			<td> {{ $pcv->account_name  }} </td>
                     			<td> {{ $pcv->user->branch->name }} </td>
                     			<td> {{ $pcv->amount }} </td>
                     		</tr>

@@ -97,7 +97,7 @@
     			lengthMenu: 'Show _MENU_ entries',
     			},
     			columnDefs: [
-    			{ targets: 8, orderable: false }
+    			{ targets: 7, orderable: false }
     			],
     			dom: 'lf<"dataTables_responsive"t><"dataTables_total d-flex justify-content-end">ip'
     		});

@@ -63,7 +63,7 @@
                 	<select class="form-control" name="vendor">
                 		<option value=""> Select Vendor </option>
                 		@foreach($vendors as $vendor)
-                			<option value="{{ $vendor->name }}">{{ $vendor->company_name }}</option>
+                			<option value="{{ $vendor->name }}">{{ $vendor->name }}</option>
                 		@endforeach
                 	</select>
                 </div>
@@ -105,14 +105,14 @@
                   	<label for="period-date-from" class="col-lg-5 col-form-label">Period Date From</label>
                   	<div class="col-lg-7">
                     	<input type="text" class="form-control" id="periodDateFrom" name="period_date_from" placeholder="From"
-                    		value="{{ \Carbon\Carbon::parse($pcv_first->date_created)->format('Y-m-d') }}">
+                    		value="{{ \Carbon\Carbon::parse($pcv_first->date_created)->format('Y-m-d') }}" readonly>
                   	</div>
                 </div>
                 <div class="form-group row mb-0">
                   	<label for="period-date-to" class="col-lg-5 col-form-label">Period Date To</label>
                   	<div class="col-lg-7">
                     	<input type="text" class="form-control" id="periodDateTo" name="period_date_to" placeholder="To"
-                    		value="{{ \Carbon\Carbon::parse($pcv_last->date_created)->format('Y-m-d') }}">
+                    		value="{{ \Carbon\Carbon::parse($pcv_last->date_created)->format('Y-m-d') }}" readonly>
                   	</div>
                 </div>
             </div>
@@ -136,7 +136,7 @@
                   	</thead>
                   	<tbody>
                     	
-                  		@foreach($pcvs as $pcv)
+                  		@foreach($pcvss as $pcv)
 
                   			<tr>
 								<td>{{ $pcv->pcv_no }}</td>
@@ -177,7 +177,7 @@
                 <label for="temporary-slip" class="col-lg-5 col-form-label">Temporary Slip</label>
                 <div class="col-lg-7">
                   	<input type="number" class="form-control bd-0 bd-bottom text-right" 
-                  		id="temporary_slip" name="temporary_slip" value="{{ $unliquidated_ts1 }}" readonly>
+                  		id="temporary_slip" name="temporary_slip" value="{{ $unliquidated_ts }}" readonly>
                 </div>
             </div>
         </div>
@@ -188,7 +188,7 @@
                 <div class="col-lg-7">
                   	<input type="number" class="form-control bd-0 bd-bottom text-right" 
                   		id="total_replenishment" name="total_replenishment" 
-                  		value="00000.00" readonly>
+                  		value="{{ $total_replenishment }}" readonly>
                 </div>
             </div>
         </div>
@@ -197,7 +197,7 @@
             <div class="form-group row">
                 <label for="atm-balance" class="col-lg-5 col-form-label">ATM Balance</label>
                 <div class="col-lg-7">
-                  	<input type="number" class="form-control" id="atm_balance" name="atm_balance">
+                  	<input type="number" class="form-control" id="atm_balance" name="atm_balance" min="0" step="1">
                 </div>
             </div>
         </div>
@@ -207,7 +207,7 @@
                 <label for="pending-replenishment" class="col-lg-5 col-form-label">Pending Replenishment</label>
                 <div class="col-lg-7">
                   	<input type="number" class="form-control bd-0 bd-bottom text-right" 
-                  		id="pending_replenishment" name="pending_replenishment" value="{{ $for_replenishment1 }}" readonly>
+                  		id="pending_replenishment" name="pending_replenishment" value="{{ $pending_replenishment }}" readonly>
                 </div>
             </div>
         </div>
@@ -216,7 +216,7 @@
             <div class="form-group row">
                 <label for="cash-on-hand" class="col-lg-5 col-form-label">Cash on Hand</label>
                 <div class="col-lg-7">
-                  	<input type="number" class="form-control" id="cash_on_hand" name="cash_on_hand">
+                  	<input type="number" class="form-control" id="cash_on_hand" name="cash_on_hand" min="0" step="1">
                 </div>
             </div>
         </div>
@@ -226,7 +226,7 @@
                 <label for="unreplenished" class="col-lg-5 col-form-label">Unreplenished</label>
                 <div class="col-lg-7">
                   	<input type="number" class="form-control bd-0 bd-bottom text-right" id="unreplenished" 
-                  		name="unreplenished" value="{{ $unreplenished1 }}" readonly>
+                  		name="unreplenished" value="{{ $unreplenished }}" readonly>
                 </div>
             </div>
         </div>
@@ -236,7 +236,7 @@
                 <label for="pcf-accounted-for" class="col-lg-5 col-form-label">PCF Accounted For</label>
                 <div class="col-lg-7">
                   	<input type="number" class="form-control bd-0 bd-bottom text-right" 
-                  		id="pcf_accounted_for" name="pcf_accounted_for" value="{{ $pcv_accounted }}" readonly>
+                  		id="pcf_accounted_for" name="pcf_accounted_for" value="{{ $pcf_accounted_for }}" readonly>
                 </div>
             </div>
         </div>
@@ -246,7 +246,7 @@
 	            <label for="unapproved-pcvs" class="col-lg-5 col-form-label">Unapproved PCVs</label>
 	            <div class="col-lg-7">
 	              	<input type="number" class="form-control bd-0 bd-bottom text-right" 
-	              		id="unapproved_pcvs" name="unapproved_pcvs" value="{{ $unapproved_pcvs1 }}" readonly>
+	              		id="unapproved_pcvs" name="unapproved_pcvs" value="{{ $unapproved_pcvs }}" readonly>
 	            </div>
           	</div>
         </div>
@@ -266,7 +266,7 @@
                 <label for="returned-pcvs" class="col-lg-5 col-form-label">Returned PCVs</label>
                 <div class="col-lg-7">
                   	<input type="number" class="form-control bd-0 bd-bottom text-right" 
-                  		id="returned_pcvs" name="returned_pcvs" value="{{ $returned_pcvs1 }}" readonly>
+                  		id="returned_pcvs" name="returned_pcvs" value="{{ $returned_pcvs }}" readonly>
                 </div>
             </div>
         </div>
@@ -381,106 +381,16 @@
 		var dateFormat = 'mm/dd/yy';
 		var account_attachments = [];
 		var current_id = 0;
-		var pcv_ids = {!! $pcvs->pluck('id') !!};
+		var pcv_ids = {!! $pcvss->pluck('id') !!};
 
       	periodFrom = $('#periodDateFrom')
 	      	.datepicker().on('change', function() {
-
-	        	periodTo.datepicker('option','minDate', getDate( this ) );
-	        	$('#included_pcvs tbody').empty();
-	        	if( $('#periodDateTo').val() != "" && $(this).val() != "" ) {
-	        		pcv_ids = [];
-	        		$.ajax({
-
-	        			url 	: "{!! env('APP_URL')!!}"+"/pcfr/requestor/generatepcrf?from="+$(this).val()+'&to='+$('#periodDateTo').val() ,
-	        			method	: 'GET' ,
-	        			success : function(res) {
-
-	        				let _html  = '';
-	        					
-	        					if(res.pcvs.length>0) {
-
-	        						$.each(res.pcvs, function(i, o) {
-	        							_html += '<tr>';
-	        							_html += '<td>'+o.pcv_no+'</td>';
-	        							_html += '<td>'+o.description+'</td>';
-	        							_html += '<td>'+o.account_name+'</td>';
-	        							_html += '<td>'+o.user.branch.name+'</td>';
-	        							_html += '<td>'+o.amount+'</td>';
-	        							_html += '</tr>';
-	        							console.log(o);
-	        							pcv_ids.push(o.id);
-	        						});
-
-	        					} 
-	        					
-	        					$('#included_pcvs tbody').append(_html);	 
-	        					$('#temporary_slip').val(res.unliquidated_ts);
-	        					$('#total_replenishment').val(res.for_replenishment);
-	        					$('#pending_replenishment').val(res.pending_replenishment);
-	        					$('#unreplenished').val(res.unreplenished);
-	        					$('#unapproved_pcvs').val(res.unapproved_pcvs);
-	        					$('#returned_pcvs').val(res.returned_pcvs);
-	        					$('#pcf_accounted_for').val(res.pcf_accounted_for);
-	        					$('#pcf_accountability').val(res.pcf_accountability);
-	        					$('#overage_shortage').val(res.over_short);	 
-
-	        			}
-
-	        		})
-
-	        	}
-
+	        	periodTo.datepicker('option','minDate', getDate( this ) );	        	
 	      	}),
 
       	periodTo = $('#periodDateTo')
       		.datepicker().on('change', function() {
         		periodFrom.datepicker('option','maxDate', getDate( this ) );
-        		$('#included_pcvs tbody').empty();
-        		if( $('#periodDateFrom').val() != "" && $(this).val() != "" ) {
-        			pcv_ids = [];
-	        		$.ajax({
-
-	        			url 	: "{!! env('APP_URL')!!}"+"/pcfr/requestor/generatepcrf?from="+$('#periodDateFrom').val()+'&to='+$(this).val() ,
-	        			method	: 'GET' ,
-	        			success : function(res) {
-
-	        				let _html  = '';
-	        					
-	        					if(res.pcvs.length>0) {
-
-	        						$.each(res.pcvs, function(i, o) {
-	        							_html += '<tr>';
-	        							_html += '<td>'+o.pcv_no+'</td>';
-	        							_html += '<td>'+o.description+'</td>';
-	        							_html += '<td>'+o.account_name+'</td>';
-	        							_html += '<td>'+o.user.branch.name+'</td>';
-	        							_html += '<td>'+o.amount+'</td>';
-	        							_html += '</tr>';
-
-	        							console.log(o);
-	        							pcv_ids.push(o.id);
-	        						});
-
-	        					} 
-	        					
-	        					$('#included_pcvs tbody').append(_html);	 
-	        					$('#temporary_slip').val(res.unliquidated_ts);
-	        					$('#total_replenishment').val(res.for_replenishment);
-	        					$('#pending_replenishment').val(res.pending_replenishment);
-	        					$('#unreplenished').val(res.unreplenished);
-	        					$('#unapproved_pcvs').val(res.unapproved_pcvs);
-	        					$('#returned_pcvs').val(res.returned_pcvs);
-	        					$('#pcf_accounted_for').val(res.pcf_accounted_for);
-	        					$('#pcf_accountability').val(res.pcf_accountability);
-	        					$('#overage_shortage').val(res.over_short);	        					
-
-	        			}
-
-	        		})
-
-	        	}
-
       		});
 
       	$(document).on('click', '#btn-add-account-attachment', function() {
@@ -621,6 +531,36 @@
 	        newElement.appendTo($("#attachment-outter-wrapper"));
 
 	    }
+
+	    $(document).on('blur', '#atm_balance', function() {
+
+	    	let atm_bal = $(this).val();
+	    	let overage_shortage = $('#overage_shortage').val();
+	   		let pcf_accounted_for = $('#pcf_accounted_for').val();
+	   		let pcf_accountability = $('#pcf_accountability').val();
+
+	   		let new_pcf_accounted_for = parseFloat(atm_bal) + parseFloat(pcf_accounted_for);
+	   		let new_overage_shortage = parseFloat(pcf_accountability) - parseFloat(new_pcf_accounted_for);
+
+	    	$('#pcf_accounted_for').val(new_pcf_accounted_for);
+	    	$('#overage_shortage').val(new_overage_shortage);
+
+	    });
+
+	   	$(document).on('blur', '#cash_on_hand', function() {
+
+	   		let cash_on_hand = $(this).val();
+	    	let overage_shortage = $('#overage_shortage').val();
+	   		let pcf_accounted_for = $('#pcf_accounted_for').val();
+	   		let pcf_accountability = $('#pcf_accountability').val();
+
+	   		let new_pcf_accounted_for = parseFloat(cash_on_hand) + parseFloat(pcf_accounted_for);
+	   		let new_overage_shortage = parseFloat(pcf_accountability) - parseFloat(new_pcf_accounted_for);
+
+	    	$('#pcf_accounted_for').val(new_pcf_accounted_for);
+	    	$('#overage_shortage').val(new_overage_shortage);
+
+	    });
 
 
 	</script>
