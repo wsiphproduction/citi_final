@@ -95,6 +95,11 @@ class TSController extends Controller
         $request['running_balance']     = $request->amount;
         $request['user_id']             = auth()->user()->id;
 
+        if($request->status=='submitted') {
+            $request['tl_approved'] = null;
+            $request['dh_approved'] = null;
+        }
+
         $ts->update($request->except('_token','method'));
 
         return redirect()->route('requestor.ts.index')->with('success','Temporary slip has been updated!');

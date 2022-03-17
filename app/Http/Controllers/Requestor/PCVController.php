@@ -292,7 +292,7 @@ class PCVController extends Controller
         }
 
         $pcv->amount = $request->total_amount;
-        if($request->action=='submitted') {
+        if($request->pcv_action=='submitted') {
             $pcv->tl_approved = null;
             $pcv->dh_approved = null;
         }
