@@ -59,7 +59,9 @@
                             <td>{{ $pcfrr->batch_no }}</td>
                             <td>{{ $pcfrr->vendor }}</td>
                             <td>{{ $pcfrr->user->username }}</td>
-                            <td>{{ $pcfrr->status }}</td>
+                            <td>
+                            	<span class="badge badge-secondary tx-uppercase">{{ $pcfrr->status }}</span>
+                            </td>
                             <td>
                             	<nav class="nav table-options">
 	                                <a class="nav-link p-0 pl-2" href="{{ route('treasury.pcfr.show-pcfr', $pcfrr->pcfr_no) }}" 

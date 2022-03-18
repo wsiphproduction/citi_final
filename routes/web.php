@@ -14,6 +14,7 @@ use App\Http\Controllers\Requestor\PCFRController as RequestorPCFRController;
 use App\Http\Controllers\Approver\PCFRController as ApproverPCFRController;
 use App\Http\Controllers\Payable\PCFRController as PayablePCFRController;
 use App\Http\Controllers\Treasury\PCFRController as TreasuryPCFRController;
+use App\Http\Controllers\PCFRController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\ModulesController;
@@ -216,6 +217,8 @@ Route::middleware(['web', 'auth'])->group(function () {
 
     Route::prefix('pcfr')->group(function() {
 
+        Route::get('pcv/{id}', [PCFRController::class, 'showPCV'])->name('pcfr.show-pcv');
+
         Route::prefix('requestor')->group(function() {
             Route::get('/', [RequestorPCFRController::class, 'index'])->name('requestor.pcfr.index');
             Route::get('create', [RequestorPCFRController::class, 'create'])->name('requestor.pcfr.create');
@@ -224,7 +227,7 @@ Route::middleware(['web', 'auth'])->group(function () {
 
             Route::post('store', [RequestorPCFRController::class, 'store'])->name('requestor.pcfr.store');
 
-            Route::put('status-update/{id}', [RequestorPCFRController::class, 'statusUpdate'])->name('requestor.pcfr.status-update');
+            Route::put('status-update/{id}', [PCFRController::class, 'statusUpdate'])->name('requestor.pcfr.status-update');
 
         });
 
@@ -265,10 +268,14 @@ Route::middleware(['web', 'auth'])->group(function () {
             Route::get('temp-slips', [TreasuryPCFRController::class, 'tempSlips'])->name('treasury.pcfr.temp-slips');
             Route::get('pcvs', [TreasuryPCFRController::class, 'pcvs'])->name('treasury.pcfr.pcvs');
             Route::get('show-pcfr/{id}', [TreasuryPCFRController::class, 'showPcfr'])->name('treasury.pcfr.show-pcfr');
+            Route::get('show-pcv/{id}', [TreasuryPCFRController::class, 'showPcv'])->name('treasury.pcfr.show-pcv');
+            Route::get('show-ts/{id}', [TreasuryPCFRController::class, 'showTs'])->name('treasury.pcfr.show-ts');
 
             Route::post('store', [TreasuryPCFRController::class, 'store'])->name('treasury.pcfr.store');
 
             Route::put('pcv/{id}/remove', [TreasuryPCFRController::class, 'pcvRemove'])->name('treasury.pcfr.pcv-remove');
+            Route::put('disapprove/{id}', [TreasuryPCFRController::class, 'disapprove'])->name('treasury.pcfr.disapprove');
+            Route::put('approve/{id}', [TreasuryPCFRController::class, 'approve'])->name('treasury.pcfr.approve');
 
         });
 
