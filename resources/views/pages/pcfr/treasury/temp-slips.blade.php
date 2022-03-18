@@ -54,8 +54,10 @@
                             <td>{{ $temp_slip->account_name }}</td>
                             <td>{{ $temp_slip->description }}</td>
                             <td>{{ $temp_slip->amount }}</td>
-                            <td> {{ $temp_slip->created_at->diffForHumans() }} </td>
-                            <td>{{ $temp_slip->status }}</td>
+                            <td>{{ $temp_slip->created_at->diffForHumans() }}</td>
+                            <td>
+                            	<span class="badge badge-secondary tx-uppercase">{{ $temp_slip->status }}</span>
+                            </td>
                             <td>
                             	<nav class="nav table-options">
 	                                <a class="nav-link p-0 pl-2" href="#" title="View Request">

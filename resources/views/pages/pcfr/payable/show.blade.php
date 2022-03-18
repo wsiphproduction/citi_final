@@ -132,7 +132,7 @@
                         @forelse( $pcfr->pcv as $pcv ) 
                             <tr>
                                 <td> 
-                                    <a href="#" target="_blank"> {{ $pcv->pcv_no }} </a>
+                                    <a href="{{ route('pcfr.show-pcv', $pcv->id) }}" target="_blank"> {{ $pcv->pcv_no }} </a> 
                                 </td>
                                 <td> {{$pcv->description }} </td>
                                 <td> {{ $pcv->account_name }} </td>

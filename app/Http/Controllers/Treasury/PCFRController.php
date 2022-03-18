@@ -221,17 +221,31 @@ class PCFRController extends Controller
     }
 
 
-    public function showPcfr($pcfr) {
+    public function showPcfr($id) {
 
-        $pcfr = Pcfr::where('pcfr_no', $pcfr)
-            ->with('pcv', 'attachments')
-            ->first();
+        $pcfr = Pcfr::find($id)
 
         $area_manager = User::where('position', 'treasury head')
             ->where('assign_to', auth()->user()->assign_to)
             ->get();
 
         return view('pages.pcfr.treasury.show-pcfr', compact('pcfr', 'area_manager'));
+
+    }
+
+    public function showPcv($id) {
+
+        $pcv = Pcv::find($id);
+
+        return view('pages.pcfr.treasury.show-pcv', compact('pcv'));
+
+    }
+
+    public function showTs($id) {
+
+        $ts = TemporarySlip::find($id);
+
+        return view('pages.pcfr.treasury.show-ts', compact('ts'));
 
     }
 
@@ -243,7 +257,7 @@ class PCFRController extends Controller
             'status'            => 'disapproved' ,
             'cancelled_by'      => auth()->user()->username ,
             'cancelled_date'    => \Carbon\Carbon::now() ,
-            'py_staff_approved' => 0 
+            'tl'                => 0 
         ]);
 
         return response()->json([
@@ -258,8 +272,8 @@ class PCFRController extends Controller
         $pcfr = Pcfr::find($id);
 
         $pcfr->update([
-            'py_staff_approved'     => 1 ,
-            'status'                => 'post to ebs' 
+            'tl_approved'       => 1 ,
+            'status'            => 'approved' 
         ]);
 
         return response()->json([

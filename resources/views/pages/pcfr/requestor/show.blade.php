@@ -1,5 +1,17 @@
 @extends('layouts.app')
 
+@section('pagecss')
+
+    <style type="text/css">
+        
+        .aside-header {
+            display: none;
+        }
+
+    </style>
+
+@endsection
+
 @section('content')
 	
 	<div class="d-flex flex-column flex-lg-row justify-content-between mg-b-20 mg-lg-b-25 mg-xl-b-30">
@@ -126,7 +138,7 @@
                     	@forelse( $pcfr->pcv as $pcv ) 
                     		<tr>
                     			<td> 
-                                    <a href="#"> {{ $pcv->pcv_no }} </a> 
+                                    <a href="{{ route('pcfr.show-pcv', $pcv->id) }}" target="_blank"> {{ $pcv->pcv_no }} </a> 
                                 </td>
                     			<td> {{ $pcv->description }} </td>
                     			<td> {{ $pcv->account_name  }} </td>
@@ -578,7 +590,6 @@
 	        newElement.appendTo($("#attachment-outter-wrapper"));
 
 	    }
-
 
 	</script>
 

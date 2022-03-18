@@ -53,7 +53,9 @@
                             <td>{{ $pcv->description }}</td>
                             <td>{{ $pcv->account_name }}</td>
                             <td>{{ $pcv->amount }}</td>
-                            <td>{{ $pcv->status }}</td>
+                            <td>
+                            	<span class="badge badge-secondary tx-uppercase">{{ $pcv->status }}</span>
+                            </td>
                             <td>
                             	<nav class="nav table-options">
 	                                <a class="nav-link p-0 pl-2" href="#" title="View Request">

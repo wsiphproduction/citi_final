@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Pcv;
 
 class PCFRController extends Controller
 {
@@ -14,9 +15,11 @@ class PCFRController extends Controller
 
     }
 
-    public function create() {
+    public function showPCV($id) {
 
-        return view('pages.pcfr.create');
+        $pcv = Pcv::find($id);
+
+        return view('pages.pcfr.pcv', compact('pcv'));
 
     }
 
