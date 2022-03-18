@@ -113,6 +113,7 @@ class TSController extends Controller
 
         $temporary_slips = TemporarySlip::where('ts_no', 'LIKE', "%{$request->ts_no}%")
             ->where('status','approved')
+            ->where('running_balance', '>', 0)
             ->whereHas('user', function(Builder $builder) use($user) {
                 $builder->where('assign_to', $user->assign_to);
             })

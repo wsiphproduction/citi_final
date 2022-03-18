@@ -223,7 +223,7 @@ class PCFRController extends Controller
 
     public function showPcfr($id) {
 
-        $pcfr = Pcfr::find($id)
+        $pcfr = Pcfr::find($id);
 
         $area_manager = User::where('position', 'treasury head')
             ->where('assign_to', auth()->user()->assign_to)

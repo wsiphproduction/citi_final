@@ -227,7 +227,7 @@ Route::middleware(['web', 'auth'])->group(function () {
 
             Route::post('store', [RequestorPCFRController::class, 'store'])->name('requestor.pcfr.store');
 
-            Route::put('status-update/{id}', [PCFRController::class, 'statusUpdate'])->name('requestor.pcfr.status-update');
+            Route::put('status-update/{id}', [RequestorPCFRController::class, 'statusUpdate'])->name('requestor.pcfr.status-update');
 
         });
 

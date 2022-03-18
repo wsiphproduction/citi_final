@@ -24,7 +24,7 @@
         </li>
         
 
-        @hasanyrole('Administrator|Requestor')
+        @hasanyrole('Administrator|Requestor|SSC Requestor')
             <li class="nav-item with-sub">
                 <a href="#" class="nav-link">
                     <i data-feather="file-text"></i> 

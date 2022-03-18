@@ -39,7 +39,7 @@
                     <tr>
                         <th>Account Name</th>
                         <th>Account Number</th>
-                        <th>Code</th>
+                        <th>Amount</th>
                         <th>Created By</th>
                         <th>Date Created</th>
                         <th>Updated By</th>
