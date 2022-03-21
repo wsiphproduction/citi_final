@@ -22,7 +22,6 @@
             <a href="{{ route('dashboard') }}" class="nav-link"><i data-feather="home">
             </i> <span>Dashboard</span></a>
         </li>
-        
 
         @hasanyrole('Requestor|SSC Requestor')
             <li class="nav-item with-sub">
@@ -112,11 +111,10 @@
             </li>
         @endhasanyrole
 
-        @hasrole('Administrator|Manage Vendor')
+        @hasrole('Administrator')
 
             <li class="nav-label mg-t-25">Maintenance</li>
 
-            @can('user ts')
                 <li class="nav-item with-sub">
                     <a href="#" class="nav-link"><i data-feather="users"></i> <span>Users</span></a>
                     <ul>
@@ -124,9 +122,7 @@
                         <li><a href="{{ route('users.create') }}">Add New User</a></li>
                     </ul>
                 </li>
-            @endcan
-
-            @can('account manage view')
+            
                 <li class="nav-item with-sub">
                     <a href="#" class="nav-link"><i data-feather="user"></i> <span>Account Management</span></a>
                     <ul>
@@ -135,25 +131,21 @@
                         <li><a href="{{ route('modules.index') }}">Modules</a></li>                
                     </ul>
                 </li>
-            @endcan
+            
 
             {{-- <li class="nav-item">
                 <a href="{{ route('accounts.index') }}" class="nav-link"><i data-feather="users"></i> <span>Accounts</span></a>
             </li> --}}
 
-            @can('vendor view')
+           
                 <li class="nav-item">
                     <a href="{{ route('vendors.index') }}" class="nav-link"><i data-feather="users"></i> <span>Vendors</span></a>
                 </li>
-            @endcan
-
-            @can('charge view')
+            
                 <li class="nav-item">
                     <a href="{{ route('charges.index') }}" class="nav-link"><i data-feather="users"></i> <span>Charges</span></a>
                 </li>
-            @endcan
-
-            @can('branch manage view')
+            
                 <li class="nav-item with-sub">
                     <a href="#" class="nav-link"><i data-feather="user"></i> <span>Branch Management</span></a>
                     <ul>
@@ -165,13 +157,11 @@
                         </li>
                     </ul>
                 </li>
-            @endcan
-
-            @can('account matrix view')
+            
                 <li class="nav-item">
                     <a href="{{ route('account-matrix.index') }}" class="nav-link"><i data-feather="users"></i> <span>Account Matrix</span></a>
                 </li>
-            @endcan
+            
 
         @endhasrole
 
