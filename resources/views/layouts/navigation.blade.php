@@ -24,7 +24,7 @@
         </li>
         
 
-        @hasanyrole('Administrator|Requestor|SSC Requestor')
+        @hasanyrole('Requestor|SSC Requestor')
             <li class="nav-item with-sub">
                 <a href="#" class="nav-link">
                     <i data-feather="file-text"></i> 
@@ -45,7 +45,7 @@
             </li>
         @endhasanyrole
 
-        @hasanyrole('Administrator|TL Approver|Department Head|Division Head')
+        @hasanyrole('TL Approver|Department Head|Division Head')
             <li class="nav-item with-sub">
                 
                 <a href="#" class="nav-link">
@@ -72,7 +72,7 @@
             </li>
         @endhasanyrole
 
-        @hasanyrole('Administrator|Treasury Staff|Treasury Head')
+        @hasanyrole('Treasury Staff|Treasury Head')
             <li class="nav-item with-sub">
                 
                 <a href="#" class="nav-link"><i data-feather="briefcase"></i> <span>Treasury</span></a>
@@ -89,7 +89,7 @@
             </li>
         @endhasanyrole
     
-        @hasanyrole('Administrator|Payable Approver')
+        @hasanyrole('Payable Approver')
         <li class="nav-item with-sub">
             
             <a href="#" class="nav-link"><i data-feather="credit-card"></i> <span>Payables</span></a>
