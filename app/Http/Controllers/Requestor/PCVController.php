@@ -119,50 +119,49 @@ class PCVController extends Controller
         ]);
 
         // add pcv reference to attachments
-        // move attachment from temporary folder to original folder
-        if(count($attachments)) {
-
-            foreach( $attachments as $attachment ) {
-
-                if($attachment['attachment'] == '') continue;
-
-                Attachment::create([
-                    'from'          => 'pcv' ,
-                    'from_ref'      => $pcv_transaction->id , 
-                    'type'          => $attachment['type'] ,
-                    'ref'           => $attachment['ref'] ,
-                    'date'          => \Carbon\Carbon::parse($attachment['date']) ,
-                    'attachment'    => $attachment['attachment'] 
-                ]);
-
-                if(Storage::exists("public/pcv/{$pcv_transaction->pcv_no}/{$attachment['attachment']}")) {
-                    Storage::delete("public/pcv/{$pcv_transaction->pcv_no}/{$attachment['attachment']}");
-                }
-
-                Storage::copy("public/temp/{$user->id}/pcv/{$attachment['attachment']}", 
-                    "public/pcv/{$pcv_transaction->pcv_no}/{$attachment['attachment']}");
-
-                //Storage::deleteDirectory("public/temp/{$pcv_transaction->pcv_no}");
-
-            }
-
-        }
-
+        
         // add pcv reference to account transactions
         if(count($account_transactions)) {
 
-            foreach($account_transactions as $account_transaction) {
 
-                AccountTransaction::create([
-                    'name'          => $request->account_name ,
-                    'details'       => $account_transaction , 
-                    'pcv_id'        => $pcv_transaction->id ,
-                    'status'        => 'approved' ,
-                    'approval_code' => array_key_exists('code', $account_transaction) ? $account_transaction['code'] : null ,
-                    'approved_by'   => array_key_exists('by', $account_transaction) ? $account_transaction['by'] : null ,
-                    'approved_date' => array_key_exists('date', $account_transaction) ? $account_transaction['date'] : null ,
-                    'remarks'       => array_key_exists('remarks', $account_transaction) ? $account_transaction['remarks'] : null 
-                ]);
+            $account_transaction = AccountTransaction::create([
+                'name'          => $request->account_name ,
+                'details'       => $account_transactions , 
+                'pcv_id'        => $pcv_transaction->id ,
+                'status'        => 'approved' 
+                // ,
+                // 'approval_code' => array_key_exists('code', $account_transaction) ? $account_transaction['code'] : null ,
+                // 'approved_by'   => array_key_exists('by', $account_transaction) ? $account_transaction['by'] : null ,
+                // 'approved_date' => array_key_exists('date', $account_transaction) ? $account_transaction['date'] : null ,
+                // 'remarks'       => array_key_exists('remarks', $account_transaction) ? $account_transaction['remarks'] : null 
+            ]);
+
+            // move attachment from temporary folder to original folder
+            if(count($attachments)) {
+
+                foreach( $attachments as $attachment ) {
+
+                    if($attachment['attachment'] == '') continue;
+
+                    Attachment::create([
+                        'from'          => 'account_transaction' ,
+                        'from_ref'      => $account_transaction->id , 
+                        'type'          => $attachment['type'] ,
+                        'ref'           => $attachment['ref'] ,
+                        'date'          => \Carbon\Carbon::parse($attachment['date']) ,
+                        'attachment'    => $attachment['attachment'] 
+                    ]);
+
+                    if(Storage::exists("public/account_transaction/{$pcv_transaction->pcv_no}/{$attachment['attachment']}")) {
+                        Storage::delete("public/account_transaction/{$pcv_transaction->pcv_no}/{$attachment['attachment']}");
+                    }
+
+                    Storage::copy("public/temp/{$user->id}/account_transaction/{$attachment['attachment']}", 
+                        "public/account_transaction/{$pcv_transaction->pcv_no}/{$attachment['attachment']}");
+
+                    //Storage::deleteDirectory("public/temp/{$pcv_transaction->pcv_no}");
+
+                }
 
             }
 
@@ -171,7 +170,7 @@ class PCVController extends Controller
         $pcv_transaction->amount = $request->total_amount;
         $pcv_transaction->save();
 
-        return redirect()->route('requestor.pcv.index')->with('success','PCV has been created!');
+        return redirect()->route('requestor.pcv.index')->with('success',"PCV Request was successfully {$request->pcv_action}");
 
     }
 
@@ -259,12 +258,12 @@ class PCVController extends Controller
                     'attachment'    => $attachment['attachment'] 
                 ]);
 
-                if(Storage::exists("public/pcv/{$pcv->pcv_no}/{$attachment['attachment']}")) {
-                    Storage::delete("public/pcv/{$pcv->pcv_no}/{$attachment['attachment']}");
+                if(Storage::exists("public/account_transaction/{$pcv->pcv_no}/{$attachment['attachment']}")) {
+                    Storage::delete("public/account_transaction/{$pcv->pcv_no}/{$attachment['attachment']}");
                 }
 
-                Storage::copy("public/temp/{$user->id}/pcv/{$attachment['attachment']}", 
-                    "public/pcv/{$pcv->pcv_no}/{$attachment['attachment']}");
+                Storage::copy("public/temp/{$user->id}/account_transaction/{$attachment['attachment']}", 
+                    "public/account_transaction/{$pcv->pcv_no}/{$attachment['attachment']}");
 
             }
 
@@ -336,6 +335,69 @@ class PCVController extends Controller
             ->get();
 
         return response()->json($pcv);
+
+    }
+
+    public function checkBillingDate(Request $request) {
+
+        $pcvs = Pcv::where('account_name', 'Staff House Rental')
+            ->whereHas('user',  function(Builder $builder ) {
+                $builder->where('assign_to', auth()->user()->assign_to);
+            })
+            ->with('account_transaction')
+            ->get();
+        $hasHit = false;
+
+        foreach($pcvs as $pcv) {
+
+            $_from = \Carbon\Carbon::parse($pcv->account_transaction->details[0]['bill_date_from']);
+            $_to = \Carbon\Carbon::parse($pcv->account_transaction->details[0]['bill_date_to']);
+            $from = \Carbon\Carbon::parse($request->from);
+            $to = \Carbon\Carbon::parse($request->to);
+
+            if($from->between($_from, $_to) || $to->between($_from, $_to)) {
+                $hasHit = true;
+                continue;
+            }
+
+        }
+
+        if($hasHit) { return 'yes'; }
+
+        return 'no';
+
+    }
+
+    public function print($id) {
+
+        $pcv = Pcv::find($id);
+
+        return view('pages.pcv.requestor.print', compact('pcv'));
+
+    }
+
+
+    public function pcvSigned($id, Request $request) {
+
+        $pcv = Pcv::find($id);
+        $user = auth()->user();
+        Attachment::create([
+            'from'  => 'pcv' ,
+            'from_ref'  => $pcv->id ,
+            'type'  => $request->type , 
+            'ref'   => $request->docref ,
+            'date'  => $request->docdate ,
+            'attachment'    => $request->docrefstring
+        ]);
+
+        if(Storage::exists("public/pcv/{$pcv->pcv_no}/{$request->docrefstring}")) {
+            Storage::delete("public/pcv/{$pcv->pcv_no}/{$request->docrefstring}");
+        }
+
+        Storage::copy("public/temp/{$user->id}/pcv/{$request->docrefstring}", 
+            "public/pcv/{$pcv->pcv_no}/{$request->docrefstring}");
+
+        return back()->with(['success'  => "PCV Signed Document is successfully attachment on {$pcv->pcv_no}."]);
 
     }
 

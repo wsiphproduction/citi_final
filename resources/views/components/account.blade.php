@@ -13,11 +13,7 @@
 	    					$isChargeTo = false;
 							if( $field['name'] == 'Vendor' ) { 
 								$detailss = json_decode(json_encode(\App\Models\Vendor::getVendors()->toArray()) , true);
-							} elseif( $field['name'] == 'Charge To' ) {
-								$isChargeTo = true;
-								$detailss = json_decode(json_encode(\App\Models\Charge::getCharges($account_data['name'])->toArray()) , true);
-								\Log::info(json_encode($detailss));
-							} elseif( $field['name'] == 'Charge To Store') {
+							} elseif( $field['name'] == 'Charge To' ) {								
 								$detailss = json_decode(json_encode(\App\Models\Branch::getBranch()->toArray()) , true);
 							}
 						@endphp
@@ -50,8 +46,14 @@
 
 				@elseif($field['type'] == 'date')
 
-					<input type="{{$field['type']}}" data-name="{{ strtolower(str_replace(' ', '_', $field['name'])) }}" 
-						class="form-control custom-inputs" value="{{ date('Y-m-d') }}">
+					@if($account_data['name'] == 'Staff House Rental')
+						<input type="{{$field['type']}}" data-name="{{ strtolower(str_replace(' ', '_', $field['name'])) }}" 
+							class="form-control custom-inputs" value="{{ date('Y-m-d') }}" 
+							id="{{ strtolower(str_replace(' ', '_', $field['name'])) }}">
+					@else
+						<input type="{{$field['type']}}" data-name="{{ strtolower(str_replace(' ', '_', $field['name'])) }}" 
+							class="form-control custom-inputs" value="{{ date('Y-m-d') }}">
+					@endif
 
 				@elseif($field['type'] == 'textarea')
 
@@ -126,7 +128,7 @@
 @endif
 
 
-@if($account_data['has_attachment_section'])
+@if($account_data['has_attachment_section'] && $account_data['name'] != 'Delivery Charges')
 
 	
 	<div class="col-lg-12 mg-t-50">
@@ -166,7 +168,7 @@
 							<div class="form-group">
 								<label class="d-block tx-14">Document</label>
 								<div class="custom-file">
-									<input type="file" class="custom-file-input document-f" id="document" data-from="pcv">
+									<input type="file" class="custom-file-input document-f" id="document" data-from="account_transaction">
 									<label class="custom-file-label" for="document">Choose file</label>
 									<input type="hidden" id="docrefstring" />
 								</div>

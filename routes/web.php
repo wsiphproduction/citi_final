@@ -160,6 +160,7 @@ Route::middleware(['web', 'auth'])->group(function () {
             Route::get('ts-search', [RequestorTs::class, 'search'])->name('requestor.ts.search');
             Route::get('show/{id}', [RequestorTs::class, 'show'])->name('requestor.ts.show');
             Route::get('edit/{id}', [RequestorTs::class, 'edit'])->name('requestor.ts.edit');
+            
 
             Route::post('store', [RequestorTs::class, 'store'])->name('requestor.ts.store');
 
@@ -170,6 +171,7 @@ Route::middleware(['web', 'auth'])->group(function () {
         Route::prefix('approver')->group(function() {
             Route::get('/', [ApproverTs::class, 'index'])->name('approver.ts.index');
             Route::get('show/{id}', [ApproverTs::class, 'show'])->name('approver.ts.show');
+            Route::get('/print/{id}', [ApproverTs::class, 'print'])->name('approver.ts.print');
 
             Route::put('approve/{id}', [ApproverTs::class, 'approve'])->name('approver.ts.approve');
             Route::put('approve-with-code/{id}', [ApproverTs::class, 'approveWithCode'])->name('approver.ts.approve-with-code');
@@ -188,14 +190,18 @@ Route::middleware(['web', 'auth'])->group(function () {
             Route::get('/', [RequestorPCVController::class, 'index'])->name('requestor.pcv.index');
             Route::get('create', [RequestorPCVController::class, 'create'])->name('requestor.pcv.create');
             Route::get('get-cancelled-pcv', [RequestorPCVController::class, 'cancelled'])->name('requestor.pcv.cancelled');
+            Route::get('check-billing-date', [RequestorPCVController::class, 'checkBillingDate'])->name('requestor.pcv.check-billing-date');
             Route::get('show/{pcv}', [RequestorPCVController::class, 'show'])->name('requestor.pcv.show');
             Route::get('edit/{pcv}', [RequestorPCVController::class, 'edit'])->name('requestor.pcv.edit');
+            Route::get('/print/{id}', [RequestorPCVController::class, 'print'])->name('requestor.pcv.print');
+            
 
             Route::get('copy-pcv/{pcv}', [RequestorPCVController::class, 'copyPCV'])->name('requestor.pcv.copy-pcv');
 
             Route::post('store', [RequestorPCVController::class, 'store'])->name('requestor.pcv.store');
 
             Route::put('update/{pcv}', [RequestorPCVController::class, 'update'])->name('requestor.pcv.update');
+            Route::put('pcv-signed-attachment/{pcv}', [RequestorPCVController::class, 'pcvSigned'])->name('requestor.pcv.pcv-signed-attachment');
             Route::put('status-update/{id}', [RequestorPCVController::class, 'statusUpdate'])->name('requestor.pcv.status-update');
             Route::put('received-pcv/{id}', [RequestorPCVController::class, 'receivedPcv'])->name('requestor.pcv.received-pcv');
 

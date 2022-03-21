@@ -28,12 +28,11 @@ class Pcv extends Model
         return $this->belongsTo(TemporarySlip::class);
     }
 
-    public function account_transactions() {
+    public function account_transaction() {
 
-        return $this->hasMany(AccountTransaction::class);
+        return $this->hasOne(AccountTransaction::class);
 
     }
-
 
     public function pcfr() {
 
@@ -41,10 +40,9 @@ class Pcv extends Model
 
     }
 
+    public function attachment() {
 
-    public function attachments() {
-
-        return $this->hasMany(Attachment::class, 'from_ref')
+        return $this->hasOne(Attachment::class, 'from_ref')
             ->where(function($query) {
                 return $query->where('from', 'pcv');
             });

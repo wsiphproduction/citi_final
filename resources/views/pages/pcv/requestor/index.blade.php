@@ -41,6 +41,7 @@
                     <tr>
                         <td>Date</td>
                         <td>PCV No.</td>
+                        <td>Description</td>
                         <td>Account</td>
                         <td>Amount</td>
                         <td>Status</td>
@@ -53,6 +54,7 @@
 	                  	<tr>
 	                        <td> {{ \Carbon\Carbon::parse($pcv->date_created)->toFormattedDateString() }} </td>
 	                        <td> {{ $pcv->pcv_no }} </td>
+	                        <td> {{ $pcv->description }} </td>
 	                        <td> {{ $pcv->account_name }} </td>
 	                        <td> {{ $pcv->amount }} </td>
 	                        <td>
@@ -77,7 +79,7 @@
 	                  	</tr>
                     @empty
 	                	<tr>
-	                		<td class="text-center" colspan="6"> No PCV Found </td>
+	                		<td class="text-center" colspan="7"> No PCV Found </td>
 	                	</tr>
                     @endforelse
                 </tbody>

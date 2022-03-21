@@ -55,7 +55,7 @@ class TSController extends Controller
 
         TemporarySlip::create($request->except('_token'));
 
-        return redirect()->route('requestor.ts.index')->with('success','Temporary slip has been created!');
+        return redirect()->route('requestor.ts.index')->with('success',"Temporary slip was successfully {$request->status}");
 
     }
 
@@ -102,7 +102,7 @@ class TSController extends Controller
 
         $ts->update($request->except('_token','method'));
 
-        return redirect()->route('requestor.ts.index')->with('success','Temporary slip has been updated!');
+        return redirect()->route('requestor.ts.index')->with('success',"Temporary slip has been updated!");
 
     }
 
@@ -129,7 +129,16 @@ class TSController extends Controller
         $ts = TemporarySlip::find($id);
         $ts->update(['status' => $request->action]);
 
-        return back()->with(['success' => "{$ts->ts_no} was successfully submitted."]);
+        return redirect()->route('requestor.ts.index')->with(['success' => "{$ts->ts_no} was successfully submitted."]);
+
+    }
+
+
+    public function print($id) {
+
+        $ts = TemporarySlip::find($id);
+
+        return view('pages.ts.requestor.print', compact('ts'));
 
     }
 

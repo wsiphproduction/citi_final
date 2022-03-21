@@ -19,6 +19,13 @@ class Attachment extends Model
     }
 
 
+    public function account_transactions() {
+
+        return $this->belongsTo(AccountTransaction::class, 'from_ref');
+
+    }
+
+
     public function pcfr() {
 
         return $this->belongsTo(Pcfr::class, 'from_ref');

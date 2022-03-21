@@ -111,7 +111,7 @@
 
                 <div data-label="{{ $pcv->account_name }}" class="df-example" id="attachment-outter-wrapper">
 
-                    @if(count($pcv->account_transactions))
+                    @if($pcv->account_transaction)
 
                         <div class="dataTables_responsive">
     
@@ -119,7 +119,7 @@
                                     
                                 <thead>
                                     <tr role="row">
-                                        @foreach($pcv->account_transactions[0]['details'] as $key => $tbl_headers)
+                                        @foreach($pcv->account_transaction['details'][0] as $key => $tbl_headers)
                                             <td data-rowname="{{ strtolower(str_replace(' ', '_', $key)) }}" class="tbl-header tx-uppercase"> {{ $key }} </td>
                                         @endforeach
                                     </tr>
@@ -127,24 +127,22 @@
 
                                 <tbody>
                                     
-                                    @foreach( $pcv->account_transactions as $transaction )
+                                    @foreach( $pcv->account_transaction['details'] as $transaction )
 
                                         <tr>
-                                            @foreach( $transaction['details'] as $detail )
-                                                
-                                                @if(is_array($detail)) 
+                                            @if(is_array($transaction)) 
 
-                                                    <td>{{ json_encode($detail) }}</td>
+                                                @foreach($transaction as $d)
+                                                    <td>{{ $d }}</td>
+                                                @endforeach
 
-                                                @else
+                                            @else
 
-                                                    <td>{{ $detail }}</td>
+                                                <td>{{ $transaction }}</td>
 
-                                                @endif
-
-                                            @endforeach
+                                            @endif
                                         </tr>
-
+                                            
                                     @endforeach
 
                                 </tbody>
@@ -202,11 +200,11 @@
                         </thead>
 
                         <tbody>
-                            @foreach( $pcv->attachments as $attachment )
+                            @foreach( $pcv->account_transaction->attachments as $attachment )
                                 <tr role="row">
                                     <td>{{ $attachment->type }}</td>
                                     <td>
-                                        <a href='{{ \Storage::url("pcv/{$pcv->pcv_no}/{$attachment->attachment}") }}' target="_blank">
+                                        <a href='{{ \Storage::url("account_transaction/{$pcv->pcv_no}/{$attachment->attachment}") }}' target="_blank">
                                             {{ $attachment->attachment }}
                                         </a>
                                     </td>

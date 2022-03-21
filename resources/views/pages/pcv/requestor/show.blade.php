@@ -112,7 +112,7 @@
 
                     <div data-label="{{ $pcv->account_name }}" class="df-example" id="attachment-outter-wrapper">
 
-                        @if(count($pcv->account_transactions))
+                        @if($pcv->account_transaction)
 
                             <div class="dataTables_responsive">
         
@@ -120,7 +120,7 @@
                                         
                                     <thead>
                                         <tr role="row">
-                                            @foreach($pcv->account_transactions[0]['details'] as $key => $tbl_headers)
+                                            @foreach($pcv->account_transaction['details'][0] as $key => $tbl_headers)
                                                 <td data-rowname="{{ strtolower(str_replace(' ', '_', $key)) }}" class="tbl-header tx-uppercase"> {{ $key }} </td>
                                             @endforeach
                                         </tr>
@@ -128,24 +128,22 @@
 
                                     <tbody>
                                         
-                                        @foreach( $pcv->account_transactions as $transaction )
+                                        @foreach( $pcv->account_transaction['details'] as $transaction )
 
                                             <tr>
-                                                @foreach( $transaction['details'] as $detail ) 
+                                                @if(is_array($transaction)) 
 
-                                                    @if(is_array($detail)) 
+                                                    @foreach($transaction as $d)
+                                                        <td>{{ $d }}</td>
+                                                    @endforeach
 
-                                                        <td>{{ json_encode($detail) }}</td>
+                                                @else
 
-                                                    @else
+                                                    <td>{{ $transaction }}</td>
 
-                                                        <td>{{ $detail }}</td>
-
-                                                    @endif
-
-                                                @endforeach
+                                                @endif
                                             </tr>
-
+                                                
                                         @endforeach
 
                                     </tbody>
@@ -181,8 +179,9 @@
 
             </div>
 
-             <br><br>
+            <br><br>
 
+            @if($pcv->account_name != 'Delivery Charges')
             <div class="row">
             
                 <div class="col-lg-8">
@@ -203,18 +202,22 @@
                             </thead>
 
                             <tbody>
-                                @foreach( $pcv->attachments as $attachment )
+
+                                @foreach( $pcv->account_transaction->attachments as $attachment )
+
                                     <tr role="row">
                                         <td>{{ $attachment->type }}</td>
                                         <td>
-                                            <a href='{{ \Storage::url("pcv/{$pcv->pcv_no}/{$attachment->attachment}") }}' target="_blank">
+                                            <a href='{{ \Storage::url("account_transaction/{$pcv->pcv_no}/{$attachment->attachment}") }}' target="_blank">
                                                 {{ $attachment->attachment }}
                                             </a>
                                         </td>
                                         <td>{{ $attachment->ref }}</td>
                                         <td>{{ \Carbon\Carbon::parse($attachment->date)->toFormattedDateString() }}</td>
                                     </tr>
+
                                 @endforeach
+
                             </tbody>
                         </table>
                     </div>
@@ -224,6 +227,7 @@
                 </div>
 
             </div>            
+            @endif
 
         </div>
 
@@ -241,6 +245,78 @@
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-send mg-r-5"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>Submit
                 </button>                           
             </form>
+        @endif
+
+        @if($pcv->status == 'submitted' && !$pcv->attachment)
+
+            <div class="col-lg-12 mg-t-50">
+                <div data-label="Attachment" class="df-example" id="attachment-outter-wrapper">
+
+                    <form method="POST" action="{{ route('requestor.pcv.pcv-signed-attachment', $pcv->id) }}" >
+                        @csrf
+                        @method('PUT')
+
+                        <div class="attachment-wrapper mg-t-20" id="attachment-inner-wrapper">
+                            <div class="pd-15 pt-4 border mg-b-20">
+                                <div class="row row-xs">
+                        
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                        
+                                            <label for="attachment-type" class="d-block tx-14">Attachment Type</label>
+                                            
+                                            <select class="custom-select" name="type" id="type" readonly>
+                                                <option selected="pcv signed" selected>PCV Signed</option>
+                                            </select>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <label class="d-block tx-14">Document</label>
+                                            <div class="custom-file">
+                                                <input type="file" class="custom-file-input document-f" id="document" data-from="pcv">
+                                                <label class="custom-file-label" for="document">Choose file</label>
+                                                <input type="hidden" name="docrefstring" id="docrefstring" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <label for="doc-ref-date" class="d-block tx-14">Doc. Ref Date</label>
+                                            <input type="date" class="form-control" name="docdate" id="docdate" value="{{ date('Y-m-d') }}">
+                                            <input type="hidden" name="docref" value="pcv signed">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <label for="doc-ref-date" class="d-block tx-14">&nbsp;</label>
+                                            <button type="submit" class="btn btn-primary"> Upload Attachment </button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+
+        @endif
+
+        @if($pcv->status == 'submitted' || $pcv->status == 'approved')
+            <div class="col-lg-12 mg-t-20">     
+                <a href="{{ route('requestor.pcv.print', $pcv->id) }}" target="_blank" 
+                    class="btn btn-secondary mr-lg-1 mb-2 mb-lg-0 d-block d-lg-inline wd-100p wd-lg-150"
+                    data-action="submitted" data-id="{{ $pcv->id }}" id="btn-submit"> 
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-send mg-r-5"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>Print
+                </a>                    
+            </div>
         @endif
     </div>
 
@@ -281,6 +357,50 @@
 
                 }
 
+            })
+
+        });
+
+
+        $(document).on('change', '.document-f', function() {
+
+            var _that = $(this);
+            var formData = new FormData(); // Currently empty
+            var from = $(this).data('from');
+            formData.append('file',$(this)[0].files[0]);
+            formData.append('from', from);
+
+            $.ajax({
+                url : '{!! route("attachments.upload") !!}',
+                headers: {'X-CSRF-Token': '{!! csrf_token() !!}' },
+                type: 'POST' ,
+                data: formData ,
+                cache : false ,
+                processData: false ,
+                contentType: false ,
+                success: function(res) {
+
+                    if( from == 'pcv' ) {
+                        var curr_doc_id = _that.attr('id');
+                        var curr_doc_num = curr_doc_id.match(/\d+/);
+                        var _input_id = null;
+
+                        if( curr_doc_num == null) {
+                            _input_id = 'docrefstring';
+                            $('#'+_input_id).val(res);              
+                        } else {
+                            _input_id = 'docrefstring_'+ curr_doc_num[0];
+                            $('#'+_input_id).val(res);
+                        }
+
+                        $(_that).next().html(res);
+
+                    } else {
+                        $(_that).next().html(res);
+                        $('#'+_that.data('name')+'_attachment').val(res);
+                    }
+
+                }
             })
 
         });

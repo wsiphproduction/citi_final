@@ -21,4 +21,13 @@ class AccountTransaction extends Model
         return $this->belongsTo(Pcv::class, 'pcv_id');
     }
 
+    public function attachments() {
+
+        return $this->hasMany(Attachment::class, 'from_ref')
+            ->where(function($query) {
+                return $query->where('from', 'account_transaction');
+            });
+
+    }
+
 }

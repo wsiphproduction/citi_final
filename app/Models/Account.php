@@ -19,4 +19,8 @@ class Account extends Model
 
     }
 
+    public function account_transactions(){
+        return $this->hasMany(AccountTransactions::class, 'account_name');
+    }
+
 }

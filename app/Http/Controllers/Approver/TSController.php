@@ -199,5 +199,12 @@ class TSController extends Controller
 
     }
 
+    public function print($id) {
+
+        $ts = TemporarySlip::find($id);
+
+        return view('pages.ts.approver.print', compact('ts'));
+
+    }
 
 }
