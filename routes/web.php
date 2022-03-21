@@ -160,7 +160,7 @@ Route::middleware(['web', 'auth'])->group(function () {
             Route::get('ts-search', [RequestorTs::class, 'search'])->name('requestor.ts.search');
             Route::get('show/{id}', [RequestorTs::class, 'show'])->name('requestor.ts.show');
             Route::get('edit/{id}', [RequestorTs::class, 'edit'])->name('requestor.ts.edit');
-            
+            Route::get('/print/{id}', [RequestorTs::class, 'print'])->name('requestor.ts.print');
 
             Route::post('store', [RequestorTs::class, 'store'])->name('requestor.ts.store');
 

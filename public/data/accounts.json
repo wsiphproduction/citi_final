@@ -158,10 +158,6 @@
             "type": "select"
          },
          {
-            "name": "Amount",
-            "type": "number"
-         },
-         {
             "name": "Bill Date From",
             "type": "date"
          },
@@ -170,8 +166,8 @@
             "type": "date"
          },
          {
-            "name": "Description",
-            "type": "textarea"
+            "name": "Amount",
+            "type": "number"
          }
       ],
       "has_attachment_section": true,

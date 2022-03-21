@@ -108,7 +108,7 @@
 	</div>
 
 
-	<hr style="margin: 100px 0; border: #000 dashed 1px !important; ">
+	<hr style="margin: 50px 0; border: #000 dashed 1px !important; ">
 
 
 	<div class="col-lg-12 text-center">	

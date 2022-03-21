@@ -79,28 +79,45 @@
 
 			</table>
 
-			<div style="border: 1px solid #000; width: 100%; display: block; margin-top: 50px;">
+			<div style="border: 1px solid #000; width: 100%; display: block; margin: 50px 0 0; padding: 0 10px;">
 
 				<table class="col-lg-12 mt-5" style="margin-top: 0 !important;">
 
 					<thead>
-						<tr>
-							@foreach($pcv->account_transaction['details'][0] as $key => $tbl_headers)
-								<td> <p>{{ ucfirst(\Str::replace("_", " ", $key)) }}</p> </td>
-							@endforeach
-						</tr>
-					</thead>
+                        <tr role="row">
+                            @foreach($pcv->account_transaction['details'][0] as $key => $tbl_headers)
+                                @if($key != 'items')
+                                <td data-rowname="{{ strtolower(str_replace(' ', '_', $key)) }}" class="tbl-header tx-uppercase"> {{ $key }} </td>
+                                @endif
+                            @endforeach
+                        </tr>
+                    </thead>
 
-					<tbody>
-						<tr>
-							@foreach( $pcv->account_transaction->details as $detail ) 
+                    <tbody>
+                        
+                        @foreach( $pcv->account_transaction['details'] as $transaction )
 
-								@foreach($detail as $d)
-									<td><p>{{ $d}}</p></td>
-								@endforeach
-							@endforeach
-						</tr>
-					</tbody>
+                            <tr>
+                                @if(is_array($transaction)) 
+
+                                    @foreach($transaction as $d)
+                                        @if(is_array($d))
+                                            @continue
+                                        @else
+                                            <td> {{ $d }} </td>
+                                        @endif
+                                    @endforeach
+
+                                @else
+
+                                    <td>{{ $transaction }}</td>
+
+                                @endif
+                            </tr>
+                                
+                        @endforeach
+
+                    </tbody>
 
 				</table>
 

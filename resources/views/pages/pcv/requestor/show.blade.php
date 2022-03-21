@@ -121,7 +121,9 @@
                                     <thead>
                                         <tr role="row">
                                             @foreach($pcv->account_transaction['details'][0] as $key => $tbl_headers)
+                                                @if($key != 'items')
                                                 <td data-rowname="{{ strtolower(str_replace(' ', '_', $key)) }}" class="tbl-header tx-uppercase"> {{ $key }} </td>
+                                                @endif
                                             @endforeach
                                         </tr>
                                     </thead>
@@ -134,7 +136,11 @@
                                                 @if(is_array($transaction)) 
 
                                                     @foreach($transaction as $d)
-                                                        <td>{{ $d }}</td>
+                                                        @if(is_array($d))
+                                                            @continue
+                                                        @else
+                                                            <td> {{ $d }} </td>
+                                                        @endif
                                                     @endforeach
 
                                                 @else
@@ -147,20 +153,28 @@
                                         @endforeach
 
                                     </tbody>
+
+                                    @if($pcv->account_name == 'Stripping Charge' 
+                                        || $pcv->account_name == 'Delivery Charges' )
+
                                     <tfoot>
-                        <tr role="row">
-                          <td class="sorting_1"></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td class="tx-bold text-right align-middle">Total Amount</td>
-                          <td>
-                            <input type="number" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" 
-                                value="{{ $pcv->amount }}" readonly>
-                          </td>
-                          <td></td>
-                        </tr>
-                      </tfoot>
+                                        <tr role="row">
+                                            <td class="sorting_1"></td>
+                                            <td></td>                                        
+                                            <td></td>                                                                                
+                                            <td></td>                                        
+                                            @if($pcv->account_name == 'Delivery Charges')
+                                            <td></td>
+                                            @endif
+                                            <td class="tx-bold text-right align-middle">Total Amount</td>
+                                            <td>
+                                            <input type="number" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" 
+                                            value="{{ $pcv->amount }}" readonly>
+                                            </td>                                        
+                                        </tr>
+                                    </tfoot>
+
+                                    @endif
 
                                 </table>
                             
@@ -172,7 +186,6 @@
 
                         @endif
 
-
                     </div>
 
                 </div>
@@ -180,6 +193,70 @@
             </div>
 
             <br><br>
+
+            @if($pcv->account_name == 'Installation')
+                <div class="row" id="account-wrapper">
+
+                    <div class="col-lg-12">
+
+                        <div data-label="{{ $pcv->account_name }} Items" class="df-example" id="attachment-outter-wrapper">
+
+                            @if($pcv->account_transaction)
+
+                                <div class="dataTables_responsive">
+            
+                                    <table id="account-transactions-list" class="table dataTable no-footer">
+                                            
+                                        <thead>
+                                            <tr role="row">
+                                                @foreach($pcv->account_transaction['details'][0]['items'] as $key => $tbl_headers)
+                                                    <td data-rowname="{{ strtolower(str_replace(' ', '_', $key)) }}" class="tbl-header tx-uppercase"> {{ $key }} </td>
+                                                @endforeach
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            
+                                            @foreach( $pcv->account_transaction['details'] as $transaction )
+
+                                                <tr>
+
+                                                    <td>{{ $transaction['items']['barcode'] }}</td>
+                                                    <td>{{ $transaction['items']['description'] }}</td>
+                                                    <td>{{ $transaction['items']['qty_for_installation'] }}</td>
+
+                                                </tr>
+                                                    
+                                            @endforeach
+
+                                        </tbody>
+
+                                    </table>
+                                
+                                </div>
+
+                            @else
+
+                                <h3 class="text-center"> No Account Transaction Found </h3>
+
+                            @endif
+
+                            @if($pcv->account_name == 'Installation')
+
+                                
+
+                            @endif
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+            <br><br>    
+            @endif
+
+            
 
             @if($pcv->account_name != 'Delivery Charges')
             <div class="row">
@@ -206,7 +283,7 @@
                                 @foreach( $pcv->account_transaction->attachments as $attachment )
 
                                     <tr role="row">
-                                        <td>{{ $attachment->type }}</td>
+                                        <td>{{ ucfirst($attachment->type) }}</td>
                                         <td>
                                             <a href='{{ \Storage::url("account_transaction/{$pcv->pcv_no}/{$attachment->attachment}") }}' target="_blank">
                                                 {{ $attachment->attachment }}
@@ -217,6 +294,21 @@
                                     </tr>
 
                                 @endforeach
+
+                                @if($pcv->attachment)
+
+                                    <tr>
+                                        <td>{{ ucfirst($pcv->attachment->type) }}</td>
+                                        <td>
+                                            <a href='{{ \Storage::url("pcv/{$pcv->pcv_no}/{$pcv->attachment->attachment}") }}' target="_blank">
+                                                {{ $pcv->attachment->attachment }}
+                                            </a>
+                                        </td>
+                                        <td>{{ $pcv->attachment->ref }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($pcv->attachment->date)->toFormattedDateString() }}</td>
+                                    </tr>
+
+                                @endif
 
                             </tbody>
                         </table>
@@ -249,62 +341,62 @@
 
         @if($pcv->status == 'submitted' && !$pcv->attachment)
 
-            <div class="col-lg-12 mg-t-50">
-                <div data-label="Attachment" class="df-example" id="attachment-outter-wrapper">
+            <div class="row">
+            <div data-label="Attachment" class="df-example col-lg-10" id="attachment-outter-wrapper">
 
-                    <form method="POST" action="{{ route('requestor.pcv.pcv-signed-attachment', $pcv->id) }}" >
-                        @csrf
-                        @method('PUT')
+                <form method="POST" action="{{ route('requestor.pcv.pcv-signed-attachment', $pcv->id) }}" >
+                    @csrf
+                    @method('PUT')
 
-                        <div class="attachment-wrapper mg-t-20" id="attachment-inner-wrapper">
-                            <div class="pd-15 pt-4 border mg-b-20">
-                                <div class="row row-xs">
-                        
-                                    <div class="col-lg-3">
-                                        <div class="form-group">
+                    <div class="attachment-wrapper mg-t-20" id="attachment-inner-wrapper">
+                        <div class="pd-15 pt-4 border mg-b-20">
+                            <div class="row row-xs">
+                    
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                    
+                                        <label for="attachment-type" class="d-block tx-14">Attachment Type</label>
                                         
-                                            <label for="attachment-type" class="d-block tx-14">Attachment Type</label>
-                                            
-                                            <select class="custom-select" name="type" id="type" readonly>
-                                                <option selected="pcv signed" selected>PCV Signed</option>
-                                            </select>
+                                        <select class="custom-select" name="type" id="type" readonly>
+                                            <option selected="pcv signed" selected>PCV Signed</option>
+                                        </select>
 
-                                        </div>
                                     </div>
-
-                                    <div class="col-lg-3">
-                                        <div class="form-group">
-                                            <label class="d-block tx-14">Document</label>
-                                            <div class="custom-file">
-                                                <input type="file" class="custom-file-input document-f" id="document" data-from="pcv">
-                                                <label class="custom-file-label" for="document">Choose file</label>
-                                                <input type="hidden" name="docrefstring" id="docrefstring" />
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-lg-3">
-                                        <div class="form-group">
-                                            <label for="doc-ref-date" class="d-block tx-14">Doc. Ref Date</label>
-                                            <input type="date" class="form-control" name="docdate" id="docdate" value="{{ date('Y-m-d') }}">
-                                            <input type="hidden" name="docref" value="pcv signed">
-                                        </div>
-                                    </div>
-
-                                    <div class="col-lg-3">
-                                        <div class="form-group">
-                                            <label for="doc-ref-date" class="d-block tx-14">&nbsp;</label>
-                                            <button type="submit" class="btn btn-primary"> Upload Attachment </button>
-                                        </div>
-                                    </div>
-
                                 </div>
+
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label class="d-block tx-14">Document</label>
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input document-f" id="document" data-from="pcv">
+                                            <label class="custom-file-label" for="document">Choose file</label>
+                                            <input type="hidden" name="docrefstring" id="docrefstring" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="doc-ref-date" class="d-block tx-14">Doc. Ref Date</label>
+                                        <input type="date" class="form-control" name="docdate" id="docdate" value="{{ date('Y-m-d') }}">
+                                        <input type="hidden" name="docref" value="pcv signed">
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="doc-ref-date" class="d-block tx-14">&nbsp;</label>
+                                        <button type="submit" class="btn btn-primary"> Upload Attachment </button>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
+                    </div>
 
-                    </form>
+                </form>
 
-                </div>
+            </div>
             </div>
 
         @endif

@@ -131,67 +131,52 @@ class PCFRController extends Controller
         // PCF Accountability
         $pcv_accountability = $branch->budget;
 
-        // for replenishment
-        $for_replenishment = Pcfr::where('status', 'for replenishment')
-            ->whereHas('user', function(Builder $query) use ($user) {
-                $query->where('assign_to', $user->assign_to);
-            })->sum('amount');
-
-        // Pending Replenishment 
-        $pending_rep_pcv = Pcv::where('status', 'approved')
-            ->whereHas('user', function(Builder $query) use ($user) {
-                $query->where('assign_to', $user->assign_to);
-            })
-            ->sum('amount');
-
-        // Unreplenished
-        $unreplenished = Pcfr::where('status', 'unreplenished')
-            ->whereHas('user', function(Builder $query) use ($user) {
-                $query->where('assign_to', $user->assign_to);
-            })
-            ->sum('amount');
-
-        // Unapproved pcv
-        $unapproved_pcvs = Pcv::where('status', 'disapproved tl')
-            ->whereHas('user', function(Builder $query) use ($user) {
-                $query->where('assign_to', $user->assign_to);
-            })->sum('amount');
-
-        // Unliquidated ts
+        // unliquidated ts
         $unliquidated_ts = TemporarySlip::where('running_balance', '>', 0)
             ->where('status', 'approved')
             ->whereHas('user', function(Builder $query) use ($user) {
                 $query->where('assign_to', $user->assign_to);
             })->sum('running_balance');
 
-        // Returned pcv
-        $returned_pcvs = Pcv::where('status', 'cancelled')
-            ->whereHas('user', function(Builder $query) use ($user) {
-                $query->where('assign_to', $user->assign_to);
-            })
-            ->sum('amount');
-        
-
-        // PCF Accounted For
-        $pcv_accounted = $unliquidated_ts + $for_replenishment + $atm_bal + $cash_on_hand + $pending_rep_pcv + $unreplenished + $returned_pcvs + $unapproved_pcvs;
-
-        // overage / shortage
-        $overage_shortage = $pcv_accountability - $pcv_accounted;
-
-        // pcvs 
-        $pcvs = Pcv::where('status', 'approved')
+        $total_replenishment = Pcfr::where('status', 'post to ebs')
             ->whereHas('user', function(Builder $query) use ($user) {
                 $query->where('assign_to', $user->assign_to);
             })->sum('amount');
 
+        $pending_replenishment = Pcv::where('status', 'approved')
+            ->whereHas('user', function(Builder $query) use ($user) {
+                $query->where('assign_to', $user->assign_to);
+            })->doesntHave('pcfr')->sum('amount');
+
+        $unreplenished = Pcfr::where('status', 'for replenishment')
+            ->whereHas('user', function(Builder $query) use ($user) {
+                $query->where('assign_to', $user->assign_to);
+            })->sum('amount');            
+
+        $unapproved_pcvs = Pcv::whereIn('status', ['disapproved tl', 'disapproved dh'])
+            ->whereHas('user', function(Builder $query) use ($user) {
+                $query->where('assign_to', $user->assign_to);
+            })->sum('amount');
+
+        $returned_pcvs = Pcv::where('status', 'disapproved py')
+            ->whereHas('user', function(Builder $query) use ($user) {
+                $query->where('assign_to', $user->assign_to);
+            })->sum('amount');            
+
+        $pcf_accounted_for = $unliquidated_ts + $total_replenishment + $pending_replenishment + $unreplenished + $unapproved_pcvs + $returned_pcvs
+            + $pcfr->atm_balance + $pcfr->cash_on_hand;
+
+        // overage / shortage
+        $overage_shortage = $pcv_accountability - $pcf_accounted_for;
+
         $pcfr->update([
             'total_temp_slip'               => $unliquidated_ts ,
-            'total_replenishment'           => $for_replenishment ,
+            'total_replenishment'           => $total_replenishment ,
             'total_unreplenished'           => $unreplenished ,
             'total_unapproved_pcv'          => $unapproved_pcvs ,
             'total_returned_pcv'            => $returned_pcvs ,
-            'total_accounted'               => $pcv_accounted ,
-            'total_pending_replenishment'   => $pending_rep_pcv ,
+            'total_accounted'               => $pcf_accounted_for ,
+            'total_pending_replenishment'   => $pending_replenishment ,
             'pcf_diff'                      => $overage_shortage
         ]);
 

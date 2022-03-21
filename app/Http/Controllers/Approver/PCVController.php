@@ -60,6 +60,7 @@ class PCVController extends Controller
         }
 
         $pcvs = $pcvs->doesntHave('pcfr')
+            ->orderBy('created_at', 'DESC')
             ->get();
 
         return view('pages.pcv.approver.index', compact('pcvs'));
