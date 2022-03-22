@@ -77,7 +77,7 @@
 							<option>Select</option>
 							@foreach($ts as $slip)
 								<option value="{{$slip->ts_no}}" data-name="{{$slip->account_name}}" 
-									data-description="{{$slip->ts_no}}">{{ $slip->ts_no }}</option>
+									data-description="{{$slip->description}}">{{ $slip->ts_no }}</option>
 							@endforeach
 						</select>
 					</div>
@@ -386,8 +386,10 @@
 			} else {
 
 				$('#ts_no').attr('disabled', 'disabled');
-				$('#ts_no').val('');
+				$('#ts_no').prop("selectedIndex", 0);
+				$('#account_name').prop("selectedIndex", 0).change();
 				$('#tsNo').empty();
+				$('#pcv_description').val('');
 
 			}			
 
@@ -1143,6 +1145,16 @@
 								backdrop : 'static' ,
 								show 	 : true
 							});
+
+						} else {
+
+							$('#message_content').text('No Items Found');
+							$('#for_message').modal({
+								backdrop : 'static' ,
+								show 	 : true
+							});
+
+							setTimeout(function(){ $('#for_message').modal('hide');}, 3000);
 
 						}
 

@@ -51,10 +51,7 @@ class TSController extends Controller
                 })->get();
         } else {
             $area_manager = User::where('position', 'division head')
-                ->whereHas('branch_group', function($query) use ($ts) {
-                    $branch = Branch::find($ts->user->assign_to);
-                    $query->where('branch', 'LIKE', "%{$branch->name}%");
-                })->get();
+                ->where('assign_to', $ts->user->assign_to)->get();
         }
         
         return view('pages.ts.approver.show', compact('ts', 'area_manager'));

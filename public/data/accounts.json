@@ -77,6 +77,10 @@
             "type": "number"
          },
          {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
             "name": "Attachment",
             "type": "file"
          }
