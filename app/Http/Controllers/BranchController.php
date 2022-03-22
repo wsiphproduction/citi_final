@@ -13,7 +13,7 @@ class BranchController extends Controller
 
     public function index() {
 
-        $branch = Branch::all();
+        $branch = Branch::orderBy('created_at', 'DESC')->get();
 
         return view('pages.branch.index', compact('branch'));
 
@@ -27,10 +27,19 @@ class BranchController extends Controller
     }
 
 
+    public function show($id) {
+
+        $branch = Branch::find($id);
+
+        return view('pages.branch.show', compact('branch'));
+
+    }
+
+
     public function store(Request $request) {
 
         $this->validate($request, [
-            'name'              => 'required' ,
+            'name'              => 'required|unique:temp_branch,name' ,
             'budget'            => 'required' ,
             'company_name'      => 'required'
         ]);
@@ -56,7 +65,7 @@ class BranchController extends Controller
     public function update($id, Request $request) {
 
         $this->validate($request, [
-            'name'              => 'required' ,
+            'name'              => 'required|unique:temp_branch,name,'.$id ,
             'budget'            => 'required' ,
             'company_name'      => 'required'
         ]);

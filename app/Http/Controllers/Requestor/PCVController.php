@@ -130,7 +130,6 @@ class PCVController extends Controller
         // add pcv reference to account transactions
         if(count($account_transactions)) {
 
-
             $account_transaction = AccountTransaction::create([
                 'name'          => $request->account_name ,
                 'details'       => $account_transactions , 
@@ -283,21 +282,13 @@ class PCVController extends Controller
 
         // add pcv reference to account transactions
         if(count($account_transactions)) {
-
-            foreach($account_transactions as $account_transaction) {
-
-                AccountTransaction::create([
-                    'name'          => $request->account_name ,
-                    'details'       => $account_transaction , 
-                    'pcv_id'        => $pcv->id ,
-                    'status'        => 'approved' ,
-                    'approval_code' => array_key_exists('code', $account_transaction) ? $account_transaction['code'] : null ,
-                    'approved_by'   => array_key_exists('by', $account_transaction) ? $account_transaction['by'] : null ,
-                    'approved_date' => array_key_exists('date', $account_transaction) ? $account_transaction['date'] : null ,
-                    'remarks'       => array_key_exists('remarks', $account_transaction) ? $account_transaction['remarks'] : null 
-                ]);
-
-            }
+            
+            AccountTransaction::create([
+                'name'          => $request->account_name ,
+                'details'       => $account_transactions , 
+                'pcv_id'        => $pcv->id ,
+                'status'        => 'approved' 
+            ]);
 
         }
 

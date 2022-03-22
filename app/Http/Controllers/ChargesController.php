@@ -11,9 +11,22 @@ class ChargesController extends Controller
 
     public function index() {
 
-        $charges = Charge::all();
+        $charges = Charge::where('status', 1)
+            ->orderBy('created_at', 'DESC')
+            ->get();
 
         return view('pages.charges.index', compact('charges'));
+
+    }
+
+
+    public function inactive() {
+
+        $charges = Charge::where('status', 0)
+            ->orderBy('created_at', 'DESC')
+            ->get();
+
+        return view('pages.charges.inactive', compact('charges'));
 
     }
 
@@ -21,6 +34,15 @@ class ChargesController extends Controller
     public function create() {
 
         return view('pages.charges.create');
+
+    }
+
+
+    public function show($id) {
+
+        $charge = Charge::find($id);
+
+        return view('pages.charges.show', compact('charge'));
 
     }
 
@@ -36,14 +58,19 @@ class ChargesController extends Controller
 
     public function edit($id, Request $request) {
 
+        $charge = Charge::find($id);
 
+        return view('pages.charges.edit', compact('charge'));
 
     }
 
 
     public function update($id, Request $request) {
 
+        $charge = Charge::find($id);
+        $charge->update($request->except('_token', '_method'));
 
+        return redirect()->route('charges.index')->with('success', 'Charge Successfully Updated!');
 
     }
 

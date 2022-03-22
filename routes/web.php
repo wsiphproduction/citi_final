@@ -146,6 +146,7 @@ Route::middleware(['web', 'auth'])->group(function () {
     Route::prefix('charges')->group(function() {
 
         Route::get('/', [ChargesController::class, 'index'])->name('charges.index');
+        Route::get('inactive', [ChargesController::class, 'inactive'])->name('charges.inactive');
         Route::get('create', [ChargesController::class, 'create'])->name('charges.create');
         Route::get('edit/{id}', [ChargesController::class, 'edit'])->name('charges.edit');
         Route::get('show/{id}', [ChargesController::class, 'show'])->name('charges.show');
@@ -319,8 +320,10 @@ Route::middleware(['web', 'auth'])->group(function () {
 
         Route::get('/', [BranchController::class, 'index'])->name('branch.index');
         Route::get('create', [BranchController::class, 'create'])->name('branch.create');
+        Route::get('department-list', [BranchController::class, 'list'])->name('branch.list');        
         Route::get('edit/{id}', [BranchController::class, 'edit'])->name('branch.edit');
-        Route::get('department-list', [BranchController::class, 'list'])->name('branch.list');
+        Route::get('show/{id}', [BranchController::class, 'show'])->name('branch.show');
+        
 
         Route::post('store', [BranchController::class, 'store'])->name('branch.store');
 
@@ -334,6 +337,7 @@ Route::middleware(['web', 'auth'])->group(function () {
         Route::get('/', [BranchGroupController::class, 'index'])->name('branch-group.index');
         Route::get('create', [BranchGroupController::class, 'create'])->name('branch-group.create');
         Route::get('edit/{id}', [BranchGroupController::class, 'edit'])->name('branch-group.edit');
+        Route::get('show/{id}', [BranchGroupController::class, 'show'])->name('branch-group.show');
 
         Route::post('store', [BranchGroupController::class, 'store'])->name('branch-group.store');
 
@@ -358,8 +362,10 @@ Route::middleware(['web', 'auth'])->group(function () {
     Route::prefix('account-matrix')->group(function() {
 
         Route::get('/', [AccountMatrixController::class, 'index'])->name('account-matrix.index');
+        Route::get('inactive', [AccountMatrixController::class, 'inactive'])->name('account-matrix.inactive');
         Route::get('create', [AccountMatrixController::class, 'create'])->name('account-matrix.create');
         Route::get('edit/{id}', [AccountMatrixController::class, 'edit'])->name('account-matrix.edit');
+        Route::get('show/{id}', [AccountMatrixController::class, 'show'])->name('account-matrix.show');
 
         Route::post('store', [AccountMatrixController::class, 'store'])->name('account-matrix.store');
 

@@ -29,7 +29,9 @@
 		</div>
 
 	</div>	
+
 	@include('components.messages')
+
 	<div class="row">
 
 		<form role="form" method="POST" action="{{ route('requestor.pcv.update', $pcv->id) }}" class="col-lg-12" id="pcv_form">
@@ -159,7 +161,8 @@
 	          	<button type="submit" class="btn btn-brand-01 d-block d-lg-inline wd-100p wd-lg-150 btn-savesubmit"
 	          		data-action="{{ $pcv->status }}">
 	          	@endif
-	            	<i class="mg-r-5" data-feather="send"></i> Update
+	            	<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg> 
+	            	Update
 	          	</button>
 	        </div>
 
@@ -635,6 +638,7 @@
 				});
 			});
 			console.log(account_attachments);
+			console.log(account_transactions);
 			if(account_attachments.length>0){
 				$.each(account_attachments, function(i, e) {
 					$.each(e, function(o, u){
@@ -673,6 +677,8 @@
 				} else {
 
 					let _data = getData();
+
+					if(!_data) { alert('Some data on your request is missing please check it again'); return false; }
 
 			    	account_transactions.push(_data);
 
@@ -930,7 +936,7 @@
 	                      <td></td>
 	                      <td></td>
 	                      <td></td>
-	                      <td class="tx-bold text-right align-middle">Total Amount</td>
+	                      <td class="tx-bold align-middle">Total Amount</td>
 	                      <td>
 	                        <input type="number" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" value="00000.00" readonly id="total_amount_display">
 	                      </td>
@@ -1216,7 +1222,13 @@
 			let _base_url = "{!! env('APP_URL') !!}";
 			let _amount_ctr = 0;
 
-			$.each(_account_transactions, function(i, data){
+			// if(_account_transactions.hasOwnProperty(0)) {
+			// 	console.log('yes');
+			// } else {
+			// 	console.log('no');
+			// }
+
+			$.each(_account_transactions[0], function(i, data){
 
 				if($('#btn-add-account-details').length > 0) {
 							
@@ -1264,7 +1276,7 @@
 				} else {
 
 					$('.custom-inputs').each(function(i, d) {
-						$(this).val(data[0][$(this).attr('data-name')]);
+						$(this).val(data[$(this).attr('data-name')]);
 					});
 
 					if(_account_name == 'Installation') {
@@ -1306,7 +1318,7 @@
 		                      <td></td>
 		                      <td></td>
 		                      <td></td>
-		                      <td class="tx-bold text-right align-middle">Total Amount</td>
+		                      <td class="tx-bold align-middle">Total Amount</td>
 		                      <td>
 		                        <input type="number" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" value="00000.00" readonly id="total_amount_display">
 		                      </td>
@@ -1322,7 +1334,7 @@
 		                      <td></td>
 		                      <td></td>
 		                      <td></td>
-		                      <td class="tx-bold text-right align-middle">Total Amount</td>
+		                      <td class="tx-bold align-middle">Total Amount</td>
 		                      <td>
 		                        <input type="number" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" value="00000.00" readonly id="total_amount_display">
 		                      </td>
@@ -1451,7 +1463,7 @@
 	                      <td></td>
 	                      <td></td>
 	                      <td></td>
-	                      <td class="tx-bold text-right align-middle">Total Amount</td>
+	                      <td class="tx-bold align-middle">Total Amount</td>
 	                      <td>
 	                        <input type="number" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" value="00000.00" readonly id="total_amount_display">
 	                      </td>
@@ -1464,11 +1476,20 @@
 
 	    function getData() {
 	    	let _data 	 		= {};
+	    	let _hasEmptyVal    = false;
 
 	    	$('.custom-inputs').each(function() {
 				let _name = $(this).data('name');
 				_data[_name] = $(this).val();
+				if($(this).val() == '' || $(this).val() == undefined) {
+					$(this).addClass('is-invalid');
+					_hasEmptyVal = true;
+				} else {
+					$(this).removeClass('is-invalid');
+				}
 			});
+
+	    	if( _hasEmptyVal ) return false;
 
 			return _data;
 	    }

@@ -29,12 +29,21 @@ class BranchGroupController extends Controller
     }
 
 
+    public function show($id) {
+
+        $branch_group = BranchGroup::find($id);
+
+        return view('pages.branch-groups.show', compact('branch_group'));
+
+    }
+
+
     public function store(Request $request) {
 
         $this->validate($request, [
             'size'      => 'required' ,
             'branch'    => 'required' ,
-            'name'      => 'required'
+            'name'      => 'required|unique:branch_groups,name'
         ]);
 
         $request['created_by'] = auth()->user()->username;
@@ -61,7 +70,7 @@ class BranchGroupController extends Controller
         $this->validate($request, [
             'size'      => 'required' ,
             'branch'    => 'required' ,
-            'name'      => 'required'
+            'name'      => 'required|unique:branch_groups,name,'.$id
         ]);
 
         $request['updated_by'] = auth()->user()->username;

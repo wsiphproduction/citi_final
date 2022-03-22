@@ -17,6 +17,8 @@
 
 	</div>	
 
+	@include('components.messages')
+		
 	<div class="row">
 		
 		<form method="POST" action="{{ route('branch.store') }}" class="col-lg-12">
@@ -80,7 +82,8 @@
 
 				<div class="col-lg-6 mg-t-20 text-right">
 					<button type="submit" class="btn btn-brand-01 d-block d-lg-inline wd-100p wd-lg-150">
-						<i class="mg-r-5" data-feather="send"></i> Submit
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-save"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+						Save
 					</button>
 				</div>
 			</div>

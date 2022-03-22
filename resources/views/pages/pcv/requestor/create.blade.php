@@ -175,11 +175,13 @@
 	        <div class="col-lg-12 mg-t-20">
 	          	<button type="button" class="btn btn-white mr-lg-1 mb-2 mb-lg-0 d-block d-lg-inline wd-100p wd-lg-150 btn-savesubmit"
 	          		data-action="saved">
-	            	<i class="mg-r-5" data-feather="save"></i> Save
+	            	<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-save"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+	            	Save
 	          	</button>
 	          	<button type="submit" class="btn btn-brand-01 d-block d-lg-inline wd-100p wd-lg-150 btn-savesubmit"
 	          		data-action="submitted">
-	            	<i class="mg-r-5" data-feather="send"></i> Submit
+	            	<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-inbox"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg>
+	            	Submit
 	          	</button>
 	        </div>
 
@@ -694,6 +696,8 @@
 
 					let _data = getData();
 
+					if(!_data) { alert('Some data on your request is missing please check it again'); return false; }
+
 			    	account_transactions.push(_data);
 
 			    	populateAccountsTable();
@@ -950,7 +954,7 @@
 	                      <td></td>
 	                      <td></td>
 	                      <td></td>
-	                      <td class="tx-bold text-right align-middle">Total Amount</td>
+	                      <td class="tx-bold align-middle">Total Amount</td>
 	                      <td>
 	                        <input type="number" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" value="00000.00" readonly id="total_amount_display">
 	                      </td>
@@ -1236,7 +1240,7 @@
 			let _base_url = "{!! env('APP_URL') !!}";
 			let _amount_ctr = 0;
 
-			$.each(_account_transactions, function(i, data){
+			$.each(_account_transactions[0], function(i, data){
 
 				if($('#btn-add-account-details').length > 0) {
 							
@@ -1326,7 +1330,7 @@
 		                      <td></td>
 		                      <td></td>
 		                      <td></td>
-		                      <td class="tx-bold text-right align-middle">Total Amount</td>
+		                      <td class="tx-bold align-middle">Total Amount</td>
 		                      <td>
 		                        <input type="number" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" value="00000.00" readonly id="total_amount_display">
 		                      </td>
@@ -1342,7 +1346,7 @@
 		                      <td></td>
 		                      <td></td>
 		                      <td></td>
-		                      <td class="tx-bold text-right align-middle">Total Amount</td>
+		                      <td class="tx-bold align-middle">Total Amount</td>
 		                      <td>
 		                        <input type="number" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" value="00000.00" readonly id="total_amount_display">
 		                      </td>
@@ -1471,7 +1475,7 @@
 	                      <td></td>
 	                      <td></td>
 	                      <td></td>
-	                      <td class="tx-bold text-right align-middle">Total Amount</td>
+	                      <td class="tx-bold align-middle">Total Amount</td>
 	                      <td>
 	                        <input type="number" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" value="00000.00" readonly id="total_amount_display">
 	                      </td>
@@ -1484,11 +1488,20 @@
 
 	    function getData() {
 	    	let _data 	 		= {};
+	    	let _hasEmptyVal    = false;
 
 	    	$('.custom-inputs').each(function() {
 				let _name = $(this).data('name');
 				_data[_name] = $(this).val();
+				if($(this).val() == '' || $(this).val() == undefined) {
+					$(this).addClass('is-invalid');
+					_hasEmptyVal = true;
+				} else {
+					$(this).removeClass('is-invalid');
+				}
 			});
+
+			if( _hasEmptyVal ) return false;
 
 			return _data;
 	    }

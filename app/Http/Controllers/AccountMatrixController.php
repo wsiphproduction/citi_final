@@ -12,9 +12,31 @@ class AccountMatrixController extends Controller
 
     public function index() {
 
-        $matrix = AccountMatrix::all();
+        $matrix = AccountMatrix::where('status', 1)
+            ->orderBy('created_at', 'DESC')
+            ->get();
 
         return view('pages.account-matrix.index', compact('matrix'));
+
+    }
+
+
+    public function inactive() {
+
+        $matrix = AccountMatrix::where('status', 0)
+            ->orderBy('created_at', 'DESC')
+            ->get();
+
+        return view('pages.account-matrix.inactive', compact('matrix'));
+
+    }
+
+
+    public function show($id) {
+
+        $matrix = AccountMatrix::find($id);
+
+        return view('pages.account-matrix.show', compact('matrix'));
 
     }
 

@@ -21,6 +21,8 @@
 
 	</div>	
 
+	@include('components.messages')
+
 	<div class="row">
 		
 		<form method="POST" action="{{ route('branch-group.store') }}" class="col-lg-12">
