@@ -36,9 +36,9 @@
 			@csrf
 			@method('PUT')
 
-			<input type="hidden" name="pcv_attachments" id="pcv_attachments" value="{{ old('pcv_attachments', $pcv->attachments) }}" />
+			<input type="hidden" name="pcv_attachments" id="pcv_attachments" value="{{ old('pcv_attachments', $pcv->account_transaction->attachments) }}" />
 			<input type="hidden" name="pcv_accounts" id="pcv_accounts" 
-				value="{{ old('pcv_accounts', $pcv->account_transactions()->pluck('details')) }}" />
+				value="{{ old('pcv_accounts', $pcv->account_transaction()->pluck('details')) }}" />
 			<input type="hidden" name="pcv_action" id="pcv_action" value="{{ old('pcv_action', $pcv->status) }}" />			
 			<input type="hidden" name="total_amount" id="total_amount" value="{{ old('total_amount', $pcv->amount) }}" />
 
@@ -973,7 +973,7 @@
 			let _account_transactions = JSON.parse($('#pcv_accounts').val());
 			let _base_url = "{!! env('APP_URL') !!}";
 
-			$.each(_account_transactions, function(i, data){
+			$.each(_account_transactions[0], function(i, data){
 
 				if($('#btn-add-account-details').length > 0) {
 							
