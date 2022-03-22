@@ -21,6 +21,8 @@
 
 	</div>	
 
+	@include('components.messages')
+
 	<div class="row">
 		
 		<form method="POST" action="{{ route('users.update', $user->id) }}" class="col-lg-12">

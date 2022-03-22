@@ -16,7 +16,8 @@ class UsersController extends Controller
 
     public function index() {
 
-        $users = User::all();
+        $users = User::where('status', 1)
+            ->orderBy('created_at', 'DESC')->get();
 
         return view('pages.users.index', compact('users'));
 
@@ -34,6 +35,13 @@ class UsersController extends Controller
 
 
     public function store(Request $request) {
+
+        $this->validate($request, [
+
+            'username'  => 'required|unique:users,username' ,
+            'access'    => 'required'
+
+        ]);
 
         $user = User::create([
             'firstname'         => $request->firstname ,
@@ -70,6 +78,14 @@ class UsersController extends Controller
     public function update($id, Request $request) {
 
         $user = User::find($id);
+
+        $this->validate($request, [
+
+            'username'  => 'required|unique:users,username' ,
+            'access'    => 'required' ,
+            'password'  => 'required'
+
+        ]);
 
         foreach($user->getRoleNames() as $role) {
             $user->removeRole($role);

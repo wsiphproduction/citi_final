@@ -21,6 +21,8 @@
 
 	</div>	
 
+	@include('components.messages')
+
 	<div class="row">
 		
 		<form method="POST" action="{{ route('users.store') }}" class="col-lg-12">
@@ -32,7 +34,7 @@
 					<div class="form-group row">
 						<label for="lastname" class="col-lg-3 col-form-label">Last Name</label>
 						<div class="col-lg-7">
-							<input type="text" name="lastname" class="form-control" />
+							<input type="text" name="lastname" class="form-control" value="{{ old('lastname') }}" />
 						</div>
 					</div>
 				</div>
@@ -41,7 +43,7 @@
 					<div class="form-group row">
 						<label for="username" class="col-lg-3 col-form-label">Username</label>
 						<div class="col-lg-7">
-							<input type="text" name="username" class="form-control" />
+							<input type="text" name="username" class="form-control" value="{{ old('username') }}" />
 						</div>
 					</div>
 				</div>
@@ -50,7 +52,7 @@
 					<div class="form-group row">
 						<label for="firstname" class="col-lg-3 col-form-label">First Name</label>
 						<div class="col-lg-7">
-							<input type="text" name="firstname" class="form-control" />
+							<input type="text" name="firstname" class="form-control" value="{{ old('firstname') }}" />
 						</div>
 					</div>
 				</div>
@@ -59,7 +61,7 @@
 					<div class="form-group row">
 						<label for="password" class="col-lg-3 col-form-label">Password</label>
 						<div class="col-lg-7">
-							<input type="password" class="form-control" id="password" name="password">
+							<input type="password" class="form-control" id="password" name="password" />
 						</div>
 					</div>
 				</div>
@@ -68,7 +70,7 @@
 					<div class="form-group row">
 						<label for="middlename" class="col-lg-3 col-form-label">Middle Name</label>
 						<div class="col-lg-7">
-							<input type="text" class="form-control" id="middlename" name="middlename">
+							<input type="text" class="form-control" id="middlename" name="middlename" value="{{ old('middlename') }}" />
 						</div>
 					</div>
 				</div>
@@ -80,7 +82,7 @@
 							<select class="form-control" name="assign_to" id="assign_to">
 								<option value=""> Select </option>
 								@foreach( $branch as $bran )
-									<option value="{{ $bran->id }}"> {{ $bran->name }} </option>
+									<option value="{{ $bran->id }}" @if(old('assign_to') == $bran->name) selected @endif> {{ $bran->name }} </option>
 								@endforeach
 							</select>
 						</div>
@@ -97,7 +99,7 @@
 						<label for="position" class="col-lg-3 col-form-label">Position</label>
 						<div class="col-lg-7">
 							<select class="form-control" name="position">
-								<option value=""> Select Position </option>
+								<option > Select Position </option>
 								<option value="administrator" @if(old('position') == 'administrator') selected @endif> Administrator </option>
 								<option value="area head" @if(old('position') == 'area head') selected @endif> Area Head </option>
 								<option value="audit" @if(old('position') == 'audit') selected @endif> Audit </option>
@@ -123,7 +125,9 @@
 							<select class="form-control" name="branch_group_id">
 								<option value=""> Select Branch Group </option>
 								@foreach( $branch_groups as $group )
-									<option value="{{ $group->id }}"> {{ $group->name }} </option>
+									<option value="{{ $group->id }}" @if(old('branch_group_id') == $group->id) selected @endif> 
+										{{ $group->name }} 
+									</option>
 								@endforeach
 							</select>
 						</div>
@@ -135,10 +139,12 @@
 						<label for="status" class="col-lg-3 col-form-label">Status</label>
 						<div class="col-lg-7">
 							<label>
-								<input type="radio" name="status" value="1" checked> Active
+								<input type="radio" name="status" value="1" 
+									@if(old('status') == 1 || old('status',null) == null) checked @endif> Active
 							</label> &nbsp;&nbsp;&nbsp;&nbsp;
 							<label>									
-								<input type="radio" name="status" value="0"> Inactive
+								<input type="radio" status="status" value="0" 
+									@if(old('status') == 0 && old('status', null) != null) checked @endif> Inactive
 							</label>
 						</div>
 					</div>
@@ -149,9 +155,8 @@
 						<label for="access" class="col-lg-3 col-form-label">Access</label>
 						<div class="col-lg-7">
 							<select class="form-control" name="access[]" id="access" multiple>
-								<option value=""> Select Access </option>
 								@foreach( $roles as $role )
-									<option value="{{ $role->name }}"> {{ $role->name }} </option>
+									<option value="{{ $role->name }}" @if(in_array($role->name, old('access'))) selected @endif> {{ $role->name }} </option>
 								@endforeach
 							</select>
 						</div>
