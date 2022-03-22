@@ -156,7 +156,7 @@
 						<div class="col-lg-7">
 							<select class="form-control" name="access[]" id="access" multiple>
 								@foreach( $roles as $role )
-									<option value="{{ $role->name }}" @if(in_array($role->name, old('access'))) selected @endif> {{ $role->name }} </option>
+									<option value="{{ $role->name }}" @if(in_array($role->name, old('access',[]))) selected @endif> {{ $role->name }} </option>
 								@endforeach
 							</select>
 						</div>
