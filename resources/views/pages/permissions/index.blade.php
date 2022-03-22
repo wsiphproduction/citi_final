@@ -24,7 +24,8 @@
 
 		<div class="d-md-block mt-4 mt-lg-0">
         	<a class="btn btn-sm pd-x-15 btn-primary btn-uppercase" href="{{ route('roles.create') }}">
-                <i data-feather="plus" class="wd-10 mg-r-5"></i> Create Permissions
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> 
+                Create Permissions
             </a>
         </div>
 
@@ -40,7 +41,10 @@
                     <option value="{{ $role->id }}">{{ $role->name }}</option>
                 @endforeach
             </select>
-            <button class="btn btn-primary mt-2" id="save-permissions"> Save </button>
+            <button class="btn btn-primary mt-2" id="save-permissions"> 
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-save"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+                Save 
+            </button>
 
         </div>
 

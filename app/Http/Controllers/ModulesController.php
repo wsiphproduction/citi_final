@@ -12,7 +12,7 @@ class ModulesController extends Controller
 
     public function index() {
 
-        $modules = Module::all();
+        $modules = Module::orderBy('created_at', 'DESC')->get();
 
         return view('pages.module.index', compact('modules'));
 
