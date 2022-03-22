@@ -15,13 +15,16 @@ class VendorsController extends Controller
 
         if( auth()->user()->position == 'administrator') {
 
-            $vendors = Vendor::where('status', 1)->get();
+            $vendors = Vendor::where('status', 1)
+                ->orderBy('created_at', 'DESC')
+                ->get();
 
         } else { 
 
             $vendors = Vendor::where('branch_id', auth()->user()->assign_to)
                 ->orWhereNull('branch_id')
-                ->where('status', 1)            
+                ->where('status', 1) 
+                ->orderBy('created_at', 'DESC')           
                 ->get();
 
         }

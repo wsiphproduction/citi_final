@@ -12,7 +12,7 @@
 			<nav aria-label="breadcrumb">
 				<ol class="breadcrumb breadcrumb-style1 mg-b-10">
 					<li class="breadcrumb-item"><a href="#">Maintenance</a></li>
-					<li class="breadcrumb-item"><a href="request-temporary-slip.html">Modules</a></li>
+					<li class="breadcrumb-item"><a href="{{ route('modules.index') }}">Modules</a></li>
 					<li class="breadcrumb-item active" aria-current="page">Create</li>
 				</ol>
 			</nav>

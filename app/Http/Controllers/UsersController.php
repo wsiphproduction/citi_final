@@ -58,7 +58,7 @@ class UsersController extends Controller
 
         $user->assignRole($request->access);
 
-        return redirect()->route('users.index')->with('success', 'User successfully created!');
+        return redirect()->route('users.index')->with('success', 'User Successfully Created!');
 
     }
 
@@ -105,7 +105,7 @@ class UsersController extends Controller
 
         $user->assignRole($request->access);
 
-        return redirect()->route('users.index')->with('success', 'User successfully updated!');
+        return redirect()->route('users.index')->with('success', 'User Successfully Updated!');
     }
 
 }

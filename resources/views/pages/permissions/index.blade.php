@@ -16,7 +16,7 @@
 			<nav aria-label="breadcrumb">
 				<ol class="breadcrumb breadcrumb-style1 mg-b-10">
 					<li class="breadcrumb-item"><a href="#">Maintenance</a></li>
-					<li class="breadcrumb-item"><a href="#">Permissions</a></li>
+					<li class="breadcrumb-item"><a href="{{ route('permissions.index') }}">Permissions</a></li>
 				</ol>
 			</nav>
 			<h4 class="mg-b-0 tx-spacing--1">Permissions</h4>
@@ -25,7 +25,7 @@
 		<div class="d-md-block mt-4 mt-lg-0">
         	<a class="btn btn-sm pd-x-15 btn-primary btn-uppercase" href="{{ route('roles.create') }}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> 
-                Create Permissions
+                Create Roles
             </a>
         </div>
 

@@ -16,7 +16,7 @@
 			<nav aria-label="breadcrumb">
 				<ol class="breadcrumb breadcrumb-style1 mg-b-10">
 					<li class="breadcrumb-item"><a href="#">Maintenance</a></li>
-					<li class="breadcrumb-item"><a href="request-temporary-slip.html">Roles</a></li>
+					<li class="breadcrumb-item"><a href="{{ route('roles.index') }}">Roles</a></li>
 				</ol>
 			</nav>
 			<h4 class="mg-b-0 tx-spacing--1">Roles</h4>
