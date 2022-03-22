@@ -115,11 +115,15 @@
 
             <li class="nav-label mg-t-25">Maintenance</li>
 
-                <li class="nav-item">
-                    <a href="{{ route('users.index') }}" class="nav-link">                    
+                <li class="nav-item with-sub">
+                    <a href="#" class="nav-link">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                         Manage Users
                     </a>
+                    <ul>
+                        <li><a href="{{ route('users.index') }}">Active Users</a></li>
+                        <li><a href="{{ route('users.inactive') }}">Inactive Users</a></li>                                   
+                    </ul>
                 </li>
             
                 <li class="nav-item with-sub">
@@ -140,11 +144,15 @@
             </li> --}}
 
            
-                <li class="nav-item">
-                    <a href="{{ route('vendors.index') }}" class="nav-link">
+                <li class="nav-item with-sub">
+                    <a href="#" class="nav-link">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-truck"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
-                        <span>Vendors</span>
+                        <span>Manage Vendors</span>
                     </a>
+                    <ul>
+                        <li><a href="{{ route('vendors.index') }}">Active Vendors</a></li>
+                        <li><a href="{{ route('vendors.inactive') }}">Inactive Vendors</a></li>                                   
+                    </ul>
                 </li>
             
                 <li class="nav-item">

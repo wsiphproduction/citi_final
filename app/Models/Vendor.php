@@ -23,4 +23,21 @@ class Vendor extends Model
 
     }
 
+
+    public function attachments() {
+
+        return $this->hasMany(Attachment::class, 'from_ref')
+            ->where(function($query) {
+                return $query->where('from', 'vendor');
+            });
+
+    }
+
+
+    public function branch() {
+
+        return $this->belongsTo(Branch::class);
+
+    }
+
 }

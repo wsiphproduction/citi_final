@@ -9,10 +9,9 @@
 				<ol class="breadcrumb breadcrumb-style1 mg-b-10">
 					<li class="breadcrumb-item"><a href="#">Maintenance</a></li>
 					<li class="breadcrumb-item"><a href="{{ route('vendors.index') }}">Vendors</a></li>
-					<li class="breadcrumb-item active" aria-current="page">Create</li>
+					<li class="breadcrumb-item active" aria-current="page">Show</li>
 				</ol>
 			</nav>
-			<h4 class="mg-b-0 tx-spacing--1">New Vendor Form</h4>
 		</div>
 
 	</div>	
@@ -33,9 +32,18 @@
 
 			<div class="col-lg-6">
 				<div class="form-group row">
-					<label for="address" class="col-lg-5 col-form-label">Address</label>
+					<label for="vendor" class="col-lg-5 col-form-label">Branch</label>
 					<div class="col-lg-7">
-						<textarea rows="5" class="form-control" name="address" disabled >{{ $vendor->address }}</textarea>
+						<input type="text" name="name" class="form-control" value="{{ $vendor->branch->name }}" disabled />
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-6">
+				<div class="form-group row">
+					<label for="contact_number" class="col-lg-5 col-form-label">Contact Number</label>
+					<div class="col-lg-7">
+						<input type="text" name="contact_number" class="form-control" value="{{ $vendor->contact_number }}" disabled />
 					</div>
 				</div>
 			</div>
@@ -51,12 +59,22 @@
 
 			<div class="col-lg-6">
 				<div class="form-group row">
+					<label for="address" class="col-lg-5 col-form-label">Address</label>
+					<div class="col-lg-7">
+						<textarea rows="5" class="form-control" name="address" disabled >{{ $vendor->address }}</textarea>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-6">
+				<div class="form-group row">
 					<label for="attachment" class="col-lg-5 col-form-label">Attachment</label>
 					<div class="col-lg-7">
 						<ul>
-							@forelse($vendor->attachment as $attchmnt )
-								<li> <a href='{{ env("APP_URL")."/storage/vendors/{$vendor->id}/attachments/{$attchmnt}" }}' target="_blank">
-									{{ $attchmnt }} </a> 
+							@forelse($vendor->attachments as $attchmnt )
+								<li> <a href='{{ env("APP_URL")."/storage/vendors/{$vendor->id}/attachments/{$attchmnt->attachment}" }}' 
+									target="_blank">
+									{{ $attchmnt->attachment }} </a> 
 								</li>
 							@empty
 								<li> No Attachment Found </li>
@@ -68,25 +86,14 @@
 
 			<div class="col-lg-6">
 				<div class="form-group row">
-					<label for="contact_number" class="col-lg-5 col-form-label">Contact Number</label>
-					<div class="col-lg-7">
-						<input type="text" name="contact_number" class="form-control" value="{{ $vendor->contact_number }}" disabled />
-					</div>
-				</div>
-			</div>
-
-			<div class="col-lg-6"></div>
-
-			<div class="col-lg-6">
-				<div class="form-group row">
 
 					<label for="contact_number" class="col-lg-5 col-form-label">Status</label>						
 					<div class="col-lg-7">
 						<label>
-							<input type="radio" name="status" value="1" checked> Active
+							<input type="radio" disabled value="1" checked> Active
 						</label> &nbsp;&nbsp;&nbsp;&nbsp;
 						<label>									
-							<input type="radio" name="status" value="0"> Inactive
+							<input type="radio" disabled value="0"> Inactive
 						</label>
 					</div>
 

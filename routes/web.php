@@ -48,8 +48,10 @@ Route::middleware(['web', 'auth'])->group(function () {
     Route::prefix('users')->group(function() {
 
         Route::get('/', [UsersController::class, 'index'])->name('users.index');
+        Route::get('inactive', [UsersController::class, 'inactive'])->name('users.inactive');
         Route::get('create', [UsersController::class, 'create'])->name('users.create');
         Route::get('edit/{id}', [UsersController::class, 'edit'])->name('users.edit');
+        Route::get('show/{id}', [UsersController::class, 'show'])->name('users.show');
 
         Route::post('store', [UsersController::class, 'store'])->name('users.store');
 
@@ -99,6 +101,7 @@ Route::middleware(['web', 'auth'])->group(function () {
     Route::prefix('vendors')->group(function() {
 
         Route::get('/', [VendorsController::class, 'index'])->name('vendors.index');
+        Route::get('/inactive', [VendorsController::class, 'inactive'])->name('vendors.inactive');
         Route::get('create', [VendorsController::class, 'create'])->name('vendors.create');
         Route::get('edit/{id}', [VendorsController::class, 'edit'])->name('vendors.edit');
         Route::get('show/{id}', [VendorsController::class, 'show'])->name('vendors.show');
@@ -106,6 +109,8 @@ Route::middleware(['web', 'auth'])->group(function () {
         Route::post('store', [VendorsController::class, 'store'])->name('vendors.store');
 
         Route::put('update/{id}', [VendorsController::class, 'update'])->name('vendors.update');
+
+        Route::delete('/{id}', [VendorsController::class, 'delete'])->name('vendors.delete');
 
     });
 

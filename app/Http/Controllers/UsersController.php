@@ -24,6 +24,24 @@ class UsersController extends Controller
     }
 
 
+    public function inactive() {
+
+        $users = User::where('status', 0)
+            ->orderBy('created_at', 'DESC')->get();
+
+        return view('pages.users.inactive', compact('users'));
+
+    }
+
+    public function show($id) {
+
+        $user = User::find($id); 
+
+        return view('pages.users.show', compact('user'));
+
+    }
+
+
     public function create() {
 
         $roles = Role::all();
@@ -39,7 +57,8 @@ class UsersController extends Controller
         $this->validate($request, [
 
             'username'  => 'required|unique:users,username' ,
-            'access'    => 'required'
+            'access'    => 'required' ,
+            'position'  => 'required'
 
         ]);
 
@@ -81,9 +100,9 @@ class UsersController extends Controller
 
         $this->validate($request, [
 
-            'username'  => 'required|unique:users,username' ,
+            'username'  => 'required|unique:users,username,'.$id ,
             'access'    => 'required' ,
-            'password'  => 'required'
+            'position'  => 'required'
 
         ]);
 
@@ -100,7 +119,8 @@ class UsersController extends Controller
             'assign_to'         => $request->assign_to ,
             'assign_name'       => $request->assign_name ,
             'position'          => $request->position ,
-            'created_by'        => auth()->user()->username
+            'created_by'        => auth()->user()->username,
+            'status'            => $request->status
         ]);
 
         $user->assignRole($request->access);

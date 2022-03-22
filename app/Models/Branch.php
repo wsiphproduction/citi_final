@@ -21,7 +21,15 @@ class Branch extends Model
     }
 
     public function branch_department() {
+
         return $this->hasMany(BranchDepartment::class);
+
+    }
+
+    public function vendor() {
+
+        return $this->hasOne(Vendor::class);
+
     }
 
 }

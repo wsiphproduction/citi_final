@@ -16,10 +16,10 @@
 			<nav aria-label="breadcrumb">
 				<ol class="breadcrumb breadcrumb-style1 mg-b-10">
 					<li class="breadcrumb-item"><a href="#">Maintenance</a></li>
-					<li class="breadcrumb-item"><a href="{{ route('vendors.index') }}">Vendors</a></li>
+					<li class="breadcrumb-item"><a href="{{ route('vendors.inactive') }}">Inactive Vendors</a></li>
 				</ol>
 			</nav>
-			<h4 class="mg-b-0 tx-spacing--1">Vendors</h4>
+			<h4 class="mg-b-0 tx-spacing--1">Inactive Vendors</h4>
 		</div>
 
 		<div class="d-md-block mt-4 mt-lg-0">

@@ -32,4 +32,12 @@ class Attachment extends Model
 
     }
 
+
+    public function vendor() {
+
+        return $this->belongsTo(Vendor::class, 'from_ref');
+
+    }
+
+
 }

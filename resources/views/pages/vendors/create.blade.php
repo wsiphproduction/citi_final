@@ -17,6 +17,8 @@
 
 	</div>	
 
+	@include('components.messages')
+
 	<div class="row">
 		
 		<form method="POST" action="{{ route('vendors.store') }}" class="col-lg-12" enctype="multipart/form-data">
@@ -26,18 +28,23 @@
 
 				<div class="col-lg-6">
 					<div class="form-group row">
-						<label for="vendor" class="col-lg-5 col-form-label">Vendor/Company</label>
+						<label for="vendor" class="col-lg-5 col-form-label ">Vendor/Company</label>
 						<div class="col-lg-7">
 							<input type="text" name="name" class="form-control" />
 						</div>
 					</div>
 				</div>
-
+				
 				<div class="col-lg-6">
 					<div class="form-group row">
-						<label for="address" class="col-lg-5 col-form-label">Address</label>
+						<label for="branch" class="col-lg-5 col-form-label">Branch</label>
 						<div class="col-lg-7">
-							<textarea rows="5" class="form-control" name="address"></textarea>
+							<select class="custom-select form-control" name="branch_id">
+								<option value="">Select Branch</option>
+								@foreach($branch as $br)
+									<option value="{{ $br->id }}" @if(old('branch') == $br->id) selected @endif>{{ $br->name }}</option>
+								@endforeach
+							</select>
 						</div>
 					</div>
 				</div>
@@ -53,15 +60,6 @@
 
 				<div class="col-lg-6">
 					<div class="form-group row">
-						<label for="attachment" class="col-lg-5 col-form-label">Attachment</label>
-						<div class="col-lg-7">
-							<input type="file" name="attachments[]" multiple  />
-						</div>
-					</div>
-				</div>
-
-				<div class="col-lg-6">
-					<div class="form-group row">
 						<label for="contact_number" class="col-lg-5 col-form-label">Contact Number</label>
 						<div class="col-lg-7">
 							<input type="text" name="contact_number" class="form-control" />
@@ -69,7 +67,23 @@
 					</div>
 				</div>
 
-				<div class="col-lg-6"></div>
+				<div class="col-lg-6">
+					<div class="form-group row">
+						<label for="address" class="col-lg-5 col-form-label">Address</label>
+						<div class="col-lg-7">
+							<textarea rows="5" class="form-control" name="address"></textarea>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-lg-6">
+					<div class="form-group row">
+						<label for="attachment" class="col-lg-5 col-form-label">Attachment</label>
+						<div class="col-lg-7">
+							<input type="file" name="attachments[]" multiple />
+						</div>
+					</div>
+				</div>
 
 				<div class="col-lg-6">
 					<div class="form-group row">
@@ -85,7 +99,9 @@
 						</div>
 
 					</div>
-				</div>							
+				</div>	
+
+				<div class="col-lg-6"></div>						
 
 				<div class="col-lg-12 mg-t-20 text-right">
 					<button type="submit" class="btn btn-brand-01 d-block d-lg-inline wd-100p wd-lg-150">
