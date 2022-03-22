@@ -9,10 +9,6 @@
          {
             "name": "Vendor",
             "type": "select"
-         },
-         {
-            "name":"Description",
-            "type":"textarea"
          }
       ],
       "has_attachment_section": true,

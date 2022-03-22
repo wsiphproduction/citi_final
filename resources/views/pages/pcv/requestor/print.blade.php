@@ -3,11 +3,19 @@
 @section('pagecss')
 
 	<style type="text/css">
+		
 		p {
 			font-size: 20px;
 			margin-bottom: 0 !important;
 			padding: 20px;
 		}
+
+		#transaction tr td {
+
+			padding: 15px 0 10px 0;
+
+		}	
+
 	</style>
 
 @endsection
@@ -45,7 +53,7 @@
 				<tr>
 					
 					<td width="10%"> <p> <strong>Slip No</strong>: </p></td>
-					<td width="30%" style="border-bottom: 1px solid #000;"> <p> {{ $pcv->ts_no }} </p></td>
+					<td width="30%" style="border-bottom: 1px solid #000;"> <p> {{ $pcv->slip_no }} </p></td>
 					<td width="20%"></td>
 					<td width="10%"> <p> <strong>Change</strong>: </p></td>
 					<td width="30%" style="border-bottom: 1px solid #000;"> &nbsp;{{ $pcv->change }} </td>
@@ -54,7 +62,7 @@
 
 			</table>
 
-			<hr style="width: 100%; border: 1px dashed #000; margin: 50px 30px 0;">
+			<hr style="width: 100%; border: 1px dashed #000; margin: 50px 0 0 0;">
 
 			<table class="col-lg-12 mt-5">
 				
@@ -81,43 +89,101 @@
 
 			<div style="border: 1px solid #000; width: 100%; display: block; margin: 50px 0 0; padding: 0 10px;">
 
-				<table class="col-lg-12 mt-5" style="margin-top: 0 !important;">
+				<table class="col-lg-12 mt-5" style="margin-top: 0 !important;" id="transaction">
 
 					<thead>
                         <tr role="row">
-                            @foreach($pcv->account_transaction['details'][0] as $key => $tbl_headers)
+                            @if(array_key_exists(0, $pcv->account_transaction['details']))
+                                @foreach($pcv->account_transaction['details'][0] as $key => $tbl_headers)
                                 @if($key != 'items')
                                 <td data-rowname="{{ strtolower(str_replace(' ', '_', $key)) }}" class="tbl-header tx-uppercase"> {{ $key }} </td>
                                 @endif
-                            @endforeach
+                                @endforeach
+                            @else
+                                @foreach($pcv->account_transaction['details'] as $key => $tbl_headers)
+                                @if($key != 'items')
+                                <td data-rowname="{{ strtolower(str_replace(' ', '_', $key)) }}" class="tbl-header tx-uppercase"> {{ $key }} </td>
+                                @endif
+                                @endforeach
+                            @endif
                         </tr>
                     </thead>
 
                     <tbody>
                         
-                        @foreach( $pcv->account_transaction['details'] as $transaction )
+                        @if(array_key_exists(0, $pcv->account_transaction['details']))
+                                        
+                            @foreach( $pcv->account_transaction['details'] as $transaction )
 
+                                <tr>
+                                    @if(is_array($transaction)) 
+
+                                        @foreach($transaction as $d)
+                                            @if(is_array($d))
+                                                @continue
+                                            @else
+                                                <td> {{ $d }} </td>
+                                            @endif
+                                        @endforeach
+
+                                    @else
+
+                                        <td>{{ $transaction }}</td>
+
+                                    @endif
+                                </tr>
+                                    
+                            @endforeach
+                            
+                        @else
                             <tr>
-                                @if(is_array($transaction)) 
+                            @foreach( $pcv->account_transaction['details'] as $transaction )
 
-                                    @foreach($transaction as $d)
-                                        @if(is_array($d))
-                                            @continue
-                                        @else
-                                            <td> {{ $d }} </td>
-                                        @endif
-                                    @endforeach
-
-                                @else
-
-                                    <td>{{ $transaction }}</td>
-
-                                @endif
-                            </tr>
                                 
-                        @endforeach
+                                    @if(is_array($transaction)) 
+
+                                        @foreach($transaction as $d)
+                                            @if(is_array($d))
+                                                @continue
+                                            @else
+                                                <td> {{ $d }} </td>
+                                            @endif
+                                        @endforeach
+
+                                    @else
+
+                                        <td>{{ $transaction }}</td>
+
+                                    @endif
+                                
+                                    
+                            @endforeach
+                            </tr>
+                        
+                        @endif
 
                     </tbody>
+
+                    @if($pcv->account_name == 'Stripping Charge' 
+                        || $pcv->account_name == 'Delivery Charges' )
+
+                    <tfoot>
+                        <tr role="row">
+                            <td class="sorting_1"></td>
+                            <td></td>                                        
+                            <td></td>                                                                                
+                            <td></td>                                        
+                            @if($pcv->account_name == 'Delivery Charges')
+                            <td></td>
+                            @endif
+                            <td class="tx-bold align-middle">Total Amount</td>
+                            <td>
+                            	{{ $pcv->amount }}
+                            </td>                                        
+                        </tr>
+                    </tfoot>
+
+                    @endif
 
 				</table>
 

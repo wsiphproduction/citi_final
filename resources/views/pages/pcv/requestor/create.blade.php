@@ -73,11 +73,13 @@
 				<div class="form-group row">
 					<label for="slip-no" class="col-lg-5 col-form-label">Slip No.</label>
 					<div class="col-lg-7">
-						<input type="text" class="form-control static-inputs" id="ts_no" name="ts_no"
-							@if(!old('withslip')) disabled @endif value="{{ old('ts_no') }}">
-						<div id="ts_res_wrap">
-							
-						</div>
+						<select name="ts_no" class="custom-select form-control" disabled id="ts_no">
+							<option>Select</option>
+							@foreach($ts as $slip)
+								<option value="{{$slip->ts_no}}" data-name="{{$slip->account_name}}" 
+									data-description="{{$slip->ts_no}}">{{ $slip->ts_no }}</option>
+							@endforeach
+						</select>
 					</div>
 				</div>
 			</div>
@@ -86,8 +88,9 @@
 				<div class="form-group row">
 					<label for="change" class="col-lg-5 col-form-label">Change</label>
 					<div class="col-lg-7">
-						<input type="number" class="form-control static-inputs" id="change" name="change" 
-							value="{{ old('change', 0) }}" step="1" min="0" placeholder="0.00">
+						<input type="number" class="form-control static-inputs @if($errors->has('change')) is-invalid @endif" 
+							id="change" name="change" value="{{ old('change', 0) }}" 
+							step="1" min="0" placeholder="0.00">
 					</div>
 				</div>
 			</div>
@@ -100,7 +103,8 @@
 	          	<div class="form-group row">
 	            	<label for="account" class="col-lg-5 col-form-label">Account</label>
 	            	<div class="col-lg-7">
-						<select class="custom-select static-inputs" id="account_name" name="account_name">
+						<select class="custom-select static-inputs @if($errors->has('description')) is-invalid @endif" 
+							id="account_name" name="account_name">
 							<option value="">Select Account</option>
 							@foreach( \App\Models\Account::getAccounts() as $account )
 								<option value="{{ $account['name'] }}" @if(old('account_name')==$account['name']) selected @endif> 
@@ -146,7 +150,8 @@
 	          	<div class="form-group row">
 		            <label for="pcv_no" class="col-lg-5 col-form-label">Description</label>
 		            <div class="col-lg-7">
-		              	<textarea class="form-control" name="description" rows="5">{{ old('description') }}</textarea>
+		              	<textarea class="form-control @if($errors->has('description')) is-invalid @endif" id="pcv_description" 
+		              		name="description" rows="5">{{ old('description') }}</textarea>
 		            </div>
 	          	</div>
 	        </div>
@@ -501,6 +506,11 @@
 						if($(this).find('input').length) {					
 							
 							_account_trans[_acc_name] = $(this).find('input').val();
+							if($(this).find('input').val() == ''){
+								$(this).find('input').addClass('is-invalid');
+							} else {
+								$(this).find('input').removeClass('is-invalid');
+							}
 
 						} else {
 
@@ -524,6 +534,11 @@
 				$('.custom-inputs').each(function() {
 					let _name = $(this).data('name');
 					_data[_name] = $(this).val();
+					if($(this).val() == ''){
+						$(this).addClass('is-invalid');
+					} else {
+						$(this).removeClass('is-invalid');
+					}
 				});
 
 				if( _account_name == 'Installation' ) {
@@ -551,44 +566,77 @@
 			$('#pcv_accounts').val(JSON.stringify(account_transactions));
 
 			// format data of attachments
-			$('.attachment-wrapper').each(function(i, o) {
+			if($('.attachment-wrapper').length > 0){
+				$('.attachment-wrapper').each(function(i, o) {
 
-				if(ctr == 0) {
-													
-					account_attachments.push({
-						'type'			: $('#type').val() ,
-						'ref'			: $('#docref').val() ,
-						'date'			: $('#docdate').val() ,
-						'attachment'	: $('#docrefstring').val()
-					});					
-
-				} else {
-
-					if(ctr<10) { 
+					if(ctr == 0) {
 
 						account_attachments.push({
-							'type'			: $('#type_0'+ctr).val() ,
-							'ref'			: $('#docref_0'+ctr).val() ,
-							'date'			: $('#docdate_0'+ctr).val() ,
-							'attachment'	: $('#docrefstring_0'+ctr).val()
-						});
+							'type'			: $('#type').val() ,
+							'ref'			: $('#docref').val() ,
+							'date'			: $('#docdate').val() ,
+							'attachment'	: $('#docrefstring').val()
+						});	
+
+						if($('#type').val() == '' || $('#type').val() == undefined) {
+							$('#type').addClass('is-invalid');
+						}		
+						if($('#docref').val() == '' || $('#docref').val() == undefined) {
+							$('#docref').addClass('is-invalid');
+						}	
+						if($('#docrefstring').val() == '' || $('#docrefstring').val() == undefined) {
+							$('#document').addClass('is-invalid');
+						}				
 
 					} else {
 
-						account_attachments.push({
-							'type'			: $('#type_'+ctr).val() ,
-							'ref'			: $('#docref_'+ctr).val() ,
-							'date'			: $('#docdate_'+ctr).val() ,
-							'attachment'	: $('#docrefstring_'+ctr).val()
-						});
+						if(ctr<10) { 
+
+							account_attachments.push({
+								'type'			: $('#type_0'+ctr).val() ,
+								'ref'			: $('#docref_0'+ctr).val() ,
+								'date'			: $('#docdate_0'+ctr).val() ,
+								'attachment'	: $('#docrefstring_0'+ctr).val()
+							});
+
+							if($('#type_0'+ctr).val() == '' || $('#type_0'+ctr).val() == undefined) {
+								$('#type_0'+ctr).addClass('is-invalid');
+							}		
+							if($('#docref_0'+ctr).val() == '' || $('#docref_0'+ctr).val() == undefined) {
+								$('#docref_0'+ctr).addClass('is-invalid');
+							}	
+							if($('#docrefstring_0'+ctr).val() == '' || $('#docrefstring_0'+ctr).val() == undefined) {
+								$('#document_0'+ctr).addClass('is-invalid');
+							}				
+
+
+						} else {
+
+							account_attachments.push({
+								'type'			: $('#type_'+ctr).val() ,
+								'ref'			: $('#docref_'+ctr).val() ,
+								'date'			: $('#docdate_'+ctr).val() ,
+								'attachment'	: $('#docrefstring_'+ctr).val()
+							});
+
+							if($('#type_'+ctr).val() == '' || $('#type_'+ctr).val() == undefined) {
+								$('#type_'+ctr).addClass('is-invalid');
+							}		
+							if($('#docref_'+ctr).val() == '' || $('#docref_'+ctr).val() == undefined) {
+								$('#docref_'+ctr).addClass('is-invalid');
+							}	
+							if($('#docrefstring_'+ctr).val() == '' || $('#docrefstring_'+ctr).val() == undefined) {
+								$('#document_'+ctr).addClass('is-invalid');
+							}	
+
+						}
 
 					}
 
-				}
+					ctr++;
 
-				ctr++;
-
-			});
+				});
+			}
 
 			$('#pcv_attachments').val(JSON.stringify(account_attachments));
 			$('#pcv_action').val($(this).data('action'));
@@ -604,7 +652,7 @@
 					if(u =='' || u == undefined) is_null_val = true;
 				});
 			});
-
+			console.log(account_attachments);
 			if(account_attachments.length>0){
 				$.each(account_attachments, function(i, e) {
 					$.each(e, function(o, u){
@@ -690,42 +738,13 @@
 
 		});
 
-		$(document).on('keyup', '#ts_no', function() {
+		$(document).on('change', '#ts_no', function() {
 
-			let _ts = $(this).val();
-			$('#ts_res_wrap').empty();
+			let _description = $('#ts_no option:selected').data('description');
+			let _account_name = $('#ts_no option:selected').data('name');
 
-			if(_ts.trim().length > 2) { 
-
-				$('#tsNo').empty();
-
-				$.ajax({
-					url 	: "{!! route('requestor.ts.search') !!}?ts_no="+ _ts ,
-					method 	: 'GET' ,
-					async 	: false ,
-					success : function(res) { 
-
-						let _html = '';
-						console.log(res.length);
-						if(res.length>0) {
-							$('#ts_no').attr('name', 'ts_no');
-							$('#ts_res_wrap').show();
-
-							_html += '<ul>';
-							$.each(res, function(i, data){
-								_html += '<li data-name="'+data.ts_no+'" data-account_name="'+data.account_name+'">'+data.ts_no +'</li>';
-							});
-							_html += '</ul>';
-							$('#ts_res_wrap').append(_html);
-
-						} else {
-							$('#ts_no').removeAttr('name');							
-						}
-
-					}
-				});
-
-			}
+			$('#account_name').val(_account_name).change().prop('readonly', true);
+			$('#pcv_description').val(_description);
 
 		});
 
@@ -816,20 +835,6 @@
 			} else {
 				$('.pos_trans').prop('checked', false);
 			}
-
-		});
-
-		$(document).on('click', '#ts_res_wrap ul li', function() {
-
-			let _ts = $(this).data('name');
-			let _account_name = $(this).data('account_name');
-
-			$('#ts_no').val(_ts);
-
-			$('#ts_res_wrap').hide();
-
-			$('#account_name').val(_account_name).change().prop('readonly', true);
-
 
 		});
 

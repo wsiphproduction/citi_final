@@ -107,8 +107,7 @@
 				},
 				columnDefs: [
 				{ targets: 6, orderable: false }
-				],
-				dom: 'lf<"dataTables_responsive"t>ip'
+				]
 			});
 
 			// Select2

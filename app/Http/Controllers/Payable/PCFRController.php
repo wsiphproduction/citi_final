@@ -146,7 +146,9 @@ class PCFRController extends Controller
         $pending_replenishment = Pcv::where('status', 'approved')
             ->whereHas('user', function(Builder $query) use ($user) {
                 $query->where('assign_to', $user->assign_to);
-            })->doesntHave('pcfr')->sum('amount');
+            })->whereHas('pcfr', function(Builder $query) use ($pcfr) {
+                $query->where('pcfr_no', $pcfr->pcfr_no);
+            })->sum('amount');
 
         $unreplenished = Pcfr::where('status', 'for replenishment')
             ->whereHas('user', function(Builder $query) use ($user) {

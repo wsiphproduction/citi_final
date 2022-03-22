@@ -93,8 +93,7 @@
 				},
 				columnDefs: [
 				{ targets: 5, orderable: false }
-				],
-				dom: 'lf<"dataTables_responsive"t>ip'
+				]
 			});
 		});
     </script>

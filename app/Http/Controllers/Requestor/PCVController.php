@@ -63,13 +63,19 @@ class PCVController extends Controller
 
         $jsonString = file_get_contents(base_path('public/data/accounts.json'));
         $accounts = json_decode($jsonString, true);
+        $ts = TemporarySlip::where('status', 'approved')
+            ->where('running_balance', '>', 0)
+            ->whereHas('user', function($query) {
+                $query->where('assign_to', auth()->user()->assign_to);
+            })->get();
+
         $area_manager = User::where('position', 'area head')
             ->whereHas('branch_group', function($query) {
                 $branch = Branch::find(auth()->user()->assign_to);
                 $query->where('branch', 'LIKE', "%{$branch->name}%");
             })->get();
 
-        return view('pages.pcv.requestor.create', compact('accounts', 'area_manager'));
+        return view('pages.pcv.requestor.create', compact('accounts', 'area_manager', 'ts'));
 
     }
 
@@ -89,6 +95,7 @@ class PCVController extends Controller
                         return $query->where('ts_no', '=', $request->ts_no);
                     })
                 ] ,
+            'account_name'  => 'required',
             'change'        => 'required|numeric',
             'description'   => 'required'
         ]);

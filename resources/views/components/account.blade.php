@@ -150,7 +150,7 @@
 							<label for="attachment-type" class="d-block tx-14">Attachment Type</label>
 							
 							<select class="custom-select" id="type">
-								<option selected="">--Select--</option>
+								<option value='' selected>--Select--</option>
 								<option value="official receipt/sales invoice">Official Receipt/Sales Invoice</option>
 								<option value="acknowledgement receipt">Acknowledgement Receipt</option>
 								<option value="temporary slip">Temporary Slip</option>
