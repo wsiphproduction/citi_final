@@ -44,7 +44,7 @@ class PCVController extends Controller
     public function show($id) {
 
         $pcv = Pcv::find($id);
-            
+
         return view('pages.pcv.requestor.show', compact('pcv'));
 
     }
@@ -143,32 +143,32 @@ class PCVController extends Controller
                 // 'remarks'       => array_key_exists('remarks', $account_transaction) ? $account_transaction['remarks'] : null 
             ]);
 
-            // move attachment from temporary folder to original folder
-            if(count($attachments)) {
+        }
 
-                foreach( $attachments as $attachment ) {
+        // move attachment from temporary folder to original folder
+        if(count($attachments)) {
 
-                    if($attachment['attachment'] == '') continue;
+            foreach( $attachments as $attachment ) {
 
-                    Attachment::create([
-                        'from'          => 'account_transaction' ,
-                        'from_ref'      => $account_transaction->id , 
-                        'type'          => $attachment['type'] ,
-                        'ref'           => $attachment['ref'] ,
-                        'date'          => \Carbon\Carbon::parse($attachment['date']) ,
-                        'attachment'    => $attachment['attachment'] 
-                    ]);
+                if($attachment['attachment'] == '') continue;
 
-                    if(Storage::exists("public/account_transaction/{$pcv_transaction->pcv_no}/{$attachment['attachment']}")) {
-                        Storage::delete("public/account_transaction/{$pcv_transaction->pcv_no}/{$attachment['attachment']}");
-                    }
+                Attachment::create([
+                    'from'          => 'pcv' ,
+                    'from_ref'      => $pcv_transaction->id , 
+                    'type'          => $attachment['type'] ,
+                    'ref'           => $attachment['ref'] ,
+                    'date'          => \Carbon\Carbon::parse($attachment['date']) ,
+                    'attachment'    => $attachment['attachment'] 
+                ]);
 
-                    Storage::copy("public/temp/{$user->id}/account_transaction/{$attachment['attachment']}", 
-                        "public/account_transaction/{$pcv_transaction->pcv_no}/{$attachment['attachment']}");
-
-                    //Storage::deleteDirectory("public/temp/{$pcv_transaction->pcv_no}");
-
+                if(Storage::exists("public/pcv/{$pcv_transaction->pcv_no}/{$attachment['attachment']}")) {
+                    Storage::delete("public/pcv/{$pcv_transaction->pcv_no}/{$attachment['attachment']}");
                 }
+
+                Storage::copy("public/temp/{$user->id}/pcv/{$attachment['attachment']}", 
+                    "public/pcv/{$pcv_transaction->pcv_no}/{$attachment['attachment']}");
+
+                //Storage::deleteDirectory("public/temp/{$pcv_transaction->pcv_no}");
 
             }
 
@@ -184,8 +184,13 @@ class PCVController extends Controller
     public function edit($pcv) {
 
         $pcv = Pcv::find($pcv);
+        $area_manager = User::where('position', 'area head')
+            ->whereHas('branch_group', function($query) {
+                $branch = Branch::find(auth()->user()->assign_to);
+                $query->where('branch', 'LIKE', "%{$branch->name}%");
+            })->get();
 
-        return view('pages.pcv.requestor.edit', compact('pcv'));
+        return view('pages.pcv.requestor.edit', compact('pcv', 'area_manager'));
 
     }
 
@@ -237,7 +242,7 @@ class PCVController extends Controller
         }
 
         $pcv->attachments()->delete();
-        $pcv->account_transactions()->delete();
+        $pcv->account_transaction()->delete();
         $pcv->update([
             'account_name'  => $request->account_name ,
             'change'        => $request->change ,
@@ -265,12 +270,12 @@ class PCVController extends Controller
                     'attachment'    => $attachment['attachment'] 
                 ]);
 
-                if(Storage::exists("public/account_transaction/{$pcv->pcv_no}/{$attachment['attachment']}")) {
-                    Storage::delete("public/account_transaction/{$pcv->pcv_no}/{$attachment['attachment']}");
+                if(Storage::exists("public/pcv/{$pcv->pcv_no}/{$attachment['attachment']}")) {
+                    Storage::delete("public/pcv/{$pcv->pcv_no}/{$attachment['attachment']}");
                 }
 
-                Storage::copy("public/temp/{$user->id}/account_transaction/{$attachment['attachment']}", 
-                    "public/account_transaction/{$pcv->pcv_no}/{$attachment['attachment']}");
+                Storage::copy("public/temp/{$user->id}/pcv/{$attachment['attachment']}", 
+                    "public/pcv/{$pcv->pcv_no}/{$attachment['attachment']}");
 
             }
 

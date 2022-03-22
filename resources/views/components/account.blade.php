@@ -158,7 +158,7 @@
 								<option value="statement of account/bill">Statement of Account/Bill</option>
 								<option value="extra labor summary">Extra Labor Summary</option>
 								<option value="completion report">Completion Report</option>
-								<option value="signed pcvs">Signed PCVs</option>
+								<option value="pcv signed">PCV Signed</option>
 							</select>
 
 							</div>
@@ -168,7 +168,7 @@
 							<div class="form-group">
 								<label class="d-block tx-14">Document</label>
 								<div class="custom-file">
-									<input type="file" class="custom-file-input document-f" id="document" data-from="account_transaction">
+									<input type="file" class="custom-file-input document-f" id="document" data-from="pcv">
 									<label class="custom-file-label" for="document">Choose file</label>
 									<input type="hidden" id="docrefstring" />
 								</div>

@@ -36,7 +36,7 @@
 			@csrf
 			@method('PUT')
 
-			<input type="hidden" name="pcv_attachments" id="pcv_attachments" value="{{ old('pcv_attachments', $pcv->account_transaction->attachments) }}" />
+			<input type="hidden" name="pcv_attachments" id="pcv_attachments" value="{{ old('pcv_attachments', $pcv->attachments) }}" />
 			<input type="hidden" name="pcv_accounts" id="pcv_accounts" 
 				value="{{ old('pcv_accounts', $pcv->account_transaction()->pluck('details')) }}" />
 			<input type="hidden" name="pcv_action" id="pcv_action" value="{{ old('pcv_action', $pcv->status) }}" />			
@@ -169,12 +169,164 @@
 
     </div>
 
+    <!-- Copy From Modal -->
+	<div class="modal fade" id="copyFrom" tabindex="-1" role="dialog" aria-labelledby="copyFromModal" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-xl mw-100 px-3 px-lg-5" role="document">
+			<div class="modal-content tx-14">
+			
+				<div class="modal-header">
+					<h6 class="modal-title" id="exampleModalLabel3">Cancelled PCVs</h6>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+
+				<div class="modal-body">
+					<div class="dataTables_responsive">
+						
+						<table class="table dataTable no-footer" id="cancelled-pcvs">
+							
+							<thead>
+								<tr role="row">
+									<th class="wd-10p sorting_1 tx-uppercase">PCV No.</th>
+									<th class="wd-20p tx-uppercase">Description</th>
+									<th class="wd-15p tx-uppercase">Date Cancelled</th>
+									<th class="wd-15p tx-uppercase">Cancelled By</th>
+									<th class="wd-10p tx-uppercase">Remarks</th>
+									<th class="wd-15p tx-uppercase">Date Approved</th>
+									<th class="wd-15p tx-uppercase">Approved By</th>
+								</tr>
+							</thead>
+						<tbody>
+
+						</tbody>
+
+						</table>
+
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div><!-- Copy From Modal -->
+
+	<!-- Copy From Modal -->
+	<div class="modal fade" id="pop_ups_wrap" tabindex="-1" role="dialog" aria-labelledby="copyFromModal" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal mw-100 px-3 px-lg-5" role="document">
+			<div class="modal-content tx-14">
+			
+				<div class="modal-header">
+					<h6 class="modal-title" id="pop_ups_label">POS Transactions</h6>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+
+				<div class="modal-body">
+					<div class="dataTables_responsive">
+						
+						<table class="table dataTable no-footer" id="pop_ups_inner">
+														
+
+						</table>						
+
+					</div>
+					<br>
+
+					<div class="text-right">
+						<button class="btn btn-primary" id="btn-save-pos-trans"> Save </button>
+						<div class="clearfix"></div>
+					</div>
+				
+				</div>
+
+			</div>
+		</div>
+	</div><!-- Copy From Modal -->
+
+	<div class="modal fade effect-scale" id="for_message" tabindex="-1" 
+		role="dialog" aria-labelledby="for_message" aria-modal="true">
+
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content tx-14">
+				
+				<div class="modal-header">
+					<h6 class="modal-title" id="exampleModalLabel3" id="message_title">Confirmation Message</h6>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">×</span>
+					</button>
+				</div>
+
+				<div class="modal-body">
+					<p class="mb-0" id="message_content"></p>
+				</div>
+
+			</div>
+		</div>
+
+	</div>
+
+	<div class="modal fade" id="deliveryChargeModal" tabindex="-1" role="dialog" 
+		aria-labelledby="deliveryChargeModal" aria-modal="true">
+
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content tx-14">
+				
+				<div class="modal-header">
+					<h6 class="modal-title" id="exampleModalLabel3">Input Approval Code</h6>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">×</span>
+					</button>
+				</div>
+
+				<div class="modal-body">
+					<div class="row">
+						
+						<div class="col-lg-12">
+							<div class="form-group">
+								<label for="approval-code" class="d-block">Approval Code</label>
+								<input type="text" class="form-control" id="approval_code">
+							</div>
+						</div>
+
+						<div class="col-lg-12">
+							<div class="form-group">
+								<label for="approver-name" class="d-block">Approver's Name</label>
+								<select class="custom-select" id="approver_name">
+									<option selected="">--Select--</option>
+									@foreach($area_manager as $manager) 
+										<option value="{{ $manager->username }}"> {{ $manager->username }} </option>
+									@endforeach
+								</select>
+							</div>
+						</div>
+
+						<div class="col-lg-12">
+							<div class="form-group">
+								<label for="remarks" class="d-block">Remarks</label>
+								<textarea id="remarks" name="remarks" class="form-control" rows="3"></textarea>
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+				<div class="modal-footer">
+					<button class="btn btn-brand-01 d-inline-block tx-13 tx-uppercase" id="btn_approval_code">Approve</button>
+					<button type="button" class="btn btn-white tx-13 tx-uppercase" id="btn_disapprove_code" data-target="#deliveryChargeModal" data-toggle="modal" data-dismiss="modal">Cancel</button>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
 @endsection
 
 @section('pagejs')
 	
 	<script type="text/javascript" src="{{ asset('js/moment.js') }}"></script>
 	<script type="text/javascript">
+		
 		var current_id = 0;
 		var account_transactions = [];
 		var account_attachments = [];
@@ -214,8 +366,10 @@
 			} else {
 
 				$('#ts_no').attr('disabled', 'disabled');
-				$('#ts_no').val('');
+				$('#ts_no').prop("selectedIndex", 0);
+				$('#account_name').prop("selectedIndex", 0).change();
 				$('#tsNo').empty();
+				$('#pcv_description').val('');
 
 			}			
 
@@ -334,6 +488,11 @@
 						if($(this).find('input').length) {					
 							
 							_account_trans[_acc_name] = $(this).find('input').val();
+							if($(this).find('input').val() == ''){
+								$(this).find('input').addClass('is-invalid');
+							} else {
+								$(this).find('input').removeClass('is-invalid');
+							}
 
 						} else {
 
@@ -357,6 +516,11 @@
 				$('.custom-inputs').each(function() {
 					let _name = $(this).data('name');
 					_data[_name] = $(this).val();
+					if($(this).val() == ''){
+						$(this).addClass('is-invalid');
+					} else {
+						$(this).removeClass('is-invalid');
+					}
 				});
 
 				if( _account_name == 'Installation' ) {
@@ -384,44 +548,77 @@
 			$('#pcv_accounts').val(JSON.stringify(account_transactions));
 
 			// format data of attachments
-			$('.attachment-wrapper').each(function(i, o) {
+			if($('.attachment-wrapper').length > 0){
+				$('.attachment-wrapper').each(function(i, o) {
 
-				if(ctr == 0) {
-													
-					account_attachments.push({
-						'type'			: $('#type').val() ,
-						'ref'			: $('#docref').val() ,
-						'date'			: $('#docdate').val() ,
-						'attachment'	: $('#docrefstring').val()
-					});					
-
-				} else {
-
-					if(ctr<10) { 
+					if(ctr == 0) {
 
 						account_attachments.push({
-							'type'			: $('#type_0'+ctr).val() ,
-							'ref'			: $('#docref_0'+ctr).val() ,
-							'date'			: $('#docdate_0'+ctr).val() ,
-							'attachment'	: $('#docrefstring_0'+ctr).val()
-						});
+							'type'			: $('#type').val() ,
+							'ref'			: $('#docref').val() ,
+							'date'			: $('#docdate').val() ,
+							'attachment'	: $('#docrefstring').val()
+						});	
+
+						if($('#type').val() == '' || $('#type').val() == undefined) {
+							$('#type').addClass('is-invalid');
+						}		
+						if($('#docref').val() == '' || $('#docref').val() == undefined) {
+							$('#docref').addClass('is-invalid');
+						}	
+						if($('#docrefstring').val() == '' || $('#docrefstring').val() == undefined) {
+							$('#document').addClass('is-invalid');
+						}				
 
 					} else {
 
-						account_attachments.push({
-							'type'			: $('#type_'+ctr).val() ,
-							'ref'			: $('#docref_'+ctr).val() ,
-							'date'			: $('#docdate_'+ctr).val() ,
-							'attachment'	: $('#docrefstring_'+ctr).val()
-						});
+						if(ctr<10) { 
+
+							account_attachments.push({
+								'type'			: $('#type_0'+ctr).val() ,
+								'ref'			: $('#docref_0'+ctr).val() ,
+								'date'			: $('#docdate_0'+ctr).val() ,
+								'attachment'	: $('#docrefstring_0'+ctr).val()
+							});
+
+							if($('#type_0'+ctr).val() == '' || $('#type_0'+ctr).val() == undefined) {
+								$('#type_0'+ctr).addClass('is-invalid');
+							}		
+							if($('#docref_0'+ctr).val() == '' || $('#docref_0'+ctr).val() == undefined) {
+								$('#docref_0'+ctr).addClass('is-invalid');
+							}	
+							if($('#docrefstring_0'+ctr).val() == '' || $('#docrefstring_0'+ctr).val() == undefined) {
+								$('#document_0'+ctr).addClass('is-invalid');
+							}				
+
+
+						} else {
+
+							account_attachments.push({
+								'type'			: $('#type_'+ctr).val() ,
+								'ref'			: $('#docref_'+ctr).val() ,
+								'date'			: $('#docdate_'+ctr).val() ,
+								'attachment'	: $('#docrefstring_'+ctr).val()
+							});
+
+							if($('#type_'+ctr).val() == '' || $('#type_'+ctr).val() == undefined) {
+								$('#type_'+ctr).addClass('is-invalid');
+							}		
+							if($('#docref_'+ctr).val() == '' || $('#docref_'+ctr).val() == undefined) {
+								$('#docref_'+ctr).addClass('is-invalid');
+							}	
+							if($('#docrefstring_'+ctr).val() == '' || $('#docrefstring_'+ctr).val() == undefined) {
+								$('#document_'+ctr).addClass('is-invalid');
+							}	
+
+						}
 
 					}
 
-				}
+					ctr++;
 
-				ctr++;
-
-			});
+				});
+			}
 
 			$('#pcv_attachments').val(JSON.stringify(account_attachments));
 			$('#pcv_action').val($(this).data('action'));
@@ -437,12 +634,14 @@
 					if(u =='' || u == undefined) is_null_val = true;
 				});
 			});
-
-			$.each(account_attachments, function(i, e) {
-				$.each(e, function(o, u){
-					if(u =='' || u == undefined) is_null_val = true;
+			console.log(account_attachments);
+			if(account_attachments.length>0){
+				$.each(account_attachments, function(i, e) {
+					$.each(e, function(o, u){
+						if(u =='' || u == undefined) is_null_val = true;
+					});
 				});
-			});
+			}
 
 			if(is_null_val) {
 				alert('Some data on your request is missing please check it again');
@@ -521,38 +720,13 @@
 
 		});
 
-		$(document).on('keyup', '#ts_no', function() {
+		$(document).on('change', '#ts_no', function() {
 
-			let _ts = $(this).val();
+			let _description = $('#ts_no option:selected').data('description');
+			let _account_name = $('#ts_no option:selected').data('name');
 
-			if(_ts.trim().length > 2) { 
-
-				$('#tsNo').empty();
-
-				$.ajax({
-					url 	: "{!! route('requestor.ts.search') !!}?ts_no="+ _ts ,
-					method 	: 'GET' ,
-					async 	: false ,
-					success : function(res) { 
-
-						let _html = '';
-						console.log(res.length);
-						if(res.length>0) {
-							$('#ts_no').attr('name', 'ts_no');
-						} else {
-							$('#ts_no').removeAttr('name');							
-						}
-
-						$.each(res, function(i, data){
-							_html += '<option value="'+data.ts_no+'">'+data.ts_no +'</option>';
-						});
-
-						$('#tsNo').append(_html);
-
-					}
-				});
-
-			}
+			$('#account_name').val(_account_name).change().prop('readonly', true);
+			$('#pcv_description').val(_description);
 
 		});
 
@@ -648,13 +822,13 @@
 
 		$(document).on('click', '#btn-save-pos-trans', function() {
 			
+			let _hasVal		= true;	
 			pos_items 		= [];
 			$('#account-transactions-list tfoot').remove();
-			$('#account-transactions-list tbody').empty();
 
 			$('#pop_ups_inner tbody tr').each(function(i, data){
 			
-				let _isCheck 	= false;				
+				let _isCheck 	= false;		
 				let _pos_items 	= [];
 				
 				$(this).find('td').each(function (){
@@ -670,6 +844,7 @@
 						} else {
 
 							_pos_items[$(this).data('name')] = $(this).find('input').val();
+							if($(this).find('input').val() == '' || $(this).find('input').val() == undefined) _hasVal = false;
 
 						}
 
@@ -696,6 +871,10 @@
 
 			});
 
+			if(!_hasVal) {
+				alert('Some fields doesn\'t have value please checked');
+				return false;
+			}
 
 			let _account_name 	= $('#account_name').val();
 			let _html = '';		
@@ -760,7 +939,9 @@
 	                  </tfoot>`);
 			}
 
-			resetAccountForm();
+			if(_account_name != 'Stripping Charge') {
+				resetAccountForm();
+			}
 
 			$('#pop_ups_wrap').modal('hide');
 
@@ -777,11 +958,62 @@
 
 		});
 
+		
+		$(document).on('blur', '#bill_date_from', function(){
+
+			let _from = $('#bill_date_from').val();
+			let _to   = $('#bill_date_to').val();
+
+			$.ajax({
+
+					url 	: '{!! env("APP_URL") !!}' + '/pcv/requestor/check-billing-date?from='+_from+'&to='+_to ,
+					method 	: 'GET' ,
+					success : function (res) {
+
+						if(res == 'yes') {
+							alert('Billing Date From already covered last payment');
+							resetAccountForm();
+						}
+						
+					}
+
+				});
+
+		});
+
+		
+		$(document).on('blur', '#bill_date_to', function(){
+
+			let _from = $('#bill_date_from').val();
+			let _to   = $('#bill_date_to').val();
+
+			$.ajax({
+
+					url 	: '{!! env("APP_URL") !!}' + '/pcv/requestor/check-billing-date?from='+_from+'&to='+_to ,
+					method 	: 'GET' ,
+					success : function (res) {
+
+						if(res == 'yes') {
+							alert('Billing Date From already covered last payment');
+							resetAccountForm();
+						}
+						
+					}
+
+				});
+
+		});
+
+		
+
 
 		$(document).on('keyup', '.custom-inputs', function () {
 			
-			clearTimeout(typingTimer);			
-		  	typingTimer = setTimeout("doneTyping('"+$(this).data('name')+"','"+$(this).val()+"')", doneTypingInterval);			
+			let _account_name = $('#account_name').val();
+			if( _account_name != 'Staff House Rental') {	
+				clearTimeout(typingTimer);			
+			  	typingTimer = setTimeout("doneTyping('"+$(this).data('name')+"','"+$(this).val()+"')", doneTypingInterval);			
+			}
 
 		});
 
@@ -857,7 +1089,7 @@
 					url 		: "{!! route('pos-transactions.search') !!}" + "?search="+val ,
 					method 		: "GET" ,
 					success 	: function(res) {
-
+						console.log(res);
 						if( res.length > 0) {
 
 							let _html  = '';
@@ -893,6 +1125,16 @@
 								backdrop : 'static' ,
 								show 	 : true
 							});
+
+						} else {
+
+							$('#message_content').text('No Items Found');
+							$('#for_message').modal({
+								backdrop : 'static' ,
+								show 	 : true
+							});
+
+							setTimeout(function(){ $('#for_message').modal('hide');}, 3000);
 
 						}
 
@@ -972,8 +1214,9 @@
 			let _account_name = $('#account_name').val();
 			let _account_transactions = JSON.parse($('#pcv_accounts').val());
 			let _base_url = "{!! env('APP_URL') !!}";
+			let _amount_ctr = 0;
 
-			$.each(_account_transactions[0], function(i, data){
+			$.each(_account_transactions, function(i, data){
 
 				if($('#btn-add-account-details').length > 0) {
 							
@@ -982,22 +1225,28 @@
 					$('.tbl-header').each(function(ii, res) {
 						let _row_name = $(this).data('rowname').trim();
 
-						if( _row_name != 'action') { 
-							if( _row_name == 'rate' ||
-								_row_name == 'charge_to_store' ||
-								_row_name == 'amount' ) {
-								_html += '<td data-name="'+_row_name+'" >'; 
-								_html += '<input type="text" value="'+data[$(this).data('rowname')]+'"';
-								if(ii == 0) {
-									_html += 'class="form-control account-user-input" id="amount" data-name="'+$(this).data('rowname')+'">'; 
+						if(_account_name == 'Stripping Charge') {
+							if( _row_name != 'action') { 
+								if( _row_name == 'rate' ||
+									_row_name == 'charge_to_store' ||
+									_row_name == 'amount' ) {
+									_html += '<td data-name="'+_row_name+'" >'; 
+									_html += '<input type="text" value="'+data[$(this).data('rowname')]+'"';
+									if(ii == 0) {
+										_html += 'class="form-control account-user-input" id="amount" data-name="'+$(this).data('rowname')+'">'; 
+									} else {
+										_html += 'class="form-control account-user-input" id="amount'+ii+'" data-name="'+$(this).data('rowname')+'">'; 
+									}
+									_html += '</td>';	
 								} else {
-									_html += 'class="form-control account-user-input" id="amount'+ii+'" data-name="'+$(this).data('rowname')+'">'; 
+									_html += '<td data-name="'+_row_name+'" >' + data[$(this).data('rowname')] + '</td>';							
 								}
-								_html += '</td>';	
-							} else {
-								_html += '<td data-name="'+_row_name+'" >' + data[$(this).data('rowname')] + '</td>';							
+							}	
+						} else {
+							if( _row_name != 'action') { 
+								_html += '<td data-name="'+_row_name+'" >' + data[$(this).data('rowname')] + '</td>';	
 							}
-						}						
+						}					
 
 					});
 
@@ -1013,9 +1262,35 @@
 					$('#account-transactions-list tbody').append(_html);	
 
 				} else {
+
 					$('.custom-inputs').each(function(i, d) {
-						$(this).val(data[$(this).attr('data-name')]);
+						$(this).val(data[0][$(this).attr('data-name')]);
 					});
+
+					if(_account_name == 'Installation') {
+
+						let _html = '<tr>';
+						
+						$('.tbl-header').each(function(ii, res) {
+							let _row_name = $(this).data('rowname').trim();
+							
+							if( _row_name != 'action') { 
+								_html += '<td data-name="'+_row_name+'" >' + data[0]['items'][$(this).data('rowname')] + '</td>';	
+							}
+							
+						});
+
+						_html += '<td>';
+						_html += '<nav class="nav table-options justify-content-start">';
+						_html += '<a class="nav-link p-0 pl-2 remove_account_attachment" href="javascript:void(0);" title="Remove">'; 
+						_html += '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
+						_html += '</a></nav>';
+						_html += '</td>';
+
+						_html += '</tr>';
+
+						$('#account-transactions-list tbody').append(_html);
+					}
 
 				}
 
@@ -1023,20 +1298,38 @@
 
 			if($('#btn-add-account-details').length > 0) {
 			if(_account_name != 'Installation') {
-				$('#account-transactions-list').append(
-					`<tfoot>
-	                    <tr role="row">
-	                      <td class="sorting_1"></td>
-	                      <td></td>
-	                      <td></td>
-	                      <td></td>
-	                      <td class="tx-bold text-right align-middle">Total Amount</td>
-	                      <td>
-	                        <input type="number" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" value="00000.00" readonly id="total_amount_display">
-	                      </td>
-	                      <td></td>
-	                    </tr>
-	                  </tfoot>`);
+				if(_account_name == 'Stripping Charge') {
+					$('#account-transactions-list').append(
+						`<tfoot>
+		                    <tr role="row">
+		                      <td class="sorting_1"></td>
+		                      <td></td>
+		                      <td></td>
+		                      <td></td>
+		                      <td class="tx-bold text-right align-middle">Total Amount</td>
+		                      <td>
+		                        <input type="number" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" value="00000.00" readonly id="total_amount_display">
+		                      </td>
+		                      <td></td>
+		                    </tr>
+		                  </tfoot>`);
+				} else {
+					$('#account-transactions-list').append(
+						`<tfoot>
+		                    <tr role="row">
+		                      <td class="sorting_1"></td>
+		                      <td></td>
+		                      <td></td>
+		                      <td></td>
+		                      <td></td>
+		                      <td class="tx-bold text-right align-middle">Total Amount</td>
+		                      <td>
+		                        <input type="number" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" value="00000.00" readonly id="total_amount_display">
+		                      </td>
+		                      <td></td>
+		                    </tr>
+		                  </tfoot>`);
+				}
 
 				calculateTotal();
 			}}

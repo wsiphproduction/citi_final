@@ -325,12 +325,12 @@
 
                             <tbody>
 
-                                @foreach( $pcv->account_transaction->attachments as $attachment )
+                                @foreach( $pcv->attachments as $attachment )
 
                                     <tr role="row">
                                         <td>{{ ucfirst($attachment->type) }}</td>
                                         <td>
-                                            <a href='{{ env('APP_URL')."/storage/account_transaction/{$pcv->pcv_no}/{$attachment->attachment}"}}' target="_blank">
+                                            <a href='{{ env('APP_URL')."/storage/pcv/{$pcv->pcv_no}/{$attachment->attachment}"}}' target="_blank">
                                                 {{ $attachment->attachment }}
                                             </a>
                                         </td>
@@ -339,21 +339,6 @@
                                     </tr>
 
                                 @endforeach
-
-                                @if($pcv->attachment)
-
-                                    <tr>
-                                        <td>{{ ucfirst($pcv->attachment->type) }}</td>
-                                        <td>
-                                            <a href='{{ env('APP_URL')."/storage/pcv/{$pcv->pcv_no}/{$pcv->attachment->attachment}"}}' target="_blank">
-                                                {{ $pcv->attachment->attachment }}
-                                            </a>
-                                        </td>
-                                        <td>{{ $pcv->attachment->ref }}</td>
-                                        <td>{{ \Carbon\Carbon::parse($pcv->attachment->date)->toFormattedDateString() }}</td>
-                                    </tr>
-
-                                @endif
 
                             </tbody>
                         </table>

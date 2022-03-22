@@ -67,6 +67,13 @@
 	                                <a class="nav-link p-0 pl-2" href="{{ route('requestor.pcfr.show', $pcfrr->id) }}" title="View Request">
 	                                    <i data-feather="external-link"></i>
 	                                </a>
+
+	                                @if(!in_array($pcfrr->status, ['post to ebs', 'submitted', 'approved', 'for replished']))
+	                                    <a class="nav-link p-0 pl-2" href="{{ route('requestor.pcfr.edit', $pcfrr->id) }}" title="Edit Request">
+	                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-3"><polygon points="14 2 18 6 7 17 3 17 3 13 14 2"></polygon><line x1="3" y1="22" x2="21" y2="22"></line></svg>
+	                                    </a>
+	                                @endif
+
 	                            </nav>
                             </td>
                         </tr>

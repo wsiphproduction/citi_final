@@ -189,6 +189,14 @@ class PCFRController extends Controller
 
     }
 
+    public function edit($id) {
+
+        $pcfr = Pcfr::find($id);
+
+        return view('pages.pcfr.requestor.edit', compact('pcfr'));
+
+    }
+
 
     public function statusUpdate($id, Request $request){
 

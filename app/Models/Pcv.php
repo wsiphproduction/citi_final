@@ -40,9 +40,9 @@ class Pcv extends Model
 
     }
 
-    public function attachment() {
+    public function attachments() {
 
-        return $this->hasOne(Attachment::class, 'from_ref')
+        return $this->hasMany(Attachment::class, 'from_ref')
             ->where(function($query) {
                 return $query->where('from', 'pcv');
             });

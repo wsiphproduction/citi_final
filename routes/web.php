@@ -230,7 +230,8 @@ Route::middleware(['web', 'auth'])->group(function () {
             Route::get('create', [RequestorPCFRController::class, 'create'])->name('requestor.pcfr.create');
             Route::get('generatepcrf', [RequestorPCFRController::class, 'generatepcrf'])->name('requestor.pcfr.generatepcrf');
             Route::get('show/{id}', [RequestorPCFRController::class, 'show'])->name('requestor.pcfr.show');
-
+            Route::get('edit/{pcv}', [RequestorPCFRController::class, 'edit'])->name('requestor.pcfr.edit');
+            
             Route::post('store', [RequestorPCFRController::class, 'store'])->name('requestor.pcfr.store');
 
             Route::put('status-update/{id}', [RequestorPCFRController::class, 'statusUpdate'])->name('requestor.pcfr.status-update');

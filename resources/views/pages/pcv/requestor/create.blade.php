@@ -103,7 +103,7 @@
 	          	<div class="form-group row">
 	            	<label for="account" class="col-lg-5 col-form-label">Account</label>
 	            	<div class="col-lg-7">
-						<select class="custom-select static-inputs @if($errors->has('description')) is-invalid @endif" 
+						<select class="custom-select static-inputs @if($errors->has('account_name')) is-invalid @endif" 
 							id="account_name" name="account_name">
 							<option value="">Select Account</option>
 							@foreach( \App\Models\Account::getAccounts() as $account )
@@ -456,7 +456,7 @@
 				contentType: false ,
 				success: function(res) {
 
-					if( from == 'account_transaction' ) {
+					if( from == 'pcv' ) {
 		 				var curr_doc_id = _that.attr('id');
 						var curr_doc_num = curr_doc_id.match(/\d+/);
 						var _input_id = null;

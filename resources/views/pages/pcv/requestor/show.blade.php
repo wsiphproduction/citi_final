@@ -297,9 +297,8 @@
             <br><br>    
             @endif
 
-            
-
             @if($pcv->account_name != 'Delivery Charges')
+
             <div class="row">
             
                 <div class="col-lg-8">
@@ -321,12 +320,12 @@
 
                             <tbody>
 
-                                @foreach( $pcv->account_transaction->attachments as $attachment )
+                                @foreach( $pcv->attachments as $attachment )
 
                                     <tr role="row">
                                         <td>{{ ucfirst($attachment->type) }}</td>
                                         <td>
-                                            <a href='{{ env('APP_URL')."/storage/account_transaction/{$pcv->pcv_no}/{$attachment->attachment}"}}' target="_blank">
+                                            <a href='{{ env('APP_URL')."/storage/pcv/{$pcv->pcv_no}/{$attachment->attachment}"}}' target="_blank">
                                                 {{ $attachment->attachment }}
                                             </a>
                                         </td>
@@ -336,21 +335,6 @@
 
                                 @endforeach
 
-                                @if($pcv->attachment)
-
-                                    <tr>
-                                        <td>{{ ucfirst($pcv->attachment->type) }}</td>
-                                        <td>
-                                            <a href='{{ env('APP_URL')."/storage/pcv/{$pcv->pcv_no}/{$pcv->attachment->attachment}"}}' target="_blank">
-                                                {{ $pcv->attachment->attachment }}
-                                            </a>
-                                        </td>
-                                        <td>{{ $pcv->attachment->ref }}</td>
-                                        <td>{{ \Carbon\Carbon::parse($pcv->attachment->date)->toFormattedDateString() }}</td>
-                                    </tr>
-
-                                @endif
-
                             </tbody>
                         </table>
                     </div>
@@ -360,51 +344,6 @@
                 </div>
 
             </div> 
-
-            @else
-            @if($pcv->attachment)
-            <div class="row">
-            
-                <div class="col-lg-8">
-
-                    <div data-label="Attachment" class="df-example">
-
-                    <div class="dataTables_responsive">
-                        
-                        <table class="table dataTable no-footer mn-wd-550-f">
-
-                            <thead>
-                                <tr role="row">
-                                    <th class="tx-uppercase">Attachment Type</th>
-                                    <th class="tx-uppercase">Document</th>
-                                    <th class="tx-uppercase">Doc. Ref No.</th>
-                                    <th class="tx-uppercase">Doc. Date</th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-
-                                <tr>
-                                    <td>{{ ucfirst($pcv->attachment->type) }}</td>
-                                    <td>
-                                        <a href='{{ env('APP_URL')."/storage/pcv/{$pcv->pcv_no}/{$pcv->attachment->attachment}"}}' target="_blank">
-                                            {{ $pcv->attachment->attachment }}
-                                        </a>
-                                    </td>
-                                    <td>{{ $pcv->attachment->ref }}</td>
-                                    <td>{{ \Carbon\Carbon::parse($pcv->attachment->date)->toFormattedDateString() }}</td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                    </div>
-
-                    </div>
-
-                </div>
-
-            </div> 
-            @endif
             @endif
 
         </div>
