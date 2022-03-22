@@ -24,11 +24,13 @@
 
 		<div class="d-md-block mt-4 mt-lg-0">
         	<a class="btn btn-sm pd-x-15 btn-primary btn-uppercase" href="{{ route('roles.create') }}">
-                <i data-feather="plus" class="wd-10 mg-r-5"></i> Create Role
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> Create Role
             </a>
         </div>
 
 	</div>	
+
+    @include('components.messages')
 
 	<div class="row">
 
@@ -49,8 +51,10 @@
                         <tr>
                             <td> {{ $role->name }} </td>
                             <td> {{ $role->created_at->toFormattedDateString() }} </td>
-                            <td> 
-                                <a href="{{ route('roles.edit', $role->id) }}" > Edit </a>
+                            <td>
+                                <a class="nav-link p-0 pl-2" href="{{ route('roles.edit', $role->id) }}" title="Edit Role">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-3"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+                                </a>
                             </td>
                         </tr>
                     @endforeach
@@ -76,6 +80,7 @@
 			'use strict'
 
     		$('#example1').DataTable({
+                "aaSorting": [],
     			language: {
     			searchPlaceholder: 'Search',
     			sSearch: '',
@@ -83,8 +88,7 @@
     			},
     			columnDefs: [
     			{ targets: 2, orderable: false }
-    			],
-    			dom: 'lf<"dataTables_responsive"t><"dataTables_total d-flex justify-content-end">ip'
+    			]
     		});
 
     		// Select2

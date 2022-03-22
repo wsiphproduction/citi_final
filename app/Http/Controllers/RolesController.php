@@ -10,7 +10,7 @@ class RolesController extends Controller
 
     public function index() {
 
-        $roles = Role::all();
+        $roles = Role::orderBy('created_at', 'DESC')->get();
         return view('pages.roles.index', compact('roles'));
 
     }
@@ -34,9 +34,13 @@ class RolesController extends Controller
 
     public function store(Request $request) {
 
+        $this->validate($request, [
+            'name'  => 'required|unique:roles,name'
+        ]);
+
         $role = Role::create($request->except('_token'));
 
-        return redirect()->route('roles.index');
+        return redirect()->route('roles.index')->with('success', 'Role Successfully Created');
 
     }
 
@@ -52,10 +56,14 @@ class RolesController extends Controller
 
     public function update($id, Request $request) {
 
+        $this->validate($request, [
+            'name'  => 'required|unique:roles,name'
+        ]);
+
         $role = Role::find($id);
         $role->update($request->except('_token', '_method'));
 
-        return redirect()->route('roles.index');
+        return redirect()->route('roles.index')->with('success', 'Role Successfully Updated');
 
     }
 
