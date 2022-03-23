@@ -1228,10 +1228,10 @@
 			// 	console.log('no');
 			// }
 
-			$.each(_account_transactions[0], function(i, data){
+			if($('#btn-add-account-details').length > 0) {
 
-				if($('#btn-add-account-details').length > 0) {
-							
+				$.each(_account_transactions[0], function(i, data){
+			
 					let _html = '<tr>';
 
 					$('.tbl-header').each(function(ii, res) {
@@ -1273,40 +1273,40 @@
 					account_transactions.push(data);
 					$('#account-transactions-list tbody').append(_html);	
 
-				} else {
+				});
 
-					$('.custom-inputs').each(function(i, d) {
-						$(this).val(data[$(this).attr('data-name')]);
+			} else {
+
+				$('.custom-inputs').each(function(i, d) {
+					$(this).val(_account_transactions[0][$(this).attr('data-name')]);
+				});
+
+				if(_account_name == 'Installation') {
+
+					let _html = '<tr>';
+					
+					$('.tbl-header').each(function(ii, res) {
+						let _row_name = $(this).data('rowname').trim();
+						
+						if( _row_name != 'action') { 
+							_html += '<td data-name="'+_row_name+'" >' + _account_transactions[0]['items'][$(this).data('rowname')] + '</td>';	
+						}
+						
 					});
 
-					if(_account_name == 'Installation') {
+					_html += '<td>';
+					_html += '<nav class="nav table-options justify-content-start">';
+					_html += '<a class="nav-link p-0 pl-2 remove_account_attachment" href="javascript:void(0);" title="Remove">'; 
+					_html += '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
+					_html += '</a></nav>';
+					_html += '</td>';
 
-						let _html = '<tr>';
-						
-						$('.tbl-header').each(function(ii, res) {
-							let _row_name = $(this).data('rowname').trim();
-							
-							if( _row_name != 'action') { 
-								_html += '<td data-name="'+_row_name+'" >' + data[0]['items'][$(this).data('rowname')] + '</td>';	
-							}
-							
-						});
+					_html += '</tr>';
 
-						_html += '<td>';
-						_html += '<nav class="nav table-options justify-content-start">';
-						_html += '<a class="nav-link p-0 pl-2 remove_account_attachment" href="javascript:void(0);" title="Remove">'; 
-						_html += '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
-						_html += '</a></nav>';
-						_html += '</td>';
-
-						_html += '</tr>';
-
-						$('#account-transactions-list tbody').append(_html);
-					}
-
+					$('#account-transactions-list tbody').append(_html);
 				}
 
-			});
+			}
 
 			if($('#btn-add-account-details').length > 0) {
 			if(_account_name != 'Installation') {
