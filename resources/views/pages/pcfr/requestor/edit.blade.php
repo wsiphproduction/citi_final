@@ -198,7 +198,7 @@
                 <label for="atm-balance" class="col-lg-5 col-form-label">ATM Balance</label>
                 <div class="col-lg-7">
                   	<input type="number" class="form-control text-right" id="atm_balance" name="atm_balance"
-                  		readonly value="{{ $pcfr->atm_balance }}">
+                  		value="{{ $pcfr->atm_balance }}">
                 </div>
             </div>
         </div>
@@ -219,7 +219,7 @@
                 <label for="cash-on-hand" class="col-lg-5 col-form-label">Cash on Hand</label>
                 <div class="col-lg-7">
                   	<input type="number" class="form-control text-right" id="cash_on_hand" name="cash_on_hand"
-                  		value="{{ $pcfr->cash_on_hand }}" readonly>
+                  		value="{{ $pcfr->cash_on_hand }}">
                 </div>
             </div>
         </div>
@@ -290,10 +290,10 @@
           	<hr class="mg-t-20 mg-b-40">
         </div>
 
-        <div class="col-lg-12 mg-t-50">
-			<div data-label="Attachment" class="df-example" id="attachment-outter-wrapper">
+        <div class="col-lg-12">
+			<div data-label="Current Attachments" class="df-example">
 			
-				<table class="table dataTable no-footer mn-wd-550-f">
+				<table class="table mn-wd-550-f">
 
                     <thead>
                         <tr role="row">
@@ -301,6 +301,7 @@
                             <th class="tx-uppercase">Document</th>
                             <th class="tx-uppercase">Doc. Ref No.</th>
                             <th class="tx-uppercase">Doc. Date</th>
+                            <th class="tx-uppercase">Action</th>
                         </tr>
                     </thead>
 
@@ -315,13 +316,88 @@
                                 </td>
                                 <td>{{ $attachment->ref }}</td>
                                 <td>{{ \Carbon\Carbon::parse($attachment->date)->toFormattedDateString() }}</td>
+                                <td>
+                                    <a class="nav-link p-0 pl-2" href="javascript:void(0);" class="remove_curr_attachment">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                                    </a>
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>
+
                 </table>
 				
 			</div>
 		</div>
+
+        <div class="col-lg-12 mg-t-50">
+            <div data-label="Attachment" class="df-example" id="attachment-outter-wrapper">
+        
+                <button type="button" class="btn btn-brand-01 d-inline wd-150 tx-13 mg-t-20" id="btn-add-account-attachment">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" 
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus">
+                    <line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> Add
+                </button>
+
+                <div class="attachment-wrapper mg-t-20" id="attachment-inner-wrapper">
+                    <div class="pd-15 pt-4 border mg-b-20">
+                        <div class="row row-xs">
+                
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                
+                                <label for="attachment-type" class="d-block tx-14">Attachment Type</label>
+                                
+                                <select class="custom-select" id="type">
+                                    <option selected="">--Select--</option>
+                                    <option value="ATM Slip">ATM Slip</option>
+                                    <option value="Withdrawal Slip">Withdrawal Slip</option>
+                                    <option value="Cash Count Sheet">Cash Count Sheet</option>
+                                </select>
+
+                                </div>
+                            </div>
+
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label class="d-block tx-14">Document</label>
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input document-f" id="document" data-from="pcfr">
+                                        <label class="custom-file-label" for="document">Choose file</label>
+                                        <input type="hidden" id="docrefstring" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label for="doc-ref-date" class="d-block tx-14">Doc. Ref Date</label>
+                                    <input type="date" class="form-control" id="docdate" value="{{ date('Y-m-d') }}">
+                                </div>
+                            </div>
+
+                            <div class="col-lg-2">
+                                <div class="form-group">
+                                    <label for="doc-ref-no" class="d-block tx-14">Doc. Ref No.</label>
+                                    <input type="text" class="form-control" id="docref">
+                                </div>
+                            </div>
+
+                            <div class="col-lg-1">
+                                <label class="d-block tx-14 tx-left tx-lg-right">Action</label>
+                                <nav class="nav table-options justify-content-start justify-content-lg-end mg-t-15">
+                                    <a class="nav-link p-0 pl-2 remove_attachment" href="javascript:void(0);" title="Remove">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                                    </a>
+                                </nav>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
 
     	<div class="col-lg-12 mg-t-20"> 
 			@if($pcfr->status == 'saved')
@@ -331,7 +407,8 @@
 	                <input type="hidden" name="action" value="submitted">
 	            
 	                <button type="submit" class="btn btn-primary mr-lg-1 mb-2 mb-lg-0 d-lg-inline wd-100p wd-lg-150"> 
-	                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-send mg-r-5"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>Submit
+	                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                        Update
 	                </button>                           
 	            </form>
 	        @endif
@@ -351,107 +428,7 @@
 		var account_attachments = [];
 		var current_id = 0;
 		var pcv_ids = [];
-
-      	periodFrom = $('#periodDateFrom')
-	      	.datepicker().on('change', function() {
-
-	        	periodTo.datepicker('option','minDate', getDate( this ) );
-	        	$('#included_pcvs tbody').empty();
-	        	if( $('#periodDateTo').val() != "" && $(this).val() != "" ) {
-	        		pcv_ids = [];
-	        		$.ajax({
-
-	        			url 	: "{!! env('APP_URL')!!}"+"/pcfr/requestor/generatepcrf?from="+$(this).val()+'&to='+$('#periodDateTo').val() ,
-	        			method	: 'GET' ,
-	        			success : function(res) {
-
-	        				let _html  = '';
-	        					
-	        					if(res.pcvs.length>0) {
-
-	        						$.each(res.pcvs, function(i, o) {
-	        							_html += '<tr>';
-	        							_html += '<td>'+o.pcv_no+'</td>';
-	        							_html += '<td>'+o.description+'</td>';
-	        							_html += '<td>'+o.account_name+'</td>';
-	        							_html += '<td>'+o.user.branch.name+'</td>';
-	        							_html += '<td>'+o.amount+'</td>';
-	        							_html += '</tr>';
-	        							console.log(o);
-	        							pcv_ids.push(o.id);
-	        						});
-
-	        					} 
-	        					
-	        					$('#included_pcvs tbody').append(_html);	 
-	        					$('#temporary_slip').val(res.unliquidated_ts);
-	        					$('#total_replenishment').val(res.for_replenishment);
-	        					$('#pending_replenishment').val(res.pending_replenishment);
-	        					$('#unreplenished').val(res.unreplenished);
-	        					$('#unapproved_pcvs').val(res.unapproved_pcvs);
-	        					$('#returned_pcvs').val(res.returned_pcvs);
-	        					$('#pcf_accounted_for').val(res.pcf_accounted_for);
-	        					$('#pcf_accountability').val(res.pcf_accountability);
-	        					$('#overage_shortage').val(res.over_short);	 
-
-	        			}
-
-	        		})
-
-	        	}
-
-	      	}),
-
-      	periodTo = $('#periodDateTo')
-      		.datepicker().on('change', function() {
-        		periodFrom.datepicker('option','maxDate', getDate( this ) );
-        		$('#included_pcvs tbody').empty();
-        		if( $('#periodDateFrom').val() != "" && $(this).val() != "" ) {
-        			pcv_ids = [];
-	        		$.ajax({
-
-	        			url 	: "{!! env('APP_URL')!!}"+"/pcfr/requestor/generatepcrf?from="+$('#periodDateFrom').val()+'&to='+$(this).val() ,
-	        			method	: 'GET' ,
-	        			success : function(res) {
-
-	        				let _html  = '';
-	        					
-	        					if(res.pcvs.length>0) {
-
-	        						$.each(res.pcvs, function(i, o) {
-	        							_html += '<tr>';
-	        							_html += '<td>'+o.pcv_no+'</td>';
-	        							_html += '<td>'+o.description+'</td>';
-	        							_html += '<td>'+o.account_name+'</td>';
-	        							_html += '<td>'+o.user.branch.name+'</td>';
-	        							_html += '<td>'+o.amount+'</td>';
-	        							_html += '</tr>';
-
-	        							console.log(o);
-	        							pcv_ids.push(o.id);
-	        						});
-
-	        					} 
-	        					
-	        					$('#included_pcvs tbody').append(_html);	 
-	        					$('#temporary_slip').val(res.unliquidated_ts);
-	        					$('#total_replenishment').val(res.for_replenishment);
-	        					$('#pending_replenishment').val(res.pending_replenishment);
-	        					$('#unreplenished').val(res.unreplenished);
-	        					$('#unapproved_pcvs').val(res.unapproved_pcvs);
-	        					$('#returned_pcvs').val(res.returned_pcvs);
-	        					$('#pcf_accounted_for').val(res.pcf_accounted_for);
-	        					$('#pcf_accountability').val(res.pcf_accountability);
-	        					$('#overage_shortage').val(res.over_short);	        					
-
-	        			}
-
-	        		})
-
-	        	}
-
-      		});
-
+      	
       	$(document).on('click', '#btn-add-account-attachment', function() {
 
 			nextElement($('#attachment-inner-wrapper'));
@@ -590,6 +567,36 @@
 	        newElement.appendTo($("#attachment-outter-wrapper"));
 
 	    }
+
+        $(document).on('blur', '#atm_balance', function() {
+
+            let atm_bal = $(this).val();
+            let overage_shortage = $('#overage_shortage').val();
+            let pcf_accounted_for = $('#pcf_accounted_for').val();
+            let pcf_accountability = $('#pcf_accountability').val();
+
+            let new_pcf_accounted_for = parseFloat(atm_bal) + parseFloat(pcf_accounted_for);
+            let new_overage_shortage = parseFloat(pcf_accountability) - parseFloat(new_pcf_accounted_for);
+
+            $('#pcf_accounted_for').val(new_pcf_accounted_for);
+            $('#overage_shortage').val(new_overage_shortage);
+
+        });
+
+        $(document).on('blur', '#cash_on_hand', function() {
+
+            let cash_on_hand = $(this).val();
+            let overage_shortage = $('#overage_shortage').val();
+            let pcf_accounted_for = $('#pcf_accounted_for').val();
+            let pcf_accountability = $('#pcf_accountability').val();
+
+            let new_pcf_accounted_for = parseFloat(cash_on_hand) + parseFloat(pcf_accounted_for);
+            let new_overage_shortage = parseFloat(pcf_accountability) - parseFloat(new_pcf_accounted_for);
+
+            $('#pcf_accounted_for').val(new_pcf_accounted_for);
+            $('#overage_shortage').val(new_overage_shortage);
+
+        });
 
 	</script>
 

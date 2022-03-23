@@ -364,7 +364,7 @@
             </form>
         @endif
 
-        @if($pcv->status == 'submitted' && !$pcv->attachment)
+        @if($pcv->status == 'submitted' && !$pcv->attachments()->where('type', 'pcv signed')->first())
 
             <div class="row">
             <div data-label="Attachment" class="df-example col-lg-10" id="attachment-outter-wrapper">
@@ -383,7 +383,7 @@
                                         <label for="attachment-type" class="d-block tx-14">Attachment Type</label>
                                         
                                         <select class="custom-select" name="type" id="type" readonly>
-                                            <option selected="pcv signed" selected>PCV Signed</option>
+                                            <option value="pcv signed" selected>PCV Signed</option>
                                         </select>
 
                                     </div>
@@ -429,9 +429,9 @@
         @if($pcv->status == 'submitted' || $pcv->status == 'approved')
             <div class="col-lg-12 mg-t-20">     
                 <a href="{{ route('requestor.pcv.print', $pcv->id) }}" target="_blank" 
-                    class="btn btn-secondary mr-lg-1 mb-2 mb-lg-0 d-block d-lg-inline wd-100p wd-lg-150"
-                    data-action="submitted" data-id="{{ $pcv->id }}" id="btn-submit"> 
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-send mg-r-5"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>Print
+                    class="btn btn-secondary mr-lg-1 mb-2 mb-lg-0 d-block d-lg-inline wd-100p wd-lg-150"> 
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-printer"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                    Print
                 </a>                    
             </div>
         @endif

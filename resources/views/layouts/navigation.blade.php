@@ -111,7 +111,7 @@
             </li>
         @endhasanyrole
 
-        @hasrole('Administrator')
+        @hasrole('Administrator|Maintenance')
 
             <li class="nav-label mg-t-25">Maintenance</li>
 

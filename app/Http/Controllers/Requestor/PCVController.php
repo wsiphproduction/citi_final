@@ -183,13 +183,18 @@ class PCVController extends Controller
     public function edit($pcv) {
 
         $pcv = Pcv::find($pcv);
+        $ts = TemporarySlip::where('status', 'approved')
+            ->where('running_balance', '>', 0)
+            ->whereHas('user', function($query) {
+                $query->where('assign_to', auth()->user()->assign_to);
+            })->get();
         $area_manager = User::where('position', 'area head')
             ->whereHas('branch_group', function($query) {
                 $branch = Branch::find(auth()->user()->assign_to);
                 $query->where('branch', 'LIKE', "%{$branch->name}%");
             })->get();
 
-        return view('pages.pcv.requestor.edit', compact('pcv', 'area_manager'));
+        return view('pages.pcv.requestor.edit', compact('pcv', 'area_manager', 'ts'));
 
     }
 

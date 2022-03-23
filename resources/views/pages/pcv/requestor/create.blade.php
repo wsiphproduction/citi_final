@@ -48,7 +48,9 @@
 		</div>
 
 	</div>	
+
 	@include('components.messages')
+
 	<div class="row">
 		
 		<form role="form" method="POST" action="{{ route('requestor.pcv.store') }}" class="col-lg-12" id="pcv_form">

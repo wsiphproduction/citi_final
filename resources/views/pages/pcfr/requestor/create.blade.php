@@ -383,15 +383,15 @@
 		var current_id = 0;
 		var pcv_ids = {!! $pcvs->pluck('id') !!};
 
-      	periodFrom = $('#periodDateFrom')
-	      	.datepicker().on('change', function() {
-	        	periodTo.datepicker('option','minDate', getDate( this ) );	        	
-	      	}),
+      	// periodFrom = $('#periodDateFrom')
+	      // 	.datepicker().on('change', function() {
+	      //   	periodTo.datepicker('option','minDate', getDate( this ) );	        	
+	      // 	}),
 
-      	periodTo = $('#periodDateTo')
-      		.datepicker().on('change', function() {
-        		periodFrom.datepicker('option','maxDate', getDate( this ) );
-      		});
+      	// periodTo = $('#periodDateTo')
+      	// 	.datepicker().on('change', function() {
+       //  		periodFrom.datepicker('option','maxDate', getDate( this ) );
+      	// 	});
 
       	$(document).on('click', '#btn-add-account-attachment', function() {
 

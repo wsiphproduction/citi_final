@@ -58,11 +58,16 @@
 				<div class="form-group row">
 					<label for="slip-no" class="col-lg-5 col-form-label">Slip No.</label>
 					<div class="col-lg-7">
-						<input list="tsNo" type="text" class="form-control static-inputs" id="ts_no" name="ts_no"
-							@if(is_null($pcv->slip_no)) disabled @endif value="{{ old('ts_no', $pcv->slip_no) }}">
-						<datalist id="tsNo">
-
-						</datalist>
+						<select name="ts_no" class="custom-select form-control" 
+							@if(is_null(old('ts_no', $pcv->ts_no))) disabled @endif 
+							id="ts_no">
+							<option>Select</option>
+							@foreach($ts as $slip)
+								<option value="{{$slip->ts_no}}" data-name="{{$slip->account_name}}" 
+									data-description="{{$slip->description}}"
+									@if(old('ts_no', $pcv->ts_no) == $slip->ts_no) selected @endif>{{ $slip->ts_no }}</option>
+							@endforeach
+						</select>
 					</div>
 				</div>
 			</div>
@@ -132,7 +137,8 @@
 	          	<div class="form-group row">
 		            <label for="pcv_no" class="col-lg-5 col-form-label">Description</label>
 		            <div class="col-lg-7">
-		              	<textarea class="form-control" name="description" rows="5">{{ old('description', $pcv->description) }}</textarea>
+		              	<textarea class="form-control" id="pcv_description" 
+		              		name="description" rows="5">{{ old('description', $pcv->description) }}</textarea>
 		            </div>
 	          	</div>
 	        </div>
