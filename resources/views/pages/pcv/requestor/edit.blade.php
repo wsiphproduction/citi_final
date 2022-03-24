@@ -22,7 +22,7 @@
 				<ol class="breadcrumb breadcrumb-style1 mg-b-10">
 					<li class="breadcrumb-item"><a href="#">Request</a></li>
 					<li class="breadcrumb-item"><a href="{{ route('requestor.pcv.index') }}">Petty Cash Voucher</a></li>
-					<li class="breadcrumb-item active" aria-current="page">Create</li>
+					<li class="breadcrumb-item active" aria-current="page">Edit</li>
 				</ol>
 			</nav>
 			<h4 class="mg-b-0 tx-spacing--1">Petty Cash Voucher Form</h4>
@@ -942,7 +942,7 @@
 	                      <td></td>
 	                      <td></td>
 	                      <td></td>
-	                      <td class="tx-bold align-middle">Total Amount</td>
+	                      <td class="tx-bold align-middle">Total</td>
 	                      <td>
 	                        <input type="number" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" value="00000.00" readonly id="total_amount_display">
 	                      </td>
@@ -1283,8 +1283,8 @@
 
 			} else {
 
-				$('.custom-inputs').each(function(i, d) {
-					$(this).val(_account_transactions[0][$(this).attr('data-name')]);
+				$('.custom-inputs').each(function(i, d) {					
+					$(this).val(_account_transactions[0][0][$(this).attr('data-name')]);
 				});
 
 				if(_account_name == 'Installation') {
@@ -1295,7 +1295,7 @@
 						let _row_name = $(this).data('rowname').trim();
 						
 						if( _row_name != 'action') { 
-							_html += '<td data-name="'+_row_name+'" >' + _account_transactions[0]['items'][$(this).data('rowname')] + '</td>';	
+							_html += '<td data-name="'+_row_name+'" >' + _account_transactions[0][0]['items'][$(this).data('rowname')] + '</td>';	
 						}
 						
 					});
@@ -1324,7 +1324,7 @@
 		                      <td></td>
 		                      <td></td>
 		                      <td></td>
-		                      <td class="tx-bold align-middle">Total Amount</td>
+		                      <td class="tx-bold align-middle">Total</td>
 		                      <td>
 		                        <input type="number" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" value="00000.00" readonly id="total_amount_display">
 		                      </td>
@@ -1340,7 +1340,7 @@
 		                      <td></td>
 		                      <td></td>
 		                      <td></td>
-		                      <td class="tx-bold align-middle">Total Amount</td>
+		                      <td class="tx-bold align-middle">Total</td>
 		                      <td>
 		                        <input type="number" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" value="00000.00" readonly id="total_amount_display">
 		                      </td>
@@ -1430,7 +1430,7 @@
 
 			let _html = '';		
 
-
+			console.log('called');
 
 			$.each(account_transactions, function (x, y) {
 	
@@ -1469,7 +1469,7 @@
 	                      <td></td>
 	                      <td></td>
 	                      <td></td>
-	                      <td class="tx-bold align-middle">Total Amount</td>
+	                      <td class="tx-bold align-middle">Total</td>
 	                      <td>
 	                        <input type="number" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" value="00000.00" readonly id="total_amount_display">
 	                      </td>

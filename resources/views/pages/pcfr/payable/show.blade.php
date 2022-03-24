@@ -210,7 +210,7 @@
                           <td class="sorting_1"></td>
                           <td></td>
                           <td></td>
-                          <td class="tx-bold text-right align-middle">Total Amount</td>
+                          <td class="tx-bold align-middle">Total</td>
                           <td>
                             <input type="number" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" 
                                 value="{{ $pcfr->pcv()->sum('amount') }}" readonly="" name="amount" id="amount">
@@ -346,33 +346,35 @@
 
         <div class="col-lg-12 mg-t-50">
             <div data-label="Attachment" class="df-example" id="attachment-outter-wrapper">
-            
-                <table class="table dataTable no-footer mn-wd-550-f">
+                
+                <div class="dataTables_responsive">
+                    <table class="table dataTable no-footer">
 
-                    <thead>
-                        <tr role="row">
-                            <th class="tx-uppercase">Attachment Type</th>
-                            <th class="tx-uppercase">Document</th>
-                            <th class="tx-uppercase">Doc. Ref No.</th>
-                            <th class="tx-uppercase">Doc. Date</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        @foreach( $pcfr->attachments as $attachment )
+                        <thead>
                             <tr role="row">
-                                <td>{{ $attachment->type }}</td>
-                                <td>
-                                    <a href='{{ \Storage::url("pcfr/{$pcfr->pcfr_no}/{$attachment->attachment}") }}' target="_blank">
-                                        {{ $attachment->attachment }}
-                                    </a>
-                                </td>
-                                <td>{{ $attachment->ref }}</td>
-                                <td>{{ \Carbon\Carbon::parse($attachment->date)->toFormattedDateString() }}</td>
+                                <th class="tx-uppercase">Attachment Type</th>
+                                <th class="tx-uppercase">Document</th>
+                                <th class="tx-uppercase">Doc. Ref No.</th>
+                                <th class="tx-uppercase">Doc. Date</th>
                             </tr>
-                        @endforeach
-                    </tbody>                    
-                </table>
+                        </thead>
+
+                        <tbody>
+                            @foreach( $pcfr->attachments as $attachment )
+                                <tr role="row">
+                                    <td>{{ $attachment->type }}</td>
+                                    <td>
+                                        <a href='{{ \Storage::url("pcfr/{$pcfr->pcfr_no}/{$attachment->attachment}") }}' target="_blank">
+                                            {{ $attachment->attachment }}
+                                        </a>
+                                    </td>
+                                    <td>{{ $attachment->ref }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($attachment->date)->toFormattedDateString() }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>                    
+                    </table>
+                </div>
                 
             </div>
         </div>
@@ -382,12 +384,14 @@
             <div class="col-lg-12 mg-t-20">
                 <button type="button" class="btn btn-white mr-lg-1 mb-2 mb-lg-0 d-block d-lg-inline wd-100p wd-lg-150 btn-submit-approve"
                     data-action="approved" data-id="{{ $pcfr->id }}">
-                    <i class="mg-r-5" data-feather="thumbs-up"></i> Approved
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-up"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>
+                    Approved
                 </button>
                 <button type="button" class="btn btn-brand-01 d-block d-lg-inline wd-100p wd-lg-150 btn-submit-disapprove"
                     data-action="disapproved" data-id="{{ $pcfr->id }}" data-target="#pcfrDisapprove" data-backdrop="static" 
                     data-toggle="modal" data-dismiss="modal">
-                    <i class="mg-r-5" data-feather="thumbs-down"></i> Disapproved
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-down"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"></path></svg>
+                    Disapproved
                 </button>
             </div>
             

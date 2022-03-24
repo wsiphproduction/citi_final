@@ -62,7 +62,7 @@
                     <div class="form-group row">
                         <label for="description" class="col-lg-5 col-form-label">Description</label>
                         <div class="col-lg-7">
-                            <textarea id="description" name="description" class="form-control bd-0 bd-bottom" rows="3" readonly style="height: 120px;">Sample Description</textarea>
+                            <textarea id="description" name="description" class="form-control bd-0 bd-bottom" rows="3" readonly style="height: 120px;">{{ $pcv->description }}</textarea>
                         </div>
                     </div>
                 </div>
@@ -205,9 +205,7 @@
 
         </div>
 
-         <br><br>
-
-        @if($pcv->account_name != 'Delivery Charges')
+        <br><br>
 
         <div class="row">
         
@@ -229,12 +227,12 @@
                         </thead>
 
                         <tbody>
-                            @foreach( $pcv->account_transaction->attachments as $attachment )
+                            @foreach( $pcv->attachments as $attachment )
 
                                     <tr role="row">
                                         <td>{{ ucfirst($attachment->type) }}</td>
                                         <td>
-                                            <a href='{{ env('APP_URL')."/storage/account_transaction/{$pcv->pcv_no}/{$attachment->attachment}"}}' target="_blank">
+                                            <a href='{{ env('APP_URL')."/storage/pcv/{$pcv->pcv_no}/{$attachment->attachment}"}}' target="_blank">
                                                 {{ $attachment->attachment }}
                                             </a>
                                         </td>
@@ -267,53 +265,6 @@
             </div>
 
         </div>
-
-        @if($pcv->attachment)
-            <div class="row">
-            
-                <div class="col-lg-8">
-
-                    <div data-label="Attachment" class="df-example">
-
-                    <div class="dataTables_responsive">
-                        
-                        <table class="table dataTable no-footer mn-wd-550-f">
-
-                            <thead>
-                                <tr role="row">
-                                    <th class="tx-uppercase">Attachment Type</th>
-                                    <th class="tx-uppercase">Document</th>
-                                    <th class="tx-uppercase">Doc. Ref No.</th>
-                                    <th class="tx-uppercase">Doc. Date</th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-
-                                <tr>
-                                    <td>{{ ucfirst($pcv->attachment->type) }}</td>
-                                    <td>
-                                        <a href='{{ env('APP_URL')."/storage/pcv/{$pcv->pcv_no}/{$pcv->attachment->attachment}"}}' target="_blank">
-                                            {{ $pcv->attachment->attachment }}
-                                        </a>
-                                    </td>
-                                    <td>{{ $pcv->attachment->ref }}</td>
-                                    <td>{{ \Carbon\Carbon::parse($pcv->attachment->date)->toFormattedDateString() }}</td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                    </div>
-
-                    </div>
-
-                </div>
-
-            </div> 
-        @endif
-
-        @endif
-
 
         </div>
 

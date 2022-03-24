@@ -42,37 +42,48 @@ class PCFRController extends Controller
         // PCF Accountability
         $pcv_accountability = $branch->budget;
 
-        // unliquidated ts
+        // Temp Slip with running bal > 0
         $unliquidated_ts = TemporarySlip::where('running_balance', '>', 0)
             ->where('status', 'approved')
             ->whereHas('user', function(Builder $query) use ($user) {
                 $query->where('assign_to', $user->assign_to);
             })->sum('running_balance');
 
+
+        // PCFR with status post to ebs
         $total_replenishment = Pcfr::where('status', 'post to ebs')
             ->whereHas('user', function(Builder $query) use ($user) {
                 $query->where('assign_to', $user->assign_to);
             })->sum('amount');
 
+
+        // PCV with status approve w/out pcfr
         $pending_replenishment = Pcv::where('status', 'approved')
             ->whereHas('user', function(Builder $query) use ($user) {
                 $query->where('assign_to', $user->assign_to);
             })->doesntHave('pcfr')->sum('amount');
 
+
+        // PCFR with status for replishment
         $unreplenished = Pcfr::where('status', 'for replenishment')
             ->whereHas('user', function(Builder $query) use ($user) {
                 $query->where('assign_to', $user->assign_to);
             })->sum('amount');            
 
+
+        // PCV with status disapprove on TL || Dept Head
         $unapproved_pcvs = Pcv::whereIn('status', ['disapproved tl', 'disapproved dh'])
             ->whereHas('user', function(Builder $query) use ($user) {
                 $query->where('assign_to', $user->assign_to);
             })->sum('amount');
 
+
+        // PCV with status disapproved py
         $returned_pcvs = Pcv::where('status', 'disapproved py')
             ->whereHas('user', function(Builder $query) use ($user) {
                 $query->where('assign_to', $user->assign_to);
             })->sum('amount');            
+
 
         $pcf_accounted_for = $unliquidated_ts + $total_replenishment + $pending_replenishment + $unreplenished + $unapproved_pcvs + $returned_pcvs;
 

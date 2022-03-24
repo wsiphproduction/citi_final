@@ -156,7 +156,7 @@
                           <td class="sorting_1"></td>
                           <td></td>
                           <td></td>
-                          <td class="tx-bold text-right align-middle">Total Amount</td>
+                          <td class="tx-bold align-middle">Total</td>
                           <td>
                             <input type="number" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" 
                                 value="{{ $pcfr->pcv()->sum('amount') }}" readonly="" name="amount" id="amount">
@@ -292,33 +292,35 @@
 
         <div class="col-lg-12 mg-t-50">
 			<div data-label="Attachment" class="df-example" id="attachment-outter-wrapper">
-			
-				<table class="table dataTable no-footer mn-wd-550-f">
+			 
+                <div class="dataTables_responsive">
+    				<table class="table dataTable no-footer">
 
-                    <thead>
-                        <tr role="row">
-                            <th class="tx-uppercase">Attachment Type</th>
-                            <th class="tx-uppercase">Document</th>
-                            <th class="tx-uppercase">Doc. Ref No.</th>
-                            <th class="tx-uppercase">Doc. Date</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        @foreach( $pcfr->attachments as $attachment )
+                        <thead>
                             <tr role="row">
-                                <td>{{ $attachment->type }}</td>
-                                <td>
-                                    <a href='{{ \Storage::url("pcfr/{$pcfr->pcfr_no}/{$attachment->attachment}") }}' target="_blank">
-                                        {{ $attachment->attachment }}
-                                    </a>
-                                </td>
-                                <td>{{ $attachment->ref }}</td>
-                                <td>{{ \Carbon\Carbon::parse($attachment->date)->toFormattedDateString() }}</td>
+                                <th class="tx-uppercase">Attachment Type</th>
+                                <th class="tx-uppercase">Document</th>
+                                <th class="tx-uppercase">Doc. Ref No.</th>
+                                <th class="tx-uppercase">Doc. Date</th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                        </thead>
+
+                        <tbody>
+                            @foreach( $pcfr->attachments as $attachment )
+                                <tr role="row">
+                                    <td>{{ $attachment->type }}</td>
+                                    <td>
+                                        <a href='{{ \Storage::url("pcfr/{$pcfr->pcfr_no}/{$attachment->attachment}") }}' target="_blank">
+                                            {{ $attachment->attachment }}
+                                        </a>
+                                    </td>
+                                    <td>{{ $attachment->ref }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($attachment->date)->toFormattedDateString() }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
 				
 			</div>
 		</div>

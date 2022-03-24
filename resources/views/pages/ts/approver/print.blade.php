@@ -41,15 +41,17 @@
 
 				<tr>
 					
-					<td width="20%"> <p> <strong>Account Name</strong>: </p></td>
-					<td width="40%" style="border-bottom: 1px solid #000;"> <p> {{ $ts->account_name }} </p></td>
+					<td> <p> <strong>Account Name</strong>: </p></td>
+					<td style="border-bottom: 1px solid #000;"> <p> {{ $ts->account_name }} </p></td>
+					<td> <p> <strong>Description</strong>: </p></td>
+					<td style="border-bottom: 1px solid #000;"> <p> {{ $ts->description }} </p></td>
 					
 				</tr>
 
 				<tr>
 					
-					<td width="20%"> <p> <strong>Amount</strong>: </p></td>
-					<td width="40%" style="border-bottom: 1px solid #000;"> <p> {{ $ts->amount }} </p></td>
+					<td> <p> <strong>Amount</strong>: </p></td>
+					<td style="border-bottom: 1px solid #000;"> <p> {{ $ts->amount }} </p></td>
 
 				</tr>				
 
@@ -138,17 +140,19 @@
 
 				<tr>
 					
-					<td width="20%"> <p> <strong>Account Name</strong>: </p></td>
-					<td width="40%" style="border-bottom: 1px solid #000;"> <p> {{ $ts->account_name }} </p></td>
+					<td> <p> <strong>Account Name</strong>: </p></td>
+					<td style="border-bottom: 1px solid #000;"> <p> {{ $ts->account_name }} </p></td>
+					<td> <p> <strong>Description</strong>: </p></td>
+					<td style="border-bottom: 1px solid #000;"> <p> {{ $ts->description }} </p></td>
 					
 				</tr>
 
 				<tr>
 					
-					<td width="20%"> <p> <strong>Amount</strong>: </p></td>
-					<td width="40%" style="border-bottom: 1px solid #000;"> <p> {{ $ts->amount }} </p></td>
+					<td> <p> <strong>Amount</strong>: </p></td>
+					<td style="border-bottom: 1px solid #000;"> <p> {{ $ts->amount }} </p></td>
 
-				</tr>				
+				</tr>			
 
 			</table>
 

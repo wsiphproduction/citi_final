@@ -25,7 +25,8 @@ class PCFRController extends Controller
             ->where('tl_approved', 1)
             ->whereHas('user', function(Builder $query) {
                 $query->where('assign_to', auth()->user()->assign_to);
-            })   
+            }) 
+            ->orderBy('created_at', 'DESC')  
             ->get();
 
         return view('pages.pcfr.payable.index', compact('pcfr'));
@@ -105,11 +106,13 @@ class PCFRController extends Controller
 
         $pcv = Pcv::find($id);
         $pcv->update([
-            'status'            => 'cancelled' ,
+            'status'            => 'disapproved py' ,
             'cancelled_by'      => auth()->user()->username ,
             'cancelled_date'    => \Carbon\Carbon::now() ,
-            'remarks'           => $pcv->remarks . " > " . $request->remarks ,
-            'pcfr_id'           => null
+            'remarks'           => $request->remarks ,
+            'pcfr_id'           => null ,
+            'tl_approved'       => null ,
+            'dh_approved'       => null
         ]);
 
         // update pcfr auto calculations
@@ -146,9 +149,7 @@ class PCFRController extends Controller
         $pending_replenishment = Pcv::where('status', 'approved')
             ->whereHas('user', function(Builder $query) use ($user) {
                 $query->where('assign_to', $user->assign_to);
-            })->whereHas('pcfr', function(Builder $query) use ($pcfr) {
-                $query->where('pcfr_no', $pcfr->pcfr_no);
-            })->sum('amount');
+            })->doesntHave('pcfr')->sum('amount');
 
         $unreplenished = Pcfr::where('status', 'for replenishment')
             ->whereHas('user', function(Builder $query) use ($user) {
