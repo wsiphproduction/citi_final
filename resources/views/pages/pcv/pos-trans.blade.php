@@ -49,7 +49,7 @@
 					<tr>
 						
 						<td width="15%"> <p> <strong>Cashier</strong>: </p></td>
-						<td width="30%" style="border-bottom: 1px solid #000;"> <p> {{ $transactions[0]->cashier }} </p></td>
+						<td width="30%" style="border-bottom: 1px solid #000;"> <p> {{ $transactions[0]->sale_person }} </p></td>
 						<td width="10%"></td>
 						<td width="15%"> <p> <strong>Transaction Date & Time</strong>: </p></td>
 						<td width="30%" style="border-bottom: 1px solid #000;"> &nbsp;{{ $transactions[0]->trx_date }} </td>
