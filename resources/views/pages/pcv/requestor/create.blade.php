@@ -1478,7 +1478,7 @@
 						}
 						
 					} else if(_row_name == 'line_no') {
-						_html += '<td data-name="'+_row_name'">' + ( x + 1 ) + '</td>';	
+						_html += '<td data-name="'+_row_name+'">' + ( x + 1 ) + '</td>';	
 					}			
 
 				});
