@@ -83,7 +83,7 @@
                     <div class="form-group row">
                         <label for="description" class="col-lg-5 col-form-label">Description</label>
                         <div class="col-lg-7">
-                            <textarea id="description" name="description" class="form-control bd-0 bd-bottom" rows="3" readonly style="height: 120px;">Sample Description</textarea>
+                            <textarea id="description" name="description" class="form-control bd-0 bd-bottom" rows="3" readonly style="height: 120px;">{{ $pcv->description }}</textarea>
                         </div>
                     </div>
                 </div>
