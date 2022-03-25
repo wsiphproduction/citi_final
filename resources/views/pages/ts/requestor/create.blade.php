@@ -44,7 +44,7 @@
 					<label for="date" class="col-lg-2 col-form-label">Date</label>
 					<div class="col-lg-10">
 						<input type="date" class="form-control wd-100p wd-lg-250" id="date_created" name="date_created"
-							value="{{ old('date_created', date('Y-m-d')) }}">
+							value="{{ old('date_created', date('Y-m-d')) }}" readonly>
 					</div>
 				</div>
 			</div>
@@ -98,7 +98,7 @@
 					<label for="received_date" class="col-lg-5 col-form-label">Received Date</label>
 					<div class="col-lg-7">
 						<input type="date" class="form-control" id="received_date" name="received_date"
-							value="{{ old('received_date', date('Y-m-d')) }}">
+							value="{{ old('received_date', date('Y-m-d')) }}" readonly>
 					</div>
 				</div>
 			</div>
@@ -110,7 +110,7 @@
 					<label for="received_by" class="col-lg-5 col-form-label">Received By</label>
 					<div class="col-lg-7">
 						<input type="text" class="form-control" id="received_by" name="received_by"
-							value="{{ old('received_by') }}">
+							value="{{ old('received_by') }}" autocomplete="off">
 					</div>
 				</div>
 			</div>

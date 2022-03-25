@@ -643,8 +643,7 @@
 					if(u =='' || u == undefined) is_null_val = true;
 				});
 			});
-			console.log(account_attachments);
-			console.log(account_transactions);
+
 			if(account_attachments.length>0){
 				$.each(account_attachments, function(i, e) {
 					$.each(e, function(o, u){
@@ -916,7 +915,14 @@
 					} else {
 
 						if( $(this).data('rowname').trim() != 'action' ){
-							_html += '<td data-name="'+$(this).data('rowname')+'">'+ pos_items[e][$(this).data('rowname')]  +'</td>';
+							if(_account_name == 'Delivery Charges' && $(this).data('rowname') == 'pos_of_items') {
+								let _url = "{!! env("APP_URL") !!}"+'/pos-transactions/show/'+pos_items[e][$(this).data('rowname')];
+								_html += '<td data-name="'+$(this).data('rowname')+'" >';
+								_html += '<a href="'+_url+'">'+ pos_items[e][$(this).data('rowname')] +'</a>';
+								_html += '</td>';
+							} else {
+								_html += '<td data-name="'+$(this).data('rowname')+'">'+ pos_items[e][$(this).data('rowname')]  +'</td>';
+							}
 						}
 					}
 
@@ -1122,8 +1128,8 @@
 								_html += '<td><input type="checkbox" class="pos_trans"></td>';
 								_html += '<td data-name="barcode">'+o.barcode+'</td>';
 								_html += '<td data-name="description">'+o.description+'</td>';
-								_html += '<td>'+o.s_qty+'</td>';
-								_html += '<td>'+o.qty_with_pcv+'</td>';
+								_html += '<td>'+o.original_qty+'</td>';
+								_html += '<td>'+o.original_qty+'</td>';
 								_html += '<td data-name="qty_for_installation"><input type="number" step="1" class="form-control"></td>';
 								_html += '</tr>';
 
@@ -1197,7 +1203,10 @@
 
 						if( res.length > 0) {
 
-							$('.custom-inputs[data-name="delivery_fee"]').val(200);
+							const last2Str = String(res[0].universal_trx_id).slice(-2); 
+							const last2Num = Number(last2Str);
+
+							$('.custom-inputs[data-name="delivery_fee"]').val(last2Num);
 
 						} else {
 
@@ -1262,7 +1271,16 @@
 							}	
 						} else {
 							if( _row_name != 'action') { 
-								_html += '<td data-name="'+_row_name+'" >' + data[$(this).data('rowname')] + '</td>';	
+
+								if(_account_name == 'Delivery Charges' && _row_name == 'pos_of_items') {
+									let _url = "{!! env("APP_URL") !!}"+'/pos-transactions/show/'+data[_row_name];
+									_html += '<td data-name="'+_row_name+'" >';
+									_html += '<a href="'+_url+'">'+ data[_row_name] +'</a>';
+									_html += '</td>';
+								} else {
+									_html += '<td data-name="'+_row_name+'" >' + data[_row_name] + '</td>';	
+								}
+
 							}
 						}					
 
@@ -1441,9 +1459,17 @@
 					let _row_name = $(this).data('rowname').trim();
 
 					if( _row_name != "action" && _row_name != "line_no") {
-						_html += '<td data-name="'+$(this).data('rowname')+'">' + account_transactions[x][_row_name] + '</td>';							
+						if( _row_name == 'pos_of_items' ) {
+							_html += '<td data-name="'+_row_name+'" >';
+							let _url = "{!! env("APP_URL") !!}"+'/pos-transactions/show/'+account_transactions[x][_row_name];
+							_html += '<a href="'+_url+'" target="_blank">';
+							_html += account_transactions[x][_row_name] +'</a>';
+							_html += '</td>';
+						} else {
+							_html += '<td data-name="'+_row_name+'" >' + account_transactions[x][_row_name] + '</td>';	
+						}					
 					} else if(_row_name == 'line_no') {
-						_html += '<td data-name="'+$(this).data('rowname')+'">' + ( x + 1 ) + '</td>';	
+						_html += '<td data-name="'+_row_name+'">' + ( x + 1 ) + '</td>';	
 					}			
 
 				});

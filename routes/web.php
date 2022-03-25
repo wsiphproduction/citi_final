@@ -305,6 +305,7 @@ Route::middleware(['web', 'auth'])->group(function () {
     Route::prefix('pos-transactions')->group(function() {
 
         Route::get('search', [PosTransactionController::class, 'search'])->name('pos-transactions.search');
+        Route::get('show/{id}', [PosTransactionController::class, 'show'])->name('pos-transactions.show');
 
     });
 

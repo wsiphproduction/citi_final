@@ -12,7 +12,23 @@ class PosTransactionController extends Controller
 
     public function search(Request $request) {
 
-        return response()->json(TempPosTransaction::where('pos_no', $request->search)->get());
+        $user = auth()->user();
+
+        $transaction = TempPosTransaction::where('universal_trx_id', $request->search)
+            ->where('store_id', $user->branch->store_id)
+            ->get();
+
+        return response()->json($transaction);
+
+    }
+
+
+    public function show($id) {
+
+        $transactions = TempPosTransaction::where('universal_trx_id', $id)
+            ->get();
+
+        return view('pages.pcv.pos-trans', compact('transactions'));
 
     }
 
