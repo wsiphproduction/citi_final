@@ -22,7 +22,7 @@ class UpdateTempPosTransactionsTable extends Migration
             $table->decimal('total_price', 2);
             $table->string('sale_person');
             $table->integer('store_id');
-            $table->string('cashier');
+            $table->string('customer_name');
             $table->timestamp('trx_date')->nullable();
             $table->string('terminal_name');
             $table->string('sales_invoice_receipt_no');
