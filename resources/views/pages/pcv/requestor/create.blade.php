@@ -933,7 +933,7 @@
 							if(_account_name == 'Delivery Charges' && $(this).data('rowname') == 'pos_of_items') {
 								let _url = "{!! env("APP_URL") !!}"+'/pos-transactions/show/'+pos_items[e][$(this).data('rowname')];
 								_html += '<td data-name="'+$(this).data('rowname')+'" >';
-								_html += '<a href="'+_url+'">'+ pos_items[e][$(this).data('rowname')] +'</a>';
+								_html += '<a href="'+_url+'" target="_blank">'+ pos_items[e][$(this).data('rowname')] +'</a>';
 								_html += '</td>';
 							} else {
 								_html += '<td data-name="'+$(this).data('rowname')+'">'+ pos_items[e][$(this).data('rowname')]  +'</td>';
@@ -1283,7 +1283,7 @@
 								if(_account_name == 'Delivery Charges' && _row_name == 'pos_of_items') {
 									let _url = "{!! env("APP_URL") !!}"+'/pos-transactions/show/'+data[_row_name];
 									_html += '<td data-name="'+_row_name+'" >';
-									_html += '<a href="'+_url+'">'+ data[_row_name] +'</a>';
+									_html += '<a href="'+_url+'" target="_blank">'+ data[_row_name] +'</a>';
 									_html += '</td>';
 								} else {
 									_html += '<td data-name="'+_row_name+'" >' + data[_row_name] + '</td>';	
