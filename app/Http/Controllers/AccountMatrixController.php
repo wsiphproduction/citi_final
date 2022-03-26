@@ -54,9 +54,9 @@ class AccountMatrixController extends Controller
 
         $this->validate($request, [
 
-            'name'      => 'required' ,
+            'name'      => 'required|unique:account_matrix,name' ,
             'number'    => 'required' ,
-            'amount'    => Rule::requiredIf(!$request->has('regardless'))
+            'amount'    => Rule::requiredIf(!$request->has('regardless')) ,
 
         ]);
 
@@ -83,7 +83,7 @@ class AccountMatrixController extends Controller
 
         $this->validate($request, [
 
-            'name'      => 'required' ,
+            'name'      => 'required|unique:account_matrix,name,'. $id ,
             'number'    => 'required' ,
             'amount'    => Rule::requiredIf(!$request->has('regardless'))
 
