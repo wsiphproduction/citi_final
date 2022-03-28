@@ -17,6 +17,8 @@
 
 	</div>	
 
+	@include('components.messages')
+
 	<form method="POST" action="{{ route('treasury.pcfr.store') }}" id="pcfr_form">
 		@csrf
 

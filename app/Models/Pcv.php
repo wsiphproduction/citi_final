@@ -18,9 +18,9 @@ class Pcv extends Model
 
         $latest_pcv = \DB::table('pcv')->latest()->first();
         if($latest_pcv)
-            return 'PCV-'. auth()->user()->assign_to . '-'. ( $latest_pcv->id + 1 );
+            return 'PCV-'. date('Ym') . '-'. ( $latest_pcv->id + 1 );
 
-        return 'PCV-'.date('ym') . '-1';
+        return 'PCV-'.date('Ym') . '-1';
 
     }
 

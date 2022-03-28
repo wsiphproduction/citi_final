@@ -85,7 +85,7 @@
 					<label for="amount" class="col-lg-5 col-form-label">Amount</label>
 					<div class="col-lg-7">
 						<input type="number" class="form-control" id="amount" name="amount" step="1" min="0"
-							value="{{ old('amount') }}">
+							value="{{ old('amount') }}" autocomplete="off">
 					</div>
 				</div>
 			</div>

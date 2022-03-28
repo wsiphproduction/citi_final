@@ -21,6 +21,7 @@
 					@if(!$isChargeTo)
 						<select class="custom-select custom-inputs" id="{{ strtolower(str_replace(' ', '_', $field['name'])) }}" 
 							data-name="{{ strtolower(str_replace(' ', '_', $field['name'])) }}">
+								<option value="">Select</option>
 							@foreach( $detailss as $data )
 								<option value="{{ $data['name'] }}">{{ $data['name'] }}</option>
 							@endforeach
@@ -28,6 +29,7 @@
 					@else
 						<select class="custom-select custom-inputs" id="{{ strtolower(str_replace(' ', '_', $field['name'])) }}" 
 							data-name="{{ strtolower(str_replace(' ', '_', $field['name'])) }}">
+								<option value="">Select</option>
 							@foreach( $detailss as $data )
 								<option value="{{ $data['id'] }}">{{ $data['charge_to'] }}</option>
 							@endforeach

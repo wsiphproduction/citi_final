@@ -303,7 +303,6 @@
                 <br><br>
             @endif
 
-            @if($pcv->account_name != 'Delivery Charges')
             <div class="row">
             
                 <div class="col-lg-8">
@@ -325,7 +324,7 @@
 
                             <tbody>
 
-                                @foreach( $pcv->attachments as $attachment )
+                                @forelse( $pcv->attachments as $attachment )
 
                                     <tr role="row">
                                         <td>{{ ucfirst($attachment->type) }}</td>
@@ -338,7 +337,13 @@
                                         <td>{{ \Carbon\Carbon::parse($attachment->date)->toFormattedDateString() }}</td>
                                     </tr>
 
-                                @endforeach
+                                @empty
+
+                                    <tr>
+                                        <td colspan="4" class="text-center"> No Attachment Found </td>
+                                    </tr>
+
+                                @endforelse
 
                             </tbody>
                         </table>
@@ -348,9 +353,7 @@
 
                 </div>
 
-            </div>            
-            @endif
-
+            </div>       
 
         </div>
 

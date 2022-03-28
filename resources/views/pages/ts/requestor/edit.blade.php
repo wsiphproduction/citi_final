@@ -89,7 +89,7 @@
 				<div class="form-group row">
 					<label for="amount" class="col-lg-5 col-form-label">Amount</label>
 					<div class="col-lg-7">
-						<input type="text" class="form-control" value="{{ $ts->amount }}" name="amount">
+						<input type="text" class="form-control" value="{{ $ts->amount }}" name="amount" autocomplete="off">
 					</div>
 				</div>
 			</div>
@@ -124,7 +124,7 @@
 					<label for="received_by" class="col-lg-5 col-form-label">Received By</label>
 					<div class="col-lg-7">
 						<input type="text" class="form-control" id="received_by" name="received_by"
-							value="{{ $ts->received_by }}">
+							value="{{ $ts->received_by }}" autocomplete="off">
 					</div>
 				</div>
 			</div>

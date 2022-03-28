@@ -204,6 +204,10 @@
       "name": "Pakyawan",
       "fields": [
          {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
             "name": "Completion No",
             "type": "text"
          },
@@ -448,6 +452,10 @@
    {
       "name": "Overtime",
       "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
          {
             "name": "OT Date",
             "type": "date"

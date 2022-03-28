@@ -35,6 +35,7 @@
 					</div>
 				</div>
 				
+				@if( auth()->user()->position == 'Administrator' || auth()->user()->position == 'administrator')
 				<div class="col-lg-6">
 					<div class="form-group row">
 						<label for="branch" class="col-lg-5 col-form-label">Branch</label>
@@ -48,6 +49,7 @@
 						</div>
 					</div>
 				</div>
+				@endif
 
 				<div class="col-lg-6">
 					<div class="form-group row">

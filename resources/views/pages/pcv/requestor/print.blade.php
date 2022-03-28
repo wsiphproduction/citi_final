@@ -16,6 +16,11 @@
 
 		}	
 
+		#transaction thead tr, 
+		#transaction tbody tr { border: 1px solid black; padding: 20px; color: #000; }
+
+		#transaction td { text-align: center; }
+
 	</style>
 
 @endsection
@@ -87,7 +92,7 @@
 
 			</table>
 
-			<div style="border: 1px solid #000; width: 100%; display: block; margin: 50px 0 0; padding: 0 10px;">
+			<div style="width: 100%; display: block; margin: 50px 0 0;">
 
 				<table class="col-lg-12 mt-5" style="margin-top: 0 !important;" id="transaction">
 
@@ -96,13 +101,17 @@
                             @if(array_key_exists(0, $pcv->account_transaction['details']))
                                 @foreach($pcv->account_transaction['details'][0] as $key => $tbl_headers)
                                 @if($key != 'items')
-                                <td data-rowname="{{ strtolower(str_replace(' ', '_', $key)) }}" class="tbl-header tx-uppercase"> {{ $key }} </td>
+                                <td data-rowname="{{ strtolower(str_replace(' ', '_', $key)) }}" class="tbl-header tx-uppercase"> 
+                                	{{ str_replace('_', ' ', $key) }} 
+                                </td>
                                 @endif
                                 @endforeach
                             @else
                                 @foreach($pcv->account_transaction['details'] as $key => $tbl_headers)
                                 @if($key != 'items')
-                                <td data-rowname="{{ strtolower(str_replace(' ', '_', $key)) }}" class="tbl-header tx-uppercase"> {{ $key }} </td>
+                                <td data-rowname="{{ strtolower(str_replace(' ', '_', $key)) }}" class="tbl-header tx-uppercase"> 
+                                	str_replace('_', ' ', $key) 
+                                </td>
                                 @endif
                                 @endforeach
                             @endif

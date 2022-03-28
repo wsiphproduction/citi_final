@@ -134,12 +134,24 @@ class TSController extends Controller
 
         }
 
-        $ts->update([
-            'tl_approved'       => 1 ,
-            'status'            => 'approved' ,
-            'approved_by'       => auth()->user()->username ,
-            'approved_date'     => \Carbon\Carbon::now() ,
-        ]);
+        
+        if( $user->position == 'division head') {
+
+            $ts->update([
+                'dh_approved'       => 1 ,
+                'status'            => 'approved' 
+            ]);
+
+        } else {
+
+            $ts->update([
+                'tl_approved'       => 1 ,
+                'status'            => 'approved' ,
+                'approved_by'       => auth()->user()->username ,
+                'approved_date'     => \Carbon\Carbon::now() ,
+            ]);
+
+        }
                     
         return response()->json([
             'need_code' =>  false ,

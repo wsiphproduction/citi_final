@@ -175,9 +175,7 @@ class PCVController extends Controller
 
             $pcv->update([
                 'dh_approved'       => 1 ,
-                'status'            => 'approved' ,
-                'approved_by'       => auth()->user()->username ,
-                'approved_date'     => \Carbon\Carbon::now() ,
+                'status'            => 'approved'
             ]);
 
 

@@ -18,13 +18,13 @@
 
     <ul class="nav nav-aside">
 
-        <li class="nav-item">
+        <li class="nav-item @if(request()->routeIs('dashboard')) active @endif">
             <a href="{{ route('dashboard') }}" class="nav-link"><i data-feather="home">
             </i> <span>Dashboard</span></a>
         </li>
 
         @hasanyrole('Requestor|SSC Requestor')
-            <li class="nav-item with-sub">
+            <li class="nav-item with-sub @if(request()->routeIs('requestor*')) show @endif">
                 <a href="#" class="nav-link">
                     <i data-feather="file-text"></i> 
                     <span>Request</span>
@@ -32,20 +32,22 @@
             
                 <ul>
                     @can('ts view')
-                        <li><a href="{{ route('requestor.ts.index') }}">Temporary Slip</a></li>   
+                        <li class="nav-item @if(request()->routeIs('requestor.ts*')) active @endif"><a href="{{ route('requestor.ts.index') }}">Temporary Slip</a></li>   
                     @endcan
                     @can('pcv view')
-                        <li><a href="{{ route('requestor.pcv.index') }}">PCV</a></li>
+                        <li class="nav-item @if(request()->routeIs('requestor.pcv*')) active @endif"><a href="{{ route('requestor.pcv.index') }}">PCV</a></li>
                     @endcan
-                    @can('pcfr view')
-                        <li><a href="{{ route('requestor.pcfr.index') }}">PCFR</a></li>
-                    @endcan
+                    @if(auth()->user()->getUserAssignTo() != 'SSC')
+                        @can('pcfr view')
+                            <li class="nav-item @if(request()->routeIs('requestor.pcfr*')) active @endif"><a href="{{ route('requestor.pcfr.index') }}">PCFR</a></li>
+                        @endcan
+                    @endif
                 </ul>        
             </li>
         @endhasanyrole
 
         @hasanyrole('TL Approver|Department Head|Division Head')
-            <li class="nav-item with-sub">
+            <li class="nav-item with-sub @if(request()->routeIs('approver*')) show @endif">
                 
                 <a href="#" class="nav-link">
                     <i data-feather="check-circle"></i> 
@@ -53,16 +55,16 @@
                 </a>           
                 <ul>
                     @can('ts view')
-                        <li><a href="{{ route('approver.ts.index') }}">Temporary Slip</a></li>
+                        <li class="nav-item @if(request()->routeIs('approver.ts*')) active @endif"><a href="{{ route('approver.ts.index') }}">Temporary Slip</a></li>
                     @endcan
 
                     @can('pcv view')
-                        <li><a href="{{ route('approver.pcv.index') }}">PCV</a></li>
+                        <li class="nav-item @if(request()->routeIs('approver.pcv*')) active @endif"><a href="{{ route('approver.pcv.index') }}">PCV</a></li>
                     @endcan
                 
                     @hasanyrole('TL Approver|Division Head')
                         @can('pcfr view')
-                            <li><a href="{{ route('approver.pcfr.index') }}">PCFR</a></li>
+                            <li class="nav-item @if(request()->routeIs('approver.pcfr*')) active @endif"><a href="{{ route('approver.pcfr.index') }}">PCFR</a></li>
                         @endcan
                     @endhasanyrole
 
@@ -71,40 +73,50 @@
         @endhasanyrole
 
         @hasanyrole('Treasury Staff|Treasury Head')
-            <li class="nav-item with-sub">
+            <li class="nav-item with-sub @if(request()->routeIs('treasury*')) show @endif">
                 
                 <a href="#" class="nav-link"><i data-feather="briefcase"></i> <span>Treasury</span></a>
             
-                <ul>
-                    
-                    <li><a href="{{ route('treasury.pcfr.index') }}">PCFR</a></li>
-                    <li><a href="{{ route('treasury.pcfr.for-approval') }}">For Approval</a></li>
-                    <li><a href="{{ route('treasury.pcfr.temp-slips') }}">Temporary Slip</a></li>
-                    <li><a href="{{ route('treasury.pcfr.pcvs') }}">PCV</a></li>
-                
+                <ul>                    
+                    <li class="nav-item nav-item @if(request()->routeIs('treasury.pcfr.index')) active @endif">
+                        <a href="{{ route('treasury.pcfr.index') }}">PCFR</a>
+                    </li>
+                    <li class="nav-item nav-item @if(request()->routeIs('treasury.pcfr.for-approval')) active @endif">
+                        <a href="{{ route('treasury.pcfr.for-approval') }}">For Approval</a>
+                    </li>
+                    <li class="nav-item nav-item @if(request()->routeIs('treasury.pcfr.temp-slips')) active @endif">
+                        <a href="{{ route('treasury.pcfr.temp-slips') }}">Temporary Slip</a>
+                    </li>
+                    <li class="nav-item nav-item @if(request()->routeIs('treasury.pcfr.pcvs')) active @endif">
+                        <a href="{{ route('treasury.pcfr.pcvs') }}">PCV</a>
+                    </li>
                 </ul>
 
             </li>
         @endhasanyrole
     
         @hasanyrole('Payable Approver')
-        <li class="nav-item with-sub">
+        <li class="nav-item with-sub @if(request()->routeIs('payable*')) show @endif">
             
             <a href="#" class="nav-link"><i data-feather="credit-card"></i> <span>Payables</span></a>
         
             <ul>
-
-                <li><a href="{{ route('payable.pcfr.index') }}">Approved</a></li>
-                <li><a href="{{ route('payable.pcfr.for-replenished') }}">For Replenishment</a></li>
-                <li><a href="{{ route('payable.pcfr.replenished') }}">Replenished</a></li>
-
+                <li class="nav-item @if(request()->routeIs('payable.pcfr.index')) active @endif">
+                    <a href="{{ route('payable.pcfr.index') }}">Approved</a>
+                </li>
+                <li class="nav-item @if(request()->routeIs('payable.pcfr.for-replenished')) active @endif">
+                    <a href="{{ route('payable.pcfr.for-replenished') }}">For Replenishment</a>
+                </li>
+                <li class="nav-item @if(request()->routeIs('payable.pcfr.replenished')) active @endif">
+                    <a href="{{ route('payable.pcfr.replenished') }}">Replenished</a>
+                </li>
             </ul>
         
         </li>
         @endhasanyrole
 
         @hasanyrole('Audit')
-        <li class="nav-item with-sub">
+        <li class="nav-item with-sub @if(request()->routeIs('audit*')) show @endif">
             
             <a href="#" class="nav-link">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-airplay"><path d="M5 17H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-1"></path><polygon points="12 15 17 21 7 21 12 15"></polygon></svg>
@@ -113,15 +125,21 @@
     
             <ul>
                 @can('ts view')
-                    <li><a href="{{ route('audit.ts.index') }}">Temporary Slip</a></li>
+                    <li class="nav-item @if(request()->routeIs('audit.ts.index')) active @endif">
+                        <a href="{{ route('audit.ts.index') }}">Temporary Slip</a>
+                    </li>
                 @endcan
 
                 @can('pcv view')
-                    <li><a href="{{ route('audit.pcv.index') }}">PCV</a></li>
+                    <li class="nav-item @if(request()->routeIs('audit.pcv.index')) active @endif">
+                        <a href="{{ route('audit.pcv.index') }}">PCV</a>
+                    </li>
                 @endcan
             
                 @can('pcfr view')
-                    <li><a href="{{ route('audit.pcfr.index') }}">PCFR</a></li>
+                    <li class="nav-item @if(request()->routeIs('audit.pcfr.index')) active @endif">
+                        <a href="{{ route('audit.pcfr.index') }}">PCFR</a>
+                    </li>
                 @endcan
             </ul>
         
@@ -129,7 +147,7 @@
         @endhasanyrole
 
         @hasanyrole('Administrator')
-        <li class="nav-item with-sub">
+        <li class="nav-item with-sub @if(request()->routeIs('admin*')) show @endif">
             
             <a href="#" class="nav-link">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-codesandbox"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="7.5 4.21 12 6.81 16.5 4.21"></polyline><polyline points="7.5 19.79 7.5 14.6 3 12"></polyline><polyline points="21 12 16.5 14.6 16.5 19.79"></polyline><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
@@ -138,15 +156,21 @@
     
             <ul>
                 @can('ts view')
-                    <li><a href="{{ route('admin.ts.index') }}">Temporary Slip</a></li>
+                    <li class="nav-item @if(request()->routeIs('admin.ts.index')) active @endif">
+                        <a href="{{ route('admin.ts.index') }}">Temporary Slip</a>
+                    </li>
                 @endcan
 
                 @can('pcv view')
-                    <li><a href="{{ route('admin.pcv.index') }}">PCV</a></li>
+                    <li class="nav-item @if(request()->routeIs('admin.pcv.index')) active @endif">
+                        <a href="{{ route('admin.pcv.index') }}">PCV</a>
+                    </li>
                 @endcan
             
                 @can('pcfr view')
-                    <li><a href="{{ route('admin.pcfr.index') }}">PCFR</a></li>
+                    <li class="nav-item @if(request()->routeIs('admin.pcfr.index')) active @endif">
+                        <a href="{{ route('admin.pcfr.index') }}">PCFR</a>
+                    </li>
                 @endcan
             </ul>
         
