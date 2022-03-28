@@ -125,7 +125,7 @@
 	                	<label for="date_created" class="col-lg-2 col-form-label">Date</label>
 	                	<div class="col-lg-10">
 	                  		<input type="date" class="form-control static-inputs" id="date_created" name="date_created" 
-	                  			value="{{ old('date_created' , date('Y-m-d')) }}">
+	                  			value="{{ old('date_created' , date('Y-m-d')) }}" readonly>
 	                	</div>
 	              	</div>
 	            </div>
@@ -349,6 +349,7 @@
 @section('pagejs')
 	
 	<script type="text/javascript" src="{{ asset('js/moment.js') }}"></script>
+	<script src="{{ asset('lib/select2/js/select2.min.js') }}"></script>
 	<script type="text/javascript">
 		
 		var current_id = 0;
@@ -695,12 +696,21 @@
 					});
 
 				} else {
-
+					let _exists = false;
 					let _data = getData();
 
 					if(!_data) { alert('Some data on your request is missing please check it again'); return false; }
 
-			    	account_transactions.push(_data);
+					$.each(account_transactions, function (x, y) {
+						if(y.di_no == _data.di_no) {
+							_exists = true;
+							return false;
+						}
+					});
+
+					if(_exists) { alert("DI no " + _data.di_no + " is already added"); return false; }
+				    
+				    account_transactions.push(_data);
 
 			    	populateAccountsTable();
 			    	resetAccountForm();
@@ -865,6 +875,8 @@
 							
 							if($(this).find('input').is(':checked')) {
 								_isCheck = true;
+							} else {
+								return false;
 							}
 
 						} else {
@@ -892,15 +904,15 @@
 
 				if( _isCheck == true ) {
 
+					if(  !_hasVal) {
+						alert('Some fields doesn\'t have value please checked');
+						return false;
+					}
+
 					pos_items.push(_pos_items);
 				}
 
-			});
-
-			if(!_hasVal) {
-				alert('Some fields doesn\'t have value please checked');
-				return false;
-			}
+			});			
 
 			let _account_name 	= $('#account_name').val();
 			let _html = '';		
@@ -976,7 +988,8 @@
 				resetAccountForm();
 			}
 
-			$('#pop_ups_wrap').modal('hide');
+			if(_hasVal)
+				$('#pop_ups_wrap').modal('hide');
 
 		});
 
