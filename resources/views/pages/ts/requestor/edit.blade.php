@@ -45,7 +45,7 @@
 					<label for="date" class="col-lg-2 col-form-label">Date</label>
 					<div class="col-lg-10">
 						<input type="date" class="form-control wd-100p wd-lg-250"
-							value="{{ \Carbon\Carbon::parse($ts->date_created)->format('Y-m-d') }}" name="date_created">
+							value="{{ \Carbon\Carbon::parse($ts->date_created)->format('Y-m-d') }}" name="date_created" disabled>
 					</div>
 				</div>
 			</div>
@@ -59,14 +59,26 @@
 					<label for="account" class="col-lg-5 col-form-label">Account</label>
 					<div class="col-lg-7">
 
-						<select class="custom-select" id="account_name" name="account_name">
+						<!-- <select class="custom-select" id="account_name" name="account_name">
+							<option value="">Select Account</option>
 							@foreach( $accounts as $account )
 								<option value="{{ $account['name'] }}" 
 									@if( $account['name'] == $ts->account_name ) selected @endif >
 									{{ $account['name'] }} 
 								</option>
 							@endforeach
+						</select> -->
+
+						<select class="form-control" name="account">
+							<option value=""> Select Account </option>								
+							@foreach( \App\Models\Account::getAccountsFinal() as $account )
+								<option value="{{ $account['FLEX_VALUE_MEANING'] }} | {{ $account['DESCRIPTION'] }}"
+									@if( $account['FLEX_VALUE_MEANING'] == $ts->account_code ) selected @endif > 
+									{{ $account['DESCRIPTION'] }} 
+								</option>
+							@endforeach
 						</select>
+
 					</div>
 				</div>
 			</div>
@@ -99,7 +111,7 @@
 				<div class="form-group row">
 					<label for="received_date" class="col-lg-5 col-form-label">Received Date</label>
 					<div class="col-lg-7">
-						<input type="date" class="form-control" id="received_date" name="received_date"
+						<input type="text" class="form-control" id="received_date" name="received_date"
 							value="{{ \Carbon\Carbon::parse($ts->received_date)->format('Y-m-d') }}">
 					</div>
 				</div>
@@ -133,3 +145,15 @@
 	</form>
 
 @endsection	
+
+@section('pagejs')
+
+	<script type="text/javascript">	
+
+		$("#received_date").datepicker({
+		    minDate: new Date()
+		});
+
+	</script>
+
+@endsection

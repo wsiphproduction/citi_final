@@ -31,8 +31,12 @@
 						<label for="name" class="col-lg-5 col-form-label">Account Name</label>
 						<div class="col-lg-7">
 							<select class="form-control" name="name">
-								@foreach( \App\Models\Account::getAccounts() as $account )
-									<option value="{{ $account['name'] }}" @if(old('name', $charge->name) == $account['name']) selected @endif> {{ $account['name'] }} </option>
+								<option value=""> Select Account </option>
+								@foreach( \App\Models\Account::getAccountsFinal() as $account )
+									<option value="{{ $account['DESCRIPTION'] }} "
+										@if(old('name', $charge->name) == $account['DESCRIPTION']) selected @endif> 
+										{{ $account['DESCRIPTION'] }} 
+									</option>
 								@endforeach
 							</select>
 						</div>

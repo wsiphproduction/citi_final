@@ -19,6 +19,15 @@ class Account extends Model
 
     }
 
+    public static function getAccountsFinal() {
+
+        $jsonString = file_get_contents(base_path('public/data/accounts_final.json'));
+        $accounts = json_decode($jsonString, true);
+
+        return $accounts;
+
+    }
+
     public function account_transactions(){
         return $this->hasMany(AccountTransactions::class, 'account_name');
     }

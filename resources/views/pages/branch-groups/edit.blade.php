@@ -107,6 +107,74 @@
 		</form>
 
     </div>
+
+    @if(count($branch_group->audits()->where('event', 'updated')->get()))
+
+    <div class="row">
+    
+    	<div class="mg-t-50 col-lg-12">
+    		
+    		<h3> Branch Group Logs </h3>
+
+    		<div class="dataTables_responsive">
+    			
+    			<table id="example1" class="table">
+    				
+    				<thead>
+    					<th> Changes </th>
+    					<th> Branch/Store </th>
+    					<th> Created By </th>
+    					<th> Created Date and Time </th>
+    					<th> Updated By </th>
+    					<th> Updated Date and Time </th>
+    				</thead>
+
+    				<tbody>
+    					@foreach( $branch_group->audits()->where('event', 'updated')->get() as $audit )
+    					<tr>
+    						<td>
+    							<ul style="list-style: none; padding: 0;">
+    							@foreach($audit->new_values as $key => $value)
+    								@if($key != 'updated_by')
+	    								<li>({{ $key }}) - From {{ $audit->old_values[$key] }} - To {{ $value }}</li>
+	    							@endif
+    							@endforeach
+    							</ul>
+    						</td>
+    						<td>
+    							@foreach($branch_group->branch as $branch)
+    								@if($loop->last)
+    									{{ $branch }}
+    								@else
+    									{{ $branch }}, 
+    								@endif
+    							@endforeach
+    						</td>
+    						<td>
+    							{{ $branch_group->created_by }}
+    						</td>
+    						<td>
+    							{{ $audit->created_at }}
+    						</td>
+    						<td>
+    							{{ array_key_exists('updated_by', $audit['new_values']) ? $audit['new_values']['updated_by'] : $branch_group->updated_by }}
+    						</td>
+    						<td>
+    							{{ $audit->updated_at }}
+    						</td>
+    					</tr>
+    					@endforeach
+    				</tbody>
+
+    			</table>
+
+    		</div>
+
+    	</div>
+
+    </div>
+	
+    @endif
 	
 @endsection
 

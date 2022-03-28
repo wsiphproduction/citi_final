@@ -32,29 +32,20 @@
 					<div class="form-group row">
 						<label for="name" class="col-lg-5 col-form-label">Account Name</label>
 						<div class="col-lg-7">
-							<select class="form-control" name="name">
+							<select class="form-control" name="account">
 								<option value=""> Select Account </option>
-								@foreach( $accounts as $account )
-									<option value="{{ $account['name'] }}" @if(old('name', $matrix->name) == $account['name']) selected @endif>{{ $account['name'] }}</option>
+								@foreach( \App\Models\Account::getAccountsFinal() as $account )
+									<option value="{{ $account['FLEX_VALUE_MEANING'] }} | {{ $account['DESCRIPTION'] }}"
+										@if($matrix->number == $account['FLEX_VALUE_MEANING']) selected @endif> 
+										{{ $account['DESCRIPTION'] }} 
+									</option>
 								@endforeach
 							</select>
 						</div>
 					</div>
 				</div>
 
-				<div class="col-lg-3"></div>
-		        <div class="offset-3"></div>
-
-				<div class="col-lg-6">
-					<div class="form-group row">
-						<label for="name" class="col-lg-5 col-form-label">Account Number</label>
-						<div class="col-lg-7">
-							<input type="text" name="number" class="form-control" value="{{ old('number', $matrix->number) }}"/>
-						</div>
-					</div>
-				</div>
-
-				<div class="col-lg-3"></div>
+				<div class="col-lg-3"></div>		        
 				<div class="offset-3"></div>
 
 				<div class="col-lg-6">
@@ -139,6 +130,64 @@
 		</form>
 
     </div>
+
+    @if(count($matrix->audits()->where('event', 'updated')->get()))
+
+    <div class="row">
+    
+    	<div class="mg-t-50 col-lg-12">
+    		
+    		<h3> Branch Group Logs </h3>
+
+    		<div class="dataTables_responsive">
+    			
+    			<table id="example1" class="table">
+    				
+    				<thead>
+    					<th> Changes </th>
+    					<th> Created By </th>
+    					<th> Created Date and Time </th>
+    					<th> Updated By </th>
+    					<th> Updated Date and Time </th>
+    				</thead>
+
+    				<tbody>
+    					@foreach( $matrix->audits()->where('event', 'updated')->get() as $audit )
+    					<tr>
+    						<td>
+    							<ul style="list-style: none; padding: 0;">
+    							@foreach($audit->new_values as $key => $value)
+    								@if($key != 'updated_by')
+	    								<li>({{ $key }}) - From {{ $audit->old_values[$key] }} - To {{ $value }}</li>
+	    							@endif
+    							@endforeach
+    							</ul>
+    						</td>    						
+    						<td>
+    							{{ $matrix->created_by }}
+    						</td>
+    						<td>
+    							{{ $audit->created_at }}
+    						</td>
+    						<td>
+    							{{ array_key_exists('updated_by', $audit['new_values']) ? $audit['new_values']['updated_by'] : $matrix->updated_by }}
+    						</td>
+    						<td>
+    							{{ $audit->updated_at }}
+    						</td>
+    					</tr>
+    					@endforeach
+    				</tbody>
+
+    			</table>
+
+    		</div>
+
+    	</div>
+
+    </div>
+	
+    @endif
 	
 @endsection
 

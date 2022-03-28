@@ -73,17 +73,17 @@ class TSController extends Controller
         $ts = TemporarySlip::find($id);
         $user = auth()->user();
 
-        $matrix = AccountMatrix::where('name', $ts->account_name)
+        $matrix = AccountMatrix::where('number', $ts->account_code)
             ->where('amount', '=', $ts->amount)
             ->where('status', 1)
             ->orWhere(function($query) use ($ts) {
-                $query->where('name', $ts->account_name)
+                $query->where('number', $ts->account_code)
                     ->where('amount', '<', $ts->amount)
                     ->where('beyond', 1)
                     ->where('status', 1);
             })
             ->orWhere(function($query) use ($ts) {
-                $query->where('name', $ts->account_name)
+                $query->where('number', $ts->account_code)
                     ->where('regardless', 1)
                     ->where('status', 1);
             })
@@ -185,7 +185,8 @@ class TSController extends Controller
         }
 
         $ts->update([
-            'status' => $disapprove ,
+            'status'            => $disapprove ,
+            'remarks'           => $request->remarks ,
             'cancelled_by'      => auth()->user()->username ,
             'cancelled_date'    => \Carbon\Carbon::now()
         ]);

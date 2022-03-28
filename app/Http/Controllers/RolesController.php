@@ -57,7 +57,7 @@ class RolesController extends Controller
     public function update($id, Request $request) {
 
         $this->validate($request, [
-            'name'  => 'required|unique:roles,name'
+            'name'  => 'required|unique:roles,name,' . $id
         ]);
 
         $role = Role::find($id);

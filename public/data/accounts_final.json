@@ -1,0 +1,298 @@
+[
+ {
+   "FLEX_VALUE_MEANING": 11416,
+   "DESCRIPTION": "Receivable - Consignor's Pull-out"
+ },
+ {
+   "FLEX_VALUE_MEANING": 11417,
+   "DESCRIPTION": "Receivable - Damages/Losses"
+ },
+ {
+   "FLEX_VALUE_MEANING": 11418,
+   "DESCRIPTION": "Receivable - Stripping"
+ },
+ {
+   "FLEX_VALUE_MEANING": 60502,
+   "DESCRIPTION": "Staffhouse Rent"
+ },
+ {
+   "FLEX_VALUE_MEANING": 60702,
+   "DESCRIPTION": "Water Usage"
+ },
+ {
+   "FLEX_VALUE_MEANING": 60703,
+   "DESCRIPTION": "Telephone/Internet Expense"
+ },
+ {
+   "FLEX_VALUE_MEANING": 60704,
+   "DESCRIPTION": "Cellphone Expense"
+ },
+ {
+   "FLEX_VALUE_MEANING": 60801,
+   "DESCRIPTION": "Repairs & Maintenance - Building"
+ },
+ {
+   "FLEX_VALUE_MEANING": 60802,
+   "DESCRIPTION": "Repairs & Maintenance - Store Equipment"
+ },
+ {
+   "FLEX_VALUE_MEANING": 60803,
+   "DESCRIPTION": "Repairs & Maintenance - Staffhouse Equipment"
+ },
+ {
+   "FLEX_VALUE_MEANING": 60806,
+   "DESCRIPTION": "Repairs & Maintenance - Communication Equipment"
+ },
+ {
+   "FLEX_VALUE_MEANING": 60807,
+   "DESCRIPTION": "Repairs & Maintenance - Computer Equipment"
+ },
+ {
+   "FLEX_VALUE_MEANING": 60808,
+   "DESCRIPTION": "Repairs & Maintenance - Store Furniture & Fixtures"
+ },
+ {
+   "FLEX_VALUE_MEANING": 60809,
+   "DESCRIPTION": "Repairs & Maintenance - Staffhouse Furniture & Fixtures"
+ },
+ {
+   "FLEX_VALUE_MEANING": 60901,
+   "DESCRIPTION": "Foreign Travel"
+ },
+ {
+   "FLEX_VALUE_MEANING": 60902,
+   "DESCRIPTION": "Meals & Travel - Meals"
+ },
+ {
+   "FLEX_VALUE_MEANING": 60903,
+   "DESCRIPTION": "Meals & Travel - Lodging"
+ },
+ {
+   "FLEX_VALUE_MEANING": 60904,
+   "DESCRIPTION": "Meals & Travel -Transportation"
+ },
+ {
+   "FLEX_VALUE_MEANING": 60905,
+   "DESCRIPTION": "Meals & Travel - Others"
+ },
+ {
+   "FLEX_VALUE_MEANING": 60906,
+   "DESCRIPTION": "Managers & Core Team Meeting"
+ },
+ {
+   "FLEX_VALUE_MEANING": 61101,
+   "DESCRIPTION": "Cashier's Allowance"
+ },
+ {
+   "FLEX_VALUE_MEANING": 61102,
+   "DESCRIPTION": "Transportation Expense"
+ },
+ {
+   "FLEX_VALUE_MEANING": 61103,
+   "DESCRIPTION": "Meal Expense"
+ },
+ {
+   "FLEX_VALUE_MEANING": 61201,
+   "DESCRIPTION": "Gasoline"
+ },
+ {
+   "FLEX_VALUE_MEANING": 61202,
+   "DESCRIPTION": "Lubricants & Oil"
+ },
+ {
+   "FLEX_VALUE_MEANING": 61203,
+   "DESCRIPTION": "Office Supplies"
+ },
+ {
+   "FLEX_VALUE_MEANING": 11701,
+   "DESCRIPTION": "Receivable Clearing"
+ },
+ {
+   "FLEX_VALUE_MEANING": 11707,
+   "DESCRIPTION": "CIP Clearing"
+ },
+ {
+   "FLEX_VALUE_MEANING": 61104,
+   "DESCRIPTION": "Other Allowances"
+ },
+ {
+   "FLEX_VALUE_MEANING": 60818,
+   "DESCRIPTION": "Repairs & Maintenance - Service Center"
+ },
+ {
+   "FLEX_VALUE_MEANING": 51002,
+   "DESCRIPTION": "Freight & Handling"
+ },
+ {
+   "FLEX_VALUE_MEANING": 60102,
+   "DESCRIPTION": "Contractual Services"
+ },
+ {
+   "FLEX_VALUE_MEANING": 60205,
+   "DESCRIPTION": "Uniform Expense"
+ },
+ {
+   "FLEX_VALUE_MEANING": 60207,
+   "DESCRIPTION": "Incentives"
+ },
+ {
+   "FLEX_VALUE_MEANING": 60208,
+   "DESCRIPTION": "Hospitalization/Health Benefit"
+ },
+ {
+   "FLEX_VALUE_MEANING": 60209,
+   "DESCRIPTION": "Medical"
+ },
+ {
+   "FLEX_VALUE_MEANING": 60213,
+   "DESCRIPTION": "Other Employee's Benefits"
+ },
+ {
+   "FLEX_VALUE_MEANING": 61804,
+   "DESCRIPTION": "Installation"
+ },
+ {
+   "FLEX_VALUE_MEANING": 61301,
+   "DESCRIPTION": "Christmas Party"
+ },
+ {
+   "FLEX_VALUE_MEANING": 12401,
+   "DESCRIPTION": "Construction in Progress"
+ },
+ {
+   "FLEX_VALUE_MEANING": 12604,
+   "DESCRIPTION": "Deferred Pre-opening Expenses"
+ },
+ {
+   "FLEX_VALUE_MEANING": 12607,
+   "DESCRIPTION": "Creditable Withholding Tax"
+ },
+ {
+   "FLEX_VALUE_MEANING": 61803,
+   "DESCRIPTION": "Sales Incentive"
+ },
+ {
+   "FLEX_VALUE_MEANING": 61901,
+   "DESCRIPTION": "Advertising Expense"
+ },
+ {
+   "FLEX_VALUE_MEANING": 41102,
+   "DESCRIPTION": "Sales Discount - Outright"
+ },
+ {
+   "FLEX_VALUE_MEANING": 41103,
+   "DESCRIPTION": "Sales Return - Outright"
+ },
+ {
+   "FLEX_VALUE_MEANING": 60215,
+   "DESCRIPTION": "Training & Development - External Training"
+ },
+ {
+   "FLEX_VALUE_MEANING": 60216,
+   "DESCRIPTION": "Training & Development - In House"
+ },
+ {
+   "FLEX_VALUE_MEANING": 60301,
+   "DESCRIPTION": "Real Property Taxes"
+ },
+ {
+   "FLEX_VALUE_MEANING": 60302,
+   "DESCRIPTION": "Vehicle Registation & Fees"
+ },
+ {
+   "FLEX_VALUE_MEANING": 60303,
+   "DESCRIPTION": "Permits & Licenses"
+ },
+ {
+   "FLEX_VALUE_MEANING": 61302,
+   "DESCRIPTION": "Sportsfest/Summer Outing"
+ },
+ {
+   "FLEX_VALUE_MEANING": 61303,
+   "DESCRIPTION": "Other Special Events"
+ },
+ {
+   "FLEX_VALUE_MEANING": 61501,
+   "DESCRIPTION": "Representation- Visitors"
+ },
+ {
+   "FLEX_VALUE_MEANING": 61502,
+   "DESCRIPTION": "Representation- Others"
+ },
+ {
+   "FLEX_VALUE_MEANING": 61603,
+   "DESCRIPTION": "Bank Charges"
+ },
+ {
+   "FLEX_VALUE_MEANING": 61604,
+   "DESCRIPTION": "Credit Card Surcharge"
+ },
+ {
+   "FLEX_VALUE_MEANING": 61605,
+   "DESCRIPTION": "Dues & Subscription"
+ },
+ {
+   "FLEX_VALUE_MEANING": 61606,
+   "DESCRIPTION": "Miscellaneous Expense"
+ },
+ {
+   "FLEX_VALUE_MEANING": 61612,
+   "DESCRIPTION": "Donation/Solicitation  Expense"
+ },
+ {
+   "FLEX_VALUE_MEANING": 61613,
+   "DESCRIPTION": "Main Office Overhead"
+ },
+ {
+   "FLEX_VALUE_MEANING": 61801,
+   "DESCRIPTION": "Delivery Cost"
+ },
+ {
+   "FLEX_VALUE_MEANING": 61802,
+   "DESCRIPTION": "Sales Commission"
+ },
+ {
+   "FLEX_VALUE_MEANING": 61204,
+   "DESCRIPTION": "Store Supplies"
+ },
+ {
+   "FLEX_VALUE_MEANING": 61205,
+   "DESCRIPTION": "Representation- Supplies"
+ },
+ {
+   "FLEX_VALUE_MEANING": 61206,
+   "DESCRIPTION": "Warehouse Supplies"
+ },
+ {
+   "FLEX_VALUE_MEANING": 61207,
+   "DESCRIPTION": "Other Assets Expense"
+ },
+ {
+   "FLEX_VALUE_MEANING": 61208,
+   "DESCRIPTION": "Air & Sea Freight Charges"
+ },
+ {
+   "FLEX_VALUE_MEANING": 61209,
+   "DESCRIPTION": "Pallets"
+ },
+ {
+   "FLEX_VALUE_MEANING": 60401,
+   "DESCRIPTION": "Professional Fees"
+ },
+ {
+   "FLEX_VALUE_MEANING": 60402,
+   "DESCRIPTION": "Legal & Settlement Fees"
+ },
+ {
+   "FLEX_VALUE_MEANING": 60403,
+   "DESCRIPTION": "Accounting & Audit Fees"
+ },
+ {
+   "FLEX_VALUE_MEANING": 61210,
+   "DESCRIPTION": "Staffhouse Expenses"
+ },
+ {
+   "FLEX_VALUE_MEANING": 11714,
+   "DESCRIPTION": "Intercompany Clearing"
+ }
+]

@@ -53,7 +53,15 @@
 			<div class="form-group row">
 				<label for="name" class="col-lg-5 col-form-label">Branch</label> 
 				<div class="col-lg-7">
-					<input type="text" disabled class="form-control" value="{{ implode(' | ',$branch_group->branch) }}">
+					<ul style="padding: 0 20px;">
+						@forelse( $branch_group->branch as $branch)
+							<li> {{ $branch }} </li>
+						@empty
+
+							<li>No Branch Found</li>
+
+						@endforelse
+					</ul>
 				</div>
 			</div>
 		</div>

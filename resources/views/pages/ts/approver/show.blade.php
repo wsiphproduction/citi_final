@@ -102,6 +102,19 @@
 
 		<div class="col-lg-6"></div>
 
+		@if(\Str::contains($ts->status , 'disapproved'))
+
+		<div class="col-lg-6">
+			<div class="form-group row">
+				<label for="description" class="col-lg-5 col-form-label">Remarks</label>
+				<div class="col-lg-7">
+					<textarea id="description" name="description" class="form-control" rows="3" readonly>{{ $ts->remarks }}</textarea>
+				</div>
+			</div>
+		</div>
+
+		@endif
+
 		@if($ts->user->getUserAssignTo() == 'ssc')
 
 	        @if( auth()->user()->position == 'department head' && $ts->status == 'submitted' )

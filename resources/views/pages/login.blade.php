@@ -48,9 +48,8 @@
 				  	<div class="sign-wrapper">
 
 						<div class="wd-100p">
-						
-						<h3 class="tx-color-01 mg-b-5">Log In</h3>
-						<p class="tx-color-03 tx-lg-16 tx-md-16 tx-14 mg-b-40">Petty Cash Fund Replenishment System</p>
+					
+						<p class="tx-color-03 tx-lg-24 tx-md-16 tx-14 mg-b-40">Petty Cash Fund Replenishment System</p>
 
 						<form method="POST" action="{{ route('login') }}">
             				@csrf

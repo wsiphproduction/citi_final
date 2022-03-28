@@ -28,7 +28,9 @@ class PCFRController extends Controller
             ])
             ->whereHas('user', function(Builder $builder) {
                 $builder->where('assign_to', auth()->user()->assign_to);
-            })->get();
+            })
+            ->orderBy('created_at', 'DESC')
+            ->get();
 
         return view('pages.pcfr.treasury.index', compact('pcfr'));
 

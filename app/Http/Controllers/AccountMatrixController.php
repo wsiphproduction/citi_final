@@ -52,17 +52,26 @@ class AccountMatrixController extends Controller
 
     public function store(Request $request) {
 
+        $account = explode(" | ", $request->account);
+
+        if(count($account) > 1) {
+
+            $request['number'] = $account[0];
+            $request['name'] = $account[1];
+
+        }
+
         $this->validate($request, [
 
             'name'      => 'required|unique:account_matrix,name' ,
-            'number'    => 'required' ,
+            'number'    => 'required|unique:account_matrix,number' ,
             'amount'    => Rule::requiredIf(!$request->has('regardless')) ,
 
         ]);
 
         $request['created_by'] = auth()->user()->username;
 
-        AccountMatrix::create($request->except('_token'));
+        AccountMatrix::create($request->except('_token', 'account'));
 
         return redirect()->route('account-matrix.index')->with('success', 'Account Matrix Successfully Created!');
 
@@ -81,10 +90,19 @@ class AccountMatrixController extends Controller
 
     public function update($id, Request $request) {
 
+        $account = explode(" | ", $request->account);
+
+        if(count($account) > 1) {
+
+            $request['number'] = $account[0];
+            $request['name'] = $account[1];
+
+        }
+
         $this->validate($request, [
 
             'name'      => 'required|unique:account_matrix,name,'. $id ,
-            'number'    => 'required' ,
+            'number'    => 'required|unique:account_matrix,number,'. $id  ,
             'amount'    => Rule::requiredIf(!$request->has('regardless'))
 
         ]);
@@ -92,7 +110,7 @@ class AccountMatrixController extends Controller
         $request['updated_by'] = auth()->user()->username;
 
         $matrix = AccountMatrix::find($id);
-        $matrix->update($request->except('_token','_method'));
+        $matrix->update($request->except('_token','_method', 'account'));
 
         return redirect()->route('account-matrix.index')->with('success', 'Account Matrix Successfully Updated!');
 

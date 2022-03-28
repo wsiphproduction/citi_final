@@ -119,8 +119,9 @@ class UsersController extends Controller
             'assign_to'         => $request->assign_to ,
             'assign_name'       => $request->assign_name ,
             'position'          => $request->position ,
-            'created_by'        => auth()->user()->username,
-            'status'            => $request->status
+            'status'            => $request->status ,
+            'updated_at'        => \Carbon\Carbon::now() ,
+            'updated_by'        => auth()->user()->username
         ]);
 
         $user->assignRole($request->access);

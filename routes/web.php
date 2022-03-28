@@ -7,13 +7,19 @@ require __DIR__.'/auth.php';
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Requestor\TSController as RequestorTs;
 use App\Http\Controllers\Approver\TSController as ApproverTs;
+use App\Http\Controllers\Audit\TSController as AuditTs;
+use App\Http\Controllers\Admin\TSController as AdminTs;
 use App\Http\Controllers\Requestor\PCVController as RequestorPCVController;
 use App\Http\Controllers\Approver\PCVController as ApproverPCVController;
 use App\Http\Controllers\Payable\PCVController as PayablePCVController;
+use App\Http\Controllers\Audit\PCVController as AuditPCVController;
+use App\Http\Controllers\Admin\PCVController as AdminPCVController;
 use App\Http\Controllers\Requestor\PCFRController as RequestorPCFRController;
 use App\Http\Controllers\Approver\PCFRController as ApproverPCFRController;
 use App\Http\Controllers\Payable\PCFRController as PayablePCFRController;
 use App\Http\Controllers\Treasury\PCFRController as TreasuryPCFRController;
+use App\Http\Controllers\Audit\PCFRController as AuditPCFRController;
+use App\Http\Controllers\Admin\PCFRController as AdminPCFRController;
 use App\Http\Controllers\PCFRController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\RolesController;
@@ -171,9 +177,11 @@ Route::middleware(['web', 'auth'])->group(function () {
             Route::post('store', [RequestorTs::class, 'store'])->name('requestor.ts.store');
 
             Route::put('update/{id}', [RequestorTs::class, 'update'])->name('requestor.ts.update');
+            Route::put('update1/{id}', [RequestorTs::class, 'update1'])->name('requestor.ts.update1');
             Route::put('status-update/{id}', [RequestorTs::class, 'statusUpdate'])->name('requestor.ts.status-update');
 
         });
+        
         Route::prefix('approver')->group(function() {
             Route::get('/', [ApproverTs::class, 'index'])->name('approver.ts.index');
             Route::get('show/{id}', [ApproverTs::class, 'show'])->name('approver.ts.show');
@@ -184,6 +192,18 @@ Route::middleware(['web', 'auth'])->group(function () {
             Route::put('disapprove/{id}', [ApproverTs::class, 'disapprove'])->name('approver.ts.disapprove');
 
         });
+
+
+        Route::prefix('audit')->group(function() {
+            Route::get('/', [AuditTs::class, 'index'])->name('audit.ts.index');
+            Route::get('show/{id}', [AuditTs::class, 'show'])->name('audit.ts.show');
+        });
+
+        Route::prefix('admin')->group(function() {
+            Route::get('/', [AdminTs::class, 'index'])->name('admin.ts.index');
+            Route::get('show/{id}', [AdminTs::class, 'show'])->name('admin.ts.show');
+        });
+
 
         Route::put('approver-action/{id}', [TSController::class, 'approverAction'])->name('ts.approver-action');
 
@@ -223,6 +243,22 @@ Route::middleware(['web', 'auth'])->group(function () {
             Route::put('disapprove/{id}', [ApproverPCVController::class, 'disapprove'])->name('approver.pcv.disapprove');
 
         });
+
+        Route::prefix('audit')->group(function() {
+
+            Route::get('/', [AuditPCVController::class, 'index'])->name('audit.pcv.index');
+            Route::get('show/{pcv}', [AuditPCVController::class, 'show'])->name('audit.pcv.show');
+
+        });
+
+        Route::prefix('admin')->group(function() {
+
+            Route::get('/', [AdminPCVController::class, 'index'])->name('admin.pcv.index');
+            Route::get('show/{pcv}', [AdminPCVController::class, 'show'])->name('admin.pcv.show');
+
+        });
+
+
 
     });
 
@@ -289,6 +325,21 @@ Route::middleware(['web', 'auth'])->group(function () {
             Route::put('pcv/{id}/remove', [TreasuryPCFRController::class, 'pcvRemove'])->name('treasury.pcfr.pcv-remove');
             Route::put('disapprove/{id}', [TreasuryPCFRController::class, 'disapprove'])->name('treasury.pcfr.disapprove');
             Route::put('approve/{id}', [TreasuryPCFRController::class, 'approve'])->name('treasury.pcfr.approve');
+
+        });
+
+
+        Route::prefix('audit')->group(function() {
+
+            Route::get('/', [AuditPCFRController::class, 'index'])->name('audit.pcfr.index');
+            Route::get('show/{id}', [AuditPCFRController::class, 'show'])->name('audit.pcfr.show');
+
+        });
+
+        Route::prefix('admin')->group(function() {
+
+            Route::get('/', [AdminPCFRController::class, 'index'])->name('admin.pcfr.index');
+            Route::get('show/{id}', [AdminPCFRController::class, 'show'])->name('admin.pcfr.show');
 
         });
 
@@ -375,3 +426,4 @@ Route::middleware(['web', 'auth'])->group(function () {
     });
 
 });
+

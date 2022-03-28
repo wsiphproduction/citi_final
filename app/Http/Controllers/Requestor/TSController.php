@@ -42,18 +42,27 @@ class TSController extends Controller
 
     public function store(Request $request) {
 
+        $account = explode(" | ", $request->account);
+
+        if(count($account) > 1) {
+
+            $request['account_code'] = $account[0];
+            $request['account_name'] = $account[1];
+
+        }
+
         $this->validate($request, [
-            'amount'        => 'required' ,
-            'description'   => 'required' ,
-            'received_by'   => 'required' ,
-            
+            'account_name'      => 'required' ,
+            'account_code'    => 'required' ,
+            'amount'            => 'required' ,
+            'description'       => 'required'            
         ]);
 
         $request['ts_no']               = TemporarySlip::generateTSNumber();
         $request['running_balance']     = $request->amount;
         $request['user_id']             = auth()->user()->id;
 
-        TemporarySlip::create($request->except('_token'));
+        TemporarySlip::create($request->except('_token', 'account'));
 
         return redirect()->route('requestor.ts.index')->with('success',"Temporary slip was successfully {$request->status}");
 
@@ -82,10 +91,20 @@ class TSController extends Controller
 
     public function update($id, Request $request) {
 
+        $account = explode(" | ", $request->account);
+
+        if(count($account) > 1) {
+
+            $request['account_code'] = $account[0];
+            $request['account_name'] = $account[1];
+
+        }
+
         $this->validate($request, [
-            'amount'        => 'required' ,
-            'description'   => 'required' ,
-            'received_by'   => 'required' ,
+            'account_name'      => 'required' ,
+            'account_code'    => 'required' ,
+            'amount'            => 'required' ,
+            'description'       => 'required' ,
             
         ]);
 
@@ -100,9 +119,24 @@ class TSController extends Controller
             $request['dh_approved'] = null;
         }
 
-        $ts->update($request->except('_token','method'));
+        $ts->update($request->except('_token','method', 'account'));
 
         return redirect()->route('requestor.ts.index')->with('success',"Temporary slip has been updated!");
+
+    }
+
+
+    public function update1($id, Request $request) {
+
+        $this->validate($request, [
+            'received_by'   => 'required'
+        ]);
+
+        $ts = TemporarySlip::find($id);
+
+        $ts->update($request->except('_token','method'));
+
+        return redirect()->back()->with('success',"Temporary slip has been updated!");
 
     }
 

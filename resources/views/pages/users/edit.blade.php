@@ -1,8 +1,12 @@
 @extends('layouts.app')
 
 @section('pagecss')
-	<link href="{{ asset('lib/select2/css/select2.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('lib/datatables.net-dt/css/jquery.dataTables.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('lib/datatables.net-responsive-dt/css/responsive.dataTables.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('lib/select2/css/select2.min.css') }}" rel="stylesheet">
+
 @endsection
+
 
 @section('content')
 	
@@ -176,13 +180,75 @@
 		</form>
 
     </div>
+
+    @if(count($user->audits()->where('event', 'updated')->get()))
+
+    <div class="row">
+    
+    	<div class="mg-t-50 col-lg-12">
+    		
+    		<h3> User Logs </h3>
+
+    		<div class="dataTables_responsive">
+    			
+    			<table id="example1" class="table">
+    				
+    				<thead>
+    					<th> Changes </th>
+    					<th> Created By </th>
+    					<th> Created Date and Time </th>
+    					<th> Updated By </th>
+    					<th> Updated Date and Time </th>
+    				</thead>
+
+    				<tbody>
+    					@foreach( $user->audits()->where('event', 'updated')->get() as $audit )
+    					<tr>
+    						<td>
+    							<ul style="list-style: none; padding: 0;">
+    							@foreach($audit->new_values as $key => $value)
+    								@if($key != 'updated_by')
+	    								<li>({{ $key }}) - From {{ $audit->old_values[$key] }} - To {{ $value }}</li>
+	    							@endif
+    							@endforeach
+    							</ul>
+    						</td>
+    						<td>
+    							{{ $user->created_by }}
+    						</td>
+    						<td>
+    							{{ $audit->created_at }}
+    						</td>
+    						<td>
+    							{{ array_key_exists('updated_by', $audit['new_values']) ? $audit['new_values']['updated_by'] : $user->updated_by }}
+    						</td>
+    						<td>
+    							{{ $audit->updated_at }}
+    						</td>
+    					</tr>
+    					@endforeach
+    				</tbody>
+
+    			</table>
+
+    		</div>
+
+    	</div>
+
+    </div>
 	
+    @endif
+
 @endsection
 
 
 @section('pagejs')
-
-	<script src="{{ asset('lib/select2/js/select2.min.js') }}"></script>
+	
+	<script src="{{ asset('lib/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('lib/datatables.net-dt/js/dataTables.dataTables.min.js') }}"></script>
+    <script src="{{ asset('lib/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ asset('lib/datatables.net-responsive-dt/js/responsive.dataTables.min.js') }}"></script>
+    <script src="{{ asset('lib/select2/js/select2.min.js') }}"></script>
 	<script type="text/javascript">
 			
 		$(document).ready(function(){
@@ -225,6 +291,17 @@
 		    tokenSeparators: [',']
 		})
 
-	</script>
+		$(function(){
+			'use strict'
+
+			$('#example1').DataTable({
+				"ordering": false,
+        		"info":     false,
+        		"searching": false,
+        		"bLengthChange": false,
+			});
+		});
+
+    </script>
 
 @endsection

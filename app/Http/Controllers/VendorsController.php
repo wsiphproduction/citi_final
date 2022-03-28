@@ -16,7 +16,7 @@ class VendorsController extends Controller
 
     public function index() {
 
-        if( auth()->user()->position == 'administrator') {
+        if( auth()->user()->position == 'administrator' || auth()->user()->position == 'Administrator') {
 
             $vendors = Vendor::where('status', 1)
                 ->orderBy('created_at', 'DESC')
@@ -39,7 +39,7 @@ class VendorsController extends Controller
 
     public function inactive() {
 
-        if( auth()->user()->position == 'administrator') {
+        if( auth()->user()->position == 'administrator' || auth()->user()->position == 'Administrator') {
 
             $vendors = Vendor::where('status', 0)
                 ->orderBy('created_at', 'DESC')
@@ -81,7 +81,7 @@ class VendorsController extends Controller
 
     public function store(Request $request) {
 
-        if(auth()->user()->position == 'administrator'){
+        if(auth()->user()->position == 'administrator' || auth()->user()->position == 'Administrator'){
             $this->validate($request, [
                 'name'              => 'required' ,
                 'address'           => 'required' ,
@@ -141,7 +141,7 @@ class VendorsController extends Controller
 
     public function update($id, Request $request) {
 
-        if(auth()->user()->position == 'administrator'){
+        if(auth()->user()->position == 'administrator' || auth()->user()->position == 'Administrator'){
             $this->validate($request, [
                 'name'              => 'required' ,
                 'address'           => 'required' ,
@@ -185,7 +185,7 @@ class VendorsController extends Controller
 
         }
 
-        return redirect()->route('vendors.index')->with('success', 'Vendor has been added Successfully!!');
+        return redirect()->route('vendors.index')->with('success', 'Vendor has been updated Successfully!!');
 
     }
 

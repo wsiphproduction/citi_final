@@ -23,10 +23,12 @@
 		</div>
 
 		<div class="d-md-block mt-4 mt-lg-0">
+            @if(auth()->user()->position != 'Audit' && auth()->user()->position != 'audit')
         	<a class="btn btn-sm pd-x-15 btn-primary btn-uppercase" href="{{ route('roles.create') }}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> 
                 Create Roles
             </a>
+            @endif
         </div>
 
 	</div>	
@@ -41,10 +43,12 @@
                     <option value="{{ $role->id }}">{{ $role->name }}</option>
                 @endforeach
             </select>
+            @if(auth()->user()->position != 'Audit' && auth()->user()->position != 'audit')
             <button class="btn btn-primary mt-2" id="save-permissions"> 
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-save"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                 Save 
             </button>
+            @endif
 
         </div>
 
@@ -108,6 +112,30 @@
 
 	</div>
 
+    <div class="modal fade effect-scale" id="confirm_message" tabindex="-1" 
+        role="dialog" aria-labelledby="confirm_message" 
+        aria-modal="true">
+
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content tx-14">
+                
+                <div class="modal-header">
+                    <h6 class="modal-title" id="exampleModalLabel3">Confirmation Message</h6>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <p class="mb-0" id="message"> Role Permission Save Successfully. </p>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+
 @endsection
 
 @section('pagejs')
@@ -139,6 +167,11 @@
                 },
                 success: function(res) {
                     console.log(res);
+                    $('#confirm_message').modal('show');
+                    setTimeout(function(){
+                        $('#confirm_message').modal('hide');
+                    }, 3000);
+
                 }
             });
 

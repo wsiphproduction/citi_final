@@ -18,15 +18,15 @@
                 
                     <a href="" class="dropdown-link" data-toggle="dropdown" data-display="static" aria-expanded="false">
                     
-                        <div class="tx-color-01"><span>Admin</span> <i data-feather="chevron-down"></i></div>
+                        <div class="tx-color-01"><span>{{ ucfirst(auth()->user()->username) }}</span> <i data-feather="chevron-down"></i></div>
                     
                     </a>
 
                     <!-- dropdown-link -->
                     <div class="dropdown-menu dropdown-menu-right tx-13">
                     
-                        <h6 class="tx-semibold mg-b-5">John Doe</h6>
-                        <p class="mg-b-25 tx-12 tx-color-03">Administrator</p>
+                        <h6 class="tx-semibold mg-b-5">{{ ucfirst(auth()->user()->firstname) }} {{ ucfirst(auth()->user()->lastname) }}</h6>
+                        <p class="mg-b-25 tx-12 tx-color-03">{{ auth()->user()->position }}</p>
 
                         <div class="dropdown-divider"></div>
                         <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"

@@ -30,8 +30,11 @@
 						<label for="name" class="col-lg-5 col-form-label">Account Name</label>
 						<div class="col-lg-7">
 							<select class="form-control" name="name" id="name">
-								@foreach( \App\Models\Account::getAccounts() as $account )
-									<option value="{{ $account['name'] }}"> {{ $account['name'] }} </option>
+								<option value=""> Select Account </option>
+								@foreach( \App\Models\Account::getAccountsFinal() as $account )
+									<option value="{{ $account['DESCRIPTION'] }} "> 
+										{{ $account['DESCRIPTION'] }} 
+									</option>
 								@endforeach
 							</select>
 						</div>

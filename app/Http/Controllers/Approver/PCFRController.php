@@ -29,6 +29,7 @@ class PCFRController extends Controller
                 ->whereHas('user', function(Builder $query) use ($user) {
                     $query->where('assign_to', $user->assign_to);
                 })
+                ->orderBy('created_at', 'DESC')
                 ->get();
 
         return view('pages.pcfr.approver.index', compact('pcfr'));

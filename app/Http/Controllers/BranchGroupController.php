@@ -13,7 +13,7 @@ class BranchGroupController extends Controller
 
     public function index() {
 
-        $branch_groups = BranchGroup::all();        
+        $branch_groups = BranchGroup::orderBy('created_at', 'DESC')->get();        
 
         return view('pages.branch-groups.index', compact('branch_groups'));
 
@@ -50,7 +50,7 @@ class BranchGroupController extends Controller
 
         BranchGroup::create($request->except('_token'));
 
-        return redirect()->route('branch-group.index')->with('success', 'Branch Group Successfully Created.');
+        return redirect()->route('branch-group.index')->with('success', 'Branch Group Created Successfully .');
 
     }
 
@@ -79,7 +79,7 @@ class BranchGroupController extends Controller
 
         $branch_group->update($request->except('_token', '_method'));
 
-        return redirect()->route('branch-group.index')->with('success', 'Branch Group Successfully Updated.');
+        return redirect()->route('branch-group.index')->with('success', 'Branch Group Updated Successfully .');
 
     }
 
@@ -89,7 +89,7 @@ class BranchGroupController extends Controller
         $branch = Branch::find($id);
         $branch->delete();
 
-        return redirect()->route('branch-group.index')->with('success', 'Branch Group Successfully Deleted.');
+        return redirect()->route('branch-group.index')->with('success', 'Branch Group Deleted Successfully.');
 
     }
 

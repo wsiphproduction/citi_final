@@ -30,19 +30,7 @@
 			</div>
 		</div>
 
-		<div class="col-lg-3"></div>
-        <div class="offset-3"></div>
-
-		<div class="col-lg-6">
-			<div class="form-group row">
-				<label for="name" class="col-lg-5 col-form-label">Account Number</label>
-				<div class="col-lg-7">
-					<input type="text" disabled class="form-control" value="{{ old('number', $matrix->number) }}"/>
-				</div>
-			</div>
-		</div>
-
-		<div class="col-lg-3"></div>
+		<div class="col-lg-3"></div>        
 		<div class="offset-3"></div>
 
 		<div class="col-lg-6">

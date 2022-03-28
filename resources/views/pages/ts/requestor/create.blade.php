@@ -57,10 +57,20 @@
 				<div class="form-group row">
 					<label for="account" class="col-lg-5 col-form-label">Account</label>
 					<div class="col-lg-7">
-						<select class="custom-select" id="account_name" name="account_name">
+						<!-- <select class="custom-select" id="account_name" name="account_name">
+							<option value="">Select Account</option>
 							@foreach( $accounts as $account )
 								<option value="{{ $account['name'] }}" @if(old('account_name')==$account['name']) selected @endif> 
 									{{ $account['name'] }} 
+								</option>
+							@endforeach
+						</select> -->
+
+						<select class="form-control" name="account">
+							<option value=""> Select Account </option>								
+							@foreach( \App\Models\Account::getAccountsFinal() as $account )
+								<option value="{{ $account['FLEX_VALUE_MEANING'] }} | {{ $account['DESCRIPTION'] }}"> 
+									{{ $account['DESCRIPTION'] }} 
 								</option>
 							@endforeach
 						</select>
@@ -97,8 +107,8 @@
 				<div class="form-group row">
 					<label for="received_date" class="col-lg-5 col-form-label">Received Date</label>
 					<div class="col-lg-7">
-						<input type="date" class="form-control" id="received_date" name="received_date"
-							value="{{ old('received_date', date('Y-m-d')) }}" readonly>
+						<input type="text" class="form-control" id="received_date" name="received_date"
+							value="{{ old('received_date', date('Y-m-d')) }}" >
 					</div>
 				</div>
 			</div>
@@ -152,6 +162,10 @@
 
 			$('#ts_form').submit();
 
+		});
+
+		$("#received_date").datepicker({
+		    minDate: new Date()
 		});
 
 

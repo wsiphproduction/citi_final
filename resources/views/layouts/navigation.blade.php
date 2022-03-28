@@ -18,7 +18,7 @@
 
     <ul class="nav nav-aside">
 
-        <li class="nav-item active">
+        <li class="nav-item">
             <a href="{{ route('dashboard') }}" class="nav-link"><i data-feather="home">
             </i> <span>Dashboard</span></a>
         </li>
@@ -52,7 +52,6 @@
                     <span>Approval</span>
                 </a>           
                 <ul>
-
                     @can('ts view')
                         <li><a href="{{ route('approver.ts.index') }}">Temporary Slip</a></li>
                     @endcan
@@ -104,6 +103,56 @@
         </li>
         @endhasanyrole
 
+        @hasanyrole('Audit')
+        <li class="nav-item with-sub">
+            
+            <a href="#" class="nav-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-airplay"><path d="M5 17H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-1"></path><polygon points="12 15 17 21 7 21 12 15"></polygon></svg>
+                <span>Audit</span>
+            </a>
+    
+            <ul>
+                @can('ts view')
+                    <li><a href="{{ route('audit.ts.index') }}">Temporary Slip</a></li>
+                @endcan
+
+                @can('pcv view')
+                    <li><a href="{{ route('audit.pcv.index') }}">PCV</a></li>
+                @endcan
+            
+                @can('pcfr view')
+                    <li><a href="{{ route('audit.pcfr.index') }}">PCFR</a></li>
+                @endcan
+            </ul>
+        
+        </li>
+        @endhasanyrole
+
+        @hasanyrole('Administrator')
+        <li class="nav-item with-sub">
+            
+            <a href="#" class="nav-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-codesandbox"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="7.5 4.21 12 6.81 16.5 4.21"></polyline><polyline points="7.5 19.79 7.5 14.6 3 12"></polyline><polyline points="21 12 16.5 14.6 16.5 19.79"></polyline><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                <span>Administrator</span>
+            </a>
+    
+            <ul>
+                @can('ts view')
+                    <li><a href="{{ route('admin.ts.index') }}">Temporary Slip</a></li>
+                @endcan
+
+                @can('pcv view')
+                    <li><a href="{{ route('admin.pcv.index') }}">PCV</a></li>
+                @endcan
+            
+                @can('pcfr view')
+                    <li><a href="{{ route('admin.pcfr.index') }}">PCFR</a></li>
+                @endcan
+            </ul>
+        
+        </li>
+        @endhasanyrole
+
         @hasanyrole('Administrator')
             <li class="nav-item"><a href="#" class="nav-link">
                 <i data-feather="clipboard"></i> 
@@ -111,7 +160,7 @@
             </li>
         @endhasanyrole
 
-        @hasrole('Administrator|Maintenance')
+        @hasrole('Administrator|Maintenance|Audit')
 
             <li class="nav-label mg-t-25">Maintenance</li>
 

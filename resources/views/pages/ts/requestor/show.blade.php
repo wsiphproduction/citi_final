@@ -78,6 +78,7 @@
 
 		<div class="col-lg-6"></div>
 
+		
 		<div class="col-lg-6">
 			<div class="form-group row">
 				<label for="received_date" class="col-lg-5 col-form-label">Received Date</label>
@@ -100,6 +101,21 @@
 			</div>
 		</div>
 
+		<div class="col-lg-6"></div>
+
+		@if($ts->status == 'disapproved tl')
+
+		<div class="col-lg-6">
+			<div class="form-group row">
+				<label for="description" class="col-lg-5 col-form-label">Remarks</label>
+				<div class="col-lg-7">
+					<textarea id="description" name="description" class="form-control" rows="3" readonly>{{ $ts->remarks }}</textarea>
+				</div>
+			</div>
+		</div>
+
+		@endif
+
 		@if( $ts->status == 'saved' )
 		<div class="col-lg-12 mg-t-20">	
 			<form action="{{ route('requestor.ts.status-update', $ts->id) }}" method="POST">
@@ -115,8 +131,8 @@
 		</div>
 		@endif
 
-		@if($ts->status == 'approved')
-			<div class="col-lg-12 mg-t-20">		
+		@if($ts->status == 'approved' || $ts->status == 'submitted')
+			<div class="col-lg-12 mg-t-20">						
 				<a href="{{ route('requestor.ts.print', $ts->id) }}" target="_blank" 
 					class="btn btn-secondary mr-lg-1 mb-2 mb-lg-0 d-block d-lg-inline wd-100p wd-lg-150"> 
 					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-printer"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
@@ -127,4 +143,26 @@
 
     </div>
 	
+@endsection
+
+
+@section('pagejs')
+
+	<script type="text/javascript">
+		
+		if("{{$ts->status}}" == 'approved' && is_null("{{$ts->received_by}}")) {
+			$("#received_date").datepicker({
+			    minDate: new Date()
+			});
+		}
+
+		$(document).on('click', '#btn-submitupdate', function() {
+
+			$('#trigger-update').submit();
+
+		});
+
+
+	</script>
+
 @endsection

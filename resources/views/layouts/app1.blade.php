@@ -23,8 +23,8 @@
                     <!-- dropdown-link -->
                     <div class="dropdown-menu dropdown-menu-right tx-13">
                     
-                        <h6 class="tx-semibold mg-b-5">John Doe</h6>
-                        <p class="mg-b-25 tx-12 tx-color-03">Administrator</p>
+                        <h6 class="tx-semibold mg-b-5">{{ auth()->user()->username }}</h6>
+                        <p class="mg-b-25 tx-12 tx-color-03">{{ auth()->user()->position }}</p>
 
                         <div class="dropdown-divider"></div>
                         <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"

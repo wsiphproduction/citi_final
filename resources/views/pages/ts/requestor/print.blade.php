@@ -97,7 +97,7 @@
 					<td width="20%" class="text-left"> <p> <strong> Printed By: </strong> <span> {{ $ts->user->username }}</span></p></td>
 					<td width="5%"></td>
 					<td width="30%" class="text-left"> 
-						<p> <strong> Printed Date & Time: </strong> <span> {{ \Carbon\Carbon::now()->toDateTimeString() }} </span> </p>
+						<p> <strong> Printed Date & Time: </strong> <span> {{ \Carbon\Carbon::now()->format('m/d/y h:m') }} </span> </p>
 					</td>
 
 				</tr>
@@ -196,7 +196,7 @@
 					<td width="20%" class="text-left"> <p> <strong> Printed By: </strong> <span> {{ $ts->user->username }}</span></p></td>
 					<td width="5%"></td>
 					<td width="30%" class="text-left"> 
-						<p> <strong> Printed Date & Time: </strong> <span> {{ \Carbon\Carbon::now()->toDateTimeString() }} </span> </p>
+						<p> <strong> Printed Date & Time: </strong> <span> {{ \Carbon\Carbon::now()->format('m/d/y h:m') }} </span> </p>
 					</td>
 
 				</tr>

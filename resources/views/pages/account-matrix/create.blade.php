@@ -31,29 +31,19 @@
 					<div class="form-group row">
 						<label for="name" class="col-lg-5 col-form-label">Account Name</label>
 						<div class="col-lg-7">
-							<select class="form-control" name="name">
-								<option value=""> Select Account </option>
-								@foreach( $accounts as $account )
-									<option value="{{ $account['name'] }}" @if(old('name') == $account['name']) selected @endif>{{ $account['name'] }}</option>
+							<select class="form-control" name="account">
+								<option value=""> Select Account </option>								
+								@foreach( \App\Models\Account::getAccountsFinal() as $account )
+									<option value="{{ $account['FLEX_VALUE_MEANING'] }} | {{ $account['DESCRIPTION'] }}"> 
+										{{ $account['DESCRIPTION'] }} 
+									</option>
 								@endforeach
 							</select>
 						</div>
 					</div>
 				</div>
 
-				<div class="col-lg-3"></div>
-		        <div class="offset-3"></div>
-
-				<div class="col-lg-6">
-					<div class="form-group row">
-						<label for="name" class="col-lg-5 col-form-label">Account Number</label>
-						<div class="col-lg-7">
-							<input type="text" name="number" class="form-control" value="{{ old('number') }}"/>
-						</div>
-					</div>
-				</div>
-
-				<div class="col-lg-3"></div>
+				<div class="col-lg-3"></div>		        
 				<div class="offset-3"></div>
 
 				<div class="col-lg-6">

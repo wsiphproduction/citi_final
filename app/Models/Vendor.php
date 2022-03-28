@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Vendor extends Model
+class Vendor extends Model implements Auditable
 {
-    use HasFactory;
+    use HasFactory, \OwenIt\Auditing\Auditable;
 
 
     protected $guarded = [];
@@ -15,6 +16,8 @@ class Vendor extends Model
     protected $casts = [
         'attachment'   => 'array'
     ];
+
+    protected $auditExclude  = [];
 
 
     public static function getVendors() {
