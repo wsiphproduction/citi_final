@@ -178,7 +178,7 @@
         @endhasanyrole
 
         @hasanyrole('Administrator')
-            <li class="nav-item"><a href="#" class="nav-link">
+            <li class="nav-item"><a href="{{ route('reports.index') }}" class="nav-link">
                 <i data-feather="clipboard"></i> 
                 <span>Report</span></a>
             </li>

@@ -6,9 +6,11 @@
     <link href="{{ asset('lib/datatables.net-responsive-dt/css/responsive.dataTables.min.css') }}" rel="stylesheet">
     <link href="{{ asset('lib/select2/css/select2.min.css') }}" rel="stylesheet">
     <style type="text/css">
-    	#tsNo {
-    		display: block;
-    	}
+ 
+    	#tsNo { display: block; }
+    	.hide { display: none !important;  }
+    	.show { display: block !important; }
+
     </style>
 
 @endsection
@@ -92,11 +94,27 @@
 	            	<div class="col-lg-7">
 						<select class="custom-select static-inputs" id="account_name" name="account_name">
 							<option value="">Select Account</option>
+							@php $isOthers = true; @endphp @endphp
 							@foreach( \App\Models\Account::getAccounts() as $account )
+								@if(!$account['others'])
+								@php if(old('account_name', $pcv->account_name)==$account['name']){ $isOthers = false; } @endphp
 								<option value="{{ $account['name'] }}" 
 									@if(old('account_name', $pcv->account_name)==$account['name']) selected @endif> 
 									{{ $account['name'] }} 
 								</option>
+								@endif
+							@endforeach
+							<option value="others" @if($isOthers) selected @endif> Others </option>
+						</select>
+						<select class="mg-t-20 custom-select static-inputs @if($errors->has('account_name_other')) is-invalid @endif @if($isOthers) show @else hide @endif" 
+							id="account_name_other" name="account_name_other">
+							<option value="">Select Account</option>
+							@foreach( \App\Models\Account::getAccounts() as $account )
+								@if($account['others'])
+								<option value="{{ $account['name'] }}" @if(old('account_name_other', $pcv->account_name)==$account['name']) selected @endif> 
+									{{ $account['name'] }} 
+								</option>
+								@endif
 							@endforeach
 						</select>
 					</div>
@@ -345,8 +363,11 @@
 
 		$(document).ready(function() {
 
-			if($('#account_name').val() != '')
+			if($('#account_name').val() != '' && $('#account_name').val() != 'others')
 				$('#account_name').change();
+
+			if($('#account_name_other').val() != '' )
+				$('#account_name_other').change();
 
 			setTimeout(function(){
 				if($('#pcv_accounts').val() != '')
@@ -411,6 +432,35 @@
 			$('#account-wrapper').empty();
 			account_transactions = [];
 
+			if( $(this).val() != "Others" && $(this).val() != "others" ) {
+				let _url = '{!! url("accounts") !!}/show/' + $(this).val();
+
+				$.ajax({
+
+					url 	: _url,
+					method 	: 'GET' ,
+					success : function(res) {
+
+						$('#account-wrapper').append(res);
+
+					}
+
+				});
+				$('#account_name_other').removeClass('show').removeClass('hide');
+				$('#account_name_other').addClass('hide');
+			} else {
+				$('#account_name_other').removeClass('show').removeClass('hide');
+				$('#account_name_other').addClass('show');
+			}
+
+		});
+
+		$(document).on('change', '#account_name_other', function() {
+
+			$('#account-wrapper').empty();
+			account_transactions = [];
+
+
 			let _url = '{!! url("accounts") !!}/show/' + $(this).val();
 
 			$.ajax({
@@ -424,6 +474,7 @@
 				}
 
 			});
+
 
 		});
 
@@ -812,9 +863,23 @@
 					$('#date_created').val(moment(res.date_created).format('YYYY-MM-DD'));
 
 					$('#pcv_accounts').val(JSON.stringify(_aTransactions));
+					let is_others=false;
 
+					$.each($("#account_name option"), function(){ 
 
 					$('#account_name').change();
+						if(res.account_name == $(this).val()) is_others=true;
+
+					});
+
+					if(is_others) {
+						$('#account_name_other').val(res.account_name);
+						$('#account_name_other').change();
+						$('#account_name select').val('others');
+					} else {
+						$('#account_name').val(res.account_name);
+						$('#account_name').change();
+					}
 
 					setTimeout(function(){
 						if($('#pcv_accounts').val() != '')
@@ -1316,8 +1381,14 @@
 
 			} else {
 
-				$('.custom-inputs').each(function(i, d) {					
-					$(this).val(_account_transactions[0][0][$(this).attr('data-name')]);
+				let _hasError = "{!! $errors->any() !!}";
+
+				$('.custom-inputs').each(function(i, d) {		
+					if( _hasError == "1") {
+						$(this).val(_account_transactions[0][$(this).attr('data-name')]); 
+					} else {
+						$(this).val(_account_transactions[0][0][$(this).attr('data-name')]); 
+					}
 				});
 
 				if(_account_name == 'Installation') {

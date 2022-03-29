@@ -115,7 +115,7 @@ class PCVController extends Controller
 
         // save pcv transaction
         $pcv_transaction = Pcv::create([
-            'account_name'  => $request->account_name ,
+            'account_name'  => $request->account_name == 'others' ? $request->account_name_other : $request->account_name ,
             'change'        => $request->change ,
             'date_created'  => $request->date_created ,
             'pcv_no'        => Pcv::generatePCVNumber() ,
@@ -131,7 +131,7 @@ class PCVController extends Controller
         if(count($account_transactions)) {
 
             $account_transaction = AccountTransaction::create([
-                'name'          => $request->account_name ,
+                'name'          => $request->account_name == 'others' ? $request->account_name_other : $request->account_name ,
                 'details'       => $account_transactions , 
                 'pcv_id'        => $pcv_transaction->id ,
                 'status'        => 'approved' 

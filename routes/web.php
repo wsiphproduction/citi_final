@@ -37,7 +37,7 @@ use App\Http\Controllers\TruckersController;
 use App\Http\Controllers\AccountMatrixController;
 use App\Http\Controllers\BranchDepartmentController;
 use App\Http\Controllers\JobRequestController;
-
+use App\Http\Controllers\ReportController;
 
 
 Route::get('/', function () {
@@ -423,6 +423,13 @@ Route::middleware(['web', 'auth'])->group(function () {
 
         Route::put('update/{id}', [AccountMatrixController::class, 'update'])->name('account-matrix.update');
        
+    });
+
+
+    Route::prefix('reports')->group(function() {
+
+        Route::get('/', [ReportController::class, 'index'])->name('reports.index');
+
     });
 
 });
