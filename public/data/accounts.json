@@ -544,12 +544,12 @@
             "type": "select"
          },
          {
-            "name": "Amount",
-            "type": "number"
+            "name": "Charge To",
+            "type": "select"
          },
          {
-            "name": "Description",
-            "type": "textarea"
+            "name": "Amount",
+            "type": "number"
          }
       ],
       "has_attachment_section": true,
@@ -564,12 +564,12 @@
             "type": "select"
          },
          {
-            "name": "Amount",
-            "type": "number"
+            "name": "Charge To",
+            "type": "select"
          },
          {
-            "name": "Description",
-            "type": "textarea"
+            "name": "Amount",
+            "type": "number"
          }
       ],
       "has_attachment_section": true,
@@ -584,12 +584,12 @@
             "type": "select"
          },
          {
-            "name": "Amount",
-            "type": "number"
+            "name": "Charge To",
+            "type": "select"
          },
          {
-            "name": "Description",
-            "type": "textarea"
+            "name": "Amount",
+            "type": "number"
          }
       ],
       "has_attachment_section": true,
@@ -604,12 +604,12 @@
             "type": "select"
          },
          {
-            "name": "Amount",
-            "type": "number"
+            "name": "Charge To",
+            "type": "select"
          },
          {
-            "name": "Description",
-            "type": "textarea"
+            "name": "Amount",
+            "type": "number"
          }
       ],
       "has_attachment_section": true,
@@ -624,12 +624,12 @@
             "type": "select"
          },
          {
-            "name": "Amount",
-            "type": "number"
+            "name": "Charge To",
+            "type": "select"
          },
          {
-            "name": "Description",
-            "type": "textarea"
+            "name": "Amount",
+            "type": "number"
          }
       ],
       "has_attachment_section": true,
@@ -644,12 +644,12 @@
             "type": "select"
          },
          {
-            "name": "Amount",
-            "type": "number"
+            "name": "Charge To",
+            "type": "select"
          },
          {
-            "name": "Description",
-            "type": "textarea"
+            "name": "Amount",
+            "type": "number"
          }
       ],
       "has_attachment_section": true,
@@ -664,12 +664,12 @@
             "type": "select"
          },
          {
-            "name": "Amount",
-            "type": "number"
+            "name": "Charge To",
+            "type": "select"
          },
          {
-            "name": "Description",
-            "type": "textarea"
+            "name": "Amount",
+            "type": "number"
          }
       ],
       "has_attachment_section": true,
@@ -684,12 +684,12 @@
             "type": "select"
          },
          {
-            "name": "Amount",
-            "type": "number"
+            "name": "Charge To",
+            "type": "select"
          },
          {
-            "name": "Description",
-            "type": "textarea"
+            "name": "Amount",
+            "type": "number"
          }
       ],
       "has_attachment_section": true,
@@ -704,12 +704,12 @@
             "type": "select"
          },
          {
-            "name": "Amount",
-            "type": "number"
+            "name": "Charge To",
+            "type": "select"
          },
          {
-            "name": "Description",
-            "type": "textarea"
+            "name": "Amount",
+            "type": "number"
          }
       ],
       "has_attachment_section": true,
@@ -724,15 +724,1215 @@
             "type": "select"
          },
          {
-            "name": "Amount",
-            "type": "number"
+            "name": "Charge To",
+            "type": "select"
          },
          {
-            "name": "Description",
-            "type": "textarea"
+            "name": "Amount",
+            "type": "number"
          }
       ],
       "has_attachment_section": true,
       "add_multiple": false
    },
+   {
+      "name": "Repairs & Maintenance - Service Center",
+      "others": true,
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Freight & Handling",
+      "others": true,
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Contractual Services",
+      "others": true,
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Uniform Expense",
+      "others": true,
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Incentives",
+      "others": true,
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Hospitalization/Health Benefit",
+      "others": true,
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Medical",
+      "others": true,
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Other Employees Benefits",
+      "others": true,
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Christmas Party",
+      "others": true,
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Construction in Progress",
+      "others": true,
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Deferred Pre opening Expenses",
+      "others": true,
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Creditable Withholding Tax",
+      "others": true,
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Sales Incentive",
+      "others": true,
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Advertising Expense",
+      "others": true,
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Sales Discount Outright",
+      "others": true,
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Sales Return Outright",
+      "others": true,
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Training & Development External Training",
+      "others": true,
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Training & Development In House",
+      "others": true,
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Vehicle Registation & Fees",
+      "others": true,
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Permits & Licenses",
+      "others": true,
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Sportsfest/Summer Outing",
+      "others": true,
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Other Special Events",
+      "others": true,
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Representation Visitors",
+      "others": true,
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Representation Others",
+      "others": true,
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Bank Charges",
+      "others": true,
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Credit Card Surcharge",
+      "others": true,
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Dues & Subscription",
+      "others": true,
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Miscellaneous Expense",
+      "others": true,
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Donation/Solicitation  Expense",
+      "others": true,
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Donation/Solicitation  Expense",
+      "others": true,
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Delivery Cost",
+      "others": true,
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Sales Commission",
+      "others": true,
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Representation Supplies",
+      "others": true,
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Warehouse Supplies",
+      "others": true,
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Other Assets Expense",
+      "others": true,
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Air & Sea Freight Charges",
+      "others": true,
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Pallets",
+      "others": true,
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Professional Fees",
+      "others": true,
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Legal & Settlement Fees",
+      "others": true,
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Accounting & Audit Fees",
+      "others": true,
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Staffhouse Expenses",
+      "others": true,
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Intercompany Clearing",
+      "others": true,
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Repairs & Maintenance Building",
+      "others": true,
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Repairs & Maintenance Store Equipment",
+      "others": true,
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Repairs & Maintenance Staffhouse Equipment",
+      "others": true,
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Repairs & Maintenance Office Equipment",
+      "others": true,
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Repairs & Maintenance Warehouse Equipment",
+      "others": true,
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Repairs & Maintenance Computer Equipment",
+      "others": true,
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Repairs & Maintenance Store Furniture & Fixtures",
+      "others": true,
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Repairs & Maintenance Staffhouse Furniture & Fixtures",
+      "others": true,
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Repairs & Maintenance Office Furniture & Fixtures",
+      "others": true,
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Repairs & Maintenance Service Vehicle",
+      "others": true,
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Repairs & Maintenance Warehouse Furniture & Fixtures",
+      "others": true,
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Repairs & Maintenance Others",
+      "others": true,
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Repairs & Maintenance Module",
+      "others": true,
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Repairs & Maintenance Revirview",
+      "others": true,
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Repairs & Maintenance Bangkal",
+      "others": true,
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Farm Maintenance",
+      "others": true,
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Repairs & Maintenance Service Center",
+      "others": true,
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   },
+   {
+      "name": "Repairs & Maintenance Bajada Townhouse",
+      "others": true,
+      "fields": [
+         {
+            "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
+            "name": "Amount",
+            "type": "number"
+         }
+      ],
+      "has_attachment_section": true,
+      "add_multiple": false
+   }
 ]
