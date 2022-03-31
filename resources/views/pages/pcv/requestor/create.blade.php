@@ -47,7 +47,7 @@
 					<li class="breadcrumb-item active" aria-current="page">Create</li>
 				</ol>
 			</nav>
-			<h4 class="mg-b-0 tx-spacing--1">Petty Cash Voucher Form</h4>
+			<h4 class="mg-b-0 tx-spacing--1">Petty Cash Voucher Form  </h4>
 		</div>
 
 	</div>	
@@ -108,6 +108,7 @@
 	          	<div class="form-group row">
 	            	<label for="account" class="col-lg-5 col-form-label">Account</label>
 	            	<div class="col-lg-7">
+
 						<select class="custom-select static-inputs @if($errors->has('account_name')) is-invalid @endif" 
 							id="account_name" name="account_name">
 							<option value="">Select Account</option>
@@ -444,10 +445,11 @@
 
 		$(document).on('change', '#account_name', function() {
 
+			$('#account_name_other').prop("selectedIndex", 0).change();
 			$('#account-wrapper').empty();
 			account_transactions = [];
 			console.log($(this).val());
-			if( $(this).val() != "Others" && $(this).val() != "others" ) {
+			if( $(this).val() != "Others" && $(this).val() != "others" && $(this).val() != '' ) {
 
 				let _url = '{!! url("accounts") !!}/show/' + $(this).val();
 
@@ -479,17 +481,19 @@
 
 			let _url = '{!! url("accounts") !!}/show/' + $(this).val();
 
-			$.ajax({
+			if($(this).val() != '') {
+				$.ajax({
 
-				url 	: _url,
-				method 	: 'GET' ,
-				success : function(res) {
+					url 	: _url,
+					method 	: 'GET' ,
+					success : function(res) {
 
-					$('#account-wrapper').append(res);
+						$('#account-wrapper').append(res);
 
-				}
+					}
 
-			});
+				});
+			}
 
 
 		});
@@ -718,10 +722,15 @@
 					});
 				});
 			}
-
-			if(is_null_val) {
-				alert('Some data on your request is missing please check it again');
-				return false;
+			console.log(account_transactions);
+			if(is_null_val || account_transactions.length == 0 ) {
+				if(_account_name == 'Delivery Charges') { 
+					$('#btn-add-account-details').click(); 
+					return false;
+				} else {
+					alert('Some data on your request is missing please check it again');
+					return false;
+				}
 			}
 
 			// check if can save multiple transaction accounts
@@ -811,8 +820,23 @@
 
 			let _description = $('#ts_no option:selected').data('description');
 			let _account_name = $('#ts_no option:selected').data('name');
+			let is_others = true;
 
-			$('#account_name').val(_account_name).change().prop('readonly', true);
+			$.each($("#account_name option"), function(){ 
+
+				if(_account_name == $(this).val()) {
+					is_others=false;
+					return false;
+				}
+
+			});
+
+			if(is_others) {
+				$('#account_name').val('others').change();	
+				$('#account_name_other').val(_account_name).change();	
+			} else {
+				$('#account_name').val(_account_name).change();				
+			}
 			$('#pcv_description').val(_description);
 
 		});
@@ -982,7 +1006,7 @@
 			let _html = '';		
 
 			_html += '<tr>';	
-
+			console.log(pos_items);
 			$.each(pos_items, function(e, a){
 
 				$('.tbl-header').each(function(i, o) {
@@ -1006,7 +1030,8 @@
 					} else {
 
 						if( $(this).data('rowname').trim() != 'action' ){
-							if(_account_name == 'Delivery Charges' && $(this).data('rowname') == 'pos_of_items') {
+							console.log($(this).data('rowname'));
+							if(_account_name == 'Delivery Charges' && $(this).data('rowname') == 'pos_no_of_purchased_items') {
 								let _url = "{!! env("APP_URL") !!}"+'/pos-transactions/show/'+pos_items[e][$(this).data('rowname')];
 								_html += '<td data-name="'+$(this).data('rowname')+'" >';
 								_html += '<a href="'+_url+'" target="_blank">'+ pos_items[e][$(this).data('rowname')] +'</a>';
@@ -1060,6 +1085,20 @@
 
 		$(document).on('blur', '.account-user-input', function() {
 			
+			if($('#account_name').val() == 'Stripping Charge') {
+
+				if($(this).data('name') == 'amount' || $(this).data('name') == 'rate' ) {
+
+					let _input_id = $(this).attr('id').split($(this).data('name')).reverse();
+
+					if($('#amount'+_input_id[0]).val() != '' && $('#amount'+_input_id[0]).val() != '') {
+						$('#charge_to_store'+_input_id[0]).val($('#amount'+_input_id[0]).val() - $('#rate'+_input_id[0]).val());
+					}
+				}
+
+			}
+
+
 			if($(this).data('name') == 'amount') {
 
 				calculateTotal();
@@ -1132,7 +1171,7 @@
 		});
 
 		function doneTyping (type, val) {
-
+			console.log('called');
 			pos_items = [];
 			$('#pop_ups_inner').empty();
 			if(type == 'slps_no') {
@@ -1285,7 +1324,7 @@
 					}
 				});
 
-			} else if (type == 'pos_of_items') {
+			} else if (type == 'pos_no_of_purchased_items') {
 
 				$.ajax({
 
@@ -1298,11 +1337,11 @@
 							const last2Str = String(res[0].universal_trx_id).slice(-2); 
 							const last2Num = Number(last2Str);
 
-							$('.custom-inputs[data-name="delivery_fee"]').val(last2Num);
+							$('.custom-inputs[data-name="pos_no_of_delivery_fee"]').val(last2Num);
 
 						} else {
 
-							$('.custom-inputs[data-name="pos_of_items"]').val('');
+							$('.custom-inputs[data-name="pos_no_of_purchased_items"]').val('');
 
 							$('#message_content').text('POS No. '+val+' does not exist');
 							$('#for_message').modal({
@@ -1356,8 +1395,9 @@
 								}
 							}	
 						} else {
+							console.log('called m');
 							if( _row_name != 'action') { 
-								if(_account_name == 'Delivery Charges' && _row_name == 'pos_of_items') {
+								if(_account_name == 'Delivery Charges' && _row_name == 'pos_no_of_purchased_items') {
 									let _url = "{!! env("APP_URL") !!}"+'/pos-transactions/show/'+data[_row_name];
 									_html += '<td data-name="'+_row_name+'" >';
 									_html += '<a href="'+_url+'" target="_blank">'+ data[_row_name] +'</a>';
@@ -1520,10 +1560,10 @@
 	        $('#docdate', newElement).attr("id", field2.split("_")[0]+"_"+id ).val(new moment().format('YYYY-MM-DD'));
 	        $('#docref', newElement).attr("id", field3.split("_")[0]+"_"+id ).val('');
 			$('#docrefstring', newElement).attr("id", field4.split("_")[0]+"_"+id ).val('');
-
+			
 	        newElement.appendTo($("#attachment-outter-wrapper"));
-
-	    }
+	        $('#'+field4.split("_")[0]+"_"+id).siblings('label').html('');
+	    }	
 
 	    function populateAccountsTable() {
 
@@ -1537,14 +1577,14 @@
 			$.each(account_transactions, function (x, y) {
 	
 				_html += '<tr>';	
-	
+				
 				$('.tbl-header').each(function(i, o) {
 						
 					let _row_name = $(this).data('rowname').trim();
-
+					console.log(_row_name);
 					if( _row_name != "action" && _row_name != "line_no") {
 
-						if( _row_name == 'pos_of_items' ) {
+						if( _row_name == 'pos_no_of_purchased_items' ) {
 							_html += '<td data-name="'+_row_name+'" >';
 							let _url = "{!! env("APP_URL") !!}"+'/pos-transactions/show/'+account_transactions[x][_row_name];
 							_html += '<a href="'+_url+'" target="_blank">';

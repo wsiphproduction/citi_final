@@ -64,7 +64,7 @@
             "type": "date"
          },
          {
-            "name": "POS of Items",
+            "name": "POS No of Purchased Items",
             "type": "text"
          },
          {
@@ -72,7 +72,7 @@
             "type": "text"
          },
          {
-            "name": "Delivery Fee",
+            "name": "POS No of Delivery Fee",
             "type": "text"
          },
          {
@@ -91,7 +91,7 @@
       "has_attachment_section": true,
       "add_multiple": true ,
       "table_fields": {
-         "rows"      : [ "Line No", "Delivery Date", "DI No", "Delivery Fee", "pos of items", "Attachment", "Amount", "Action"] ,
+         "rows"      : [ "Line No", "Delivery Date", "DI No", "POS No of Delivery Fee", "POS No of Purchased Items", "Attachment", "Amount", "Action"] ,
          "actions"   : [ "edit", "remove" ]
       }
    },
@@ -180,7 +180,7 @@
       "add_multiple": false
    },
    {
-      "name": "Telephone Expense",
+      "name": "Cellphone Expense",
       "others": false,
       "fields": [
          {
@@ -241,22 +241,6 @@
    },
    {
       "name": "Staff House LPG",
-      "others": false,
-      "fields": [
-         {
-            "name": "Vendor",
-            "type": "select"
-         },
-         {
-            "name": "Amount",
-            "type": "number"
-         }
-      ],
-      "has_attachment_section": true,
-      "add_multiple": false
-   },
-   {
-      "name": "Repair & Maintenance",
       "others": false,
       "fields": [
          {
@@ -408,6 +392,10 @@
             "type": "number"
          },
          {
+            "name": "CBM ",
+            "type": "text"
+         },
+         {
             "name": "Amount",
             "type": "number"
          }
@@ -478,6 +466,10 @@
          {
             "name": "OT Date",
             "type": "date"
+         },
+         {
+            "name": "Overtime Rate",
+            "type": "number"
          },
          {
             "name": "No Of Pax",

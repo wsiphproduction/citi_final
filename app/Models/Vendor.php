@@ -22,7 +22,9 @@ class Vendor extends Model implements Auditable
 
     public static function getVendors() {
 
-        return \DB::table('vendors')->where('status', 1)->get();
+        return \DB::table('vendors')->where('status', 1)
+            ->where('branch_id', auth()->user()->assign_to)
+            ->get();
 
     }
 

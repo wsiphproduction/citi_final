@@ -51,17 +51,19 @@ class TSController extends Controller
 
         }
 
-        $this->validate($request, [
-            'account_name'      => 'required' ,
-            'account_code'    => 'required' ,
-            'amount'            => 'required' ,
-            'description'       => 'required'            
-        ]);
-
         $request['ts_no']               = TemporarySlip::generateTSNumber();
         $request['running_balance']     = $request->amount;
         $request['user_id']             = auth()->user()->id;
 
+        $this->validate($request, [
+            'account_name'      => 'required' ,
+            'account_code'      => 'required' ,
+            'ts_no'             => 'required|unique:temporary_slips,ts_no' ,
+            'amount'            => 'required' ,
+            'description'       => 'required'            
+        ]);
+
+        
         TemporarySlip::create($request->except('_token', 'account'));
 
         return redirect()->route('requestor.ts.index')->with('success',"Temporary slip was successfully {$request->status}");
@@ -100,19 +102,19 @@ class TSController extends Controller
 
         }
 
+        $request['running_balance']     = $request->amount;
+        $request['user_id']             = auth()->user()->id;
+
         $this->validate($request, [
             'account_name'      => 'required' ,
-            'account_code'    => 'required' ,
+            'account_code'      => 'required' ,
+            'ts_no'             => 'required|unique:temporary_slips,ts_no,'. $id ,
             'amount'            => 'required' ,
             'description'       => 'required' ,
             
         ]);
 
-        $ts = TemporarySlip::find($id);
-
-        $request['ts_no']               = TemporarySlip::generateTSNumber();
-        $request['running_balance']     = $request->amount;
-        $request['user_id']             = auth()->user()->id;
+        $ts = TemporarySlip::find($id);        
 
         if($request->status=='submitted') {
             $request['tl_approved'] = null;

@@ -1,5 +1,29 @@
 @extends('layouts.app')
 
+@section('pagecss')
+
+	<style type="text/css">
+		#similar_vendor {
+			list-style: none;
+		    padding: 0;
+		    margin-top: 10px;
+		    position: absolute;
+		    z-index: 999999999;
+		    background: #fff;
+		    width: 100%;
+		}
+
+		#similar_vendor li {
+			padding: 5px;
+		}
+
+		#similar_vendor li:hover {
+			background: gray;
+		}
+	</style>
+	
+@endsection
+
 @section('content')
 	
 	<div class="d-flex flex-column flex-lg-row justify-content-between mg-b-20 mg-lg-b-25 mg-xl-b-30">
@@ -30,7 +54,10 @@
 					<div class="form-group row">
 						<label for="vendor" class="col-lg-5 col-form-label ">Vendor/Company</label>
 						<div class="col-lg-7">
-							<input type="text" name="name" class="form-control" />
+							<input type="text" name="name" class="form-control" id="name" />
+
+							<ul style="list-style: none; display: none;" id="similar_vendor"></ul>
+
 						</div>
 					</div>
 				</div>
@@ -118,3 +145,38 @@
     </div>
 	
 @endsection
+
+@section('pagejs')
+
+	<script type="text/javascript">
+		
+		$(document).on('keyup', '#name', function() {
+
+			$.ajax({
+				url 		: "{!! route('vendors.search') !!}" + "?search="+$(this).val() ,
+				method 		: "GET" ,
+				success 	: function(res) {
+					$('#similar_vendor').empty();
+					let _html = '';
+					if(res.length>0) {
+						$('#similar_vendor').show();
+
+						$.each(res, function(i,e) {
+
+							_html += '<li>'+ e.name +'</li>';
+
+						});
+
+						$('#similar_vendor').append(_html);
+					}
+
+				}
+			});
+
+		});
+
+	</script>
+
+@endsection
+
+

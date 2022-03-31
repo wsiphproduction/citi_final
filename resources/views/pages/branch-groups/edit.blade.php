@@ -50,9 +50,10 @@
 						<div class="col-lg-7">
 							<select class="form-control" name="size">
 								<option value=""> Select Size </option>
-								<option value="small" @if($branch_group->size == 'small') selected @endif> Small </option>
-								<option value="medium" @if($branch_group->size == 'medium') selected @endif> Medium </option>
-								<option value="large" @if($branch_group->size == 'large') selected @endif> Large </option>	
+								@foreach($branch_sizes as $size)
+									<option value="{{ strtolower($size->BRANCH_SIZE) }}"
+										@if(strtolower($size->BRANCH_SIZE) == $branch_group->size) selected @endif>{{ $size->BRANCH_SIZE }}</option>
+								@endforeach
 							</select>
 						</div>
 					</div>

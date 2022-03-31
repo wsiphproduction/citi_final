@@ -29,9 +29,9 @@ class Pcfr extends Model
 
         $latest_pcv = \DB::table('pcfr')->latest()->first();
         if($latest_pcv)
-            return 'PCF-'.date('y/m/d') . '-'. auth()->user()->assign_to . '-'. ( $latest_pcv->id + 1 );
+            return 'PCF-'.date('m/d/Y') . '-'. auth()->user()->assign_to . '-'. ( $latest_pcv->id + 1 );
 
-        return 'PCF-'.date('y/m/d') . '-'. auth()->user()->assign_to . '-1';
+        return 'PCF-'.date('m/d/Y') . '-'. auth()->user()->assign_to . '-1';
 
     }
 

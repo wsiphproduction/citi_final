@@ -93,9 +93,70 @@ class BranchController extends Controller
 
     public function list(Request $request) {
 
-        $departments = BranchDepartment::where('branch_id', $request->branch)->get();
+        // API CALL
+
+        if($request->type == 'head office') {
+            $departments = \DB::table('api_branch')
+                ->where('STORE_TYPE', $request->type)
+                ->distinct('DEPARTMENTS')
+                ->get(['DEPARTMENTS', 'STORE_CODE']);
+        } else {
+            $departments = \DB::table('api_branch')
+                ->distinct('STORE_CODE')
+                ->where('STORE_TYPE', $request->type)
+                ->get(['OPERATING_UNIT_NAME', 'STORE_CODE', 'STORE_TYPE', 'BRANCH_SIZE', 'ASSIGNED_STORE']);
+        }
+        //BranchDepartment::where('branch_id', $request->branch)->get();
 
         return $departments;
+
+    }
+
+
+    public function sync() {
+
+        // $ch = curl_init();
+        // $headers = array(
+        //     'Accept: application/json',
+        //     'Content-Type: application/json',
+        // );
+        // curl_setopt($ch, CURLOPT_URL, route('api.branch'));
+        // curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        // curl_setopt($ch, CURLOPT_HEADER, 0);
+
+        // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        // $response = curl_exec($ch);
+        // $result = json_decode($response);
+
+        // CALL API 
+
+        $api_branch = \DB::table('api_branch')->distinct('STORE_CODE')->get(['OPERATING_UNIT_NAME', 'STORE_CODE', 'STORE_TYPE', 'BRANCH_SIZE', 'ASSIGNED_STORE']);
+
+        foreach( $api_branch as $branch ) {
+
+            $temp_branch = Branch::where('name', $branch->OPERATING_UNIT_NAME . ' - ' . $branch->ASSIGNED_STORE)
+                ->where('store_id', $branch->STORE_CODE)
+                ->where('company_name', $branch->OPERATING_UNIT_NAME)
+                ->where('store_size', $branch->BRANCH_SIZE)
+                ->where('store_type', $branch->STORE_TYPE)
+                ->first();
+
+            if(!$temp_branch) {
+
+                Branch::create([
+                    'name'          => $branch->OPERATING_UNIT_NAME . ' - ' . $branch->ASSIGNED_STORE ,
+                    'store_id'      => $branch->STORE_CODE ,
+                    'company_name'  => $branch->OPERATING_UNIT_NAME ,
+                    'store_size'    => $branch->BRANCH_SIZE ,
+                    'store_type'    => $branch->STORE_TYPE , 
+                    'status'        => 1 ,
+                    'created_by'    => auth()->user()->username
+                ]);
+
+            }
+
+        }
+
 
     }
 

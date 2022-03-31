@@ -88,6 +88,23 @@
 					<td width="20%" style="border-bottom: 1px solid #000;"> <p> {{ \Carbon\Carbon::parse($pcv->date_created)->toFormattedDateString() }} </p></td>
 
 				</tr>
+
+				@if(count($pcv->attachments))
+				<tr>
+					
+					<td width="10%"> <p> <strong>Attachments</strong>: </p></td>
+					<td width="20%"> 
+
+						<ul class="mg-t-20">
+							@foreach($pcv->attachments as $attachment)
+								<li>{{ $attachment->attachment }}</li>
+							@endforeach
+						</ul>
+
+					</td>
+
+				</tr>
+				@endif
 				
 
 			</table>

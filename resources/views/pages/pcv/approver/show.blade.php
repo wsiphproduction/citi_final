@@ -492,6 +492,11 @@
             e.preventDefault();
             let _url = "";
 
+            if($('#approver_name').val() == '') {
+                alert('Approver name is required');
+                return false;
+            }
+
             $.ajax({
 
                 url     : "{!! env('APP_URL') !!}/pcv/approver/approve-with-code/"+$('#pcv_id').val(),

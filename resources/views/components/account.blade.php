@@ -153,7 +153,6 @@
 							
 							<select class="custom-select" id="type">
 								<option value='' selected>--Select--</option>
-								<option value="official receipt/sales invoice">Official Receipt/Sales Invoice</option>
 								<option value="acknowledgement receipt">Acknowledgement Receipt</option>
 								<option value="temporary slip">Temporary Slip</option>
 								<option value="delivery instruction">Delivery Instruction</option>
@@ -161,6 +160,12 @@
 								<option value="extra labor summary">Extra Labor Summary</option>
 								<option value="completion report">Completion Report</option>
 								<option value="pcv signed">PCV Signed</option>
+								<option value="back office copy">Back Office Copy</option>
+								<option value="out of work authorization form">Out of Work Authorization Form</option>
+								<option value="overtime form">Overtime Form</option>
+								<option value="approved travel liquidation">Approved Travel Liquidation</option>
+								<option value="fuel requisition slip">Fuel Requisition Slip</option>
+								<option value="others">Others</option>
 							</select>
 
 							</div>

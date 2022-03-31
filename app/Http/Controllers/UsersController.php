@@ -62,6 +62,14 @@ class UsersController extends Controller
 
         ]);
 
+        $existing_user = User::where('firstname', $request->firstname)
+            ->where('lastname', $request->lastname)
+            ->where('middlename', $request->middlename)
+            ->where('username', $request->username)
+            ->first();
+
+        if($existing_user) return redirect()->back()->with('danger', 'User already exists');
+
         $user = User::create([
             'firstname'         => $request->firstname ,
             'lastname'          => $request->lastname , 
@@ -72,7 +80,8 @@ class UsersController extends Controller
             'assign_to'         => $request->assign_to ,
             'assign_name'       => $request->assign_name ,
             'position'          => $request->position ,
-            'created_by'        => auth()->user()->username
+            'created_by'        => auth()->user()->username ,
+            'store_type'         => $request->store_type
         ]);
 
         $user->assignRole($request->access);
@@ -121,7 +130,8 @@ class UsersController extends Controller
             'position'          => $request->position ,
             'status'            => $request->status ,
             'updated_at'        => \Carbon\Carbon::now() ,
-            'updated_by'        => auth()->user()->username
+            'updated_by'        => auth()->user()->username ,
+            'store_type'         => $request->store_type
         ]);
 
         $user->assignRole($request->access);

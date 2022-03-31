@@ -258,6 +258,11 @@
 
 			e.preventDefault();
 			let _url = "";
+			console.log('calll');
+			if($('#approver_name').val() == '') {
+				alert('Approver name is required');
+				return false;
+			}
 
 			$.ajax({
 

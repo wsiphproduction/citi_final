@@ -71,7 +71,7 @@ class PCVController extends Controller
 
         $area_manager = User::where('position', 'area head')
             ->whereHas('branch_group', function($query) {
-                $branch = Branch::find(auth()->user()->assign_to);
+                $branch = auth()->user()->branch;
                 $query->where('branch', 'LIKE', "%{$branch->name}%");
             })->get();
 

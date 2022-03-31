@@ -64,13 +64,13 @@ class User extends Authenticatable implements Auditable
 
     public function branch() {
 
-        return $this->belongsTo(Branch::class, 'assign_to');
+        return $this->belongsTo(Branch::class, 'assign_to', 'store_id');
 
     }
 
     public function getUserAssignTo() {
 
-        if(Str::contains($this->branch->name, 'SSC'))
+        if(Str::contains($this->branch->store_type, 'Head Office'))
             return 'ssc';
 
         return 'dc/store';

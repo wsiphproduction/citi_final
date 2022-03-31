@@ -54,7 +54,7 @@
 						<div class="form-group">
 							<label for="approver-name" class="d-block">Approver's Name</label>
 							<select class="custom-select" id="approver_name">
-								<option selected="">--Select--</option>
+								<option value="">--Select--</option>
 								@foreach($area_manager as $manager) 
 									<option value="{{ $manager->username }}"> {{ $manager->username }} </option>
 								@endforeach

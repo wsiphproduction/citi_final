@@ -17,6 +17,8 @@
 
 	</div>	
 
+	@include('components.messages')
+
 	<div class="row">
 		
 		<form method="POST" action="{{ route('vendors.update', $vendor->id) }}" class="col-lg-12" enctype="multipart/form-data">

@@ -85,16 +85,16 @@ class VendorsController extends Controller
             $this->validate($request, [
                 'name'              => 'required' ,
                 'address'           => 'required' ,
-                'tin'               => 'required' ,
-                'contact_number'    => 'required' ,
+                'tin'               => 'required|numeric' ,
+                'contact_number'    => 'required|numeric' ,
                 'branch_id'         => 'required'
             ]);
         } else {
             $this->validate($request, [
                 'name'              => 'required' ,
                 'address'           => 'required' ,
-                'tin'               => 'required' ,
-                'contact_number'    => 'required' ,                
+                'tin'               => 'required|numeric' ,
+                'contact_number'    => 'required|numeric' ,                
             ]);
 
             $request['branch_id']  = auth()->user()->assign_to;            
@@ -145,16 +145,16 @@ class VendorsController extends Controller
             $this->validate($request, [
                 'name'              => 'required' ,
                 'address'           => 'required' ,
-                'tin'               => 'required' ,
-                'contact_number'    => 'required' ,
+                'tin'               => 'required|numeric' ,
+                'contact_number'    => 'required|numeric' ,
                 'branch_id'         => 'required'
             ]);
         } else {
             $this->validate($request, [
                 'name'              => 'required' ,
                 'address'           => 'required' ,
-                'tin'               => 'required' ,
-                'contact_number'    => 'required' ,                
+                'tin'               => 'required|numeric' ,
+                'contact_number'    => 'required|numeric' ,                
             ]);
 
             $request['branch_id']  = auth()->user()->assign_to;            
@@ -196,6 +196,20 @@ class VendorsController extends Controller
         $attachment->delete();
 
         return response()->json($attachment);
+
+    }
+
+
+    public function search() {
+
+        $search = request()->search;
+
+        $existing_branch = Vendor::where('status', 1)
+            ->where('branch_id', auth()->user()->assign_to)
+            ->where('name', 'LIKE', "%{$search}%")
+            ->get();
+
+        return $existing_branch;
 
     }
 

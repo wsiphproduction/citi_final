@@ -107,10 +107,12 @@ Route::middleware(['web', 'auth'])->group(function () {
     Route::prefix('vendors')->group(function() {
 
         Route::get('/', [VendorsController::class, 'index'])->name('vendors.index');
-        Route::get('/inactive', [VendorsController::class, 'inactive'])->name('vendors.inactive');
+        Route::get('inactive', [VendorsController::class, 'inactive'])->name('vendors.inactive');
         Route::get('create', [VendorsController::class, 'create'])->name('vendors.create');
+        Route::get('search-branch', [VendorsController::class, 'search'])->name('vendors.search');        
         Route::get('edit/{id}', [VendorsController::class, 'edit'])->name('vendors.edit');
         Route::get('show/{id}', [VendorsController::class, 'show'])->name('vendors.show');
+
 
         Route::post('store', [VendorsController::class, 'store'])->name('vendors.store');
 
@@ -372,6 +374,7 @@ Route::middleware(['web', 'auth'])->group(function () {
 
         Route::get('/', [BranchController::class, 'index'])->name('branch.index');
         Route::get('create', [BranchController::class, 'create'])->name('branch.create');
+        Route::get('sync-branch', [BranchController::class, 'sync'])->name('branch.sync');
         Route::get('department-list', [BranchController::class, 'list'])->name('branch.list');        
         Route::get('edit/{id}', [BranchController::class, 'edit'])->name('branch.edit');
         Route::get('show/{id}', [BranchController::class, 'show'])->name('branch.show');
@@ -390,6 +393,7 @@ Route::middleware(['web', 'auth'])->group(function () {
         Route::get('create', [BranchGroupController::class, 'create'])->name('branch-group.create');
         Route::get('edit/{id}', [BranchGroupController::class, 'edit'])->name('branch-group.edit');
         Route::get('show/{id}', [BranchGroupController::class, 'show'])->name('branch-group.show');
+
 
         Route::post('store', [BranchGroupController::class, 'store'])->name('branch-group.store');
 
@@ -434,3 +438,15 @@ Route::middleware(['web', 'auth'])->group(function () {
 
 });
 
+
+
+// API CALL
+
+// BRANCH
+
+Route::get('api-branch', function() {
+
+
+    return $api_branch = \DB::table('api_branch')->get();
+
+})->name('api.branch');

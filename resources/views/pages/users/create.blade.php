@@ -79,15 +79,16 @@
 					<div class="form-group row">
 						<label for="assign_to" class="col-lg-3 col-form-label">Assign To</label>
 						<div class="col-lg-4">
-							<select class="form-control" name="assign_to" id="assign_to">
+							<select class="form-control" name="store_type" id="store_type">
 								<option value=""> Select </option>
-								@foreach( $branch as $bran )
-									<option value="{{ $bran->id }}" @if(old('assign_to') == $bran->name) selected @endif> {{ $bran->name }} </option>
-								@endforeach
+								<option value="stores">Store</option>
+								<option value="distribution center">DC</option>
+								<option value="head office">SSC</option>
 							</select>
+							<input type="hidden" name="assign_to" id="assign_to">
 						</div>
 						<div class="col-lg-4">
-							<select class="form-control" name="assign_name" id="assign_name" disabled> 
+							<select class="form-control" name="assign_name" id="assign_name"> 
 								<option value=""> Select </option>
 							</select>
 						</div>
@@ -186,31 +187,44 @@
 	<script src="{{ asset('lib/select2/js/select2.min.js') }}"></script>	
 	<script type="text/javascript">
 		
-		$(document).on('change', '#assign_to', function() {
+		$(document).on('change', '#store_type', function() {
 
 			let _select_assignment = $(this).val();
 			let _url = "";
+			let _that = $(this);
 
 			$.ajax({
-				url 		: "{!! env('APP_URL') !!}/branch/department-list?branch="+_select_assignment ,
+				url 		: "{!! env('APP_URL') !!}/branch/department-list?type="+_select_assignment ,
 				method 		: 'GET' ,
 				success 	: function(res) {
 
 					$('#assign_name').empty();
 
 					let _html = '<option value=""> Select </option>';
-
+					console.log(_select_assignment);
 					$.each(res, function(i, o) {
 
-						_html += '<option value="'+o.name+'">'+o.name+'</option>';
+						if(_select_assignment == 'head office') {
+							_html += '<option value="'+o.DEPARTMENTS+'" data-store="'+o.STORE_CODE+'">'+ o.DEPARTMENTS +'</option>';
+						} else {
+							_html += '<option value="'+o.STORE_CODE+'">'+o.OPERATING_UNIT_NAME + ' - ' + o.ASSIGNED_STORE +'</option>';
+						}
 
 					});
 
-					$('#assign_name').append(_html).attr('disabled', false);
+					$('#assign_name').append(_html);
 
 				}
 			})
 
+		});
+
+		$(document).on('change', '#assign_name', function() {
+			if($('#store_type').val() == 'head office') {
+				$('#assign_to').val($('#assign_name').find(":selected").data('store'));
+			} else {
+				$('#assign_to').val($(this).val());
+			}
 		});
 
     	$("#access").select2({

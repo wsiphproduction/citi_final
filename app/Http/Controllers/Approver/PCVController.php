@@ -77,13 +77,13 @@ class PCVController extends Controller
         if($user->getUserAssignTo() != 'ssc') {
             $area_manager = User::where('position', 'area head')
                 ->whereHas('branch_group', function($query) use ($pcv) {
-                    $branch = Branch::find($pcv->user->assign_to);
+                    $branch = auth()->user()->branch;
                     $query->where('branch', 'LIKE', "%{$branch->name}%");
                 })->get();
         } else {
             $area_manager = User::where('position', 'division head')
                 ->whereHas('branch_group', function($query) use ($pcv) {
-                    $branch = Branch::find($pcv->user->assign_to);
+                    $branch = auth()->user()->branch;
                     $query->where('branch', 'LIKE', "%{$branch->name}%");
                 })->get();
         }

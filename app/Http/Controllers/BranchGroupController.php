@@ -23,8 +23,9 @@ class BranchGroupController extends Controller
     public function create() {
 
         $branch = Branch::where('status', 1)->get();
-        
-        return view('pages.branch-groups.create', compact('branch'));
+        $branch_sizes = \DB::table('api_branch')->distinct('BRANCH_SIZE')->get(['BRANCH_SIZE']);
+
+        return view('pages.branch-groups.create', compact('branch', 'branch_sizes'));
 
     }
 
@@ -59,8 +60,9 @@ class BranchGroupController extends Controller
 
         $branch_group = BranchGroup::find($id);
         $branch = Branch::where('status', 1)->get();
+        $branch_sizes = \DB::table('api_branch')->distinct('BRANCH_SIZE')->get(['BRANCH_SIZE']);
 
-        return view('pages.branch-groups.edit', compact('branch_group', 'branch'));
+        return view('pages.branch-groups.edit', compact('branch_group', 'branch', 'branch_sizes'));
 
     }
 

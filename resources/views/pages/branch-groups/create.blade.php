@@ -49,9 +49,9 @@
 						<div class="col-lg-7">
 							<select class="form-control" name="size">
 								<option value=""> Select Size </option>
-								<option value="small"> Small </option>
-								<option value="medium"> Medium </option>
-								<option value="large"> Large </option>	
+								@foreach($branch_sizes as $size)
+									<option value="{{ strtolower($size->BRANCH_SIZE) }}">{{ $size->BRANCH_SIZE }}</option>
+								@endforeach
 							</select>
 						</div>
 					</div>

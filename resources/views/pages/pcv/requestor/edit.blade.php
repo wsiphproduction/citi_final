@@ -181,13 +181,17 @@
 	        	@if(\Str::contains($pcv->status , 'disapproved'))
 	          	<button type="submit" class="btn btn-brand-01 d-block d-lg-inline wd-100p wd-lg-150 btn-savesubmit"
 	          		data-action="submitted">
+	          		<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg> 
+	            	Submit
+	          	</button>
 	          	@else
 	          	<button type="submit" class="btn btn-brand-01 d-block d-lg-inline wd-100p wd-lg-150 btn-savesubmit"
 	          		data-action="{{ $pcv->status }}">
-	          	@endif
-	            	<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg> 
+	          		<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg> 
 	            	Update
 	          	</button>
+	          	@endif
+	            	
 	        </div>
 
 	    </div>
@@ -432,7 +436,7 @@
 			$('#account-wrapper').empty();
 			account_transactions = [];
 
-			if( $(this).val() != "Others" && $(this).val() != "others" ) {
+			if( $(this).val() != "Others" && $(this).val() != "others" && $(this).val() != '') {
 				let _url = '{!! url("accounts") !!}/show/' + $(this).val();
 
 				$.ajax({
@@ -463,17 +467,19 @@
 
 			let _url = '{!! url("accounts") !!}/show/' + $(this).val();
 
-			$.ajax({
+			if($(this).val() != '') {
+				$.ajax({
 
-				url 	: _url,
-				method 	: 'GET' ,
-				success : function(res) {
+					url 	: _url,
+					method 	: 'GET' ,
+					success : function(res) {
 
-					$('#account-wrapper').append(res);
+						$('#account-wrapper').append(res);
 
-				}
+					}
 
-			});
+				});
+			}
 
 
 		});
@@ -703,9 +709,14 @@
 				});
 			}
 
-			if(is_null_val) {
-				alert('Some data on your request is missing please check it again');
-				return false;
+			if(is_null_val || account_transactions.length == 0 ) {
+				if(_account_name == 'Delivery Charges') { 
+					$('#btn-add-account-details').click(); 
+					return false;
+				} else {
+					alert('Some data on your request is missing please check it again');
+					return false;
+				}
 			}
 
 			// check if can save multiple transaction accounts
@@ -796,8 +807,23 @@
 
 			let _description = $('#ts_no option:selected').data('description');
 			let _account_name = $('#ts_no option:selected').data('name');
+			let is_others = true;
 
-			$('#account_name').val(_account_name).change().prop('readonly', true);
+			$.each($("#account_name option"), function(){ 
+
+				if(_account_name == $(this).val()) {
+					is_others=false;
+					return false;
+				}
+
+			});
+
+			if(is_others) {
+				$('#account_name').val('others').change();	
+				$('#account_name_other').val(_account_name).change();	
+			} else {
+				$('#account_name').val(_account_name).change();				
+			}
 			$('#pcv_description').val(_description);
 
 		});
@@ -994,7 +1020,7 @@
 					} else {
 
 						if( $(this).data('rowname').trim() != 'action' ){
-							if(_account_name == 'Delivery Charges' && $(this).data('rowname') == 'pos_of_items') {
+							if(_account_name == 'Delivery Charges' && $(this).data('rowname') == 'pos_no_of_purchased_items') {
 								let _url = "{!! env("APP_URL") !!}"+'/pos-transactions/show/'+pos_items[e][$(this).data('rowname')];
 								_html += '<td data-name="'+$(this).data('rowname')+'" >';
 								_html += '<a href="'+_url+'" target="_blank">'+ pos_items[e][$(this).data('rowname')] +'</a>';
@@ -1273,7 +1299,7 @@
 					}
 				});
 
-			} else if (type == 'pos_of_items') {
+			} else if (type == 'pos_no_of_purchased_items') {
 
 				$.ajax({
 
@@ -1352,7 +1378,7 @@
 						} else {
 							if( _row_name != 'action') { 
 
-								if(_account_name == 'Delivery Charges' && _row_name == 'pos_of_items') {
+								if(_account_name == 'Delivery Charges' && _row_name == 'pos_no_of_purchased_items') {
 									let _url = "{!! env("APP_URL") !!}"+'/pos-transactions/show/'+data[_row_name];
 									_html += '<td data-name="'+_row_name+'" >';
 									_html += '<a href="'+_url+'" target="_blank">'+ data[_row_name] +'</a>';
@@ -1524,6 +1550,7 @@
 			$('#docrefstring', newElement).attr("id", field4.split("_")[0]+"_"+id ).val('');
 
 	        newElement.appendTo($("#attachment-outter-wrapper"));
+	        $('#'+field4.split("_")[0]+"_"+id).siblings('label').html('');
 
 	    }
 
@@ -1545,7 +1572,7 @@
 					let _row_name = $(this).data('rowname').trim();
 
 					if( _row_name != "action" && _row_name != "line_no") {
-						if( _row_name == 'pos_of_items' ) {
+						if( _row_name == 'pos_no_of_purchased_items' ) {
 							_html += '<td data-name="'+_row_name+'" >';
 							let _url = "{!! env("APP_URL") !!}"+'/pos-transactions/show/'+account_transactions[x][_row_name];
 							_html += '<a href="'+_url+'" target="_blank">';
