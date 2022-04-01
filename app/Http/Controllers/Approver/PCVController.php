@@ -26,7 +26,7 @@ class PCVController extends Controller
         $user = auth()->user();
 
         if( $user->getUserAssignTo() != 'ssc' ) {          
-            $pcvs = Pcv::whereIn('status', ['submitted', 'confirmed', 'cancel']);
+            $pcvs = Pcv::whereIn('status', ['submitted', 'confirmed', 'cancel','approved']);
         } else {
             if($user->position == 'division head' ){ 
                 $pcvs = Pcv::whereIn('status', ['approved','confirmed']);

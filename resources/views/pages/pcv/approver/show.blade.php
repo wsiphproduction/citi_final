@@ -460,6 +460,8 @@
             e.preventDefault();
             let _url = "";
 
+            if($('#disapprove-remarks').val() == '') { alert('Remarks is required'); return false; }
+
             $.ajax({
 
                 url     : "{!! env('APP_URL') !!}/pcv/approver/disapprove/"+$('#pcv_id').val() ,

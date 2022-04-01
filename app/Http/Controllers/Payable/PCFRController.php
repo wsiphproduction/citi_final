@@ -23,9 +23,6 @@ class PCFRController extends Controller
 
         $pcfr = Pcfr::whereIn('status', ['approved', 'approved'])
             ->where('tl_approved', 1)
-            ->whereHas('user', function(Builder $query) {
-                $query->where('assign_to', auth()->user()->assign_to);
-            }) 
             ->orderBy('created_at', 'DESC')  
             ->get();
 
@@ -37,9 +34,6 @@ class PCFRController extends Controller
     public function forReplenished() {
 
         $pcfr = Pcfr::where('status', 'post to ebs')
-            ->whereHas('user', function(Builder $builder) {
-                $builder->where('assign_to', auth()->user()->assign_to);
-            })
             ->get();
 
         return view('pages.pcfr.payable.for-replenished', compact('pcfr'));
@@ -50,9 +44,6 @@ class PCFRController extends Controller
     public function replenished() {
 
         $pcfr = Pcfr::where('status', 'replenished')
-            ->whereHas('user', function(Builder $builder) {
-                $builder->where('assign_to', auth()->user()->assign_to);
-            })
             ->get();
 
         return view('pages.pcfr.payable.replenished', compact('pcfr'));

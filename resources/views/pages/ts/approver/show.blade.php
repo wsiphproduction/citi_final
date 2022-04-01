@@ -227,6 +227,8 @@
 			e.preventDefault();
 			let _url = "";
 
+			if($('#disapprove-remarks').val() == '') { alert('Remarks is required'); return false; }
+
 			$.ajax({
 
 				url 	: "{!! env('APP_URL') !!}/ts/approver/disapprove/"+$('#ts_id').val() ,
