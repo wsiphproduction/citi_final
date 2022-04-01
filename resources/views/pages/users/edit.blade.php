@@ -90,7 +90,7 @@
 								<option value=""> Select </option>								
 								<option value="stores" @if($user->store_type == 'stores') selected @endif>Store</option>
 								<option value="distribution center" @if($user->store_type == 'distribution center') selected @endif>DC</option>
-								<option value="head office" @if($user->store_type == 'head office') selected @endif>SSC</option>
+								<option value="head office" data-store="00000" @if($user->store_type == 'head office') selected @endif>SSC</option>
 							</select>
 							<input type="hidden" name="assign_to" id="assign_to" value="{{ $user->assign_to }}">
 						</div>
@@ -290,11 +290,12 @@
 
 					$('#assign_name').append(_html);
 
-//					$('#assign_name').append(_html).attr('disabled', false);
-
 				}
-			})
-
+			});			
+			
+			if($('#store_type').val() == 'head office') {
+				$('#assign_to').val("00000");
+			}
 		});
 
 		$(document).on('change', '#assign_name', function() {

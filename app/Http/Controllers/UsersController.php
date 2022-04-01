@@ -131,7 +131,7 @@ class UsersController extends Controller
             'status'            => $request->status ,
             'updated_at'        => \Carbon\Carbon::now() ,
             'updated_by'        => auth()->user()->username ,
-            'store_type'         => $request->store_type
+            'store_type'        => $request->store_type
         ]);
 
         $user->assignRole($request->access);
