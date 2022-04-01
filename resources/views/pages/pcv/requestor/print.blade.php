@@ -199,9 +199,7 @@
                             <td></td>                                        
                             <td></td>                                                                                
                             <td></td>                                        
-                            @if($pcv->account_name == 'Delivery Charges')
                             <td></td>
-                            @endif
                             <td class="tx-bold align-middle">Total</td>
                             <td>
                             	{{ $pcv->amount }}

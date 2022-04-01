@@ -214,9 +214,7 @@
                                             <td></td>                                        
                                             <td></td>                                                                                
                                             <td></td>                                        
-                                            @if($pcv->account_name == 'Delivery Charges')
-                                            <td></td>
-                                            @endif
+                                            <td></td>                                            
                                             <td class="tx-bold align-middle">Total</td>
                                             <td>
                                             <input type="number" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" 

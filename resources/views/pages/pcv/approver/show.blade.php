@@ -198,10 +198,8 @@
                                             <td class="sorting_1"></td>
                                             <td></td>                                        
                                             <td></td>                                                                                
-                                            <td></td>                                        
-                                            @if($pcv->account_name == 'Delivery Charges')
+                                            <td></td>                                                                                    
                                             <td></td>
-                                            @endif
                                             <td class="tx-bold align-middle">Total</td>
                                             <td>
                                             <input type="number" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" 

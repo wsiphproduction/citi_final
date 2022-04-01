@@ -551,6 +551,18 @@
 					
 					let _account_trans = {};
 
+					if(_account_name == 'Stripping Charge') {
+
+						console.log();
+						if($('#vendor').val() != '') {
+							_account_trans['vendor'] = $('#vendor').val();
+						} else {
+							$('#vendor').addClass('is-invalid');
+							return false;
+						}
+
+					}
+					
 					$(this).find('td').each(function(o , p) {
 
 						let _acc_name = $(this).data('name');
@@ -1362,6 +1374,7 @@
 					let _html = '<tr>';
 
 					$('.tbl-header').each(function(ii, res) {
+						console.log(data);
 						let _row_name = $(this).data('rowname').trim();
 
 						if(_account_name == 'Stripping Charge') {
@@ -1380,7 +1393,9 @@
 								} else {
 									_html += '<td data-name="'+_row_name+'" >' + data[$(this).data('rowname')] + '</td>';							
 								}
-							}	
+							}
+							$('#vendor').val(data.vendor);
+
 						} else {
 							if( _row_name != 'action') { 
 

@@ -559,6 +559,18 @@
 					
 					let _account_trans = {};
 
+					if(_account_name == 'Stripping Charge') {
+
+						console.log();
+						if($('#vendor').val() != '') {
+							_account_trans['vendor'] = $('#vendor').val();
+						} else {
+							$('#vendor').addClass('is-invalid');
+							return false;
+						}
+
+					}
+
 					$(this).find('td').each(function(o , p) {
 
 						let _acc_name = $(this).data('name');
