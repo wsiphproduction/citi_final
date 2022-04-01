@@ -65,7 +65,6 @@ class UsersController extends Controller
         $existing_user = User::where('firstname', $request->firstname)
             ->where('lastname', $request->lastname)
             ->where('middlename', $request->middlename)
-            ->where('username', $request->username)
             ->first();
 
         if($existing_user) return redirect()->back()->with('danger', 'User already exists');
