@@ -1,15 +1,15 @@
 [
  {
    "FLEX_VALUE_MEANING": 11416,
-   "DESCRIPTION": "Receivable - Consignor's Pull-out"
+   "DESCRIPTION": "Receivable Consignors Pull out"
  },
  {
    "FLEX_VALUE_MEANING": 11417,
-   "DESCRIPTION": "Receivable - Damages/Losses"
+   "DESCRIPTION": "Receivable Damages/Losses"
  },
  {
    "FLEX_VALUE_MEANING": 11418,
-   "DESCRIPTION": "Receivable - Stripping"
+   "DESCRIPTION": "Receivable Stripping"
  },
  {
    "FLEX_VALUE_MEANING": 60502,
@@ -29,31 +29,31 @@
  },
  {
    "FLEX_VALUE_MEANING": 60801,
-   "DESCRIPTION": "Repairs & Maintenance - Building"
+   "DESCRIPTION": "Repairs & Maintenance Building"
  },
  {
    "FLEX_VALUE_MEANING": 60802,
-   "DESCRIPTION": "Repairs & Maintenance - Store Equipment"
+   "DESCRIPTION": "Repairs & Maintenance Store Equipment"
  },
  {
    "FLEX_VALUE_MEANING": 60803,
-   "DESCRIPTION": "Repairs & Maintenance - Staffhouse Equipment"
+   "DESCRIPTION": "Repairs & Maintenance Staffhouse Equipment"
  },
  {
    "FLEX_VALUE_MEANING": 60806,
-   "DESCRIPTION": "Repairs & Maintenance - Communication Equipment"
+   "DESCRIPTION": "Repairs & Maintenance Communication Equipment"
  },
  {
    "FLEX_VALUE_MEANING": 60807,
-   "DESCRIPTION": "Repairs & Maintenance - Computer Equipment"
+   "DESCRIPTION": "Repairs & Maintenance Computer Equipment"
  },
  {
    "FLEX_VALUE_MEANING": 60808,
-   "DESCRIPTION": "Repairs & Maintenance - Store Furniture & Fixtures"
+   "DESCRIPTION": "Repairs & Maintenance Store Furniture & Fixtures"
  },
  {
    "FLEX_VALUE_MEANING": 60809,
-   "DESCRIPTION": "Repairs & Maintenance - Staffhouse Furniture & Fixtures"
+   "DESCRIPTION": "Repairs & Maintenance Staffhouse Furniture & Fixtures"
  },
  {
    "FLEX_VALUE_MEANING": 60901,
@@ -61,11 +61,11 @@
  },
  {
    "FLEX_VALUE_MEANING": 60902,
-   "DESCRIPTION": "Meals & Travel - Meals"
+   "DESCRIPTION": "Meals & Travel Meals"
  },
  {
    "FLEX_VALUE_MEANING": 60903,
-   "DESCRIPTION": "Meals & Travel - Lodging"
+   "DESCRIPTION": "Meals & Travel Lodging"
  },
  {
    "FLEX_VALUE_MEANING": 60904,
@@ -73,7 +73,7 @@
  },
  {
    "FLEX_VALUE_MEANING": 60905,
-   "DESCRIPTION": "Meals & Travel - Others"
+   "DESCRIPTION": "Meals & Travel Others"
  },
  {
    "FLEX_VALUE_MEANING": 60906,
@@ -81,7 +81,7 @@
  },
  {
    "FLEX_VALUE_MEANING": 61101,
-   "DESCRIPTION": "Cashier's Allowance"
+   "DESCRIPTION": "Cashiers Allowance"
  },
  {
    "FLEX_VALUE_MEANING": 61102,
@@ -117,7 +117,7 @@
  },
  {
    "FLEX_VALUE_MEANING": 60818,
-   "DESCRIPTION": "Repairs & Maintenance - Service Center"
+   "DESCRIPTION": "Repairs & Maintenance Service Center"
  },
  {
    "FLEX_VALUE_MEANING": 51002,
@@ -145,7 +145,7 @@
  },
  {
    "FLEX_VALUE_MEANING": 60213,
-   "DESCRIPTION": "Other Employee's Benefits"
+   "DESCRIPTION": "Other Employees Benefits"
  },
  {
    "FLEX_VALUE_MEANING": 61804,
@@ -161,7 +161,7 @@
  },
  {
    "FLEX_VALUE_MEANING": 12604,
-   "DESCRIPTION": "Deferred Pre-opening Expenses"
+   "DESCRIPTION": "Deferred Pre opening Expenses"
  },
  {
    "FLEX_VALUE_MEANING": 12607,
@@ -177,19 +177,19 @@
  },
  {
    "FLEX_VALUE_MEANING": 41102,
-   "DESCRIPTION": "Sales Discount - Outright"
+   "DESCRIPTION": "Sales Discount Outright"
  },
  {
    "FLEX_VALUE_MEANING": 41103,
-   "DESCRIPTION": "Sales Return - Outright"
+   "DESCRIPTION": "Sales Return Outright"
  },
  {
    "FLEX_VALUE_MEANING": 60215,
-   "DESCRIPTION": "Training & Development - External Training"
+   "DESCRIPTION": "Training & Development External Training"
  },
  {
    "FLEX_VALUE_MEANING": 60216,
-   "DESCRIPTION": "Training & Development - In House"
+   "DESCRIPTION": "Training & Development In House"
  },
  {
    "FLEX_VALUE_MEANING": 60301,
@@ -213,11 +213,11 @@
  },
  {
    "FLEX_VALUE_MEANING": 61501,
-   "DESCRIPTION": "Representation- Visitors"
+   "DESCRIPTION": "Representation Visitors"
  },
  {
    "FLEX_VALUE_MEANING": 61502,
-   "DESCRIPTION": "Representation- Others"
+   "DESCRIPTION": "Representation Others"
  },
  {
    "FLEX_VALUE_MEANING": 61603,
@@ -257,7 +257,7 @@
  },
  {
    "FLEX_VALUE_MEANING": 61205,
-   "DESCRIPTION": "Representation- Supplies"
+   "DESCRIPTION": "Representation Supplies"
  },
  {
    "FLEX_VALUE_MEANING": 61206,

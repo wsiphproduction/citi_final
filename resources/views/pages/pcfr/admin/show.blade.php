@@ -137,67 +137,7 @@
                                 <td> {{$pcv->description }} </td>
                                 <td> {{ $pcv->account_name }} </td>
                                 <td> {{ $pcv->user->branch->name }} </td>
-                                <td> {{ $pcv->amount }} </td>
-                                @if(auth()->user()->position == 'payables staff' 
-                                    && is_null($pcfr->py_staff_approved ))
-                                <td> 
-
-                                    <nav class="nav table-options justify-content-start">
-                                        <a class="nav-link p-0 pl-2 remove_attachment" href="javascript:void(0);" title="Remove" data-target="#pcvRemove{{$pcv->id}}" data-toggle="modal" data-dismiss="modal">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                                        </a>
-                                    </nav>
-
-                                    <div class="modal fade" id="pcvRemove{{$pcv->id}}" tabindex="-1" role="dialog" 
-                                        aria-labelledby="pcvRemove{{$pcv->id}}" aria-modal="true">
-
-                                        <div class="modal-dialog modal-dialog-centered" role="document">
-                                            <div class="modal-content tx-14">
-                                                
-                                                <div class="modal-header">
-                                                    <h6 class="modal-title" id="exampleModalLabel3">Input Remarks</h6>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">×</span>
-                                                    </button>
-                                                </div>
-
-                                                <div class="modal-body">                                                        
-                                                    
-                                                    <form action="{{ route('payable.pcfr.pcv-remove', $pcv->id) }}" method="POST">
-                                                        @csrf
-                                                        @method('PUT')
-                                                        <input type="hidden" name="pcfr_no" value="{{ $pcfr->id }}">
-
-                                                        <div class="row">
-                                                            <div class="col-lg-12">
-                                                                <div class="form-group">
-                                                                    <label for="remarks" class="d-block">Remarks</label>
-                                                                    <textarea id="disapprove-remarks" name="remarks" 
-                                                                        class="form-control" rows="3"></textarea>
-                                                                </div>
-                                                            </div>
-                                                            
-                                                            <div class="col-lg-12 text-right">
-                                                                <button class="btn btn-brand-01 d-inline-block tx-13 tx-uppercase">Remove</button>
-                                                                <button type="button" class="btn btn-white tx-13 tx-uppercase" 
-                                                                    data-target="#pcvRemove{{$pcv->id}}" data-toggle="modal" 
-                                                                    data-dismiss="modal">
-                                                                    Cancel
-                                                                </button>
-                                                            </div>
-                                                        </div>  
-
-                                                    </form>
-                                                     
-                                                </div>
-
-                                            </div>
-                                        </div>
-
-                                    </div>
-
-                                </td>
-                                @endif
+                                <td> {{ $pcv->amount }} </td>                               
                             </tr>
                         @empty
                             <tr>

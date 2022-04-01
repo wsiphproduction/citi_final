@@ -10,10 +10,11 @@ use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Support\Str;
 use OwenIt\Auditing\Contracts\Auditable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable implements Auditable
 {
-    use HasApiTokens, HasFactory, Notifiable, HasRoles, \OwenIt\Auditing\Auditable;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles, \OwenIt\Auditing\Auditable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.

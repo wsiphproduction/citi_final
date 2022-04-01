@@ -394,7 +394,7 @@
 
     @else
 
-        @if($pcv->status == 'submitted' || $pcv->status == 'confirmed' )
+        @if($pcv->status == 'submitted' || $pcv->status == 'confirmed' || $pcv->status == 'cancel' )
             <div class="col-lg-12 mg-t-20">
                 <button type="button" class="btn btn-white mr-lg-1 mb-2 mb-lg-0 d-block d-lg-inline wd-100p wd-lg-150 btn-submit-approve"
                     data-action="approved" data-id="{{ $pcv->id }}">

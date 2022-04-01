@@ -130,7 +130,8 @@ class BranchController extends Controller
 
         // CALL API 
 
-        $api_branch = \DB::table('api_branch')->distinct('STORE_CODE')->get(['OPERATING_UNIT_NAME', 'STORE_CODE', 'STORE_TYPE', 'BRANCH_SIZE', 'ASSIGNED_STORE']);
+        $api_branch = \DB::table('api_branch')->distinct('STORE_CODE')
+            ->get(['OPERATING_UNIT_NAME', 'STORE_CODE', 'STORE_TYPE', 'BRANCH_SIZE', 'ASSIGNED_STORE']);
 
         foreach( $api_branch as $branch ) {
 

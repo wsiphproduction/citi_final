@@ -858,7 +858,7 @@
 						_html += '<td><a href="#" data-pcv="'+data.pcv_no+'" class="copy_from_ref">'+ data.pcv_no +'</a></td>';
 						_html += '<td>'+ data.pcv_no +'</td>';
 						_html += '<td>'+ data.date_created +'</td>';	
-						_html += '<td>'+ data.approved_by +'</td>';																	
+						_html += '<td>'+ data.cancelled_by +'</td>';																	
 						_html += '<td>'+ data.pcv_no +'</td>';
 						_html += '<td>'+ data.date_created +'</td>';	
 						_html += '<td>'+ data.approved_by +'</td>';
@@ -873,8 +873,8 @@
 
 		});
 
-		$(document).on('click', '.copy_from_ref', function() {
-
+		$(document).on('click', '.copy_from_ref', function(e) {
+			e.preventDefault();
 			let _pcv_no = $(this).data('pcv');
 			let _base_url = "{!! env('APP_URL') !!}";
 
@@ -886,12 +886,13 @@
 					console.log(res);
 					let _aTransactions = [];
 
-					if(res.account_transactions.length>0) {
-						$.each(res.account_transactions, function(i, data) {
-							_aTransactions.push(data.details);
+					if(res.account_transaction.details.length>0) {
+						$.each(res.account_transaction.details, function(i, data) {
+							console.log(data);
+							_aTransactions.push(data);
 						});
 					}
-
+					console.log(_aTransactions);
 					if(res.slip_no!=null) {
 						$('#with-temporary-slip').prop('checked', 'checked');
 						$('#ts_no').val(res.slip_no);
@@ -901,11 +902,11 @@
 					$('#date_created').val(moment(res.date_created).format('YYYY-MM-DD'));
 					$('#pcv_accounts').val(JSON.stringify(_aTransactions));
 					
-					let is_others=false;
+					let is_others=true;
 
 					$.each($("#account_name option"), function(){ 
 
-						if(res.account_name == $(this).val()) is_others=true;
+						if(res.account_name == $(this).val()) is_others=false;
 
 					});
 
@@ -921,10 +922,7 @@
 
 					setTimeout(function(){
 						if($('#pcv_accounts').val() != '')
-							getAccountTransactions();
-
-						if($('#pcv_attachments').val() != '')
-							getAttachments();
+							getAccountTransactions();						
 					}, 2000);
 
 					$('#copyFrom').modal('hide');

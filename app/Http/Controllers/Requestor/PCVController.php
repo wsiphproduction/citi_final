@@ -23,7 +23,7 @@ class PCVController extends Controller
     public function index() {
         $user = auth()->user();
         $pcvs = Pcv::whereIn('status', [
-            'saved', 'approved', 'submitted','confirmed', 'disapproved','disapproved tl', 'disapproved dept head', 'disapproved dh', 'disapproved py'
+            'saved', 'approved', 'submitted','confirmed', 'cancel', 'cancelled', 'disapproved','disapproved tl', 'disapproved dept head', 'disapproved dh', 'disapproved py'
         ])->whereHas('user' , function(Builder $builder) use($user) {
                 if($user->getUserAssignTo() == 'ssc') {
                     $builder->where('assign_to', $user->assign_to)
@@ -52,7 +52,7 @@ class PCVController extends Controller
     public function copyPCV($pcv) {
 
         $pcv = Pcv::where('pcv_no', $pcv)
-            ->with(['account_transactions'])
+            ->with(['account_transaction'])
             ->first();
 
         return response()->json($pcv);
@@ -105,7 +105,7 @@ class PCVController extends Controller
             $ts = TemporarySlip::where('ts_no', $request->ts_no)->first();
 
             if( ( $ts->running_balance - $request->total_amount ) < 0 ) {
-                return redirect()->back()->withInput()->with('danger', 'Temporary Slip amount is less than the amount inputed on the account');
+                return redirect()->back()->withInput()->with('danger', 'TS amount is less than the amount inputed on the account');
             }
 
             $ts->running_balance = $request->change;
@@ -190,7 +190,7 @@ class PCVController extends Controller
             })->get();
         $area_manager = User::where('position', 'area head')
             ->whereHas('branch_group', function($query) {
-                $branch = Branch::find(auth()->user()->assign_to);
+                $branch = auth()->user()->branch;
                 $query->where('branch', 'LIKE', "%{$branch->name}%");
             })->get();
 
@@ -199,6 +199,18 @@ class PCVController extends Controller
     }
 
     public function update($id, Request $request) {
+
+        $pcv = Pcv::find($id); 
+
+        if($request->pcv_action == 'cancel') {
+
+            $pcv->update([
+                'status'    => 'cancel'
+            ]);
+
+            return redirect()->route('requestor.pcv.index')->with('success','Request to cancel PCV has been submitted!');
+
+        }
 
         $this->validate($request, [
             'ts_no'     => [ 
@@ -212,7 +224,7 @@ class PCVController extends Controller
             'description'   => 'required'
         ]);
 
-        $pcv = Pcv::find($id); 
+        
         $user = auth()->user();
 
         $attachments = json_decode($request->pcv_attachments, true);
@@ -237,7 +249,7 @@ class PCVController extends Controller
             $ts = TemporarySlip::where('ts_no', $request->ts_no)->first();
 
             if( ( $ts->running_balance - $request->total_amount ) < 0 ) {
-                return redirect()->back()->withInput()->with('danger', 'Temporary Slip amount is less than the amount inputed on the account');
+                return redirect()->back()->withInput()->with('danger', 'TS amount is less than the amount inputed on the account');
             }
 
             $ts->running_balance = $request->change;
@@ -304,7 +316,7 @@ class PCVController extends Controller
         }
         $pcv->save();
 
-        return redirect()->route('requestor.pcv.index')->with('success','PCV has been updated!');
+        return redirect()->route('requestor.pcv.index')->with('success',"PCV No. {$pcv->pcv_no} has been updated!");
 
     }
 
@@ -313,7 +325,7 @@ class PCVController extends Controller
         $pcv = Pcv::find($id);
         $pcv->update(['status'  => $request->action]);
 
-        return back()->with(['success'  => "{$pcv->pcv_no} was successfully submitted."]);
+        return back()->with(['success'  => "PCV No. {$pcv->pcv_no} is successfully submitted."]);
 
     }
 
@@ -339,7 +351,7 @@ class PCVController extends Controller
             ->whereHas('user', function(Builder $builder) {
                 $builder->where('assign_to', auth()->user()->assign_to);
             })
-            ->with(['account_transactions'])
+            ->with(['account_transaction'])
             ->get();
 
         return response()->json($pcv);

@@ -27,7 +27,7 @@ class PCFRController extends Controller
         $pcfr = Pcfr::orderBy('created_at', 'DESC')
             ->get();
 
-        return view('pages.pcfr.audit.index', compact('pcfr'));
+        return view('pages.pcfr.admin.index', compact('pcfr'));
 
     }
 
@@ -35,7 +35,7 @@ class PCFRController extends Controller
 
         $pcfr = Pcfr::find($id);
 
-        return view('pages.pcfr.audit.show', compact('pcfr'));
+        return view('pages.pcfr.admin.show', compact('pcfr'));
 
     }
 

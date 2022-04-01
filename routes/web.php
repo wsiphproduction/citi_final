@@ -37,6 +37,7 @@ use App\Http\Controllers\TruckersController;
 use App\Http\Controllers\AccountMatrixController;
 use App\Http\Controllers\BranchDepartmentController;
 use App\Http\Controllers\JobRequestController;
+
 use App\Http\Controllers\ReportController;
 
 
@@ -433,6 +434,7 @@ Route::middleware(['web', 'auth'])->group(function () {
     Route::prefix('reports')->group(function() {
 
         Route::get('/', [ReportController::class, 'index'])->name('reports.index');
+        Route::get('search', [ReportController::class, 'search'])->name('reports.search');
 
     });
 

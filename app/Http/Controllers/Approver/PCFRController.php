@@ -42,7 +42,7 @@ class PCFRController extends Controller
 
         $area_manager = User::where('position', 'area head')
             ->whereHas('branch_group', function($query) use ($pcfr) {
-                $branch = Branch::find($pcfr->user->assign_to);
+                $branch = auth()->user()->branch;
                 $query->where('branch', 'LIKE', "%{$branch->name}%");
             })->get();
 

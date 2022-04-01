@@ -80,7 +80,7 @@ class PCFRController extends Controller
         ]);
 
         return response()->json([
-            'message'   => "{$pcfr->pcfr_no} was successfully Disapprove."
+            'message'   => "PCFR No. {$pcfr->pcfr_no} was successfully Disapprove."
         ]);
 
     }
@@ -97,7 +97,7 @@ class PCFRController extends Controller
 
         return response()->json([
             'need_code' =>  false ,
-            'message'   => "{$pcfr->pcfr_no} was successfully approved."
+            'message'   => "PCFR No. {$pcfr->pcfr_no} was successfully approved."
         ]);
 
     }
@@ -119,7 +119,7 @@ class PCFRController extends Controller
         $pcfr = Pcfr::find($request->pcfr_no);
         $this->recomputePcfr($pcfr);
 
-        return redirect()->back()->with('success', "{$pcv->pcv_no} successfully removed");
+        return redirect()->back()->with('success', "PCV No. {$pcv->pcv_no} successfully removed");
 
     }
 
@@ -191,7 +191,7 @@ class PCFRController extends Controller
         $pcfr = Pcfr::find($id);
         $pcfr->update(['status'  => $request->action]);
 
-        return back()->with(['success'  => "{$pcfr->pcfr_no} was successfully submitted."]);
+        return back()->with(['success'  => "PCFR No. {$pcfr->pcfr_no} was successfully submitted."]);
 
     }
    

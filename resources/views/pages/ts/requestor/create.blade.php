@@ -66,7 +66,7 @@
 							@endforeach
 						</select> -->
 
-						<select class="form-control" name="account">
+						<select class="form-control custom-select" name="account">
 							<option value=""> Select Account </option>								
 							@foreach( \App\Models\Account::getAccountsFinal() as $account )
 								<option value="{{ $account['FLEX_VALUE_MEANING'] }} | {{ $account['DESCRIPTION'] }}"> 

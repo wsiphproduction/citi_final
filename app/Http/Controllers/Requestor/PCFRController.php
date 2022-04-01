@@ -214,7 +214,7 @@ class PCFRController extends Controller
         $pcfr = Pcfr::find($id);
         $pcfr->update(['status'  => $request->action]);
 
-        return back()->with(['success'  => "{$pcfr->pcfr_no} was successfully submitted."]);
+        return back()->with(['success'  => "PCFR No. {$pcfr->pcfr_no} was successfully submitted."]);
 
     }
 

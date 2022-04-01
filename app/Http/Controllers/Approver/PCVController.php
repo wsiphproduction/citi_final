@@ -26,12 +26,12 @@ class PCVController extends Controller
         $user = auth()->user();
 
         if( $user->getUserAssignTo() != 'ssc' ) {          
-            $pcvs = Pcv::whereIn('status', ['submitted', 'confirmed']);
+            $pcvs = Pcv::whereIn('status', ['submitted', 'confirmed', 'cancel']);
         } else {
             if($user->position == 'division head' ){ 
                 $pcvs = Pcv::whereIn('status', ['approved','confirmed']);
             } else {
-                $pcvs = Pcv::whereIn('status', ['submitted', 'confirmed']);
+                $pcvs = Pcv::whereIn('status', ['submitted', 'confirmed', 'cancel']);
             }
         }
 
@@ -107,6 +107,22 @@ class PCVController extends Controller
 
         $pcv = Pcv::find($id);
         $user = auth()->user();
+
+        if($pcv->status == 'cancel') {
+
+            $pcv->update([
+                'status'            => 'cancelled' ,
+                'cancelled_by'      => auth()->user()->username ,
+                'cancelled_date'    => \Carbon\Carbon::now()
+            ]);
+
+            return response()->json([
+                'status'        => 'cancelled' ,
+                'need_code'     => false ,
+                'message'   => "{$pcv->pcv_no} was successfully cancelled."
+            ]);
+
+        }
 
         $matrix = AccountMatrix::where('name', $pcv->account_name)
             ->where('amount', '=', $pcv->amount)

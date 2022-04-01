@@ -26,7 +26,7 @@ class UsersController extends Controller
 
     public function inactive() {
 
-        $users = User::where('status', 0)
+        $users = User::onlyTrashed()
             ->orderBy('created_at', 'DESC')->get();
 
         return view('pages.users.inactive', compact('users'));
@@ -35,7 +35,7 @@ class UsersController extends Controller
 
     public function show($id) {
 
-        $user = User::find($id); 
+        $user = User::withTrashed()->find($id); 
 
         return view('pages.users.show', compact('user'));
 
@@ -95,7 +95,7 @@ class UsersController extends Controller
 
         $roles = Role::all();
         $branch_groups = BranchGroup::all();
-        $user = User::find($id);
+        $user = User::withTrashed()->find($id);
         $branch = Branch::where('status', 1)->get();
 
         return view('pages.users.edit', compact('user', 'roles', 'branch_groups', 'branch'));
@@ -105,7 +105,7 @@ class UsersController extends Controller
 
     public function update($id, Request $request) {
 
-        $user = User::find($id);
+        $user = User::withTrashed()->find($id);
 
         $this->validate($request, [
 
@@ -135,6 +135,12 @@ class UsersController extends Controller
         ]);
 
         $user->assignRole($request->access);
+
+        if($request->status == 0) {
+            $user->delete();
+        } else {
+            $user->restore();
+        }
 
         return redirect()->route('users.index')->with('success', 'User Successfully Updated!');
     }
