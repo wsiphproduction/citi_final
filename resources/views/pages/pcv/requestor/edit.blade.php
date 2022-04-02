@@ -61,13 +61,13 @@
 					<label for="slip-no" class="col-lg-5 col-form-label">Slip No.</label>
 					<div class="col-lg-7">
 						<select name="ts_no" class="custom-select form-control" 
-							@if(is_null(old('ts_no', $pcv->ts_no))) disabled @endif 
+							@if(is_null(old('ts_no', $pcv->slip_no))) disabled @endif 
 							id="ts_no">
-							<option>Select</option>
+							<option value="">Select</option>
 							@foreach($ts as $slip)
 								<option value="{{$slip->ts_no}}" data-name="{{$slip->account_name}}" 
 									data-description="{{$slip->description}}"
-									@if(old('ts_no', $pcv->ts_no) == $slip->ts_no) selected @endif>{{ $slip->ts_no }}</option>
+									@if(old('ts_no', $pcv->slip_no) == $slip->ts_no) selected @endif>{{ $slip->ts_no }}</option>
 							@endforeach
 						</select>
 					</div>
@@ -1542,7 +1542,6 @@
 
 				}
 
-
 			});
 
 
@@ -1553,9 +1552,9 @@
 	        var newElement = element.clone();
 	        var id = current_id+1;
 	        current_id = id;
-	        
+
 	        if(id <10)id = "0"+id;
-	        
+
 	        newElement.attr("id",element.attr("id").split("_")[0]+"_"+id);
 
 	        var field 	= $(('#type'), newElement).attr("id");

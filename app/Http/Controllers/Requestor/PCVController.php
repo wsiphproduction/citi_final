@@ -104,18 +104,19 @@ class PCVController extends Controller
 
             $ts = TemporarySlip::where('ts_no', $request->ts_no)->first();
 
-            if( ( $ts->running_balance - $request->total_amount ) < 0 ) {
+            $r_bal = $ts->running_balance  -  ( $request->total_amount - $request->change );
+            if( $r_bal < 0 ) {
                 return redirect()->back()->withInput()->with('danger', 'TS amount is less than the amount inputed on the account');
             }
 
-            $ts->running_balance = $request->change;
+            $ts->running_balance = $r_bal;
             $ts->save();            
 
         }
 
         // save pcv transaction
         $pcv_transaction = Pcv::create([
-            'account_name'  => $request->account_name == 'others' ? $request->account_name_other : $request->account_name ,
+            'account_name'  => $request->account_name == 'others' || $request->account_name == 'Others' ? $request->account_name_other : $request->account_name ,
             'change'        => $request->change ,
             'date_created'  => $request->date_created ,
             'pcv_no'        => Pcv::generatePCVNumber() ,
@@ -131,7 +132,7 @@ class PCVController extends Controller
         if(count($account_transactions)) {
 
             $account_transaction = AccountTransaction::create([
-                'name'          => $request->account_name == 'others' ? $request->account_name_other : $request->account_name ,
+                'name'          => $request->account_name == 'others' || $request->account_name == 'Others' ? $request->account_name_other : $request->account_name ,
                 'details'       => $account_transactions , 
                 'pcv_id'        => $pcv_transaction->id ,
                 'status'        => 'approved' 
@@ -184,7 +185,6 @@ class PCVController extends Controller
 
         $pcv = Pcv::find($pcv);
         $ts = TemporarySlip::where('status', 'approved')
-            ->where('running_balance', '>', 0)
             ->whereHas('user', function($query) {
                 $query->where('assign_to', auth()->user()->assign_to);
             })->get();
@@ -248,11 +248,13 @@ class PCVController extends Controller
 
             $ts = TemporarySlip::where('ts_no', $request->ts_no)->first();
 
-            if( ( $ts->running_balance - $request->total_amount ) < 0 ) {
+            $r_bal = $ts->running_balance  -  ( $request->total_amount - $request->change );
+
+            if( $r_bal < 0 ) {
                 return redirect()->back()->withInput()->with('danger', 'TS amount is less than the amount inputed on the account');
             }
 
-            $ts->running_balance = $request->change;
+            $ts->running_balance = $r_bal;
             $ts->save();            
 
         }
@@ -260,7 +262,7 @@ class PCVController extends Controller
         $pcv->attachments()->delete();
         $pcv->account_transaction()->delete();
         $pcv->update([
-            'account_name'  => $request->account_name ,
+            'account_name'  => $request->account_name == 'others' || $request->account_name == 'Others' ? $request->account_name_other : $request->account_name ,
             'change'        => $request->change ,
             'date_created'  => $request->date_created ,
             'slip_no'       => $request->has('withslip') ? $request->ts_no : null ,
@@ -301,7 +303,7 @@ class PCVController extends Controller
         if(count($account_transactions)) {
             
             AccountTransaction::create([
-                'name'          => $request->account_name ,
+                'name'          => $request->account_name == 'others' || $request->account_name == 'Others' ? $request->account_name_other : $request->account_name,
                 'details'       => $account_transactions , 
                 'pcv_id'        => $pcv->id ,
                 'status'        => 'approved' 

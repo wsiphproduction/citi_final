@@ -354,7 +354,12 @@
         $(document).on('click', '#btn_disapproval', function(e) {
 
             e.preventDefault();
-            let _url = "";
+            let _url = "";  
+
+            if($('#disapprove-remarks').val() == '') {
+                alert('Remarks is required');
+                return false;
+            }
 
             $.ajax({
 

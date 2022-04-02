@@ -78,11 +78,12 @@
 				<div class="form-group row">
 					<label for="slip-no" class="col-lg-5 col-form-label">Slip No.</label>
 					<div class="col-lg-7">
-						<select name="ts_no" class="custom-select form-control" disabled id="ts_no">
-							<option>Select</option>
+						<select name="ts_no" class="custom-select form-control" @if(is_null(old('withslip'))) disabled @endif id="ts_no">
+							<option value="">Select</option>
 							@foreach($ts as $slip)
 								<option value="{{$slip->ts_no}}" data-name="{{$slip->account_name}}" 
-									data-description="{{$slip->description}}">{{ $slip->ts_no }}</option>
+									data-description="{{$slip->description}}"
+									@if(old('ts_no') == $slip->ts_no) selected @endif>{{ $slip->ts_no }}</option>
 							@endforeach
 						</select>
 					</div>

@@ -51,6 +51,25 @@
 					
 						<p class="tx-color-03 tx-lg-24 tx-md-16 tx-14 mg-b-40">Petty Cash Fund Replenishment System</p>
 
+						@if($message = Session::get('danger'))
+							<div class="alert alert-danger wd-100p fade show" role="alert">
+								<span class="tx-12 tx-lg-16"><strong>{{ $message }}</strong></span>
+					            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					                <span aria-hidden="true">×</span>
+					            </button>
+					        </div>
+						@endif
+
+						@if($errors->any())
+							<div class="alert alert-danger wd-100p fade show" role="alert">
+								<span class="tx-12 tx-lg-16"><strong>{{ $errors->first() }}</strong></span>
+					            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					                <span aria-hidden="true">×</span>
+					            </button>
+					        </div>
+						@endif
+						
+						
 						<form method="POST" action="{{ route('login') }}">
             				@csrf
 
