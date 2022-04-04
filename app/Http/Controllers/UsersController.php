@@ -56,13 +56,13 @@ class UsersController extends Controller
 
         $this->validate($request, [
 
-            'username'  => 'required|unique:users,username,min:50' ,
+            'username'  => 'required|unique:users,username,max:50' ,
             'access'    => 'required' ,
             'position'  => 'required' ,
-            'firstname' => 'required|min:50' ,
-            'lastname'  => 'required|min:50' ,
-            'middlename'=> 'required|min:50' ,
-            'password'  => 'required|min:50'
+            'firstname' => 'required|max:50' ,
+            'lastname'  => 'required|max:50' ,
+            'middlename'=> 'required|max:50' ,
+            'password'  => 'required|max:50'
 
         ]);
 
@@ -115,10 +115,10 @@ class UsersController extends Controller
             'username'  => 'required|unique:users,username,'.$id ,
             'access'    => 'required' ,
             'position'  => 'required' ,
-            'firstname' => 'required|min:50' ,
-            'lastname'  => 'required|min:50' ,
-            'middlename'=> 'required|min:50' ,
-            'password'  => 'required|min:50'
+            'firstname' => 'required|max:50' ,
+            'lastname'  => 'required|max:50' ,
+            'middlename'=> 'required|max:50' ,
+            'password'  => 'required|max:50'
 
         ]);
 
