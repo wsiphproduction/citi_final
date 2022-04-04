@@ -15,18 +15,6 @@ class ReportController extends Controller
         $company = Branch::distinct('company_name')->get(['company_name'])->pluck('company_name');
         $branch  = Branch::distinct('name')->get(['name'])->pluck('name');
 
-        if(request()->has('company')) {
-
-            if(request()->name == 'petty cash expense') {
-                //query is pcv
-
-            } else {
-                // query is pcfr
-
-            }
-
-        }
-
         return view('pages.report.index', compact('company', 'branch'));
 
     }
@@ -48,14 +36,27 @@ class ReportController extends Controller
                 $pcv = Pcv::where('status', 'approved')
                     ->whereHas('user', function($query) use ($branch) {
                         $query->whereIn('assign_to', $branch);
-                    })->whereHas('pcfr', function($query){
-                        $query->where('status', 'replenished');
-                    });
+                    })
+                    ->whereDate('date_created', '>=', request()->from)
+                    ->whereDate('date_created', '<=', request()->to)
+                    ->groupBy('account_name')
+                    ->select(\DB::raw("SUM(`amount`) AS `amount`"), 'account_name')
+                    ->get();
 
-                return 'pcv';
+                $request = request()->all();
+
+                return view('pages.report.expenses-report', compact('pcv', 'request'));
             } else {
                 // query is pcfr
-                return 'pcfr';
+                $pcfr = Pcfr::where('status', 'replenished')
+                    ->whereHas('user', function($query) use ($branch) {
+                        $query->whereIn('assign_to', $branch);
+                    })->get();
+
+                $request_type = request()->name;
+                $request = request()->all();
+
+                return view('pages.report.pcfr-report', compact('pcfr', 'request_type', 'request'));
             }
 
         }

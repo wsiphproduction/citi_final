@@ -1378,7 +1378,7 @@
 			let _account_transactions = JSON.parse($('#pcv_accounts').val());
 			let _base_url = "{!! env('APP_URL') !!}";
 			let _amount_ctr = 0;
-
+			console.log('called 1');
 			if($('#btn-add-account-details').length > 0) {
 
 				$.each(_account_transactions, function(i, data){
@@ -1387,7 +1387,7 @@
 
 					$('.tbl-header').each(function(ii, res) {
 						let _row_name = $(this).data('rowname').trim();
-
+						console.log(res);
 						if(_account_name == 'Stripping Charge') {
 							if( _row_name != 'action') { 
 								if( _row_name == 'rate' ||
@@ -1395,10 +1395,10 @@
 									_row_name == 'amount' ) {
 									_html += '<td data-name="'+_row_name+'" >'; 
 									_html += '<input type="text" value="'+data[$(this).data('rowname')]+'"';
-									if(ii == 0) {
-										_html += 'class="form-control account-user-input" id="amount" data-name="'+$(this).data('rowname')+'">'; 
+									if(i == 0) {
+										_html += 'class="form-control account-user-input" id="'+$(this).data('rowname')+'" data-name="'+$(this).data('rowname')+'">'; 
 									} else {
-										_html += 'class="form-control account-user-input" id="amount'+ii+'" data-name="'+$(this).data('rowname')+'">'; 
+										_html += 'class="form-control account-user-input" id="'+$(this).data('rowname')+''+i+'" data-name="'+$(this).data('rowname')+'">'; 
 									}
 									_html += '</td>';	
 								} else {
@@ -1583,7 +1583,7 @@
 
 			let _html = '';		
 
-
+			console.log('called');
 
 			$.each(account_transactions, function (x, y) {
 	

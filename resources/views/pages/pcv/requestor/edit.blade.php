@@ -1384,10 +1384,10 @@
 									_row_name == 'amount' ) {
 									_html += '<td data-name="'+_row_name+'" >'; 
 									_html += '<input type="text" value="'+data[$(this).data('rowname')]+'"';
-									if(ii == 0) {
-										_html += 'class="form-control account-user-input" id="amount" data-name="'+$(this).data('rowname')+'">'; 
+									if(i == 0) {
+										_html += 'class="form-control account-user-input" id="'+$(this).data('rowname')+'" data-name="'+$(this).data('rowname')+'">'; 
 									} else {
-										_html += 'class="form-control account-user-input" id="amount'+ii+'" data-name="'+$(this).data('rowname')+'">'; 
+										_html += 'class="form-control account-user-input" id="'+$(this).data('rowname')+''+i+'" data-name="'+$(this).data('rowname')+'">'; 
 									}
 									_html += '</td>';	
 								} else {

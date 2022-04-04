@@ -59,7 +59,11 @@
 								auth()->user()->position == 'audit' || auth()->user()->position == 'Audit') multiple @endif>
 								<option value="">Select</option>
 								@foreach( $company as $key => $comp )
-									<option value="{{ $comp }}" @if($key == auth()->user()->assign_to) selected @endif> {{ $comp }}</option>
+									@if(!is_null(auth()->user()->assign_to))
+										<option value="{{ $comp }}" @if($key == auth()->user()->assign_to) selected @endif> {{ $comp }}</option>
+									@else
+										<option value="{{ $comp }}"> {{ $comp }}</option>
+									@endif
 								@endforeach
 							</select>
 						</div>
@@ -75,7 +79,11 @@
 								auth()->user()->position == 'audit' || auth()->user()->position == 'Audit') multiple @endif>
 								<option value="">Select</option>
 								@foreach( $branch as $key => $b )
-									<option value="{{ $b }}" @if($key == auth()->user()->assign_to) selected @endif> {{ $b }}</option>
+									@if(!is_null(auth()->user()->assign_to))
+										<option value="{{ $b }}" @if($key == auth()->user()->assign_to) selected @endif> {{ $b }}</option>
+									@else
+										<option value="{{ $b }}"> {{ $b }}</option>
+									@endif
 								@endforeach
 							</select>
 						</div>
@@ -112,6 +120,24 @@
 			</div>
 
         </div>
+
+	</div>
+
+	<div class="col-lg-12">
+      	<hr class="mg-t-10 mg-b-30">
+    </div>
+
+	<div class="row mg-t-50">
+		
+		<div class="col-lg-12">
+			
+			<div id="report">
+				
+
+
+			</div>
+
+		</div>
 
 	</div>
 
@@ -175,6 +201,8 @@
     		let _to = $('#date_to').val();
     		let _url = '{!! route("reports.search") !!}?name='+_name+'&company='+_company+'&branch='+_branch+'&from='+_from+'&to='+_to;
 
+    		$('#report').empty();
+
     		$.ajax({
 
 				url 	: _url,
@@ -182,6 +210,7 @@
 				success : function(res) {
 
 					console.log(res);
+					$('#report').append(res);
 
 				}
 
