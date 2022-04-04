@@ -62,7 +62,7 @@ class UsersController extends Controller
             'firstname' => 'required|max:50' ,
             'lastname'  => 'required|max:50' ,
             'middlename'=> 'required|max:50' ,
-            'password'  => 'required|max:50'
+            
 
         ]);
 
@@ -118,7 +118,7 @@ class UsersController extends Controller
             'firstname' => 'required|max:50' ,
             'lastname'  => 'required|max:50' ,
             'middlename'=> 'required|max:50' ,
-            'password'  => 'required|max:50'
+            
 
         ]);
 
