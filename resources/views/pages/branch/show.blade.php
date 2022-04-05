@@ -36,7 +36,7 @@
 
 			<div class="col-lg-6">
 				<div class="form-group row">
-					<label for="name" class="col-lg-5 col-form-label">Budget</label>
+					<label for="name" class="col-lg-5 col-form-label">Petty Cash Fund</label>
 					<div class="col-lg-7">
 						<input type="number" disabled class="form-control" step="1" min="0" value="{{ $branch->budget }}" />
 					</div>

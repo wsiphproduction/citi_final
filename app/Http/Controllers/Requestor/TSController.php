@@ -57,12 +57,17 @@ class TSController extends Controller
 
         $this->validate($request, [
             'account_name'      => 'required' ,
-            'account_code'      => 'required' ,
-            'ts_no'             => 'required|unique:temporary_slips,ts_no' ,
+            'account_code'      => 'required' ,            
             'amount'            => 'required' ,
-            'description'       => 'required'            
+            'description'       => 'required' ,
         ]);
 
+        $_exists = TemporarySlip::where('ts_no', $request->ts_no)
+            ->whereHas('user', function($query){
+                $query->where('assign_to', auth()->user()->assign_to);
+            })->first();
+
+        if($_exists) return back()->withInput()->with('danger', 'TS No. Already exists');
         
         TemporarySlip::create($request->except('_token', 'account'));
 
@@ -108,7 +113,6 @@ class TSController extends Controller
         $this->validate($request, [
             'account_name'      => 'required' ,
             'account_code'      => 'required' ,
-            'ts_no'             => 'required|unique:temporary_slips,ts_no,'. $id ,
             'amount'            => 'required' ,
             'description'       => 'required' ,
             

@@ -16,9 +16,14 @@ class Pcfr extends Model
 
     public static function generatePCFRNumber() {
 
-        $latest_pcv = \DB::table('pcfr')->latest()->first();
-        if($latest_pcv)
-            return 'PCF-'. auth()->user()->assign_to .'-'.date('Ymd') . '-'. ( $latest_pcv->id + 1 );
+        $pcfr = Pcfr::whereHas('user', function($query){
+                $query->where('assign_to', auth()->user()->assign_to);
+            })
+            ->latest()
+            ->get();
+
+        if(count($pcfr))
+            return 'PCF-'. auth()->user()->assign_to .'-'.date('Ymd') . '-'. ( count($pcfr) + 1 );
 
         return 'PCF-'. auth()->user()->assign_to .'-' . date('Ymd') . '-1';
 

@@ -23,7 +23,8 @@ class PCVController extends Controller
     public function index() {
         $user = auth()->user();
         $pcvs = Pcv::whereIn('status', [
-            'saved', 'approved', 'submitted','confirmed', 'cancel', 'cancelled', 'disapproved','disapproved tl', 'disapproved dept head', 'disapproved dh', 'disapproved py'
+            'saved', 'approved', 'submitted','confirmed', 'cancel', 'cancelled', 'disapproved','disapproved tl', 
+            'disapproved dept head', 'disapproved dh', 'disapproved py'
         ])->whereHas('user' , function(Builder $builder) use($user) {
                 if($user->getUserAssignTo() == 'ssc') {
                     $builder->where('assign_to', $user->assign_to)
@@ -99,6 +100,8 @@ class PCVController extends Controller
             'change'        => 'required|numeric',
             'description'   => 'required'
         ]);
+
+        
         
         if($request->has('withslip')) {
 
@@ -328,6 +331,16 @@ class PCVController extends Controller
         $pcv->update(['status'  => $request->action]);
 
         return back()->with(['success'  => "PCV No. {$pcv->pcv_no} is successfully submitted."]);
+
+    }
+
+
+    public function statusUpdate1($id, Request $request){
+
+        $pcv = Pcv::find($id);
+        $pcv->update(['status'  => $request->action]);
+
+        return response()->noContent();
 
     }
 

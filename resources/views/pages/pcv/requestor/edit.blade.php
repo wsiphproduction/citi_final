@@ -178,26 +178,21 @@
 	        </div>
 
 	        <div class="col-lg-12 mg-t-20">
-	        	@if(\Str::contains($pcv->status , 'disapproved'))
-	          	<button type="submit" class="btn btn-brand-01 d-block d-lg-inline wd-100p wd-lg-150 btn-savesubmit"
-	          		data-action="submitted">
-	          		<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg> 
-	            	Submit
-	          	</button>
-	          	@else
-	          	<button type="submit" class="btn btn-brand-01 d-block d-lg-inline wd-100p wd-lg-150 btn-savesubmit"
-	          		data-action="{{ $pcv->status }}">
-	          		<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg> 
-	            	Update
-	          	</button>
-	          	@endif
-	            
-	          	<button type="submit" class="btn btn-secondary d-block d-lg-inline wd-100p wd-lg-150 btn-savesubmit"
-	          		data-action="cancel">
-	          		<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
-	            	Cancel
+	        	
+	        	<button type="submit" class="btn btn-white mr-lg-1 mb-2 mb-lg-0 d-block d-lg-inline wd-100p wd-lg-150 btn-savesubmit"
+	          		data-action="saved">
+	          		<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-save"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg> 
+	            	Saved
 	          	</button>
 
+	        	@if(\Str::contains($pcv->status , 'disapproved') || $pcv->status == 'saved')
+		          	<button type="submit" class="btn btn-brand-01 d-block d-lg-inline wd-100p wd-lg-150 btn-savesubmit"
+		          		data-action="submitted">
+		          		<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg> 
+		            	Submit
+		          	</button>
+	          	@endif
+	            
 	        </div>
 
 	    </div>
@@ -737,6 +732,8 @@
 				}
 			}
 
+			$('#pcv_action').val($(this).data('action'));
+
 			// check if can save multiple transaction accounts
 			$('#pcv_form').submit();
 
@@ -1014,7 +1011,7 @@
 			let _html = '';		
 
 			_html += '<tr>';	
-
+			let _ctr = $('#account-transactions-list tbody tr').length;
 			$.each(pos_items, function(e, a){
 
 				$('.tbl-header').each(function(i, o) {
@@ -1026,12 +1023,22 @@
 							_html += '<td data-name="'+$(this).data('rowname')+'">' + pos_items[e][$(this).data('rowname')] + '</td>';							
 						} else if( $(this).data('rowname').trim() != 'action' ){
 
-							if(e == 0) {
-								_html += '<td data-name="'+$(this).data('rowname')+'"><input data-name="'+$(this).data('rowname')+'" type="number" min="0"'; 
-								_html += 'class="form-control account-user-input" id="'+ $(this).data('rowname') +'" ></td>';
+							if(_ctr == 0) {
+								if($(this).data('rowname').trim() == 'charge_to_store') {
+									_html += '<td data-name="'+$(this).data('rowname')+'"><input readonly data-name="'+$(this).data('rowname')+'" type="number" min="0"'; 
+									_html += 'class="form-control account-user-input" id="'+ $(this).data('rowname') +'" ></td>';
+								} else {
+									_html += '<td data-name="'+$(this).data('rowname')+'"><input data-name="'+$(this).data('rowname')+'" type="number" min="0"'; 
+									_html += 'class="form-control account-user-input" id="'+ $(this).data('rowname') +'" ></td>';
+								}
 							} else {
-								_html += '<td data-name="'+$(this).data('rowname')+'"><input data-name="'+$(this).data('rowname')+'" type="number" min="0"'; 							
-								_html += 'class="form-control account-user-input" id="'+ $(this).data('rowname') +e+'" ></td>';
+								if($(this).data('rowname').trim() == 'charge_to_store') {
+									_html += '<td data-name="'+$(this).data('rowname')+'"><input readly data-name="'+$(this).data('rowname')+'" type="number" min="0"'; 							
+									_html += 'class="form-control account-user-input" id="'+ $(this).data('rowname') +_ctr+'" ></td>';
+								} else {
+									_html += '<td data-name="'+$(this).data('rowname')+'"><input data-name="'+$(this).data('rowname')+'" type="number" min="0"'; 							
+									_html += 'class="form-control account-user-input" id="'+ $(this).data('rowname') +_ctr+'" ></td>';
+								}
 							}
 
 						}
@@ -1058,6 +1065,8 @@
 				_html += '</a></nav>';
 				_html += '</td>';
 				_html += '</tr>';
+
+				_ctr++;
 
 			});
 
@@ -1092,6 +1101,21 @@
 
 		$(document).on('blur', '.account-user-input', function() {
 			
+
+			if($('#account_name').val() == 'Stripping Charge') {
+
+				if($(this).data('name') == 'amount' || $(this).data('name') == 'rate' ) {
+
+					let _input_id = $(this).attr('id').split($(this).data('name')).reverse();
+
+					if($('#amount'+_input_id[0]).val() != '' && $('#amount'+_input_id[0]).val() != '') {
+						$('#charge_to_store'+_input_id[0]).val($('#amount'+_input_id[0]).val() - $('#rate'+_input_id[0]).val());
+					}
+				}
+
+			}
+			
+
 			if($(this).data('name') == 'amount') {
 
 				calculateTotal();
@@ -1190,11 +1214,11 @@
 							
 							$.each(res, function(i, o) {
 
-								_html += '<tr data-slps="'+o.slps_no+'">';
+								_html += '<tr data-slps="'+o.SLPSNO+'">';
 								_html += '<td><input type="checkbox" class="pos_trans"></td>';
-								_html += '<td data-name="plate_no">'+o.plate_no+'</td>';
-								_html += '<td data-name="trucker">'+o.trucker+'</td>';
-								_html += '<td>'+o.mode_of_payment+'</td>';
+								_html += '<td data-name="plate_no">'+ o.PLATENUMBER + '' + o.VANNUMBER +'</td>';
+								_html += '<td data-name="trucker">'+o.TRUCKER_SHIPPER+'</td>';
+								_html += '<td>'+o.NAMESHIP+'</td>';
 								_html += '</tr>';
 
 							});
@@ -1385,9 +1409,17 @@
 									_html += '<td data-name="'+_row_name+'" >'; 
 									_html += '<input type="text" value="'+data[$(this).data('rowname')]+'"';
 									if(i == 0) {
-										_html += 'class="form-control account-user-input" id="'+$(this).data('rowname')+'" data-name="'+$(this).data('rowname')+'">'; 
+										if(_row_name == 'charge_to_store'){
+											_html += 'class="form-control account-user-input" id="'+$(this).data('rowname')+'" data-name="'+$(this).data('rowname')+'" readonly>'; 
+										} else {
+											_html += 'class="form-control account-user-input" id="'+$(this).data('rowname')+'" data-name="'+$(this).data('rowname')+'">'; 
+										}
 									} else {
-										_html += 'class="form-control account-user-input" id="'+$(this).data('rowname')+''+i+'" data-name="'+$(this).data('rowname')+'">'; 
+										if(_row_name == 'charge_to_store'){
+											_html += 'class="form-control account-user-input" id="'+$(this).data('rowname')+''+i+'" data-name="'+$(this).data('rowname')+'" readonly>'; 
+										} else {
+											_html += 'class="form-control account-user-input" id="'+$(this).data('rowname')+''+i+'" data-name="'+$(this).data('rowname')+'">';
+										}
 									}
 									_html += '</td>';	
 								} else {

@@ -61,8 +61,7 @@ class UsersController extends Controller
             'position'  => 'required' ,
             'firstname' => 'required|max:50' ,
             'lastname'  => 'required|max:50' ,
-            'middlename'=> 'required|max:50' ,
-            
+            'middlename'=> 'required|max:50' ,            
 
         ]);
 

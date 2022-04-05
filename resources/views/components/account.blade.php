@@ -13,8 +13,9 @@
 	    					$isChargeTo = false;
 							if( $field['name'] == 'Vendor' ) { 
 								$detailss = json_decode(json_encode(\App\Models\Vendor::getVendors()->toArray()) , true);
-							} elseif( $field['name'] == 'Charge To' ) {								
-								$detailss = json_decode(json_encode(\App\Models\Branch::getBranch()->toArray()) , true);
+							} elseif( $field['name'] == 'Charge To' ) {			
+								$isChargeTo = true;					
+								$detailss = json_decode(json_encode(\App\Helpers\Helper::chargeTo()->toArray()) , true);	
 							}
 						@endphp
 
@@ -31,7 +32,7 @@
 							data-name="{{ strtolower(str_replace(' ', '_', $field['name'])) }}">
 								<option value="">Select</option>
 							@foreach( $detailss as $data )
-								<option value="{{ $data['id'] }}">{{ $data['charge_to'] }}</option>
+								<option value="{{ $data['CUSTOMER_NAME'] }}">{{ $data['CUSTOMER_NAME'] }}</option>
 							@endforeach
 						</select>
 					@endif
@@ -93,7 +94,8 @@
 	@if($account_data['name'] != 'Installation')
 		<div class="col-lg-12 mg-b-20">
 
-			<button type="button" class="btn btn-brand-01 d-inline wd-150 tx-13 mg-t-20" id="btn-add-account-details">
+			<button type="button" class="btn btn-brand-01 d-inline wd-150 tx-13 mg-t-20" id="btn-add-account-details"
+			@if($account_data['name'] == 'Stripping Charge') style="display: none !important;" @endif>
 				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" 
 				stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus">
 				<line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> Add
@@ -185,14 +187,14 @@
 						<div class="col-lg-3">
 							<div class="form-group">
 								<label for="doc-ref-date" class="d-block tx-14">Doc. Ref Date</label>
-								<input type="date" class="form-control" id="docdate" value="{{ date('Y-m-d') }}">
+								<input type="date" class="form-control doc-reft-data" id="docdate" value="{{ date('Y-m-d') }}">
 							</div>
 						</div>
 
 						<div class="col-lg-2">
 							<div class="form-group">
 								<label for="doc-ref-no" class="d-block tx-14">Doc. Ref No.</label>
-								<input type="text" class="form-control" id="docref">
+								<input type="text" class="form-control doc-reft-data" id="docref">
 							</div>
 						</div>
 

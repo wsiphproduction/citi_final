@@ -137,7 +137,7 @@
     
     	<div class="mg-t-50 col-lg-12">
     		
-    		<h3> Branch Group Logs </h3>
+    		<h3> Account Matrix Logs </h3>
 
     		<div class="dataTables_responsive">
     			

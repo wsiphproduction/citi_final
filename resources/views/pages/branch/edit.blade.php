@@ -9,10 +9,10 @@
 				<ol class="breadcrumb breadcrumb-style1 mg-b-10">
 					<li class="breadcrumb-item"><a href="#">Maintenance</a></li>
 					<li class="breadcrumb-item"><a href="{{ route('branch.index') }}">Branch</a></li>
-					<li class="breadcrumb-item active" aria-current="page">Create</li>
+					<li class="breadcrumb-item active" aria-current="page">Edit</li>
 				</ol>
 			</nav>
-			<h4 class="mg-b-0 tx-spacing--1">New Branch Form</h4>
+			<h4 class="mg-b-0 tx-spacing--1">Edit Branch Form</h4>
 		</div>
 
 	</div>	
@@ -42,7 +42,7 @@
 
 				<div class="col-lg-6">
 					<div class="form-group row">
-						<label for="name" class="col-lg-5 col-form-label">Budget</label>
+						<label for="name" class="col-lg-5 col-form-label">Petty Cash Fund</label>
 						<div class="col-lg-7">
 							<input type="number" name="budget" class="form-control" step="1" min="0" value="{{ $branch->budget }}" />
 						</div>
@@ -92,5 +92,63 @@
 		</form>
 
     </div>
+
+    @if(count($branch->audits()->where('event', 'updated')->get()))
+
+    <div class="row">
+    
+    	<div class="mg-t-50 col-lg-12">
+    		
+    		<h3> Branch Logs </h3>
+
+    		<div class="dataTables_responsive">
+    			
+    			<table id="example1" class="table">
+    				
+    				<thead>
+    					<th> Changes </th>
+    					<th> Created By </th>
+    					<th> Created Date and Time </th>
+    					<th> Updated By </th>
+    					<th> Updated Date and Time </th>
+    				</thead>
+
+    				<tbody>
+    					@foreach( $branch->audits()->where('event', 'updated')->get() as $audit )
+    					<tr>
+    						<td>
+    							<ul style="list-style: none; padding: 0;">
+    							@foreach($audit->new_values as $key => $value)
+    								@if($key != 'updated_by')
+	    								<li>({{ $key }}) - From {{ $audit->old_values[$key] }} - To {{ $value }}</li>
+	    							@endif
+    							@endforeach
+    							</ul>
+    						</td>
+    						<td>
+    							{{ $branch->created_by }}
+    						</td>
+    						<td>
+    							{{ $audit->created_at }}
+    						</td>
+    						<td>
+    							{{ array_key_exists('updated_by', $audit['new_values']) ? $audit['new_values']['updated_by'] : $branch->updated_by }}
+    						</td>
+    						<td>
+    							{{ $audit->updated_at }}
+    						</td>
+    					</tr>
+    					@endforeach
+    				</tbody>
+
+    			</table>
+
+    		</div>
+
+    	</div>
+
+    </div>
+	
+    @endif
 	
 @endsection

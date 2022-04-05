@@ -400,7 +400,7 @@
         </div>
 
     	<div class="col-lg-12 mg-t-20"> 
-			@if($pcfr->status == 'saved')
+			@if($pcfr->status == 'saved' || \Str::contains($pcfr->status , 'disapproved' ))
 	            <form action="{{ route('requestor.pcfr.status-update', $pcfr->id) }}" method="POST" class="d-lg-inline">
 	                @csrf
 	                @method('PUT')

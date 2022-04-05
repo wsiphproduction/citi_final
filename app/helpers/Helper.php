@@ -12,4 +12,17 @@ class Helper {
 		return ['expense', 'receivable'];
 	}
 
+
+	public static function chargeTo() {
+
+		$branch = auth()->user()->branch;
+
+		$charge_to = \DB::table('temp_charge_to')
+			->where('ORGANIZATION_NAME', $branch->company_name)
+			->get();
+
+		return $charge_to;
+
+	}
+
 }

@@ -16,9 +16,14 @@ class Pcv extends Model
 
     public static function generatePCVNumber() {
 
-        $latest_pcv = \DB::table('pcv')->latest()->first();
-        if($latest_pcv)
-            return 'PCV-'. auth()->user()->assign_to . '-'. ( $latest_pcv->id + 1 );
+        $pcv = Pcv::whereHas('user', function($query){
+                $query->where('assign_to', auth()->user()->assign_to);
+            })
+            ->latest()
+            ->get();
+
+        if(count($pcv))
+            return 'PCV-'. auth()->user()->assign_to . '-'. ( count($pcv) + 1 );
 
         return 'PCV-'.auth()->user()->assign_to . '-1';
 

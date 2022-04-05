@@ -771,9 +771,9 @@
 
 			let _account_transactions = JSON.parse($('#pcv_accounts').val());
 			let _base_url = "{!! env('APP_URL') !!}";
-
+			console.log('called');
 			$.each(_account_transactions, function(i, data){
-				
+				console.log(data);
 				if($('#btn-add-account-details').length > 0) {
 							
 					let _html = '<tr>';

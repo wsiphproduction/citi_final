@@ -18,6 +18,7 @@ class TSController extends Controller
 
     public function index() {
         $user = auth()->user();
+
         $temporary_slips = TemporarySlip::whereIn('status', ['confirmed', 'submitted','approved'])
             ->whereHas('user', function(Builder $query) use($user) {
                 if($user->getUserAssignTo() == 'ssc') {

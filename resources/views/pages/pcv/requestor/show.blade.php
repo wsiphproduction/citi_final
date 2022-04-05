@@ -366,16 +366,15 @@
 
     
     <div class="col-lg-12 mg-t-20"> 
-        @if($pcv->status == 'saved')
-            <form action="{{ route('requestor.pcv.status-update', $pcv->id) }}" method="POST" class="d-lg-inline">
-                @csrf
-                @method('PUT')
-                <input type="hidden" name="action" value="submitted">
-            
-                <button type="submit" class="btn btn-primary mr-lg-1 mb-2 mb-lg-0 d-lg-inline wd-100p wd-lg-150"> 
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-send mg-r-5"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>Submit
-                </button>                           
-            </form>
+
+        @if($pcv->status == 'approved' && is_null($pcv->pcfr_no))
+
+           <a href="javascript:void(0);" class="btn btn-primary d-block d-lg-inline wd-100p wd-lg-150 mg-r-10 btn-savesubmit"
+                data-action="cancel" data-id="{{$pcv->id}}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                Cancel
+            </a>
+
         @endif
 
         @if($pcv->status == 'submitted' && !$pcv->attachments()->where('type', 'pcv signed')->first())
@@ -441,13 +440,11 @@
         @endif
 
         @if($pcv->status == 'submitted' || $pcv->status == 'approved')
-            <div class="col-lg-12 mg-t-20">     
-                <a href="{{ route('requestor.pcv.print', $pcv->id) }}" target="_blank" 
-                    class="btn btn-secondary mr-lg-1 mb-2 mb-lg-0 d-block d-lg-inline wd-100p wd-lg-150"> 
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-printer"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
-                    Print
-                </a>                    
-            </div>
+            <a href="{{ route('requestor.pcv.print', $pcv->id) }}" target="_blank" 
+                class="btn btn-secondary mr-lg-1 mb-2 mb-lg-0 d-block d-lg-inline wd-100p wd-lg-150"> 
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-printer"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                Print
+            </a> 
         @endif
 
     </div>
@@ -534,6 +531,31 @@
 
                 }
             })
+
+        });
+
+        $(document).on('click', '.btn-savesubmit', function() {
+
+            var _that = $(this);
+
+            $.ajax({
+                url : "{!! env('APP_URL') !!}"+"/pcv/requestor/status-update1/"+_that.data('id'),
+                type: 'PUT' ,
+                data: { _token: "{!! csrf_token() !!}", action: _that.data('action') } ,
+                success: function(res) {
+
+                    $('#pcv_confirm_message').modal('show');
+                    $('#pcv_message').text('Request to cancel pcv is successful.');
+
+                    setTimeout(function(){
+
+                        $('#pcv_confirm_message').modal('hide');
+                        location.reload();
+
+                    }, 2000);
+
+                }
+            });
 
         });
 

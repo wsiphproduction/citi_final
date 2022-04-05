@@ -61,7 +61,7 @@
 				
 				<tr>
 					
-					<td width="30%" class="text-center"> <p> {{ $ts->user->username }} </p></td>
+					<td width="30%" class="text-center"> <p> {{ $ts->user->firstname }} {{ $ts->user->lastname }} </p></td>
 					<td width="5%"></td>
 					<td width="30%" class="text-center"> <p> {{ $ts->approved_by }} </p></td>
 					<td width="5%"></td>
@@ -94,7 +94,7 @@
 				
 				<tr>
 					
-					<td width="20%" class="text-left"> <p> <strong> Printed By: </strong> <span> {{ $ts->user->username }}</span></p></td>
+					<td width="20%" class="text-left"> <p> <strong> Printed By: </strong> <span> {{ $ts->user->firstname }} {{ $ts->user->lastname }}</span></p></td>
 					<td width="5%"></td>
 					<td width="30%" class="text-left"> 
 						<p> <strong> Printed Date & Time: </strong> <span> {{ \Carbon\Carbon::now()->toDateTimeString() }} </span> </p>
@@ -160,7 +160,7 @@
 				
 				<tr>
 					
-					<td width="30%" class="text-center"> <p> {{ $ts->user->username }} </p></td>
+					<td width="30%" class="text-center"> <p> {{ $ts->user->firstname }} {{ $ts->user->lastname }} </p></td>
 					<td width="5%"></td>
 					<td width="30%" class="text-center"> <p> {{ $ts->approved_by }} </p></td>
 					<td width="5%"></td>
@@ -193,7 +193,7 @@
 				
 				<tr>
 					
-					<td width="20%" class="text-left"> <p> <strong> Printed By: </strong> <span> {{ $ts->user->username }}</span></p></td>
+					<td width="20%" class="text-left"> <p> <strong> Printed By: </strong> <span> {{ $ts->user->firstname }} {{ $ts->user->lastname }}</span></p></td>
 					<td width="5%"></td>
 					<td width="30%" class="text-left"> 
 						<p> <strong> Printed Date & Time: </strong> <span> {{ \Carbon\Carbon::now()->toDateTimeString() }} </span> </p>

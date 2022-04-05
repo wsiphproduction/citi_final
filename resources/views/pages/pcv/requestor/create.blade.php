@@ -449,7 +449,7 @@
 			$('#account_name_other').prop("selectedIndex", 0).change();
 			$('#account-wrapper').empty();
 			account_transactions = [];
-			console.log($(this).val());
+
 			if( $(this).val() != "Others" && $(this).val() != "others" && $(this).val() != '' ) {
 
 				let _url = '{!! url("accounts") !!}/show/' + $(this).val();
@@ -562,7 +562,6 @@
 
 					if(_account_name == 'Stripping Charge') {
 
-						console.log();
 						if($('#vendor').val() != '') {
 							_account_trans['vendor'] = $('#vendor').val();
 						} else {
@@ -1017,7 +1016,9 @@
 			let _html = '';		
 
 			_html += '<tr>';	
-			console.log(pos_items);
+
+			let _ctr = $('#account-transactions-list tbody tr').length;
+
 			$.each(pos_items, function(e, a){
 
 				$('.tbl-header').each(function(i, o) {
@@ -1029,12 +1030,22 @@
 							_html += '<td data-name="'+$(this).data('rowname')+'">' + pos_items[e][$(this).data('rowname')] + '</td>';							
 						} else if( $(this).data('rowname').trim() != 'action' ){
 
-							if(e == 0) {
-								_html += '<td data-name="'+$(this).data('rowname')+'"><input data-name="'+$(this).data('rowname')+'" type="number" min="0"'; 
-								_html += 'class="form-control account-user-input" id="'+ $(this).data('rowname') +'" ></td>';
+							if(_ctr == 0) {
+								if($(this).data('rowname').trim() == 'charge_to_store') {
+									_html += '<td data-name="'+$(this).data('rowname')+'"><input readonly data-name="'+$(this).data('rowname')+'" type="number" min="0"'; 
+									_html += 'class="form-control account-user-input" id="'+ $(this).data('rowname') +'" ></td>';
+								} else {
+									_html += '<td data-name="'+$(this).data('rowname')+'"><input data-name="'+$(this).data('rowname')+'" type="number" min="0"'; 
+									_html += 'class="form-control account-user-input" id="'+ $(this).data('rowname') +'" ></td>';
+								}
 							} else {
-								_html += '<td data-name="'+$(this).data('rowname')+'"><input data-name="'+$(this).data('rowname')+'" type="number" min="0"'; 							
-								_html += 'class="form-control account-user-input" id="'+ $(this).data('rowname') +e+'" ></td>';
+								if($(this).data('rowname').trim() == 'charge_to_store') {
+									_html += '<td data-name="'+$(this).data('rowname')+'"><input readonly data-name="'+$(this).data('rowname')+'" type="number" min="0"'; 							
+									_html += 'class="form-control account-user-input" id="'+ $(this).data('rowname') +_ctr+'" ></td>';
+								} else {
+									_html += '<td data-name="'+$(this).data('rowname')+'"><input data-name="'+$(this).data('rowname')+'" type="number" min="0"'; 							
+									_html += 'class="form-control account-user-input" id="'+ $(this).data('rowname') +_ctr+'" ></td>';
+								}
 							}
 
 						}
@@ -1062,6 +1073,8 @@
 				_html += '</a></nav>';
 				_html += '</td>';
 				_html += '</tr>';
+
+				_ctr ++;
 
 			});
 
@@ -1164,9 +1177,6 @@
 
 		});
 
-		
-
-
 		$(document).on('keyup', '.custom-inputs', function () {
 			
 			let _account_name = $('#account_name').val();
@@ -1208,11 +1218,11 @@
 							
 							$.each(res, function(i, o) {
 
-								_html += '<tr data-slps="'+o.slps_no+'">';
+								_html += '<tr data-slps="'+o.SLPSNO+'">';
 								_html += '<td><input type="checkbox" class="pos_trans"></td>';
-								_html += '<td data-name="plate_no">'+o.plate_no+'</td>';
-								_html += '<td data-name="trucker">'+o.trucker+'</td>';
-								_html += '<td>'+o.mode_of_payment+'</td>';
+								_html += '<td data-name="plate_no">'+ o.PLATENUMBER + '' + o.VANNUMBER +'</td>';
+								_html += '<td data-name="trucker">'+o.TRUCKER_SHIPPER+'</td>';
+								_html += '<td>'+o.NAMESHIP+'</td>';
 								_html += '</tr>';
 
 							});
@@ -1378,7 +1388,7 @@
 			let _account_transactions = JSON.parse($('#pcv_accounts').val());
 			let _base_url = "{!! env('APP_URL') !!}";
 			let _amount_ctr = 0;
-			console.log('called 1');
+
 			if($('#btn-add-account-details').length > 0) {
 
 				$.each(_account_transactions, function(i, data){
@@ -1387,7 +1397,7 @@
 
 					$('.tbl-header').each(function(ii, res) {
 						let _row_name = $(this).data('rowname').trim();
-						console.log(res);
+
 						if(_account_name == 'Stripping Charge') {
 							if( _row_name != 'action') { 
 								if( _row_name == 'rate' ||
@@ -1396,9 +1406,17 @@
 									_html += '<td data-name="'+_row_name+'" >'; 
 									_html += '<input type="text" value="'+data[$(this).data('rowname')]+'"';
 									if(i == 0) {
-										_html += 'class="form-control account-user-input" id="'+$(this).data('rowname')+'" data-name="'+$(this).data('rowname')+'">'; 
+										if(_row_name == 'charge_to_store') {
+											_html += 'class="form-control account-user-input" id="'+$(this).data('rowname')+'" data-name="'+$(this).data('rowname')+'" readonly>'; 
+										} else {
+											_html += 'class="form-control account-user-input" id="'+$(this).data('rowname')+'" data-name="'+$(this).data('rowname')+'">'; 
+										}
 									} else {
-										_html += 'class="form-control account-user-input" id="'+$(this).data('rowname')+''+i+'" data-name="'+$(this).data('rowname')+'">'; 
+										if(_row_name == 'charge_to_store') {
+											_html += 'class="form-control account-user-input" id="'+$(this).data('rowname')+''+i+'" data-name="'+$(this).data('rowname')+'" readonly>'; 
+										} else {
+											_html += 'class="form-control account-user-input" id="'+$(this).data('rowname')+''+i+'" data-name="'+$(this).data('rowname')+'">'; 
+										}
 									}
 									_html += '</td>';	
 								} else {
@@ -1406,7 +1424,7 @@
 								}
 							}	
 						} else {
-							console.log('called m');
+
 							if( _row_name != 'action') { 
 								if(_account_name == 'Delivery Charges' && _row_name == 'pos_no_of_purchased_items') {
 									let _url = "{!! env("APP_URL") !!}"+'/pos-transactions/show/'+data[_row_name];
@@ -1437,7 +1455,6 @@
 			} else {
 
 				$('.custom-inputs').each(function(i, d) {
-					console.log(_account_transactions[0][$(this).attr('data-name')]);
 					$(this).val(_account_transactions[0][$(this).attr('data-name')]);
 				});
 
@@ -1583,8 +1600,6 @@
 
 			let _html = '';		
 
-			console.log('called');
-
 			$.each(account_transactions, function (x, y) {
 	
 				_html += '<tr>';	
@@ -1592,7 +1607,6 @@
 				$('.tbl-header').each(function(i, o) {
 						
 					let _row_name = $(this).data('rowname').trim();
-					console.log(_row_name);
 					if( _row_name != "action" && _row_name != "line_no") {
 
 						if( _row_name == 'pos_no_of_purchased_items' ) {

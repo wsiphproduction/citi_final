@@ -13,10 +13,9 @@
 				<ol class="breadcrumb breadcrumb-style1 mg-b-10">
 					<li class="breadcrumb-item"><a href="#">Maintenance</a></li>
 					<li class="breadcrumb-item"><a href="{{ route('branch-group.index') }}">Branch</a></li>
-					<li class="breadcrumb-item active" aria-current="page">Create</li>
+					<li class="breadcrumb-item active" aria-current="page">Show</li>
 				</ol>
 			</nav>
-			<h4 class="mg-b-0 tx-spacing--1">Edit Branch Group Form</h4>
 		</div>
 
 	</div>	

@@ -232,6 +232,7 @@ Route::middleware(['web', 'auth'])->group(function () {
             Route::put('update/{pcv}', [RequestorPCVController::class, 'update'])->name('requestor.pcv.update');
             Route::put('pcv-signed-attachment/{pcv}', [RequestorPCVController::class, 'pcvSigned'])->name('requestor.pcv.pcv-signed-attachment');
             Route::put('status-update/{id}', [RequestorPCVController::class, 'statusUpdate'])->name('requestor.pcv.status-update');
+            Route::put('status-update1/{id}', [RequestorPCVController::class, 'statusUpdate1'])->name('requestor.pcv.status-update1');
             Route::put('received-pcv/{id}', [RequestorPCVController::class, 'receivedPcv'])->name('requestor.pcv.received-pcv');
 
         });
@@ -449,7 +450,15 @@ Route::middleware(['web', 'auth'])->group(function () {
 
 Route::get('api-branch', function() {
 
+    return $api_branch = \DB::table('api_branch')->get();
+
+})->name('api.branch');
+
+
+Route::get('api-charge-to', function() {
+
 
     return $api_branch = \DB::table('api_branch')->get();
 
 })->name('api.branch');
+

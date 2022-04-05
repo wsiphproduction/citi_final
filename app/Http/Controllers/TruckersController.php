@@ -11,7 +11,7 @@ class TruckersController extends Controller
 
     public function search(Request $request) {
 
-        $truckers = Trucker::where('slps_no', $request->search)->get();
+        $truckers = Trucker::where('SLPSNO', $request->search)->get();
 
         return response()->json($truckers);
 

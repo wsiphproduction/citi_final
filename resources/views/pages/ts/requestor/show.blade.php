@@ -116,21 +116,6 @@
 
 		@endif
 
-		@if( $ts->status == 'saved' )
-		<div class="col-lg-12 mg-t-20">	
-			<form action="{{ route('requestor.ts.status-update', $ts->id) }}" method="POST">
-				@csrf
-				@method('PUT')
-				<input type="hidden" name="action" value="submitted">
-			
-				<button type="submit" class="btn btn-primary mr-lg-1 mb-2 mb-lg-0 d-block d-lg-inline wd-100p wd-lg-150"
-					data-action="submitted" data-id="{{ $ts->id }}" id="btn-submit"> 
-					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-send mg-r-5"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>Submit
-				</button>							
-			</form>
-		</div>
-		@endif
-
 		@if($ts->status == 'approved' || $ts->status == 'submitted')
 			<div class="col-lg-12 mg-t-20">						
 				<a href="{{ route('requestor.ts.print', $ts->id) }}" target="_blank" 

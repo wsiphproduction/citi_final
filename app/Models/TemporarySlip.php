@@ -21,10 +21,14 @@ class TemporarySlip extends Model implements Auditable
 
 	public static function generateTSNumber() {
 
-		$latest_ts = \DB::table('temporary_slips')->latest()->first();
+		$latest_ts = TemporarySlip::whereHas('user', function($query){
+				$query->where('assign_to', auth()->user()->assign_to);
+			})
+			->latest()
+			->get();
 
-		if($latest_ts)
-			return 'TS-'. sprintf('%04d', $latest_ts->id + 1);
+		if(count($latest_ts))
+			return 'TS-'. sprintf('%04d', count($latest_ts) + 1);
 
 		return 'TS-'. sprintf('%04d', 1);
 

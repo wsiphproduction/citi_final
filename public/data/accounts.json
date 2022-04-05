@@ -116,7 +116,7 @@
             "type": "number"
          },
          {
-            "name": "Amount",
+            "name": "Total Amount",
             "type": "number"
          }
       ],
@@ -392,8 +392,8 @@
             "type": "number"
          },
          {
-            "name": "CBM ",
-            "type": "text"
+            "name": "CBM Consumption",
+            "type": "number"
          },
          {
             "name": "Amount",
@@ -497,7 +497,7 @@
          },
          {
             "name": "CBM Consumption",
-            "type": "text"
+            "type": "number"
          },
          {
             "name": "Period To",
