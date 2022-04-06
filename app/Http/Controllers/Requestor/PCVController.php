@@ -101,7 +101,12 @@ class PCVController extends Controller
             'description'   => 'required'
         ]);
 
-        
+        $_exists = Pcv::where('pcv_no', $request->ts_no)
+            ->whereHas('user', function($query){
+                $query->where('assign_to', auth()->user()->assign_to);
+            })->first();
+
+        if($_exists) return back()->withInput()->with('danger', 'TS No. Already exists');
         
         if($request->has('withslip')) {
 

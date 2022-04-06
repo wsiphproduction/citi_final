@@ -35,7 +35,7 @@ class RolesController extends Controller
     public function store(Request $request) {
 
         $this->validate($request, [
-            'name'  => 'required|unique:roles,name|min:50'
+            'name'  => 'required|unique:roles,name|max:50'
         ]);
 
         $role = Role::create($request->except('_token'));

@@ -31,22 +31,18 @@ class PCVController extends Controller
             if($user->position == 'division head' ){ 
                 $pcvs = Pcv::whereIn('status', ['approved','confirmed']);
             } else {
-                $pcvs = Pcv::whereIn('status', ['submitted', 'confirmed', 'cancel']);
+                $pcvs = Pcv::whereIn('status', ['submitted', 'confirmed', 'cancel','approved']);
             }
         }
 
         if( $user->getUserAssignTo() != 'ssc' ) {            
-            $pcvs = $pcvs->whereNull('tl_approved')
-                ->whereHas('user', function(Builder $query) use ($user) {
-                    $query->where('assign_to', $user->assign_to);
-                });
+            $pcvs = $pcvs->whereHas('user', function(Builder $query) use ($user) {
+                        $query->where('assign_to', $user->assign_to);
+                    });
         } else {
             if($user->position == 'division head') {
                 $pcvs = $pcvs->where('tl_approved',1);
-            } else {
-                $pcvs = $pcvs->whereNull('tl_approved');
-            }
-
+            } 
             $pcvs = $pcvs->whereHas('user', function(Builder $query) use ($user) {
                 if($user->position == 'division head' ) {
                     $query->where('assign_to', $user->assign_to);                        
