@@ -36,13 +36,7 @@ class PCFRController extends Controller
 
         $pcfr = Pcfr::find($id);
 
-        $area_manager = User::where('position', 'area head')
-            ->whereHas('branch_group', function($query) use ($pcfr) {
-                $branch = auth()->user()->branch;
-                $query->where('branch', 'LIKE', "%{$branch->name}%");
-            })->get();
-
-        return view('pages.pcfr.audit.show', compact('pcfr', 'area_manager'));
+        return view('pages.pcfr.audit.show', compact('pcfr'));
 
     }
 

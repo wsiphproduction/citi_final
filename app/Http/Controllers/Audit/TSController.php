@@ -30,19 +30,8 @@ class TSController extends Controller
 
         $ts = TemporarySlip::find($id);
         $user = auth()->user();
-
-        if($user->getUserAssignTo() != 'ssc') {
-            $area_manager = User::where('position', 'area head')
-                ->whereHas('branch_group', function($query) use ($ts) {
-                    $branch = auth()->user()->branch;
-                    $query->where('branch', 'LIKE', "%{$branch->name}%");
-                })->get();
-        } else {
-            $area_manager = User::where('position', 'division head')
-                ->where('assign_to', $ts->user->assign_to)->get();
-        }
         
-        return view('pages.ts.audit.show', compact('ts', 'area_manager'));
+        return view('pages.ts.audit.show', compact('ts'));
 
     }
 

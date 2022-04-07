@@ -37,23 +37,7 @@ class PCVController extends Controller
 
         $pcv = Pcv::find($id);
 
-        $user = auth()->user();
-
-        if($user->getUserAssignTo() != 'ssc') {
-            $area_manager = User::where('position', 'area head')
-                ->whereHas('branch_group', function($query) use ($pcv) {
-                    $branch = auth()->user()->branch;
-                    $query->where('branch', 'LIKE', "%{$branch->name}%");
-                })->get();
-        } else {
-            $area_manager = User::where('position', 'division head')
-                ->whereHas('branch_group', function($query) use ($pcv) {
-                    $branch = auth()->user()->branch;
-                    $query->where('branch', 'LIKE', "%{$branch->name}%");
-                })->get();
-        }
-
-        return view('pages.pcv.audit.show', compact('pcv', 'area_manager'));
+        return view('pages.pcv.audit.show', compact('pcv'));
 
     }
 
