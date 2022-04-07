@@ -171,14 +171,14 @@
       
         @endhasanyrole
 
-        @hasanyrole('Administrator')
+        @can('report view')
             <li class="nav-item @if(request()->routeIs('reports.index')) active @endif">
                 <a href="{{ route('reports.index') }}" class="nav-link">
                     <i data-feather="clipboard"></i> 
                     <span>Report</span>
                 </a>
             </li>
-        @endhasanyrole
+        @endcan
 
         @hasrole('Administrator|Maintenance|Audit')
 
