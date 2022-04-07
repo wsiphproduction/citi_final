@@ -492,8 +492,18 @@
             e.preventDefault();
             let _url = "";
 
+            if($('#approval_code').val() == '') {
+                alert('Approval Code is required');
+                return false;
+            }
+
             if($('#approver_name').val() == '') {
                 alert('Approver name is required');
+                return false;
+            }
+
+            if($('#remarks').val() == '') {
+                alert('Remarks is required');
                 return false;
             }
 

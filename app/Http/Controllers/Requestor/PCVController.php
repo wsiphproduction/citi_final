@@ -97,7 +97,6 @@ class PCVController extends Controller
                     })
                 ] ,
             'account_name'  => 'required',
-            'change'        => 'required|numeric',
             'description'   => 'required'
         ]);
 
@@ -228,7 +227,6 @@ class PCVController extends Controller
                         return $query->where('ts_no', '=', $request->ts_no);
                     })
                 ] ,
-            'change'        => 'required|numeric',
             'description'   => 'required'
         ]);
 

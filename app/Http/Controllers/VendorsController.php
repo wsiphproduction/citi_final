@@ -85,16 +85,16 @@ class VendorsController extends Controller
             $this->validate($request, [
                 'name'              => 'required' ,
                 'address'           => 'required' ,
-                'tin'               => 'required|numeric|min:50' ,
-                'contact_number'    => 'required|numeric|min:50' ,
+                'tin'               => 'required|numeric|max:50' ,
+                'contact_number'    => 'required|numeric|max:50' ,
                 'branch_id'         => 'required'
             ]);
         } else {
             $this->validate($request, [
                 'name'              => 'required' ,
                 'address'           => 'required' ,
-                'tin'               => 'required|numeric|min:50' ,
-                'contact_number'    => 'required|numeric|min:50' ,                
+                'tin'               => 'required|numeric|max:50' ,
+                'contact_number'    => 'required|numeric|max:50' ,                
             ]);
 
             $request['branch_id']  = auth()->user()->assign_to;            

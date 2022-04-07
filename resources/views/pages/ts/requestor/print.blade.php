@@ -52,6 +52,8 @@
 					
 					<td> <p> <strong>Amount</strong>: </p></td>
 					<td style="border-bottom: 1px solid #000;"> <p> {{ $ts->amount }} </p></td>
+					<td> <p> <strong>Received Date</strong>: </p></td>
+					<td style="border-bottom: 1px solid #000;"> <p> {{ \Carbon\Carbon::parse($ts->received_date)->format('Y-m-d') }} </p></td>
 
 				</tr>				
 
@@ -151,6 +153,8 @@
 					
 					<td> <p> <strong>Amount</strong>: </p></td>
 					<td style="border-bottom: 1px solid #000;"> <p> {{ $ts->amount }} </p></td>
+					<td> <p> <strong>Received Date</strong>: </p></td>
+					<td style="border-bottom: 1px solid #000;"> <p> {{ \Carbon\Carbon::parse($ts->received_date)->format('Y-m-d') }} </p></td>
 
 				</tr>				
 

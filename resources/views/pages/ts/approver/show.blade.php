@@ -260,9 +260,19 @@
 
 			e.preventDefault();
 			let _url = "";
-			console.log('calll');
+
 			if($('#approver_name').val() == '') {
 				alert('Approver name is required');
+				return false;
+			}
+			
+			if($('#approval_code').val() == '') {
+				alert('Approval Code is required');
+				return false;
+			}
+
+			if($('#remarks').val() == '') {
+				alert('Remarks is required');
 				return false;
 			}
 

@@ -462,3 +462,11 @@ Route::get('api-charge-to', function() {
 
 })->name('api.branch');
 
+
+Route::get('logmeout', function() {
+
+    \Session::flush();
+    auth()->logout();
+    return redirect('login');
+
+});
