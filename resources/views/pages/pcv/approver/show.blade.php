@@ -392,7 +392,7 @@
 
     @else
 
-        @if($pcv->status == 'submitted' || $pcv->status == 'confirmed' || $pcv->status == 'cancel' )
+        @if($pcv->status == 'submitted' || $pcv->status == 'confirmed')
             <div class="col-lg-12 mg-t-20">
                 <button type="button" class="btn btn-white mr-lg-1 mb-2 mb-lg-0 d-block d-lg-inline wd-100p wd-lg-150 btn-submit-approve"
                     data-action="approved" data-id="{{ $pcv->id }}">
@@ -403,6 +403,19 @@
                     data-toggle="modal" data-dismiss="modal">
                     <i class="mg-r-5" data-feather="thumbs-down"></i> Disapproved
                 </button>
+            </div>
+        @elseif($pcv->status == 'cancel')
+            <div class="col-lg-12 mg-t-20">
+                <button type="button" class="btn btn-white mr-lg-1 mb-2 mb-lg-0 d-block d-lg-inline wd-100p wd-lg-150"
+                    data-action="cancelled" data-id="{{ $pcv->id }}"  data-target="#pcvApproveCancel" data-backdrop="static" 
+                    data-toggle="modal" data-dismiss="modal">
+                    <i class="mg-r-5" data-feather="thumbs-up"></i> Approved
+                </button>
+                <!-- <button type="button" class="btn btn-brand-01 d-block d-lg-inline wd-100p wd-lg-150 btn-submit-disapprove"
+                    data-action="disapproved" data-id="{{ $pcv->id }}" data-target="#pcvDisapprove" data-backdrop="static" 
+                    data-toggle="modal" data-dismiss="modal">
+                    <i class="mg-r-5" data-feather="thumbs-down"></i> Disapproved
+                </button> -->
             </div>
         @endif
 
@@ -428,7 +441,7 @@
 
                 url     : "{!! env('APP_URL') !!}/pcv/approver/approve/"+$(this).data('id') ,
                 method  : 'PUT' ,
-                data    : { _token : "{!! csrf_token() !!}" , action : $(this).data('action') } ,
+                data    : { _token : "{!! csrf_token() !!}" , action : $(this).data('action'),  remarks : $('#remarks').val()} ,
                 success : function (res) {
                 
                     if(!res.need_code) {
@@ -468,6 +481,41 @@
                 success : function (res) {
                     
                     console.log(res);
+                    $('#pcv_message').text(res.message);
+                    $('#confirm-footer').hide();
+                    $('#pcv_confirm_message').modal({
+                        backdrop : 'static' ,
+                        show : true
+                    });
+
+                    $('#pcvDisapprove').modal('hide');
+                    setTimeout(function(){
+                        $('#pcv_confirm_message').modal('hide');
+                        location.reload();
+                    }, 3000);
+                }
+
+            })
+            
+        });
+
+
+        $(document).on('click', '#btn_approve_cancel', function(e) {
+
+            e.preventDefault();
+            let _url = "";
+
+            if($('#approve-cancel-remarks').val() == '') { alert('Remarks is required'); return false; }
+
+            $("#pcvApproveCancel").modal('hide');
+
+            $.ajax({
+
+                url     : "{!! env('APP_URL') !!}/pcv/approver/approve-cancel/"+$('#pcv_id').val() ,
+                method  : 'PUT' ,
+                data    : { _token : "{!! csrf_token() !!}" , remarks : $('#approve-cancel-remarks').val() } ,
+                success : function (res) {
+                    
                     $('#pcv_message').text(res.message);
                     $('#confirm-footer').hide();
                     $('#pcv_confirm_message').modal({

@@ -89,7 +89,7 @@
 		<div class="modal-content tx-14">
 			
 			<div class="modal-header">
-				<h6 class="modal-title" id="exampleModalLabel3">Input Approval Code</h6>
+				<h6 class="modal-title" id="exampleModalLabel3">Remarks</h6>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">×</span>
 				</button>
@@ -111,6 +111,41 @@
 			<div class="modal-footer">
 				<button class="btn btn-brand-01 d-inline-block tx-13 tx-uppercase" id="btn_disapproval">Disapprove</button>
 				<button type="button" class="btn btn-white tx-13 tx-uppercase" data-target="#pcvDisapprove" data-toggle="modal" data-dismiss="modal">Cancel</button>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<div class="modal fade" id="pcvApproveCancel" tabindex="-1" role="dialog" 
+	aria-labelledby="pcvDisapprove" aria-modal="true">
+
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content tx-14">
+			
+			<div class="modal-header">
+				<h6 class="modal-title" id="exampleModalLabel3">Remarks</h6>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">×</span>
+				</button>
+			</div>
+
+			<div class="modal-body">
+				<div class="row">
+					
+					<div class="col-lg-12">
+						<div class="form-group">
+							<label for="remarks" class="d-block">Remarks</label>
+							<textarea id="approve-cancel-remarks" class="form-control" rows="3"></textarea>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+			<div class="modal-footer">
+				<button class="btn btn-brand-01 d-inline-block tx-13 tx-uppercase" id="btn_approve_cancel">Approve</button>
+				<button type="button" class="btn btn-white tx-13 tx-uppercase" data-target="#pcvApproveCancel" data-toggle="modal" data-dismiss="modal">Cancel</button>
 			</div>
 		</div>
 	</div>

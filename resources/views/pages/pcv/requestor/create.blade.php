@@ -336,7 +336,7 @@
 							<div class="form-group">
 								<label for="approver-name" class="d-block">Approver's Name</label>
 								<select class="custom-select" id="approver_name">
-									<option selected="">--Select--</option>
+									<option value="">--Select--</option>
 									@foreach($area_manager as $manager) 
 										<option value="{{ $manager->username }}"> {{ $manager->username }} </option>
 									@endforeach
@@ -818,6 +818,10 @@
 	    	_data.approver_name = $('#approver_name').val();
 	    	_data.approval_code = $('#approval_code').val();
 
+	    	if($('#approver_name').val() == '') { alert('Approver name is required'); return false; }
+	    	if($('#approval_code').val() == '') { alert('Approval code is required'); return false; }
+	    	if($('#remarks').val() == '') { alert('Remarks is required'); return false; }
+	    	console.log(_data);
 	    	account_transactions.push(_data);
 
 	    	populateAccountsTable();
@@ -1275,7 +1279,7 @@
 								_html += '</thead><tbody>';
 
 							$.each(res, function(i, o) {
-
+								
 								_html += '<tr>';
 								_html += '<td><input type="checkbox" class="pos_trans"></td>';
 								_html += '<td data-name="barcode">'+o.barcode+'</td>';
@@ -1355,10 +1359,10 @@
 
 						if( res.length > 0) {
 
-							const last2Str = String(res[0].universal_trx_id).slice(-2); 
-							const last2Num = Number(last2Str);
+							// const last2Str = String(res[0].universal_trx_id).slice(-2); 
+							// const last2Num = Number(last2Str);
 
-							$('.custom-inputs[data-name="pos_no_of_delivery_fee"]').val(last2Num);
+							$('.custom-inputs[data-name="pos_no_of_delivery_fee"]').val(res[0].universal_trx_id);
 
 						} else {
 

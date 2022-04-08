@@ -215,7 +215,11 @@
 					$('#assign_name').append(_html);
 
 				}
-			})
+			});
+
+			if($('#store_type').val() == 'head office') {
+				$('#assign_to').val("00000");
+			}
 
 		});
 

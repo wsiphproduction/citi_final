@@ -26,12 +26,12 @@ class PCVController extends Controller
         $user = auth()->user();
 
         if( $user->getUserAssignTo() != 'ssc' ) {          
-            $pcvs = Pcv::whereIn('status', ['submitted', 'confirmed', 'cancel','approved']);
+            $pcvs = Pcv::whereIn('status', ['submitted', 'confirmed', 'cancel','approved', 'cancelled']);
         } else {
             if($user->position == 'division head' ){ 
-                $pcvs = Pcv::whereIn('status', ['approved','confirmed']);
+                $pcvs = Pcv::whereIn('status', ['approved','confirmed', 'cancelled']);
             } else {
-                $pcvs = Pcv::whereIn('status', ['submitted', 'confirmed', 'cancel','approved']);
+                $pcvs = Pcv::whereIn('status', ['submitted', 'confirmed', 'cancel','approved', 'cancelled']);
             }
         }
 
@@ -103,22 +103,6 @@ class PCVController extends Controller
 
         $pcv = Pcv::find($id);
         $user = auth()->user();
-
-        if($pcv->status == 'cancel') {
-
-            $pcv->update([
-                'status'            => 'cancelled' ,
-                'cancelled_by'      => auth()->user()->username ,
-                'cancelled_date'    => \Carbon\Carbon::now()
-            ]);
-
-            return response()->json([
-                'status'        => 'cancelled' ,
-                'need_code'     => false ,
-                'message'   => "{$pcv->pcv_no} was successfully cancelled."
-            ]);
-
-        }
 
         $matrix = AccountMatrix::where('name', $pcv->account_name)
             ->where('amount', '=', $pcv->amount)
@@ -258,5 +242,45 @@ class PCVController extends Controller
 
     }
 
+
+    public function approveCancel($id, Request $request) {
+
+        $pcv = Pcv::find($id);
+
+        $user = auth()->user();
+        $disapprove = 'cancelled';
+
+        $pcv->update([
+            'status'            => $disapprove ,
+            'remarks'           => $request->remarks ,
+            'cancelled_by'      => auth()->user()->username ,
+            'cancelled_date'    => \Carbon\Carbon::now()
+        ]);
+
+        return response()->json([
+            'message'   => "{$pcv->pcv_no} was successfully cancelled."
+        ]);
+
+    }
+
+    public function disapproveCancel($id, Request $request) {
+
+        $pcv = Pcv::find($id);
+
+        $user = auth()->user();
+        $disapprove = 'cancelled';
+
+        $pcv->update([
+            'status'            => $disapprove ,
+            'remarks'           => $request->remarks ,
+            'cancelled_by'      => auth()->user()->username ,
+            'cancelled_date'    => \Carbon\Carbon::now()
+        ]);
+
+        return response()->json([
+            'message'   => "{$pcv->pcv_no} was successfully cancelled."
+        ]);
+
+    }
 
 }

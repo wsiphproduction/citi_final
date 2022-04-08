@@ -18,11 +18,21 @@ class TSController extends Controller
 
     public function index() {
         $user = auth()->user();
-        $temporary_slips = TemporarySlip::where('status', 'approved')            
-            ->orderBy('created_at', 'DESC')
+        
+        $temporary_slips = TemporarySlip::where('status', 'approved');            
+        
+        if(request()->has('branch') && request()->branch != '') {
+            $temporary_slips = $temporary_slips->whereHas('user', function($query){
+                $query->where('assign_to', request()->branch);
+            });
+        }
+
+        $temporary_slips = $temporary_slips->orderBy('created_at', 'DESC')
             ->get();
 
-        return view('pages.ts.audit.index', compact('temporary_slips'));
+        $branch = Branch::all();//get('store_size');
+
+        return view('pages.ts.audit.index', compact('temporary_slips', 'branch'));
 
     }
 

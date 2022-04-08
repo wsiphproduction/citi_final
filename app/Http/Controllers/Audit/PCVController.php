@@ -25,11 +25,20 @@ class PCVController extends Controller
 
         $user = auth()->user();
   
-        $pcvs = Pcv::where('status', 'approved')     
-            ->orderBy('created_at', 'DESC')
+        $pcvs = Pcv::where('status', 'approved');
+
+        if(request()->has('branch') && request()->branch != '') {
+            $pcvs = $pcvs->whereHas('user', function($query){
+                $query->where('assign_to', request()->branch);
+            });
+        }
+
+        $pcvs = $pcvs->orderBy('created_at', 'DESC')
             ->get();
 
-        return view('pages.pcv.audit.index', compact('pcvs'));
+        $branch = Branch::all();
+
+        return view('pages.pcv.audit.index', compact('pcvs', 'branch'));
 
     }
 

@@ -24,11 +24,19 @@ class PCFRController extends Controller
 
         $user = auth()->user();
        
-        $pcfr = Pcfr::where('status', 'replenished')
-            ->orderBy('created_at', 'DESC')
-            ->get();
+        $pcfr = Pcfr::where('status', 'replenished');
 
-        return view('pages.pcfr.audit.index', compact('pcfr'));
+        if(request()->has('branch') && request()->branch != '') {
+            $pcfr = $pcfr->whereHas('user', function($query){
+                $query->where('assign_to', request()->branch);
+            });
+        }
+        
+        $pcfr = $pcfr->orderBy('created_at', 'DESC')
+            ->get();
+        $branch = Branch::all();
+
+        return view('pages.pcfr.audit.index', compact('pcfr','branch'));
 
     }
 

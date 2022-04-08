@@ -25,6 +25,42 @@
 
 	</div>	
 
+	@include('components.messages')
+
+    <div class="row mg-b-30">
+        
+        <div class="col-lg-12">
+
+            <form class="row">
+
+                <div class="col-lg-6">
+                    <div class="form-group row">
+                        <label for="temporary-slip-no" class="col-lg-5 col-form-label">Branch</label>
+                        <div class="col-lg-7">
+                            <select class="form-control custom-select" name="branch">
+                            <option value=""> Select Account </option>                              
+                            @foreach( $branch as $br )
+                                <option value="{{ $br->store_id }}" @if($br->store_id == request()->branch) selected @endif> 
+                                    {{ $br->name }} 
+                                </option>
+                            @endforeach
+                        </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="form-group row">
+                        <button class="btn btn-primary"> Filter </button>
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
 	<div class="row">
 
         <div class="col-lg-12">

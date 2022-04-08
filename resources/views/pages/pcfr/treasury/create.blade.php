@@ -199,7 +199,7 @@
             <div class="form-group row">
                 <label for="atm-balance" class="col-lg-5 col-form-label">ATM Balance</label>
                 <div class="col-lg-7">
-                  	<input type="number" class="form-control" id="atm_balance" name="atm_balance" min="0" step="1">
+                  	<input type="number" class="form-control text-right" id="atm_balance" name="atm_balance" min="0" step="1" value="0">
                 </div>
             </div>
         </div>
@@ -218,7 +218,7 @@
             <div class="form-group row">
                 <label for="cash-on-hand" class="col-lg-5 col-form-label">Cash on Hand</label>
                 <div class="col-lg-7">
-                  	<input type="number" class="form-control" id="cash_on_hand" name="cash_on_hand" min="0" step="1">
+                  	<input type="number" class="form-control text-right" id="cash_on_hand" name="cash_on_hand" min="0" step="1" value="0">
                 </div>
             </div>
         </div>
@@ -460,7 +460,17 @@
 						'ref'			: $('#docref').val() ,
 						'date'			: $('#docdate').val() ,
 						'attachment'	: $('#docrefstring').val()
-					});					
+					});		
+
+					if($('#type').val() == '' || $('#type').val() == undefined) {
+						$('#type').addClass('is-invalid');
+					}		
+					if($('#docref').val() == '' || $('#docref').val() == undefined) {
+						$('#docref').addClass('is-invalid');
+					}	
+					if($('#docrefstring').val() == '' || $('#docrefstring').val() == undefined) {
+						$('#document').addClass('is-invalid');
+					}				
 
 				} else {
 
@@ -473,6 +483,16 @@
 							'attachment'	: $('#docrefstring_0'+ctr).val()
 						});
 
+						if($('#type_0'+ctr).val() == '' || $('#type_0'+ctr).val() == undefined) {
+							$('#type_0'+ctr).addClass('is-invalid');
+						}		
+						if($('#docref_0'+ctr).val() == '' || $('#docref_0'+ctr).val() == undefined) {
+							$('#docref_0'+ctr).addClass('is-invalid');
+						}	
+						if($('#docrefstring_0'+ctr).val() == '' || $('#docrefstring_0'+ctr).val() == undefined) {
+							$('#document_0'+ctr).addClass('is-invalid');
+						}
+
 					} else {
 
 						account_attachments.push({
@@ -482,6 +502,16 @@
 							'attachment'	: $('#docrefstring_'+ctr).val()
 						});
 
+						if($('#type_'+ctr).val() == '' || $('#type_'+ctr).val() == undefined) {
+							$('#type_'+ctr).addClass('is-invalid');
+						}		
+						if($('#docref_'+ctr).val() == '' || $('#docref_'+ctr).val() == undefined) {
+							$('#docref_'+ctr).addClass('is-invalid');
+						}	
+						if($('#docrefstring_'+ctr).val() == '' || $('#docrefstring_'+ctr).val() == undefined) {
+							$('#document_'+ctr).addClass('is-invalid');
+						}
+
 					}
 
 				}
@@ -490,6 +520,24 @@
 
 			});
 
+			let is_null_val = false;
+
+            console.log(account_attachments);
+            if(account_attachments.length>0){
+                $.each(account_attachments, function(i, e) {
+                    $.each(e, function(o, u){
+                        if(u =='' || u == undefined) is_null_val = true;
+                    });
+                });
+            }
+
+            if(is_null_val) {
+                
+                alert('Some data on your request is missing please check it again');
+                return false;
+                
+            }
+			
 			$('#pcfr_attachments').val(JSON.stringify(account_attachments));
 			$('#pcv_ids').val(JSON.stringify(pcv_ids));
 			// check if can save multiple transaction accounts
@@ -537,6 +585,10 @@
 	    $(document).on('blur', '#atm_balance', function() {
 
 	    	let atm_bal = $(this).val();
+	    	if(atm_bal == ''){ 
+                atm_bal = 0;
+                $(this).val(0);
+            }
 	    	let overage_shortage = $('#overage_shortage').val();
 	   		let pcf_accounted_for = $('#pcf_accounted_for').val();
 	   		let pcf_accountability = $('#pcf_accountability').val();
@@ -552,6 +604,10 @@
 	   	$(document).on('blur', '#cash_on_hand', function() {
 
 	   		let cash_on_hand = $(this).val();
+	   		if(cash_on_hand == ''){ 
+                cash_on_hand = 0;
+                $(this).val(0);
+            }
 	    	let overage_shortage = $('#overage_shortage').val();
 	   		let pcf_accounted_for = $('#pcf_accounted_for').val();
 	   		let pcf_accountability = $('#pcf_accountability').val();

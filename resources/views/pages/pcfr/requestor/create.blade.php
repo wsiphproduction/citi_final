@@ -155,7 +155,7 @@
 	                      <td class="sorting_1"></td>
 	                      <td></td>
 	                      <td></td>
-	                      <td class="tx-bold text-right align-middle">Total Amount</td>
+	                      <td class="tx-bold align-middle">Total Amount</td>
 	                      <td>
 	                        <input type="number" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" 
 	                        	value="{{ $pcvs_sum }}" readonly="" name="amount" id="amount">
@@ -458,7 +458,17 @@
 						'ref'			: $('#docref').val() ,
 						'date'			: $('#docdate').val() ,
 						'attachment'	: $('#docrefstring').val()
-					});					
+					});		
+
+					if($('#type').val() == '' || $('#type').val() == undefined) {
+						$('#type').addClass('is-invalid');
+					}		
+					if($('#docref').val() == '' || $('#docref').val() == undefined) {
+						$('#docref').addClass('is-invalid');
+					}	
+					if($('#docrefstring').val() == '' || $('#docrefstring').val() == undefined) {
+						$('#document').addClass('is-invalid');
+					}			
 
 				} else {
 
@@ -471,6 +481,16 @@
 							'attachment'	: $('#docrefstring_0'+ctr).val()
 						});
 
+						if($('#type_0'+ctr).val() == '' || $('#type_0'+ctr).val() == undefined) {
+							$('#type_0'+ctr).addClass('is-invalid');
+						}		
+						if($('#docref_0'+ctr).val() == '' || $('#docref_0'+ctr).val() == undefined) {
+							$('#docref_0'+ctr).addClass('is-invalid');
+						}	
+						if($('#docrefstring_0'+ctr).val() == '' || $('#docrefstring_0'+ctr).val() == undefined) {
+							$('#document_0'+ctr).addClass('is-invalid');
+						}
+
 					} else {
 
 						account_attachments.push({
@@ -480,6 +500,16 @@
 							'attachment'	: $('#docrefstring_'+ctr).val()
 						});
 
+						if($('#type_'+ctr).val() == '' || $('#type_'+ctr).val() == undefined) {
+							$('#type_'+ctr).addClass('is-invalid');
+						}		
+						if($('#docref_'+ctr).val() == '' || $('#docref_'+ctr).val() == undefined) {
+							$('#docref_'+ctr).addClass('is-invalid');
+						}	
+						if($('#docrefstring_'+ctr).val() == '' || $('#docrefstring_'+ctr).val() == undefined) {
+							$('#document_'+ctr).addClass('is-invalid');
+						}	
+
 					}
 
 				}
@@ -487,6 +517,24 @@
 				ctr++;
 
 			});
+
+			let is_null_val = false;
+
+            console.log(account_attachments);
+            if(account_attachments.length>0){
+                $.each(account_attachments, function(i, e) {
+                    $.each(e, function(o, u){
+                        if(u =='' || u == undefined) is_null_val = true;
+                    });
+                });
+            }
+
+            if(is_null_val) {
+                
+                alert('Some data on your request is missing please check it again');
+                return false;
+                
+            }
 
 			$('#pcfr_attachments').val(JSON.stringify(account_attachments));
 			$('#pcv_ids').val(JSON.stringify(pcv_ids));
@@ -529,12 +577,17 @@
 			$('#docrefstring', newElement).attr("id", field4.split("_")[0]+"_"+id ).val('');
 
 	        newElement.appendTo($("#attachment-outter-wrapper"));
+	        $('#'+field4.split("_")[0]+"_"+id).siblings('label').html('');
 
 	    }
 
 	    $(document).on('blur', '#atm_balance', function() {
 
 	    	let atm_bal = $(this).val();
+	    	if(atm_bal == ''){ 
+                atm_bal = 0;
+                $(this).val(0);
+            }
 	    	let overage_shortage = $('#overage_shortage').val();
 	   		let pcf_accounted_for = $('#pcf_accounted_for').val();
 	   		let pcf_accountability = $('#pcf_accountability').val();
@@ -549,7 +602,14 @@
 
 	   	$(document).on('blur', '#cash_on_hand', function() {
 
+	   		console.log($(this).val());
+
 	   		let cash_on_hand = $(this).val();
+	   		if(cash_on_hand == ''){ 
+                cash_on_hand = 0;
+                $(this).val(0);
+            }
+
 	    	let overage_shortage = $('#overage_shortage').val();
 	   		let pcf_accounted_for = $('#pcf_accounted_for').val();
 	   		let pcf_accountability = $('#pcf_accountability').val();

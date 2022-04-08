@@ -77,7 +77,9 @@ class PCFRController extends Controller
 
     public function create() {
 
-        $vendors = Vendor::where('status', 1)->get();
+        $vendors = Vendor::where('status', 1)
+            ->where('branch_id', auth()->user()->assign_to)
+            ->get();
         $user = auth()->user();
         $branch = $user->branch;
 
@@ -209,7 +211,7 @@ class PCFRController extends Controller
                     'attachment'    => $attachment['attachment'] 
                 ]);
 
-                Storage::move("public/temp/{$user->id}/pcfr/{$attachment['attachment']}", 
+                Storage::copy("public/temp/{$user->id}/pcfr/{$attachment['attachment']}", 
                     "public/pcfr/{$pcfr->pcfr_no}/{$attachment['attachment']}");
 
             }
@@ -218,7 +220,71 @@ class PCFRController extends Controller
 
         }
 
-        return redirect()->route('requestor.pcfr.index')->with('success','PCFR has been created!');
+        return redirect()->route('treasury.pcfr.index')->with('success','PCFR has been created!');
+
+    }
+
+
+    public function edit($id) {
+
+        $pcfr = Pcfr::find($id);
+        $vendors = Vendor::where('status', 1)
+            ->where('branch_id', auth()->user()->assign_to)
+            ->get();
+
+        return view('pages.pcfr.treasury.edit', compact('pcfr', 'vendors'));
+
+    }
+
+
+    public function update($id, Request $request) {
+
+        $attachments = json_decode($request->pcfr_attachments, true);
+        $user = auth()->user();
+
+        $pcfr = Pcfr::find($id);
+
+        $pcfr->update([
+            'vendor'                        => $request->vendor ,
+            'total_accounted'               => $request->pcf_accounted_for ,
+            'pcf_diff'                      => $request->overage_shortage ,
+            'atm_balance'                   => $request->atm_balance ,
+            'doc_type'                      => $request->doc_type , 
+            'cash_on_hand'                  => $request->cash_on_hand ,
+            'status'                        => $request->status ,
+            'amount'                        => $request->amount
+        ]);      
+
+        $pcfr->attachments()->delete();
+
+        if(count($attachments)) {
+
+            foreach( $attachments as $attachment ) {
+
+                if($attachment['attachment'] == '') continue;
+
+                Attachment::create([
+                    'from'          => 'pcfr' ,
+                    'from_ref'      => $pcfr->id , 
+                    'type'          => $attachment['type'] ,
+                    'ref'           => $attachment['ref'] ,
+                    'date'          => \Carbon\Carbon::parse($attachment['date']) ,
+                    'attachment'    => $attachment['attachment'] 
+                ]);
+
+                if(Storage::exists("public/pcfr/{$pcfr->pcfr_no}/{$attachment['attachment']}")) {
+                    Storage::delete("public/pcfr/{$pcfr->pcfr_no}/{$attachment['attachment']}");
+                }
+
+                Storage::copy("public/temp/{$user->id}/pcfr/{$attachment['attachment']}", 
+                    "public/pcfr/{$pcfr->pcfr_no}/{$attachment['attachment']}");
+
+            }
+
+
+        }
+
+        return redirect()->route('treasury.pcfr.index')->with('success','PCFR has been created!');
 
     }
 

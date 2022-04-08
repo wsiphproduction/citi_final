@@ -30,7 +30,7 @@
 
 	<div class="row">
 		
-        <form method="POST" action="{{ route('requestor.pcfr.update', $pcfr->id) }}" id="pcfr_form">
+        <form method="POST" action="{{ route('treasury.pcfr.update', $pcfr->id) }}" id="pcfr_form">
             @csrf
             @method('PUT')
             
