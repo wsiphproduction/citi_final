@@ -62,7 +62,7 @@
                         <li class="nav-item @if(request()->routeIs('approver.pcv*')) active @endif"><a href="{{ route('approver.pcv.index') }}">PCV</a></li>
                     @endcan
                 
-                    @hasanyrole('TL Approver|Division Head')
+                    @hasanyrole('TL Approver')
                         @can('pcfr view')
                             <li class="nav-item @if(request()->routeIs('approver.pcfr*')) active @endif"><a href="{{ route('approver.pcfr.index') }}">PCFR</a></li>
                         @endcan

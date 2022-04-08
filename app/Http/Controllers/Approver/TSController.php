@@ -92,35 +92,35 @@ class TSController extends Controller
 
         if(count($matrix)) {
 
-            if($user->getUserAssignTo() == 'ssc') {
+            // if($user->getUserAssignTo() == 'ssc') {
 
-                if( $user->position == 'department head') {
-                    $ts->update([
-                        'status'        => 'confirmed' ,
-                        'tl_approved'   => 1
-                    ]);
+            //     if( $user->position == 'department head') {
+            //         $ts->update([
+            //             'status'        => 'confirmed' ,
+            //             'tl_approved'   => 1
+            //         ]);
 
-                    return response()->json([
-                        'status'        => 'confirmed' ,
-                        'need_code'     => false ,
-                        'message'       => "{$ts->ts_no} was successfully confirmed. The requested amount requires an Approval Code. Input Approval Code."
-                    ]);
+            //         return response()->json([
+            //             'status'        => 'confirmed' ,
+            //             'need_code'     => false ,
+            //             'message'       => "{$ts->ts_no} was successfully confirmed. The requested amount requires an Approval Code. Input Approval Code."
+            //         ]);
 
-                } else {
-                    $ts->update([
-                        'status'        => 'confirmed' ,
-                        'dh_approved'   => 1
-                    ]);
+            //     } else {
+            //         $ts->update([
+            //             'status'        => 'confirmed' ,
+            //             'dh_approved'   => 1
+            //         ]);
 
-                    return response()->json([
-                        'status'        => 'confirmed' ,
-                        'need_code'     => true ,
-                        'message'       => "{$ts->ts_no} was successfully confirmed. The requested amount requires an Approval Code. Input Approval Code."
-                    ]);
+            //         return response()->json([
+            //             'status'        => 'confirmed' ,
+            //             'need_code'     => true ,
+            //             'message'       => "{$ts->ts_no} was successfully confirmed. The requested amount requires an Approval Code. Input Approval Code."
+            //         ]);
 
-                }
+            //     }
    
-            }
+            // }
 
             $ts->update([
                 'status'        => 'confirmed' ,
@@ -136,23 +136,23 @@ class TSController extends Controller
         }
 
         
-        if( $user->position == 'division head') {
+        // if( $user->position == 'division head') {
 
-            $ts->update([
-                'dh_approved'       => 1 ,
-                'status'            => 'approved' 
-            ]);
+        //     $ts->update([
+        //         'dh_approved'       => 1 ,
+        //         'status'            => 'approved' 
+        //     ]);
 
-        } else {
+        // } else {
 
-            $ts->update([
-                'tl_approved'       => 1 ,
-                'status'            => 'approved' ,
-                'approved_by'       => auth()->user()->username ,
-                'approved_date'     => \Carbon\Carbon::now() ,
-            ]);
+        $ts->update([
+            'tl_approved'       => 1 ,
+            'status'            => 'approved' ,
+            'approved_by'       => auth()->user()->username ,
+            'approved_date'     => \Carbon\Carbon::now() ,
+        ]);
 
-        }
+        // }
                     
         return response()->json([
             'need_code' =>  false ,

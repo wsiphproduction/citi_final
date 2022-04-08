@@ -78,10 +78,7 @@ class PCVController extends Controller
                 })->get();
         } else {
             $area_manager = User::where('position', 'division head')
-                ->whereHas('branch_group', function($query) use ($pcv) {
-                    $branch = auth()->user()->branch;
-                    $query->where('branch', 'LIKE', "%{$branch->name}%");
-                })->get();
+                ->where('assign_to', $user->assign_to)->get();
         }
 
         return view('pages.pcv.approver.show', compact('pcv', 'area_manager'));
@@ -122,37 +119,37 @@ class PCVController extends Controller
 
         if(count($matrix)) {
 
-            if($user->getUserAssignTo() == 'ssc') {
+            // if($user->getUserAssignTo() == 'ssc') {
                 
-                if( $user->position == 'department head') {
+            //     if( $user->position == 'department head') {
 
-                    $pcv->update([
-                            'status'        => 'confirmed' ,
-                            'tl_approved'   => 1
-                        ]);
+            //         $pcv->update([
+            //                 'status'        => 'confirmed' ,
+            //                 'tl_approved'   => 1
+            //             ]);
 
-                    return response()->json([
-                        'status'        => 'confirmed' ,
-                        'need_code'     => false ,
-                        'message'   => "{$pcv->pcv_no} was successfully confirmed. The requested amount requires an Approval Code. Input Approval Code."
-                    ]);
+            //         return response()->json([
+            //             'status'        => 'confirmed' ,
+            //             'need_code'     => false ,
+            //             'message'   => "{$pcv->pcv_no} was successfully confirmed. The requested amount requires an Approval Code. Input Approval Code."
+            //         ]);
 
-                } else {
+            //     } else {
 
-                    $pcv->update([
-                        'status'        => 'confirmed' ,
-                        'dh_approved'   => 1
-                    ]);
+            //         $pcv->update([
+            //             'status'        => 'confirmed' ,
+            //             'dh_approved'   => 1
+            //         ]);
 
-                    return response()->json([
-                        'status'        => 'confirmed' ,
-                        'need_code'     => true ,
-                        'message'   => "{$pcv->pcv_no} was successfully confirmed. The requested amount requires an Approval Code. Input Approval Code."
-                    ]);
+            //         return response()->json([
+            //             'status'        => 'confirmed' ,
+            //             'need_code'     => true ,
+            //             'message'   => "{$pcv->pcv_no} was successfully confirmed. The requested amount requires an Approval Code. Input Approval Code."
+            //         ]);
 
-                }
+            //     }
 
-            }
+            // }
 
             $pcv->update([
                 'status'        => 'confirmed' ,
@@ -167,24 +164,24 @@ class PCVController extends Controller
 
         }
 
-        if( $user->position == 'division head') {
+        // if( $user->position == 'division head') {
 
-            $pcv->update([
-                'dh_approved'       => 1 ,
-                'status'            => 'approved'
-            ]);
+        //     $pcv->update([
+        //         'dh_approved'       => 1 ,
+        //         'status'            => 'approved'
+        //     ]);
 
 
-        } else {
+        // } else {
 
-            $pcv->update([
-                'tl_approved'       => 1 ,
-                'status'            => 'approved' ,
-                'approved_by'       => auth()->user()->username ,
-                'approved_date'     => \Carbon\Carbon::now() ,
-            ]);
+        $pcv->update([
+            'tl_approved'       => 1 ,
+            'status'            => 'approved' ,
+            'approved_by'       => auth()->user()->username ,
+            'approved_date'     => \Carbon\Carbon::now() ,
+        ]);
 
-        }
+        // }
 
         return response()->json([
             'need_code' =>  false ,

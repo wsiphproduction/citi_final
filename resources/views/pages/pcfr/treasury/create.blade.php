@@ -157,7 +157,7 @@
 	                      <td class="sorting_1"></td>
 	                      <td></td>
 	                      <td></td>
-	                      <td class="tx-bold text-right align-middle">Total Amount</td>
+	                      <td class="tx-bold align-middle">Total Amount</td>
 	                      <td>
 	                        <input type="number" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" 
 	                        	value="{{ $pcvs_sum }}" readonly="" name="amount" id="amount">
