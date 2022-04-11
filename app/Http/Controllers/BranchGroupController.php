@@ -42,7 +42,6 @@ class BranchGroupController extends Controller
     public function store(Request $request) {
 
         $this->validate($request, [
-            'size'      => 'required' ,
             'branch'    => 'required' ,
             'name'      => 'required|unique:branch_groups,name'
         ]);
@@ -70,7 +69,6 @@ class BranchGroupController extends Controller
     public function update($id, Request $request) {
 
         $this->validate($request, [
-            'size'      => 'required' ,
             'branch'    => 'required' ,
             'name'      => 'required|unique:branch_groups,name,'.$id
         ]);

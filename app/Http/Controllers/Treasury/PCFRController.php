@@ -75,6 +75,15 @@ class PCFRController extends Controller
     }
 
 
+    public function print($id) {
+
+        $pcfr = Pcfr::find($id);
+
+        return view('pages.pcfr.treasury.print', compact('pcfr'));
+
+    }
+
+
     public function create() {
 
         $vendors = Vendor::where('status', 1)

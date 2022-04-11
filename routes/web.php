@@ -190,7 +190,7 @@ Route::middleware(['web', 'auth'])->group(function () {
             Route::get('show/{id}', [ApproverTs::class, 'show'])->name('approver.ts.show');
             Route::get('/print/{id}', [ApproverTs::class, 'print'])->name('approver.ts.print');
 
-            Route::put('approve/{id}', [ApproverTs::class, 'approve'])->name('approver.ts.approve');
+            Route::put('approve/{id}', [ApproverTs::class, 'approve'])->name('approver.ts.approve');            
             Route::put('approve-with-code/{id}', [ApproverTs::class, 'approveWithCode'])->name('approver.ts.approve-with-code');
             Route::put('disapprove/{id}', [ApproverTs::class, 'disapprove'])->name('approver.ts.disapprove');
 
@@ -200,6 +200,9 @@ Route::middleware(['web', 'auth'])->group(function () {
         Route::prefix('audit')->group(function() {
             Route::get('/', [AuditTs::class, 'index'])->name('audit.ts.index');
             Route::get('show/{id}', [AuditTs::class, 'show'])->name('audit.ts.show');
+
+            Route::get('ts-data', [AuditTs::class, 'tsData'])->name('audit.ts.data');
+
         });
 
         Route::prefix('admin')->group(function() {
@@ -243,6 +246,7 @@ Route::middleware(['web', 'auth'])->group(function () {
             Route::get('show/{pcv}', [ApproverPCVController::class, 'show'])->name('approver.pcv.show');
 
             Route::put('approve/{id}', [ApproverPCVController::class, 'approve'])->name('approver.pcv.approve');
+            Route::put('approve-cancel/{id}', [ApproverPCVController::class, 'approveCancel'])->name('approver.ts.approve-cancel');
             Route::put('approve-with-code/{id}', [ApproverPCVController::class, 'approveWithCode'])->name('approver.pcv.approve-with-code');
             Route::put('disapprove/{id}', [ApproverPCVController::class, 'disapprove'])->name('approver.pcv.disapprove');
 
@@ -277,6 +281,7 @@ Route::middleware(['web', 'auth'])->group(function () {
             Route::get('generatepcrf', [RequestorPCFRController::class, 'generatepcrf'])->name('requestor.pcfr.generatepcrf');
             Route::get('show/{id}', [RequestorPCFRController::class, 'show'])->name('requestor.pcfr.show');
             Route::get('edit/{pcv}', [RequestorPCFRController::class, 'edit'])->name('requestor.pcfr.edit');
+            Route::get('print/{id}', [RequestorPCFRController::class, 'print'])->name('requestor.pcfr.print');
             
             Route::post('store', [RequestorPCFRController::class, 'store'])->name('requestor.pcfr.store');
 
@@ -324,12 +329,15 @@ Route::middleware(['web', 'auth'])->group(function () {
             Route::get('show-pcfr/{id}', [TreasuryPCFRController::class, 'showPcfr'])->name('treasury.pcfr.show-pcfr');
             Route::get('show-pcv/{id}', [TreasuryPCFRController::class, 'showPcv'])->name('treasury.pcfr.show-pcv');
             Route::get('show-ts/{id}', [TreasuryPCFRController::class, 'showTs'])->name('treasury.pcfr.show-ts');
+            Route::get('edit/{id}', [TreasuryPCFRController::class, 'edit'])->name('treasury.pcfr.edit');
+            Route::get('print/{id}', [TreasuryPCFRController::class, 'print'])->name('treasury.pcfr.print');
 
             Route::post('store', [TreasuryPCFRController::class, 'store'])->name('treasury.pcfr.store');
 
             Route::put('pcv/{id}/remove', [TreasuryPCFRController::class, 'pcvRemove'])->name('treasury.pcfr.pcv-remove');
             Route::put('disapprove/{id}', [TreasuryPCFRController::class, 'disapprove'])->name('treasury.pcfr.disapprove');
             Route::put('approve/{id}', [TreasuryPCFRController::class, 'approve'])->name('treasury.pcfr.approve');
+            Route::put('update/{id}', [TreasuryPCFRController::class, 'update'])->name('treasury.pcfr.update');
 
         });
 

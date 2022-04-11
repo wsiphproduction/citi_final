@@ -213,6 +213,13 @@ class PCFRController extends Controller
 
     }
 
+    public function print($id) {
+
+        $pcfr = Pcfr::find($id);
+
+        return view('pages.pcfr.requestor.print', compact('pcfr'));
+
+    }
 
     public function update($id, Request $request) {
 
