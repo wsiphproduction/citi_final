@@ -41,7 +41,7 @@
 				</div>
 
 				<div class="col-lg-3"></div>
-		        <div class="offset-3"></div>
+		        <!-- <div class="offset-3"></div>
 
 				<div class="col-lg-6">
 					<div class="form-group row">
@@ -57,7 +57,7 @@
 					</div>
 				</div>
 
-				<div class="col-lg-3"></div>
+				<div class="col-lg-3"></div> -->
 				<div class="offset-3"></div>
 
 				<div class="col-lg-6">

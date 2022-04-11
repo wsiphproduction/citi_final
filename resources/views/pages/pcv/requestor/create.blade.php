@@ -600,8 +600,8 @@
 
 			} else {
 				
-				let _data 	 = {};
-				let _items 	 = {};
+				let _data 	 = {};				
+				let __items  = [];
 				account_transactions = [];
 				account_attachments = [];
 
@@ -619,18 +619,24 @@
 
 					$('#account-transactions-list tbody').find('tr').each(function(i, e) {
 
+						let _items 	 = {};
+						
 						$(this).find('td').each(function(o , p) {
 
 							let _acc_name = $(this).data('name');
 							if(_acc_name != undefined) {
 								_items[_acc_name] = $(this).text(); 
+								console.log($(this).text());
 							}
 
 						});
+	
+						__items.push(_items);
 
 					});
 
-					_data['items'] = _items;
+					_data['items'] = __items;
+					
 				}
 
 				account_transactions.push(_data);
