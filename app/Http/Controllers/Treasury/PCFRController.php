@@ -96,11 +96,11 @@ class PCFRController extends Controller
         $pcv_accountability = $branch->budget;
 
         // unliquidated ts
-        $unliquidated_ts = TemporarySlip::where('running_balance', '>', 0)
-            ->where('status', 'approved')
-            ->whereHas('user', function(Builder $query) use ($user) {
-                $query->where('assign_to', $user->assign_to);
-            })->sum('running_balance');
+        // $unliquidated_ts = TemporarySlip::where('running_balance', '>', 0)
+        //     ->where('status', 'approved')
+        //     ->whereHas('user', function(Builder $query) use ($user) {
+        //         $query->where('assign_to', $user->assign_to);
+        //     })->sum('running_balance');
 
         $total_replenishment = Pcfr::where('status', 'post to ebs')
             ->whereHas('user', function(Builder $query) use ($user) {
@@ -127,7 +127,7 @@ class PCFRController extends Controller
                 $query->where('assign_to', $user->assign_to);
             })->sum('amount');            
 
-        $pcf_accounted_for = $unliquidated_ts + $total_replenishment + $pending_replenishment + $unreplenished + $unapproved_pcvs + $returned_pcvs;
+        $pcf_accounted_for = $total_replenishment + $pending_replenishment + $unreplenished + $unapproved_pcvs + $returned_pcvs;
 
         // overage / shortage
         $overage_shortage = $pcv_accountability - $pcf_accounted_for;
@@ -155,7 +155,7 @@ class PCFRController extends Controller
 
         return view('pages.pcfr.treasury.create', compact('vendors', 'pcvs', 'pcv_first', 'pcv_last', 'pcvs_sum',
                 'overage_shortage', 'unreplenished', 'total_replenishment', 'pending_replenishment', 'pcf_accounted_for', 
-                'unapproved_pcvs', 'returned_pcvs', 'unliquidated_ts', 'pcv_accountability'));
+                'unapproved_pcvs', 'returned_pcvs', 'pcv_accountability'));
 
     }
 

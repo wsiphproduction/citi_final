@@ -14,11 +14,11 @@ class PosTransactionController extends Controller
 
         $user = auth()->user();
 
-        $transaction = TempPosTransaction::where('universal_trx_id', $request->search)
+        $transactions = TempPosTransaction::where('universal_trx_id', $request->search)
             ->where('store_id', $user->branch->store_id)
             ->get();
 
-        return response()->json($transaction);
+        return response()->json($transactions);
 
     }
 
