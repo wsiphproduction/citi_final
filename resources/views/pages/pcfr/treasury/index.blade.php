@@ -23,11 +23,15 @@
 			<h4 class="mg-b-0 tx-spacing--1">Petty Cash Fund Replenishments</h4>
 		</div>
 
-		<div class="d-md-block mt-4 mt-lg-0">
-            <a class="btn btn-sm pd-x-15 btn-primary btn-uppercase" href="{{ route('treasury.pcfr.create') }}">
-            	<i data-feather="plus" class="wd-10 mg-r-5"></i> Create PCFR
-            </a>
-        </div>
+		@if(auth()->user()->position != 'Treasury Head' || auth()->user()->position != 'treasury head')
+		
+			<div class="d-md-block mt-4 mt-lg-0">
+	            <a class="btn btn-sm pd-x-15 btn-primary btn-uppercase" href="{{ route('treasury.pcfr.create') }}">
+	            	<i data-feather="plus" class="wd-10 mg-r-5"></i> Create PCFR
+	            </a>
+	        </div>
+
+        @endif
 
 	</div>	
 
