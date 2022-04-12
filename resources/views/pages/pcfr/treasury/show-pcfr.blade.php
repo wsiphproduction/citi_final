@@ -391,7 +391,7 @@
         @endif
 
 
-        @if($pcfr->status != 'saved' && !\Str::contains($pcfr->status , 'disapproved'))
+        @if($pcfr->status == 'approved')
     
             <div class="col-lg-12 mg-t-20"> 
                 <a href="{{ route('treasury.pcfr.print', $pcfr->id) }}" target="_blank" 
