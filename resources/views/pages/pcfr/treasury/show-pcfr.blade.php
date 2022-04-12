@@ -141,7 +141,7 @@
                                 <td> 
 
                                     <nav class="nav table-options justify-content-start">
-                                        <a class="nav-link p-0 pl-2 remove_attachment" href="javascript:void(0);" title="Remove" data-target="#pcvRemove{{$pcv->id}}" data-toggle="modal" data-dismiss="modal">
+                                        <a class="nav-link p-0 pl-2 remove_attachment" href="javascript:void(0);" title="Disapproved" data-target="#pcvRemove{{$pcv->id}}" data-toggle="modal" data-dismiss="modal">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                                         </a>
                                     </nav>
@@ -175,7 +175,7 @@
                                                             </div>
                                                             
                                                             <div class="col-lg-12 text-right">
-                                                                <button class="btn btn-brand-01 d-inline-block tx-13 tx-uppercase">Remove</button>
+                                                                <button class="btn btn-brand-01 d-inline-block tx-13 tx-uppercase">Disapproved</button>
                                                                 <button type="button" class="btn btn-white tx-13 tx-uppercase" 
                                                                     data-target="#pcvRemove{{$pcv->id}}" data-toggle="modal" 
                                                                     data-dismiss="modal">
