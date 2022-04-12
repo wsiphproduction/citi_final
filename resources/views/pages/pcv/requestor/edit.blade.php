@@ -588,6 +588,7 @@
 			} else {
 				
 				let _data 	 = {};
+				let __items  = [];
 				let _items 	 = {};
 				account_transactions = [];
 				account_attachments = [];
@@ -605,7 +606,7 @@
 				if( _account_name == 'Installation' ) {
 
 					$('#account-transactions-list tbody').find('tr').each(function(i, e) {
-
+						let _items 	 = {};
 						$(this).find('td').each(function(o , p) {
 
 							let _acc_name = $(this).data('name');
@@ -615,9 +616,11 @@
 
 						});
 
+						__items.push(_items);
+
 					});
 
-					_data['items'] = _items;
+					_data['items'] = __items;
 				}
 
 				account_transactions.push(_data);
