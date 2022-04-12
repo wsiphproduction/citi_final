@@ -155,7 +155,7 @@
 			
     	$(document).on('change', '#name', function(){
 
-    		if($(this).val() == 'pcfr detailed') {
+    		if($(this).val() == 'petty cash expense') {
 
     			_html  = '<div class="form-group row">';
     			_html += '<label for="slip-no" class="col-lg-5 col-form-label">PCFR</label>';
