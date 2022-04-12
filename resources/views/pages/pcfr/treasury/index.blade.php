@@ -23,7 +23,7 @@
 			<h4 class="mg-b-0 tx-spacing--1">Petty Cash Fund Replenishments</h4>
 		</div>
 
-		@if(auth()->user()->position != 'Treasury Head' || auth()->user()->position != 'treasury head')
+		@if(auth()->user()->position != 'Treasury Head' && auth()->user()->position != 'treasury head')
 		
 			<div class="d-md-block mt-4 mt-lg-0">
 	            <a class="btn btn-sm pd-x-15 btn-primary btn-uppercase" href="{{ route('treasury.pcfr.create') }}">
