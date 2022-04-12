@@ -478,3 +478,47 @@ Route::get('logmeout', function() {
     return redirect('login');
 
 });
+
+
+Route::get('/rey', function(){
+
+    $transactions = \App\Models\TempPosTransaction::where('universal_trx_id', '11-22')
+            ->where('store_id', auth()->user()->branch->store_id)
+            ->get();
+
+        if(count($transactions)) {
+
+            foreach( $transactions as $transaction ) {
+
+                $account_transactions = \App\Models\Pcv::where('account_name', 'Installation')
+                    ->whereHas('user', function($query) {
+                        $query->where('assign_to', auth()->user()->assign_to);
+                    })
+                    ->with('account_transaction')
+                    ->get();
+
+                if(count($account_transactions)) {
+
+                    foreach( $account_transactions as $transac ) {
+
+                        foreach( $transac->account_transaction->details as $transaction_details ) {
+
+                            foreach( $transaction_details['items'] as $key => $item ) {
+
+                                dd($transaction_details['items'][$key]['barcode']);
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+
+    dd($transactions);
+
+});
