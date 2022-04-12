@@ -22,6 +22,9 @@ class ReportController extends Controller
 
     public function search(Request $request) {
 
+        $from = $request->from;
+        $to   = $request->to;
+
         if(request()->has('company')) {
 
             $companies = explode(',', $request->company);
@@ -45,18 +48,27 @@ class ReportController extends Controller
 
                 $request = request()->all();
 
-                return view('pages.report.expenses-report', compact('pcv', 'request'));
+                return view('pages.report.expenses-report', compact('pcv', 'request', 'from', 'to'));
             } else {
-                // query is pcfr
-                $pcfr = Pcfr::where('status', 'replenished')
+
+                if($request->has('status') && $request->status != '') {
+                    $status = $request->status;
+                } else {
+                    $status = 'replineshed';
+                }
+
+                $pcfr = Pcfr::where('status', $status)
                     ->whereHas('user', function($query) use ($branch) {
                         $query->whereIn('assign_to', $branch);
-                    })->get();
-
+                    })
+                    ->whereDate('from', '=', request()->from)
+                    ->whereDate('to', '=', request()->to)
+                    ->first();
+                
                 $request_type = request()->name;
                 $request = request()->all();
 
-                return view('pages.report.pcfr-report', compact('pcfr', 'request_type', 'request'));
+                return view('pages.report.pcfr-report', compact('pcfr', 'request_type', 'request', 'from', 'to'));
             }
 
         }

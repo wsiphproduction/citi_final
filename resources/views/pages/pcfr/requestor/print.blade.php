@@ -195,10 +195,10 @@
 				<tr>
 					
 					<td width="15%"> <p> <strong>Approved By</strong>: </p></td>
-					<td width="25%" style="border-bottom: 1px solid #000;"> <p> {{ $pcfr->pcf_accountability }} </p></td>
+					<td width="25%" style="border-bottom: 1px solid #000;"> <p> {{ $pcfr->approved_by }} </p></td>
 					<td width="15%"></td>
 					<td width="15%"> <p> <strong>Approved Date & Time</strong>: </p></td>
-					<td width="30%" style="border-bottom: 1px solid #000;"> &nbsp; {{ $pcfr->total_returned_pcv }} </td>
+					<td width="30%" style="border-bottom: 1px solid #000;"> &nbsp; {{ $pcfr->approved_date }} </td>
 					
 				</tr>
 

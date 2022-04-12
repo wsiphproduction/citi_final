@@ -34,7 +34,7 @@
 						<div class="col-lg-7">
 							<select class="form-control" name="account">
 								<option value=""> Select Account </option>
-								@foreach( \App\Models\Account::getAccountsFinal() as $account )
+								@foreach( \App\Models\Account::getAccounts() as $account )
 									<option value="{{ $account['FLEX_VALUE_MEANING'] }} | {{ $account['DESCRIPTION'] }}"
 										@if($matrix->number == $account['FLEX_VALUE_MEANING']) selected @endif> 
 										{{ $account['DESCRIPTION'] }} 

@@ -32,7 +32,7 @@
 						<div class="col-lg-7">
 							<select class="form-control" name="name">
 								<option value=""> Select Account </option>
-								@foreach( \App\Models\Account::getAccountsFinal() as $account )
+								@foreach( \App\Models\Account::getAccounts() as $account )
 									<option value="{{ $account['DESCRIPTION'] }} "
 										@if(old('name', $charge->name) == $account['DESCRIPTION']) selected @endif> 
 										{{ $account['DESCRIPTION'] }} 

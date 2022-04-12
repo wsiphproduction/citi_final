@@ -100,7 +100,7 @@
                     </div>
                 </div>
 
-                @if(\Str::contains($pcv->status , 'disapproved' ))
+                @if(\Str::contains($pcv->status , 'disapproved' ) || $pcv->status == 'cancelled')
 
                     <div class="col-lg-6">
                         <div class="form-group row">

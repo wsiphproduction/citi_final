@@ -160,7 +160,7 @@
     			_html  = '<div class="form-group row">';
     			_html += '<label for="slip-no" class="col-lg-5 col-form-label">PCFR</label>';
     			_html += '<div class="col-lg-7">';
-    			_html += '<select class="form-control custom-select" name="status">';
+    			_html += '<select class="form-control custom-select" name="status" id="status">';
     			_html += '<option value="saved">Saved</option>';
     			_html += '<option value="submitted">Submitted</option>';
     			_html += '<option value="approved">Approved</option>';
@@ -200,6 +200,10 @@
     		let _from = $('#date_from').val();
     		let _to = $('#date_to').val();
     		let _url = '{!! route("reports.search") !!}?name='+_name+'&company='+_company+'&branch='+_branch+'&from='+_from+'&to='+_to;
+
+    		if($('#status').length) {
+    			_url = _url+'&status='+$('#status').val();
+    		}
 
     		$('#report').empty();
 

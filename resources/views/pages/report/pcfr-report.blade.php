@@ -1,16 +1,38 @@
-<h3 class="text-center">
-	
-	@if(\Str::contains($request_type, 'summary'))
-		PCFR Summary
-	@else
-		PCFR Detailed
-	@endif
+<style type="text/css">	
+	table tr td { border-top: none !important; }
+</style>
 
-</h3>
+<div id="DivIdToPrint">
+<table class="table" style="margin-bottom: 70px;">
+	<tr>
+		<td>
+			<h3 class="text-center">
+				
+				@if(\Str::contains($request_type, 'summary'))
+					PCFR Summary
+				@else
+					PCFR Detailed
+				@endif
 
-<p class="text-center"> {{ $request['company'] }} </p>	
-<p class="text-center"> {{ $request['branch'] }} </p>
-
+			</h3>
+		</td>
+	</tr>
+	<tr>
+		<td class="text-center">
+			{{ $request['company'] }}
+		</td>
+	</tr>
+	<tr>
+		<td class="text-center">
+			{{ $request['branch'] }}
+		</td>
+	</tr>
+	<tr>
+		<td class="text-center">
+			{{ $from }} - {{ $to }}
+		</td>
+	</tr>
+</table>
 
 <table class="table">
 	
@@ -27,8 +49,8 @@
 
 		<tbody>
 			@php $total = 0; @endphp
-			@forelse($pcfr as $pcfr)					
-
+			@if($pcfr)
+	
 				@foreach($pcfr->pcv as $pcv)
 
 					<tr>
@@ -44,11 +66,11 @@
 				@endforeach
 
 				
-			@empty
+			@else
 				<tr>
 					<td colspan="6" class="text-center"> No Account Found </td>
 				</tr>
-			@endforelse
+			@endif
 
 		</tbody>
 
@@ -67,34 +89,92 @@
 	</table>
 
 
+@if($pcfr)
+@if(\Str::contains($request_type, 'detailed'))
 
-@if(\Str::contains($request_type, 'summary'))
-	
-	<div class="col-lg-6 offset-3 mg-t-50">
+	<div class="col-lg-8 offset-2 mg-t-50">
 
 		<div class="row">
 			
-			<div class="col-lg-6">
-				<p> Temporary Slip: <span>{{ $pcfr->total_temp_slip }} </span></p>
-				<p> ATM Balance: <span>{{ $pcfr->atm_balance }} </span></p>
-				<p> Cash On Hand: <span>{{ $pcfr->cash_on_hand }} </span></p>
-				<p> PCF Accounted For: <span>{{ $pcfr->total_accounted }} </span></p>
-				<p> PCF Accountability: <span>{{ $pcfr->pcf_accountability }} </span></p>
-				<p> Overage/Shortage: <span>{{ $pcfr->pcf_diff }} </span></p>
-			</div>
-
-			<div class="col-lg-6">
-				<p> Total Replenishment: <span>{{ $pcfr->total_replenishment }} </span></p>
-				<p> Pending Replenishment: <span>{{ $pcfr->total_temp_slip }} </span></p>
-				<p> Unreplenished: <span>{{ $pcfr->total_inreplenished }} </span></p>
-				<p> Unapproved PCVs: <span>{{ $pcfr->total_unapproved_pcv }} </span></p>
-				<p> Returned PCVs: <span>{{ $pcfr->total_returned_pcv }} </span></p>
-
-			</div>
+			<table class="table">
+				
+				<tr>
+					<td width="25%"> Temporary Slip: </td>
+					<td style="border-bottom: 1px solid;" class="text-right" width="20%"> {{ $pcfr->total_temp_slip }}  </td>
+					<td width="10%"></td>
+					<td width="25%"> Total Replenishment: </td>
+					<td style="border-bottom: 1px solid;" class="text-right" width="20%"> {{ $pcfr->total_replenishment }}  </td>
+				</tr>
+				<tr>
+					<td width="25%">  ATM Balance:  </td>
+					<td style="border-bottom: 1px solid;" class="text-right" width="20%"> {{ $pcfr->atm_balance }}  </td>
+					<td width="10%"></td>
+					<td width="25%"> Pending Replenishment: </td>
+					<td style="border-bottom: 1px solid;" class="text-right" width="20%"> {{ $pcfr->total_temp_slip }}  </td>
+				</tr>
+				<tr>
+					<td width="25%"> Cash On Hand: </td>
+					<td style="border-bottom: 1px solid;" class="text-right" width="20%"> {{ $pcfr->cash_on_hand }}  </td>
+					<td width="10%"></td>
+					<td width="25%"> Unreplenished: </td>
+					<td style="border-bottom: 1px solid;" class="text-right" width="20%"> {{ $pcfr->total_unreplenished }}  </td>
+					
+				</tr>
+				<tr>
+					<td width="25%"> PCF Accounted For: </td>
+					<td style="border-bottom: 1px solid;" class="text-right" width="20%"> {{ $pcfr->total_accounted }}  </td>
+					<td width="10%"></td>
+					<td width="25%"> Unapproved PCVs: </td>
+					<td style="border-bottom: 1px solid;" class="text-right" width="20%"> {{ $pcfr->total_unapproved_pcv }}  </td>
+				</tr>				
+				<tr>
+					<td width="25%"> PCF Accountability: </td>
+					<td style="border-bottom: 1px solid;" class="text-right" width="20%"> {{ $pcfr->pcf_accountability }}  </td>
+					<td width="10%"></td>
+					<td width="25%"> Returned PCVs:  </td>
+					<td style="border-bottom: 1px solid;" class="text-right" width="20%"> {{ $pcfr->total_returned_pcv }}  </td>
+				</tr>
+				<tr>
+					<td width="25%"> Overage/Shortage: </td>
+					<td style="border-bottom: 1px solid;" class="text-right" width="20%"> {{ $pcfr->pcf_diff }}  </td>					
+				</tr>
+				
+			</table>
 
 		</div>
 
 	</div>
-	
 
 @endif
+@endif
+
+</div>
+
+<div class="col-md-12 text-center mg-t-50">
+	
+	<button class="btn btn-secondary"> Export to Excel </button>
+	<button class="btn btn-primary" onclick='printDiv();'> Print </button>
+
+</div>
+
+
+
+<script type="text/javascript">
+	
+	function printDiv() 
+	{
+
+		var divToPrint=document.getElementById('DivIdToPrint');
+
+		var newWin=window.open('','Print-Window');
+
+		newWin.document.open();
+
+		newWin.document.write('<html><body onload="window.print()">'+divToPrint.innerHTML+'</body></html>');
+
+		newWin.document.close();
+
+		setTimeout(function(){newWin.close();},10);
+
+	}
+</script>

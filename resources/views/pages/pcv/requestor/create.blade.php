@@ -90,7 +90,7 @@
 				</div>
 			</div>
 
-			<div class="col-lg-6">
+			<div class="col-lg-6 d-none">
 				<div class="form-group row">
 					<label for="change" class="col-lg-5 col-form-label">Change</label>
 					<div class="col-lg-7">

@@ -176,8 +176,8 @@
             <div class="form-group row">
                 <label for="temporary-slip" class="col-lg-5 col-form-label">Temporary Slip</label>
                 <div class="col-lg-7">
-                  	<input type="number" class="form-control bd-0 bd-bottom text-right" 
-                  		id="temporary_slip" name="temporary_slip" value="{{ $unliquidated_ts }}" readonly>
+                  	<input type="number" class="form-control text-right" 
+                  		id="temporary_slip" name="temporary_slip" >
                 </div>
             </div>
         </div>
@@ -197,7 +197,7 @@
             <div class="form-group row">
                 <label for="atm-balance" class="col-lg-5 col-form-label">ATM Balance</label>
                 <div class="col-lg-7">
-                  	<input type="number" class="form-control" id="atm_balance" name="atm_balance" min="0" step="1">
+                  	<input type="number" class="form-control text-right" id="atm_balance" name="atm_balance" min="0" step="1">
                 </div>
             </div>
         </div>
@@ -216,7 +216,7 @@
             <div class="form-group row">
                 <label for="cash-on-hand" class="col-lg-5 col-form-label">Cash on Hand</label>
                 <div class="col-lg-7">
-                  	<input type="number" class="form-control" id="cash_on_hand" name="cash_on_hand" min="0" step="1">
+                  	<input type="number" class="form-control text-right" id="cash_on_hand" name="cash_on_hand" min="0" step="1">
                 </div>
             </div>
         </div>
@@ -602,8 +602,6 @@
 
 	   	$(document).on('blur', '#cash_on_hand', function() {
 
-	   		console.log($(this).val());
-
 	   		let cash_on_hand = $(this).val();
 	   		if(cash_on_hand == ''){ 
                 cash_on_hand = 0;
@@ -615,6 +613,25 @@
 	   		let pcf_accountability = $('#pcf_accountability').val();
 
 	   		let new_pcf_accounted_for = parseFloat(cash_on_hand) + parseFloat(pcf_accounted_for);
+	   		let new_overage_shortage = parseFloat(pcf_accountability) - parseFloat(new_pcf_accounted_for);
+
+	    	$('#pcf_accounted_for').val(new_pcf_accounted_for);
+	    	$('#overage_shortage').val(new_overage_shortage);
+
+	    });
+
+	    $(document).on('blur', '#temporary_slip', function() {
+
+	    	let temp_slip = $(this).val();
+	    	if(temp_slip == ''){ 
+                temp_slip = 0;
+                $(this).val(0);
+            }
+	    	let overage_shortage = $('#overage_shortage').val();
+	   		let pcf_accounted_for = $('#pcf_accounted_for').val();
+	   		let pcf_accountability = $('#pcf_accountability').val();
+
+	   		let new_pcf_accounted_for = parseFloat(temp_slip) + parseFloat(pcf_accounted_for);
 	   		let new_overage_shortage = parseFloat(pcf_accountability) - parseFloat(new_pcf_accounted_for);
 
 	    	$('#pcf_accounted_for').val(new_pcf_accounted_for);

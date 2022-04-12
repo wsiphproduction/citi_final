@@ -190,8 +190,8 @@
                     <div class="form-group row">
                         <label for="temporary-slip" class="col-lg-5 col-form-label">Temporary Slip</label>
                         <div class="col-lg-7">
-                          	<input type="number" class="form-control bd-0 bd-bottom text-right" 
-                          		id="temporary_slip" name="temporary_slip" value="{{ $pcfr->total_temp_slip }}" readonly>
+                          	<input type="number" class="form-control text-right" 
+                          		id="temporary_slip" name="temporary_slip" value="{{ $pcfr->total_temp_slip }}" >
                         </div>
                     </div>
                 </div>
@@ -446,6 +446,7 @@
 		var account_attachments = [];
 		var current_id = 0;
 		var pcv_ids = [];
+        var _total = {!! $pcfr->total_temp_slip !!} + {!! $pcfr->atm_balance !!} + {!! $pcfr->cash_on_hand !!};
 
         $(document).ready(function() {
 
@@ -453,6 +454,21 @@
                 if($('#pcv_attachments').val() != '')
                     getAttachments();
             }, 2000);
+
+
+            // let atm_bal = $('#atm_balance').val();
+            // let cash_on_hand = $('#cash_on_hand').val();
+            // let temp_slip = $('#temporary_slip').val();
+
+            // let overage_shortage = $('#overage_shortage').val();
+            // let pcf_accounted_for = $('#pcf_accounted_for').val();
+            // let pcf_accountability = $('#pcf_accountability').val();
+
+            // let new_pcf_accounted_for = parseFloat(atm_bal) + parseFloat(cash_on_hand) + parseFloat(temp_slip) + parseFloat(pcf_accounted_for);
+            // let new_overage_shortage = parseFloat(pcf_accountability) - parseFloat(new_pcf_accounted_for);
+
+            // $('#pcf_accounted_for').val(new_pcf_accounted_for);
+            // $('#overage_shortage').val(new_overage_shortage);
 
         });
       	
@@ -596,26 +612,40 @@
 
 	    }
 
-        $(document).on('blur', '#atm_balance', function() {
+        $(document).on('change', '#atm_balance', function() {
             
             let atm_bal = $(this).val();
             if(atm_bal == ''){ 
                 atm_bal = 0;
                 $(this).val(0);
             }
-            let overage_shortage = $('#overage_shortage').val();
-            let pcf_accounted_for = $('#pcf_accounted_for').val();
-            let pcf_accountability = $('#pcf_accountability').val();
 
-            let new_pcf_accounted_for = parseFloat(atm_bal) + parseFloat(pcf_accounted_for);
-            let new_overage_shortage = parseFloat(pcf_accountability) - parseFloat(new_pcf_accounted_for);
+            let overage_shortage = {!! $pcfr->total_accounted !!};
+            let pcf_accounted_for = {!! $pcfr->total_accounted !!};
+            let pcf_accountability = $('#pcf_accountability').val();
+            let new_pcf_accounted_for = 0;
+            let new_overage_shortage = 0;
+
+            let _new_total = parseFloat($('#cash_on_hand').val()) + parseFloat($('#temporary_slip').val()) + parseFloat($('#atm_balance').val());
+
+            if( _new_total != _total ) {               
+
+                _new_total_diff = _new_total - _total;
+
+                new_pcf_accounted_for = parseFloat(_new_total_diff) + parseFloat(pcf_accounted_for);                
+
+            } else {
+                new_pcf_accounted_for = pcf_accounted_for;
+            }          
+
+            new_overage_shortage = parseFloat(pcf_accountability) - parseFloat(new_pcf_accounted_for);
 
             $('#pcf_accounted_for').val(new_pcf_accounted_for);
             $('#overage_shortage').val(new_overage_shortage);
 
         });
 
-        $(document).on('blur', '#cash_on_hand', function() {
+        $(document).on('change', '#cash_on_hand', function() {
 
             let cash_on_hand = $(this).val();
 
@@ -624,12 +654,59 @@
                 $(this).val(0);
             }
 
-            let overage_shortage = $('#overage_shortage').val();
-            let pcf_accounted_for = $('#pcf_accounted_for').val();
+            let overage_shortage = {!! $pcfr->total_accounted !!};
+            let pcf_accounted_for = {!! $pcfr->total_accounted !!};
             let pcf_accountability = $('#pcf_accountability').val();
+            let new_pcf_accounted_for = 0;
+            let new_overage_shortage = 0;
 
-            let new_pcf_accounted_for = parseFloat(cash_on_hand) + parseFloat(pcf_accounted_for);
-            let new_overage_shortage = parseFloat(pcf_accountability) - parseFloat(new_pcf_accounted_for);
+            let _new_total = parseFloat($('#cash_on_hand').val()) + parseFloat($('#temporary_slip').val()) + parseFloat($('#atm_balance').val());
+
+            if( _new_total != _total ) {               
+
+                _new_total_diff = _new_total - _total;
+
+                new_pcf_accounted_for = parseFloat(_new_total_diff) + parseFloat(pcf_accounted_for);                
+
+            } else {
+                new_pcf_accounted_for = pcf_accounted_for;
+            }          
+
+            new_overage_shortage = parseFloat(pcf_accountability) - parseFloat(new_pcf_accounted_for);
+
+            $('#pcf_accounted_for').val(new_pcf_accounted_for);
+            $('#overage_shortage').val(new_overage_shortage);
+
+        });
+
+
+        $(document).on('change', '#temporary_slip', function() {
+
+            let temp_slip = $(this).val();
+            if(temp_slip == ''){ 
+                temp_slip = 0;
+                $(this).val(0);
+            }
+
+            let overage_shortage = {!! $pcfr->total_accounted !!};
+            let pcf_accounted_for = {!! $pcfr->total_accounted !!};
+            let pcf_accountability = $('#pcf_accountability').val();
+            let new_pcf_accounted_for = 0;
+            let new_overage_shortage = 0;
+
+            let _new_total = parseFloat($('#cash_on_hand').val()) + parseFloat($('#temporary_slip').val()) + parseFloat($('#atm_balance').val());
+
+            if( _new_total != _total ) {               
+
+                _new_total_diff = _new_total - _total;
+
+                new_pcf_accounted_for = parseFloat(_new_total_diff) + parseFloat(pcf_accounted_for);                
+
+            } else {
+                new_pcf_accounted_for = pcf_accounted_for;
+            }          
+
+            new_overage_shortage = parseFloat(pcf_accountability) - parseFloat(new_pcf_accounted_for);
 
             $('#pcf_accounted_for').val(new_pcf_accounted_for);
             $('#overage_shortage').val(new_overage_shortage);

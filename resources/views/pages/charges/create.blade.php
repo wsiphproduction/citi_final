@@ -31,7 +31,7 @@
 						<div class="col-lg-7">
 							<select class="form-control" name="name" id="name">
 								<option value=""> Select Account </option>
-								@foreach( \App\Models\Account::getAccountsFinal() as $account )
+								@foreach( \App\Models\Account::getAccounts() as $account )
 									<option value="{{ $account['DESCRIPTION'] }} "> 
 										{{ $account['DESCRIPTION'] }} 
 									</option>
