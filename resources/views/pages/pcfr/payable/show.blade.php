@@ -178,7 +178,7 @@
                                                             </div>
                                                             
                                                             <div class="col-lg-12 text-right">
-                                                                <button class="btn btn-brand-01 d-inline-block tx-13 tx-uppercase">Remove</button>
+                                                                <button class="btn btn-brand-01 d-inline-block tx-13 tx-uppercase">Disapproved</button>
                                                                 <button type="button" class="btn btn-white tx-13 tx-uppercase" 
                                                                     data-target="#pcvRemove{{$pcv->id}}" data-toggle="modal" 
                                                                     data-dismiss="modal">
