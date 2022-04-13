@@ -66,7 +66,13 @@
                             <td>{{ $pcfrr->vendor }}</td>
                             <td>{{ $pcfrr->user->username }}</td>
                             <td>
-                            	<span class="badge badge-secondary tx-uppercase">{{ $pcfrr->status }}</span>
+                            	<span class="badge badge-secondary tx-uppercase">
+                            		@if($pcfrr->status == 'post to ebs')
+                            			For Replenish
+                            		@else
+	                            		{{ $pcfrr->status }}
+	                            	@endif
+                            	</span>
                             </td>
                             <td>
                             	<nav class="nav table-options">

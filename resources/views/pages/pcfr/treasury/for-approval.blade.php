@@ -28,7 +28,7 @@
 	<div class="row">
 
         <div class="col-lg-12">
-
+        	
             <table id="example1" class="table">
 
             	<thead>
@@ -42,7 +42,7 @@
                         <th class="wd-10p">Action</th>
                     </tr>
             	</thead>
-
+            	
             	<tbody>
 
                     @forelse( $pcfr as $pcfrr )                    
@@ -54,7 +54,13 @@
                             <td>{{ $pcfrr->vendor }}</td>
                             <td>{{ $pcfrr->user->username }}</td>
                             <td>
-                            	<span class="badge badge-secondary tx-uppercase">{{ $pcfrr->status }}</span>
+                            	<span class="badge badge-secondary tx-uppercase">
+                            		@if($pcfrr->status == 'post to ebs')
+                            			For Replenish
+                            		@else
+	                            		{{ $pcfrr->status }}
+	                            	@endif
+                            	</span>
                             </td>
                             <td>
                             	<nav class="nav table-options">

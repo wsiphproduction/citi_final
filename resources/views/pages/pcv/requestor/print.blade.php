@@ -58,10 +58,10 @@
 				<tr>
 					
 					<td width="10%"> <p> <strong>Slip No</strong>: </p></td>
-					<td width="30%" style="border-bottom: 1px solid #000;"> <p> {{ $pcv->slip_no }} </p></td>
-					<td width="20%"></td>
-					<td width="10%"> <p> <strong>Change</strong>: </p></td>
-					<td width="30%" style="border-bottom: 1px solid #000;"> &nbsp;{{ $pcv->change }} </td>
+					<td width="20%" style="border-bottom: 1px solid #000;"> <p> {{ $pcv->slip_no }} </p></td>
+					<td width="50%"></td>
+					<td width="10%" style="display: none;"> <p> <strong>Change</strong>: </p></td>
+					<td width="30%" style="border-bottom: 1px solid #000; display: none;"> &nbsp;{{ $pcv->change }} </td>
 					
 				</tr>
 
@@ -168,24 +168,34 @@
 				<table class="col-lg-12 mt-5" style="margin-top: 0 !important;" id="transaction">
 
 					<thead>
-                        <tr role="row">                            
-                            @foreach($pcv->account_transaction['details'][0]['items'] as $key => $tbl_headers)
-                                @if($key != 'items')
-                                <td data-rowname="{{ strtolower(str_replace(' ', '_', $key)) }}" class="tbl-header tx-uppercase"> 
+                        <tr role="row">     
+
+                            @foreach($pcv->account_transaction['details'][0]['items'][0] as $key => $tbl_headers)
+
+                           		<td data-rowname="{{ strtolower(str_replace(' ', '_', $key)) }}" class="tbl-header tx-uppercase"> 
                                 	{{ str_replace('_', ' ', $key) }} 
                                 </td>
-                                @endif
+
                             @endforeach   
+
                         </tr>
                     </thead>
 
                     <tbody>
                        
 						<tr>                       
-                       	
+
                        	@foreach( $pcv->account_transaction['details'][0]['items'] as $item )
-                            
-                            <td>{{ $item }}</td>
+
+                       		@if(is_array($item)) 
+                       			<tr>
+                       			@foreach($item as $d)	                            
+                            		<td>{{ $d }}</td>
+                            	@endforeach
+                            	</tr>
+                            @else
+                            	<td> {{ $item }} </td>
+                            @endif
                             	
                         @endforeach
 

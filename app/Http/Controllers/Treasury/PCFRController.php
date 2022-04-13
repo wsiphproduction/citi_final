@@ -102,17 +102,17 @@ class PCFRController extends Controller
         //         $query->where('assign_to', $user->assign_to);
         //     })->sum('running_balance');
 
-        $total_replenishment = Pcfr::where('status', 'post to ebs')
+        $total_replenishment = Pcfr::where('status', 'approved')
             ->whereHas('user', function(Builder $query) use ($user) {
                 $query->where('assign_to', $user->assign_to);
-            })->sum('amount');
+            })->doesntHave('pcfr')->sum('amount');
 
         $pending_replenishment = Pcv::where('status', 'approved')
             ->whereHas('user', function(Builder $query) use ($user) {
                 $query->where('assign_to', $user->assign_to);
             })->doesntHave('pcfr')->sum('amount');
 
-        $unreplenished = Pcfr::where('status', 'for replenishment')
+        $unreplenished = Pcfr::whereIn('status', ['post to ebs' ,'for replenishment'])
             ->whereHas('user', function(Builder $query) use ($user) {
                 $query->where('assign_to', $user->assign_to);
             })->sum('amount');            
@@ -381,7 +381,7 @@ class PCFRController extends Controller
 
     public function recomputePcfr($pcfr) {
 
-        $user = auth()->user();
+        $user = $pcfr->user;
         $branch = $user->branch;
         $cash_on_hand = 0;
         $atm_bal = 0;

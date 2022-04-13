@@ -105,7 +105,7 @@ class PCVController extends Controller
                 $query->where('assign_to', auth()->user()->assign_to);
             })->first();
 
-        if($_exists) return back()->withInput()->with('danger', 'TS No. Already exists');
+        if($_exists) return back()->withInput()->with('danger', 'PCV No. Already exists');
         
         if($request->has('withslip')) {
 
@@ -153,6 +153,19 @@ class PCVController extends Controller
                 // 'approved_date' => array_key_exists('date', $account_transaction) ? $account_transaction['date'] : null ,
                 // 'remarks'       => array_key_exists('remarks', $account_transaction) ? $account_transaction['remarks'] : null 
             ]);
+
+
+            // to do save attachment to permanent delivery charges
+            // if($account_name == 'Delivery Charges') {
+
+            //     if(Storage::exists("public/pcv/account/{$pcv_transaction->pcv_no}/{$attachment['attachment']}")) {
+            //         Storage::delete("public/pcv/{$pcv_transaction->pcv_no}/{$attachment['attachment']}");
+            //     }
+
+            //     Storage::copy("public/temp/{$user->id}/pcv/{$attachment['attachment']}", 
+            //         "public/pcv/{$pcv_transaction->pcv_no}/{$attachment['attachment']}");
+
+            // }
 
         }
 

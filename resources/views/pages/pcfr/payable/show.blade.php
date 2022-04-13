@@ -173,12 +173,12 @@
                                                                 <div class="form-group">
                                                                     <label for="remarks" class="d-block">Remarks</label>
                                                                     <textarea id="disapprove-remarks" name="remarks" 
-                                                                        class="form-control" rows="3"></textarea>
+                                                                        class="form-control" rows="3" required></textarea>
                                                                 </div>
                                                             </div>
                                                             
                                                             <div class="col-lg-12 text-right">
-                                                                <button class="btn btn-brand-01 d-inline-block tx-13 tx-uppercase">Disapproved</button>
+                                                                <button type="submit" class="btn btn-brand-01 d-inline-block tx-13 tx-uppercase">Disapproved</button>
                                                                 <button type="button" class="btn btn-white tx-13 tx-uppercase" 
                                                                     data-target="#pcvRemove{{$pcv->id}}" data-toggle="modal" 
                                                                     data-dismiss="modal">

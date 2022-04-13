@@ -117,7 +117,7 @@ class PCFRController extends Controller
 
     public function recomputePcfr($pcfr) {
 
-        $user = auth()->user();
+        $user = $pcfr->user;
         $branch = $user->branch;
         $cash_on_hand = 0;
         $atm_bal = 0;
@@ -126,23 +126,31 @@ class PCFRController extends Controller
         $pcv_accountability = $branch->budget;
 
         // unliquidated ts
-        $unliquidated_ts = TemporarySlip::where('running_balance', '>', 0)
-            ->where('status', 'approved')
-            ->whereHas('user', function(Builder $query) use ($user) {
-                $query->where('assign_to', $user->assign_to);
-            })->sum('running_balance');
+        // $unliquidated_ts = TemporarySlip::where('running_balance', '>', 0)
+        //     ->where('status', 'approved')
+        //     ->whereHas('user', function(Builder $query) use ($user) {
+        //         $query->where('assign_to', $user->assign_to);
+        //     })->sum('running_balance');
 
-        $total_replenishment = Pcfr::where('status', 'post to ebs')
+        $total_replenishment = Pcv::whereIn('status', ['post to ebs', 'for replenishment'])
             ->whereHas('user', function(Builder $query) use ($user) {
                 $query->where('assign_to', $user->assign_to);
-            })->sum('amount');
+            })
+            ->whereHas('pcfr', function($query) use ($pcfr) {
+                $query->where('pcfr_id', $pcfr->id);
+            })
+            ->sum('amount');
 
         $pending_replenishment = Pcv::where('status', 'approved')
             ->whereHas('user', function(Builder $query) use ($user) {
                 $query->where('assign_to', $user->assign_to);
-            })->doesntHave('pcfr')->sum('amount');
+            })
+            ->whereHas('pcfr', function($query) use ($pcfr) {
+                $query->where('pcfr_id', $pcfr->id);
+            })
+            ->sum('amount');
 
-        $unreplenished = Pcfr::where('status', 'for replenishment')
+        $unreplenished = Pcfr::whereIn('status', ['post to ebs', 'for replenishment'])
             ->whereHas('user', function(Builder $query) use ($user) {
                 $query->where('assign_to', $user->assign_to);
             })->sum('amount');            
@@ -157,14 +165,12 @@ class PCFRController extends Controller
                 $query->where('assign_to', $user->assign_to);
             })->sum('amount');            
 
-        $pcf_accounted_for = $unliquidated_ts + $total_replenishment + $pending_replenishment + $unreplenished + $unapproved_pcvs + $returned_pcvs
-            + $pcfr->atm_balance + $pcfr->cash_on_hand;
+        $pcf_accounted_for = $pcfr->total_temp_slip + $total_replenishment + $pending_replenishment + $unreplenished + $unapproved_pcvs + $returned_pcvs + $pcfr->atm_balance + $pcfr->cash_on_hand;
 
         // overage / shortage
         $overage_shortage = $pcv_accountability - $pcf_accounted_for;
 
         $pcfr->update([
-            'total_temp_slip'               => $unliquidated_ts ,
             'total_replenishment'           => $total_replenishment ,
             'total_unreplenished'           => $unreplenished ,
             'total_unapproved_pcv'          => $unapproved_pcvs ,

@@ -218,19 +218,14 @@ class PCVController extends Controller
         $disapprove = 'disapproved';
 
         if($user->getUserAssignTo() == 'ssc') {
-            if($user->position == 'division head') {
-                $disapprove = 'disapproved dh';
-            } else {
-                $disapprove = 'disapproved dept head';
-            }
+            $disapprove = 'disapproved dh';    
         } else {
             $disapprove = 'disapproved tl';
         }
 
         $pcv->update([
-            'status'            => $disapprove ,
-            'cancelled_by'      => auth()->user()->username ,
-            'cancelled_date'    => \Carbon\Carbon::now()
+            'remarks'           => $request->remarks ,
+            'status'            => $disapprove
         ]);
 
         return response()->json([

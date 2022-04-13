@@ -52,22 +52,24 @@ class PCFRController extends Controller
         //     })->sum('running_balance');
 
 
-        // PCFR with status post to ebs
-        $total_replenishment = Pcfr::where('status', 'post to ebs')
+        // PCFR with status approved
+        $total_replenishment = Pcv::where('status', 'approved')
             ->whereHas('user', function(Builder $query) use ($user) {
                 $query->where('assign_to', $user->assign_to);
-            })->sum('amount');
+            })
+            ->whereDoesntHave('pcfr')
+            ->sum('amount');
 
 
         // PCV with status approve w/out pcfr
         $pending_replenishment = Pcv::where('status', 'approved')
             ->whereHas('user', function(Builder $query) use ($user) {
                 $query->where('assign_to', $user->assign_to);
-            })->doesntHave('pcfr')->sum('amount');
+            })->whereDoesntHave('pcfr')->sum('amount');
 
 
         // PCFR with status for replishment
-        $unreplenished = Pcfr::where('status', 'for replenishment')
+        $unreplenished = Pcfr::whereIn('status', ['post to ebs', 'for replenishment'])
             ->whereHas('user', function(Builder $query) use ($user) {
                 $query->where('assign_to', $user->assign_to);
             })->sum('amount');            

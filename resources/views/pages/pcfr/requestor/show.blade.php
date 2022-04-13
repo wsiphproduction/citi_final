@@ -97,6 +97,14 @@
                   		value="{{ $pcfr->batch_no }}">
                 </div>
             </div>
+            @if(\Str::contains($pcfr->status , 'disapproved'))          
+                <div class="form-group row">
+                    <label for="date" class="col-lg-5 col-form-label">Remarks</label>
+                    <div class="col-lg-7">
+                        <textarea id="description" name="description" class="form-control bd-0 bd-bottom" rows="3" readonly style="height: 120px;">{{ $pcfr->remarks }} </textarea>
+                    </div>
+                </div>          
+            @endif
         </div>
 
         <div class="col-lg-6 mg-b-20">
