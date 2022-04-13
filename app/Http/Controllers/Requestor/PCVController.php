@@ -109,7 +109,11 @@ class PCVController extends Controller
         
         if($request->has('withslip')) {
 
-            $ts = TemporarySlip::where('ts_no', $request->ts_no)->first();
+            $ts = TemporarySlip::where('ts_no', $request->ts_no)
+                ->whereHas('user', function($query){
+                    $query->where('assign_to', auth()->user()->assign_to);
+                })
+                ->first();
 
             $r_bal = $ts->running_balance  -  ( $request->total_amount - $request->change );
             if( $r_bal < 0 ) {
