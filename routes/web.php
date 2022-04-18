@@ -246,7 +246,7 @@ Route::middleware(['web', 'auth'])->group(function () {
             Route::get('show/{pcv}', [ApproverPCVController::class, 'show'])->name('approver.pcv.show');
 
             Route::put('approve/{id}', [ApproverPCVController::class, 'approve'])->name('approver.pcv.approve');
-            Route::put('approve-cancel/{id}', [ApproverPCVController::class, 'approveCancel'])->name('approver.ts.approve-cancel');
+            Route::put('approve-cancel/{id}', [ApproverPCVController::class, 'approveCancel'])->name('approver.pcv.approve-cancel');
             Route::put('approve-with-code/{id}', [ApproverPCVController::class, 'approveWithCode'])->name('approver.pcv.approve-with-code');
             Route::put('disapprove/{id}', [ApproverPCVController::class, 'disapprove'])->name('approver.pcv.disapprove');
 
