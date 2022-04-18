@@ -156,16 +156,16 @@ class PCVController extends Controller
 
 
             // to do save attachment to permanent delivery charges
-            // if($account_name == 'Delivery Charges') {
+            if($request->account_name == 'Delivery Charges') {
 
-            //     if(Storage::exists("public/pcv/account/{$pcv_transaction->pcv_no}/{$attachment['attachment']}")) {
-            //         Storage::delete("public/pcv/{$pcv_transaction->pcv_no}/{$attachment['attachment']}");
-            //     }
+                if(Storage::exists("public/pcv/{$pcv_transaction->pcv_no}/account/{$account_transactions[0]['attachment']}")) {
+                    Storage::delete("public/pcv/{$pcv_transaction->pcv_no}/account/{$account_transactions[0]['attachment']}");
+                }
 
-            //     Storage::copy("public/temp/{$user->id}/pcv/{$attachment['attachment']}", 
-            //         "public/pcv/{$pcv_transaction->pcv_no}/{$attachment['attachment']}");
+                Storage::copy("public/temp/{$user->id}/account/{$account_transactions[0]['attachment']}", 
+                    "public/pcv/{$pcv_transaction->pcv_no}/account/{$account_transactions[0]['attachment']}");
 
-            // }
+            }
 
         }
 
@@ -229,7 +229,8 @@ class PCVController extends Controller
         if($request->pcv_action == 'cancel') {
 
             $pcv->update([
-                'status'    => 'cancel'
+                'status'    => 'cancel' ,
+                'remarks'   => $request->remarks
             ]);
 
             return redirect()->route('requestor.pcv.index')->with('success','Request to cancel PCV has been submitted!');
@@ -453,6 +454,21 @@ class PCVController extends Controller
             "public/pcv/{$pcv->pcv_no}/{$request->docrefstring}");
 
         return back()->with(['success'  => "PCV Signed Document is successfully attachment on {$pcv->pcv_no}."]);
+
+    }
+
+    public function searchDI(Request $request) {
+
+        $_account_transactions = Pcv::where('account_name', 'Delivery Charges')
+            ->whereHas('user', function($query){
+                $query->where('assign_to', auth()->user()->assign_to);
+            })
+            ->whereHas('account_transaction', function($query) use ($request) {
+                $query->where('details', 'LIKE', '%"di_no":"'.$request->search.'"%');
+            })
+            ->get();
+
+        return response()->json($_account_transactions);
 
     }
 

@@ -61,7 +61,7 @@ class UsersController extends Controller
             'position'  => 'required' ,
             'firstname' => 'required|max:50' ,
             'lastname'  => 'required|max:50' ,
-            'middlename'=> 'required|max:50' ,            
+            'middlename'=> 'max:50' ,            
 
         ]);
 
@@ -75,7 +75,7 @@ class UsersController extends Controller
         $user = User::create([
             'firstname'         => $request->firstname ,
             'lastname'          => $request->lastname , 
-            'middlename'        => $request->middlename ,
+            'middlename'        => $request->middlename ? $request->middlename : null ,
             'branch_group_id'   => $request->branch_group_id ,
             'username'          => $request->username ,
             'password'          => \Hash::make($request->password) ,
@@ -116,7 +116,7 @@ class UsersController extends Controller
             'position'  => 'required' ,
             'firstname' => 'required|max:50' ,
             'lastname'  => 'required|max:50' ,
-            'middlename'=> 'required|max:50' ,
+            'middlename'=> 'max:50' ,
             
 
         ]);
@@ -128,7 +128,7 @@ class UsersController extends Controller
         $user->update([
             'firstname'         => $request->firstname ,
             'lastname'          => $request->lastname , 
-            'middlename'        => $request->middlename ,
+            'middlename'        => $request->middlename ? $request->middlename : null,
             'branch_group_id'   => $request->branch_group_id ,
             'username'          => $request->username ,
             'assign_to'         => $request->assign_to ,

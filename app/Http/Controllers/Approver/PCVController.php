@@ -244,14 +244,12 @@ class PCVController extends Controller
 
         $pcv->update([
             'status'            => $disapprove ,
-            'remarks'           => $request->remarks ,
             'cancelled_by'      => auth()->user()->username ,
             'cancelled_date'    => \Carbon\Carbon::now()
         ]);
 
-        return response()->json([
-            'message'   => "{$pcv->pcv_no} was successfully cancelled."
-        ]);
+        return redirect()->route('approver.pcv.index')->with('success', "{$pcv->pcv_no} was successfully cancelled.");
+
 
     }
 
@@ -260,7 +258,7 @@ class PCVController extends Controller
         $pcv = Pcv::find($id);
 
         $user = auth()->user();
-        $disapprove = 'cancelled';
+        $disapprove = 'approved';
 
         $pcv->update([
             'status'            => $disapprove ,
@@ -269,9 +267,7 @@ class PCVController extends Controller
             'cancelled_date'    => \Carbon\Carbon::now()
         ]);
 
-        return response()->json([
-            'message'   => "{$pcv->pcv_no} was successfully cancelled."
-        ]);
+        return redirect()->route('approver.pcv.index')->with('success', "{$pcv->pcv_no} request to cancel was disapproved.");
 
     }
 

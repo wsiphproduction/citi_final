@@ -100,7 +100,7 @@
                     </div>
                 </div>
 
-                @if(\Str::contains($pcv->status , 'disapproved' ) || $pcv->status == 'cancelled')
+                @if(\Str::contains($pcv->status , 'disapproved' ) || $pcv->status == 'cancelled' || $pcv->status == 'cancel')
 
                     <div class="col-lg-6">
                         <div class="form-group row">
@@ -163,7 +163,7 @@
                                                                 @continue
                                                             @else
                                                                 @if($key == 'attachment')
-                                                                    <td><a href="{{env('APP_URL')}}/storage/"> {{ $d }} </a></td>
+                                                                    <td><a href="{{env('APP_URL')}}/storage/pcv/{{$pcv->pcv_no}}/account/{{$d}}" target="_blank"> {{ $d }} </a></td>
                                                                 @else
                                                                     <td> {{ $d }} </td>
                                                                 @endif
@@ -186,11 +186,15 @@
                                                 
                                                     @if(is_array($transaction)) 
     
-                                                        @foreach($transaction as $d)
+                                                        @foreach($transaction as $key => $d)
                                                             @if(is_array($d))
                                                                 @continue
                                                             @else
-                                                                <td> {{ $d }} </td>
+                                                                @if($key == 'attachment')
+                                                                    <td><a href="{{env('APP_URL')}}/storage/pcv/{{$pcv->pcv_no}}/account/{{$d}}" target="_blank"> {{ $d }} </a></td>
+                                                                @else
+                                                                    <td> {{ $d }} </td>
+                                                                @endif
                                                             @endif
                                                         @endforeach
     
@@ -434,8 +438,8 @@
 
         @if($pcv->status == 'approved' && is_null($pcv->pcfr_no))
 
-           <a href="javascript:void(0);" class="btn btn-primary d-block d-lg-inline wd-100p wd-lg-150 mg-r-10 btn-savesubmit"
-                data-action="cancel" data-id="{{$pcv->id}}">
+           <a href="javascript:void(0);" class="btn btn-primary d-block d-lg-inline wd-100p wd-lg-150 mg-r-10"
+                 data-toggle="modal" data-target="#pcvCancelReason">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
                 Cancel
             </a>
@@ -452,7 +456,47 @@
 
     </div>
 
-    @include('_partials.request_pcv_popups')
+
+    <div class="modal fade" id="pcvCancelReason" tabindex="-1" role="dialog" 
+        aria-labelledby="pcvCancelReason" aria-modal="true">
+
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            
+            <div class="modal-content tx-14">
+                <form action="{{ route('requestor.pcv.update', $pcv->id) }}" method="post" role="form">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row">
+                        
+                        @csrf
+                        @method('PUT')
+
+                        <input type="hidden" name="pcv_action" value="cancel">
+
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label for="remarks" class="d-block">Reason</label>
+                                <textarea id="reason" name="remarks" class="form-control" rows="3" required></textarea>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-brand-01 d-inline-block tx-13 tx-uppercase" id="btn_disapproval">Submit</button>
+                    <button type="button" class="btn btn-white tx-13 tx-uppercase" data-target="#pcvCancelReason" data-toggle="modal" data-dismiss="modal">Cancel</button>
+                </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
 
 @endsection
 

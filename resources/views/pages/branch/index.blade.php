@@ -43,7 +43,9 @@
                         <th>Name</th>
                         <th>Budget</th>
                         <th>Created By</th>
-                        <th>Date Created</th>
+                        <th>Created Date and Time</th>
+                        <th>Updated By</th>
+                        <th>Updated Date and Time</th>
                         <th>Status</th>
                         <th>Action</th>
                     </tr>
@@ -57,7 +59,9 @@
                             <td> {{ $bran->name }} </td>
                             <td> {{ number_format($bran->budget, 2) }} </td>
                             <td> {{ $bran->created_by }} </td>
-                            <td> {{ $bran->created_at->toFormattedDateString() }} </td>
+                            <td> {{ $bran->created_at->toDateTimeString() }} </td>
+                            <td> {{ $bran->updated_by }} </td>
+                            <td> {{ $bran->created_at->toDateTimeString() }} </td>
                             <td>
                                 @if($bran->status == 1)
                                    <span class="badge badge-primary tx-uppercase">Active</span>

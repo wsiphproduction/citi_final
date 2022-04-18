@@ -775,11 +775,30 @@
 
 					if(_exists) { alert("DI no " + _data.di_no + " is already added"); return false; }
 
-			    	account_transactions.push(_data);
+			    	let _di_no = $('.custom-inputs[data-name="di_no"]').val();
+					let _di_exist = false;
 
-			    	populateAccountsTable();
-			    	resetAccountForm();
-			    	calculateTotal();
+					$.ajax({
+						url 	: '{!! route("requestor.pcv.search-di") !!}?search='+_di_no ,
+						method 	: 'GET' ,
+						success : function (res) {
+
+							console.log(res.length);
+
+							if(res.length>0) {
+								alert('DI Already Exist.'); 
+								resetAccountForm();
+								return false;
+							} else {
+								account_transactions.push(_data);
+
+						    	populateAccountsTable();
+						    	resetAccountForm();
+						    	calculateTotal();
+							}
+
+						}
+		 			})
 
 				}
 
@@ -1276,12 +1295,20 @@
 							$.each(res, function(i, o) {
 
 								_html += '<tr>';
-								_html += '<td><input type="checkbox" class="pos_trans"></td>';
+								if(o.original_qty > o.qty_with_pcv) {
+									_html += '<td><input type="checkbox" class="pos_trans"></td>';
+								} else {
+									_html += '<td><input type="checkbox" class="pos_trans" disabled></td>';
+								}
 								_html += '<td data-name="barcode">'+o.barcode+'</td>';
 								_html += '<td data-name="description">'+o.description+'</td>';
 								_html += '<td>'+o.original_qty+'</td>';
-								_html += '<td>'+o.original_qty+'</td>';
-								_html += '<td data-name="qty_for_installation"><input type="number" step="1" class="form-control"></td>';
+								_html += '<td>'+o.qty_with_pcv+'</td>';
+								if(o.original_qty > o.qty_with_pcv) {
+									_html += '<td data-name="qty_for_installation"><input type="number" step="1" class="form-control"></td>';
+								} else {
+									_html += '<td data-name="qty_for_installation"><input disabled type="number" step="1" class="form-control"></td>';
+								}
 								_html += '</tr>';
 
 							});
@@ -1663,6 +1690,12 @@
 						if( _row_name == 'pos_no_of_purchased_items' ) {
 							_html += '<td data-name="'+_row_name+'" >';
 							let _url = "{!! env("APP_URL") !!}"+'/pos-transactions/show/'+account_transactions[x][_row_name];
+							_html += '<a href="'+_url+'" target="_blank">';
+							_html += account_transactions[x][_row_name] +'</a>';
+							_html += '</td>';
+						} else if( _row_name == 'attachment' ) {
+							_html += '<td data-name="'+_row_name+'" >';
+							let _url = "{!! env("APP_URL") !!}"+'/storage/temp/'+{!! auth()->user()->id !!}+'/account/'+account_transactions[x][_row_name];
 							_html += '<a href="'+_url+'" target="_blank">';
 							_html += account_transactions[x][_row_name] +'</a>';
 							_html += '</td>';

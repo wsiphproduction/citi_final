@@ -18,6 +18,47 @@ class PosTransactionController extends Controller
             ->where('store_id', $user->branch->store_id)
             ->get();
 
+        if(count($transactions)) {
+
+            foreach( $transactions as $transaction ) {
+
+                $total_qty_installed = 0;
+
+                $account_transactions = \App\Models\Pcv::where('account_name', 'Installation')
+                    ->whereHas('user', function($query) {
+                        $query->where('assign_to', auth()->user()->assign_to);
+                    })
+                    ->with('account_transaction')
+                    ->get();
+
+                if(count($account_transactions)) {
+
+                    foreach( $account_transactions as $transac ) {
+
+                        foreach( $transac->account_transaction->details as $transaction_details ) {
+
+                            foreach( $transaction_details['items'] as $key => $item ) {
+
+                                if( $transaction->barcode == $transaction_details['items'][$key]['barcode']) {
+
+                                    $total_qty_installed = $total_qty_installed + $transaction_details['items'][$key]['qty_for_installation'];
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+                $transaction->qty_with_pcv = $total_qty_installed;
+
+            }
+
+        }
+
         return response()->json($transactions);
 
     }

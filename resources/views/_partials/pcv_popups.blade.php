@@ -123,30 +123,37 @@
 	<div class="modal-dialog modal-dialog-centered" role="document">
 		<div class="modal-content tx-14">
 			
-			<div class="modal-header">
-				<h6 class="modal-title" id="exampleModalLabel3">Remarks</h6>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">×</span>
-				</button>
-			</div>
+			<form role="form" method="POST" action="{{ route('approver.pcv.disapprove-cancel', $pcv->id) }}">
 
-			<div class="modal-body">
-				<div class="row">
-					
-					<div class="col-lg-12">
-						<div class="form-group">
-							<label for="remarks" class="d-block">Remarks</label>
-							<textarea id="approve-cancel-remarks" class="form-control" rows="3"></textarea>
-						</div>
-					</div>
-
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">×</span>
+					</button>
 				</div>
-			</div>
 
-			<div class="modal-footer">
-				<button class="btn btn-brand-01 d-inline-block tx-13 tx-uppercase" id="btn_approve_cancel">Approve</button>
-				<button type="button" class="btn btn-white tx-13 tx-uppercase" data-target="#pcvApproveCancel" data-toggle="modal" data-dismiss="modal">Cancel</button>
-			</div>
+				<div class="modal-body">
+					<div class="row">
+
+						@csrf
+						@method('PUT')
+						
+						<div class="col-lg-12">
+							<div class="form-group">
+								<label for="remarks" class="d-block">Remarks</label>
+								<textarea id="approve-cancel-remarks" class="form-control" rows="3" required></textarea>
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-brand-01 d-inline-block tx-13 tx-uppercase" id="btn_approve_cancel">Approve</button>
+					<button type="button" class="btn btn-white tx-13 tx-uppercase" data-target="#pcvApproveCancel" data-toggle="modal" data-dismiss="modal">Cancel</button>
+				</div>
+
+			</form>
+
 		</div>
 	</div>
 

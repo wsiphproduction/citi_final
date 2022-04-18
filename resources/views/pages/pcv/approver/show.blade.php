@@ -98,7 +98,7 @@
                     </div>
                 </div>
 
-                @if(\Str::contains($pcv->status , 'disapproved' ) || $pcv->status == 'cancelled')
+                @if(\Str::contains($pcv->status , 'disapproved' ) || $pcv->status == 'cancelled' || $pcv->status == 'cancel')
 
                     <div class="col-lg-6">
                         <div class="form-group row">
@@ -115,10 +115,10 @@
                     <hr class="mg-t-10 mg-b-40">
                 </div>
 
-        </div>
+            </div>
 
 
-        <div class="row" id="account-wrapper">
+            <div class="row" id="account-wrapper">
 
                 <div class="col-lg-12">
 
@@ -153,22 +153,26 @@
                                         @if(array_key_exists(0, $pcv->account_transaction['details']))
                                         
                                             @foreach( $pcv->account_transaction['details'] as $transaction )
-    
+
                                                 <tr>
                                                     @if(is_array($transaction)) 
-    
-                                                        @foreach($transaction as $d)
+
+                                                        @foreach($transaction as $key => $d)
                                                             @if(is_array($d))
                                                                 @continue
                                                             @else
-                                                                <td> {{ $d }} </td>
+                                                                @if($key == 'attachment')
+                                                                    <td><a href="{{env('APP_URL')}}/storage/pcv/{{$pcv->pcv_no}}/account/{{$d}}" target="_blank"> {{ $d }} </a></td>
+                                                                @else
+                                                                    <td> {{ $d }} </td>
+                                                                @endif
                                                             @endif
                                                         @endforeach
-    
+
                                                     @else
-    
+
                                                         <td>{{ $transaction }}</td>
-    
+
                                                     @endif
                                                 </tr>
                                                     
@@ -177,22 +181,26 @@
                                         @else
                                             <tr>
                                             @foreach( $pcv->account_transaction['details'] as $transaction )
-    
+
                                                 
                                                     @if(is_array($transaction)) 
-    
-                                                        @foreach($transaction as $d)
+
+                                                        @foreach($transaction as $key => $d)
                                                             @if(is_array($d))
                                                                 @continue
                                                             @else
-                                                                <td> {{ $d }} </td>
+                                                                @if($key == 'attachment')
+                                                                    <td><a href="{{env('APP_URL')}}/storage/pcv/{{$pcv->pcv_no}}/account/{{$d}}" target="_blank"> {{ $d }} </a></td>
+                                                                @else
+                                                                    <td> {{ $d }} </td>
+                                                                @endif
                                                             @endif
                                                         @endforeach
-    
+
                                                     @else
-    
+
                                                         <td>{{ $transaction }}</td>
-    
+
                                                     @endif
                                                 
                                                     
@@ -390,16 +398,18 @@
     @elseif($pcv->status == 'cancel')
 
         <div class="col-lg-12 mg-t-20">
-            <button type="button" class="btn btn-white mr-lg-1 mb-2 mb-lg-0 d-block d-lg-inline wd-100p wd-lg-150"
-                data-action="cancelled" data-id="{{ $pcv->id }}"  data-target="#pcvApproveCancel" data-backdrop="static" 
-                data-toggle="modal" data-dismiss="modal">
-                <i class="mg-r-5" data-feather="thumbs-up"></i> Approved
-            </button>
-            <!-- <button type="button" class="btn btn-brand-01 d-block d-lg-inline wd-100p wd-lg-150 btn-submit-disapprove"
-                data-action="disapproved" data-id="{{ $pcv->id }}" data-target="#pcvDisapprove" data-backdrop="static" 
+            <form role="form" class="d-inline-block" action="{{ route('approver.pcv.approve-cancel', $pcv->id) }}" method="POST">
+                @csrf
+                @method('PUT')
+                <button type="submit" class="btn btn-white mr-lg-1 mb-2 mb-lg-0 d-block d-lg-inline wd-100p wd-lg-150">
+                    <i class="mg-r-5" data-feather="thumbs-up"></i> Approved
+                </button>
+            </form>
+            <button type="button" class="btn btn-brand-01 d-block d-lg-inline wd-100p wd-lg-150 btn-submit-disapprove"
+                data-action="disapproved" data-id="{{ $pcv->id }}" data-target="#pcvApproveCancel" data-backdrop="static" 
                 data-toggle="modal" data-dismiss="modal">
                 <i class="mg-r-5" data-feather="thumbs-down"></i> Disapproved
-            </button> -->
+            </button>
         </div>
 
     @endif
@@ -483,39 +493,39 @@
         });
 
 
-        $(document).on('click', '#btn_approve_cancel', function(e) {
+        // $(document).on('click', '#btn_approve_cancel', function(e) {
 
-            e.preventDefault();
-            let _url = "";
+        //     e.preventDefault();
+        //     let _url = "";
 
-            if($('#approve-cancel-remarks').val() == '') { alert('Remarks is required'); return false; }
+        //     if($('#approve-cancel-remarks').val() == '') { alert('Remarks is required'); return false; }
 
-            $("#pcvApproveCancel").modal('hide');
+        //     $("#pcvApproveCancel").modal('hide');
 
-            $.ajax({
+        //     $.ajax({
 
-                url     : "{!! env('APP_URL') !!}/pcv/approver/approve-cancel/"+$('#pcv_id').val() ,
-                method  : 'PUT' ,
-                data    : { _token : "{!! csrf_token() !!}" , remarks : $('#approve-cancel-remarks').val() } ,
-                success : function (res) {
+        //         url     : "{!! env('APP_URL') !!}/pcv/approver/approve-cancel/"+$('#pcv_id').val() ,
+        //         method  : 'PUT' ,
+        //         data    : { _token : "{!! csrf_token() !!}" , remarks : $('#approve-cancel-remarks').val() } ,
+        //         success : function (res) {
                     
-                    $('#pcv_message').text(res.message);
-                    $('#confirm-footer').hide();
-                    $('#pcv_confirm_message').modal({
-                        backdrop : 'static' ,
-                        show : true
-                    });
+        //             $('#pcv_message').text(res.message);
+        //             $('#confirm-footer').hide();
+        //             $('#pcv_confirm_message').modal({
+        //                 backdrop : 'static' ,
+        //                 show : true
+        //             });
 
-                    $('#pcvDisapprove').modal('hide');
-                    setTimeout(function(){
-                        $('#pcv_confirm_message').modal('hide');
-                        location.reload();
-                    }, 3000);
-                }
+        //             $('#pcvDisapprove').modal('hide');
+        //             setTimeout(function(){
+        //                 $('#pcv_confirm_message').modal('hide');
+        //                 location.reload();
+        //             }, 3000);
+        //         }
 
-            })
+        //     })
             
-        });
+        // });
         
 
         $(document).on('click', '#btn_approval_code', function(e) {
