@@ -753,13 +753,13 @@
 
 			// check attachment for duplication
 
-			$.ajax({
-				url : ,
-				method: 'GET' ,
-				success: function(response) {
+			// $.ajax({
+			// 	url : ,
+			// 	method: 'GET' ,
+			// 	success: function(response) {
 
-				}
-			})
+			// 	}
+			// })
 
 			// check if can save multiple transaction accounts
 			$('#pcv_form').submit();
