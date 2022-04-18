@@ -751,6 +751,16 @@
 				}
 			}
 
+			// check attachment for duplication
+
+			$.ajax({
+				url : ,
+				method: 'GET' ,
+				success: function(response) {
+
+				}
+			})
+
 			// check if can save multiple transaction accounts
 			$('#pcv_form').submit();
 
@@ -1316,7 +1326,7 @@
 								_html += '<td>'+o.original_qty+'</td>';
 								_html += '<td>'+o.qty_with_pcv+'</td>';
 								if(o.original_qty > o.qty_with_pcv) {
-									_html += '<td data-name="qty_for_installation"><input type="number" step="1" class="form-control"></td>';
+									_html += '<td data-name="qty_for_installation"><input type="number" step="1" class="form-control" max="'+o.original_qty - o.qty_with_pcv+'"></td>';
 								} else {
 									_html += '<td data-name="qty_for_installation"><input disabled type="number" step="1" class="form-control"></td>';
 								}
