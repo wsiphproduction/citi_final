@@ -227,7 +227,7 @@ Route::middleware(['web', 'auth'])->group(function () {
             Route::get('edit/{pcv}', [RequestorPCVController::class, 'edit'])->name('requestor.pcv.edit');
             Route::get('/print/{id}', [RequestorPCVController::class, 'print'])->name('requestor.pcv.print');
             
-
+            Route::get('search-di', [RequestorPCVController::class, 'searchDI'])->name('requestor.pcv.search-di');
             Route::get('copy-pcv/{pcv}', [RequestorPCVController::class, 'copyPCV'])->name('requestor.pcv.copy-pcv');
 
             Route::post('store', [RequestorPCVController::class, 'store'])->name('requestor.pcv.store');
