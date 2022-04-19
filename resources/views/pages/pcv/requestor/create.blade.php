@@ -462,6 +462,12 @@
 
 						$('#account-wrapper').append(res);
 
+						setTimeout(function(){
+							$("#docdate").datepicker({
+							    maxDate: new Date()
+							});							
+						}, 1000);
+
 					}
 
 				});
@@ -760,34 +766,34 @@
 			// check attachment for duplication
 			// move this on blur fill up attachment
 			
-			// let _vendor = $('.custom-inputs[data-name="vendor"]').val();
-			// let _attachment_exist = false;
-			// $.each(account_attachments, function(i, e) {
+			let _vendor = $('.custom-inputs[data-name="vendor"]').val();
+			let _attachment_exist = false;
+			$.each(account_attachments, function(i, e) {
 
-			// 	$.ajax({
-			// 		url : '{!! route("requestor.pcv.check-attachment-exist") !!}'+'?vendor='+_vendor+'&date='+e.date+'&ref='+e.ref,
-			// 		method: 'GET' ,
-			// 		async: false ,
-			// 		success: function(response) {
-			// 			if(response.length > 0) _attachment_exist = true;
-			// 		}
-			// 	})
+				$.ajax({
+					url : '{!! route("requestor.pcv.check-attachment-exist") !!}'+'?vendor='+_vendor+'&date='+e.date+'&ref='+e.ref,
+					method: 'GET' ,
+					async: false ,
+					success: function(response) {
+						if(response.length > 0) _attachment_exist = true;
+					}
+				})
 
-			// });
+			});
 
-			// if( _attachment_exist ) {
+			if( _attachment_exist ) {
 					
-			// 	if( i > 0) {
-			// 		$('#docref_0'+i).addClass('is-invalid');
-			// 		$('#docdate_0'+i).addClass('is-invalid');
-			// 	} else {
-			// 		$('#docref').addClass('is-invalid');
-			// 		$('#docdate').addClass('is-invalid');
-			// 	}
-			// 	return false;
+				if( i > 0) {
+					$('#docref_0'+i).addClass('is-invalid');
+					$('#docdate_0'+i).addClass('is-invalid');
+				} else {
+					$('#docref').addClass('is-invalid');
+					$('#docdate').addClass('is-invalid');
+				}
+				return false;
 
-			// }
-//			return false;
+			}
+			return false;
 			// check if can save multiple transaction accounts
 			$('#pcv_form').submit();
 
@@ -1619,14 +1625,32 @@
 						$('#type_0'+i).val(data.type);
 						$('#docrefstring_0'+i).val(data.attachment);
 						$('#docrefstring_0'+i).siblings("label").text(data.attachment);
-						$('#docdata_0'+i).val(moment(data.date).format('YYYY-MM-DD'));
+						$('#docdate_0'+i).val(moment(data.date).format('MM/DD/YYYY'));
 						$('#docref_0'+i).val(data.ref);
+
+						setTimeout(function(){
+							$('#docdate_0'+i).removeClass('hasDatepicker')
+								.removeData('datepicker')
+								.unbind()
+								.datepicker({
+									maxDate : new Date()
+								});		
+						}, 1000);
 					} else {
 						$('#type_'+i).val(data.type);
 						$('#docrefstring_'+i).val(data.attachment);
 						$('#docrefstring_'+i).siblings("label").text(data.attachment);
-						$('#docdate_'+i).val(moment(data.date).format('YYYY-MM-DD'));
+						$('#docdate_'+i).val(moment(data.date).format('MM/DD/YYYY'));
 						$('#docref_'+i).val(data.ref);
+
+						setTimeout(function(){
+							$('#docdate_'+i).removeClass('hasDatepicker')
+								.removeData('datepicker')
+								.unbind()
+								.datepicker({
+									maxDate : new Date()
+								});		
+						}, 1000);
 					}
 
 				} else {
@@ -1634,8 +1658,17 @@
 					$('#type').val(data.type);
 					$('#docrefstring').val(data.attachment);
 					$('#docrefstring').siblings("label").text(data.attachment);
-					$('#docdate').val(moment(data.date).format('YYYY-MM-DD'));
+					$('#docdate').val(moment(data.date).format('MM/DD/YYYY'));
 					$('#docref').val(data.ref);
+
+					setTimeout(function(){
+						$('#docdate').removeClass('hasDatepicker')
+							.removeData('datepicker')
+							.unbind()
+							.datepicker({
+								maxDate : new Date()
+							});		
+					}, 1000);
 
 				}
 
@@ -1663,12 +1696,22 @@
 
 	        $('#type', newElement).attr("id", field.split("_")[0]+"_"+id );
 	        $('#document', newElement).attr("id", field1.split("_")[0]+"_"+id );
-	        $('#docdate', newElement).attr("id", field2.split("_")[0]+"_"+id ).val(new moment().format('YYYY-MM-DD'));
+	        $('#docdate', newElement).attr("id", field2.split("_")[0]+"_"+id ).val(new moment().format('MM/DD/YYYY'));
 	        $('#docref', newElement).attr("id", field3.split("_")[0]+"_"+id ).val('');
 			$('#docrefstring', newElement).attr("id", field4.split("_")[0]+"_"+id ).val('');
 			
 	        newElement.appendTo($("#attachment-outter-wrapper"));
 	        $('#'+field4.split("_")[0]+"_"+id).siblings('label').html('');
+
+	        setTimeout(function(){
+				$('#'+field2.split("_")[0]+"_"+id).removeClass('hasDatepicker')
+					.removeData('datepicker')
+					.unbind()
+					.datepicker({
+						maxDate : new Date()
+					});		
+			}, 1000);
+
 	    }	
 
 	    function populateAccountsTable() {

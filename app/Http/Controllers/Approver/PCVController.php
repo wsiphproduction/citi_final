@@ -102,7 +102,7 @@ class PCVController extends Controller
         $user = auth()->user();
 
         $matrix = AccountMatrix::where('name', $pcv->account_name)
-            ->where('amount', '=', $pcv->amount)
+            ->where('amount', $pcv->amount)
             ->where('status', 1)
             ->orWhere(function($query) use ($pcv) {
                 $query->where('name', $pcv->account_name)
@@ -159,7 +159,7 @@ class PCVController extends Controller
             return response()->json([
                 'status'        => 'confirmed' ,
                 'need_code'     => true ,
-                'message'   => "{$pcv->pcv_no} was successfully confirmed. The requested amount requires an Approval Code. Input Approval Code."
+                'message'       => "{$pcv->pcv_no} was successfully confirmed. The requested amount requires an Approval Code. Input Approval Code."
             ]);
 
         }
@@ -177,7 +177,7 @@ class PCVController extends Controller
         $pcv->update([
             'tl_approved'       => 1 ,
             'status'            => 'approved' ,
-            'approved_by'       => auth()->user()->username ,
+            'approved_by'       => $user->username ,
             'approved_date'     => \Carbon\Carbon::now() ,
         ]);
 

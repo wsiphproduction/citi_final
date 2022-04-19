@@ -182,7 +182,8 @@ class PCVController extends Controller
                     'type'          => $attachment['type'] ,
                     'ref'           => $attachment['ref'] ,
                     'date'          => \Carbon\Carbon::parse($attachment['date']) ,
-                    'attachment'    => $attachment['attachment'] 
+                    'attachment'    => $attachment['attachment'] ,
+                    'vendor'        => $account_transactions[0]['vendor']
                 ]);
 
                 if(Storage::exists("public/pcv/{$pcv_transaction->pcv_no}/{$attachment['attachment']}")) {
@@ -469,6 +470,17 @@ class PCVController extends Controller
             ->get();
 
         return response()->json($_account_transactions);
+
+    }
+
+    public function attachmentExist(Request $request) {
+
+        $attachments = Attachment::where('vendor', $request->vendor)
+            ->where('ref', $request->ref)
+            ->whereDate('date', $request->date)
+            ->get();
+
+        return response()->json($attachments);
 
     }
 

@@ -187,7 +187,7 @@
 						<div class="col-lg-3">
 							<div class="form-group">
 								<label for="doc-ref-date" class="d-block tx-14">Doc. Ref Date</label>
-								<input type="date" class="form-control doc-reft-data" id="docdate" value="{{ date('Y-m-d') }}">
+								<input type="text" class="form-control doc-reft-data ref-date" id="docdate" value="{{ date('m/d/Y') }}">
 							</div>
 						</div>
 

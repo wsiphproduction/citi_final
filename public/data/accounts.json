@@ -322,7 +322,7 @@
             "type": "number"
          },
          {
-            "name": "Amount",
+            "name": "Total Amount",
             "type": "number"
          }
       ],
@@ -340,7 +340,7 @@
             "type": "number"
          },
          {
-            "name": "Amount",
+            "name": "Total Amount",
             "type": "number"
          }
       ],
