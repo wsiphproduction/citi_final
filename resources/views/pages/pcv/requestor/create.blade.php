@@ -722,7 +722,13 @@
 			$('#pcv_action').val($(this).data('action'));
 
 			if($('#total_amount_display').length > 0){}else {
-				$('#total_amount').val($('.custom-inputs[data-name="amount"]').val());
+
+				if($('.custom-inputs[data-name="amount"]').length) {
+					$('#total_amount').val($('.custom-inputs[data-name="amount"]').val());
+				} else if($('.custom-inputs[data-name="total_amount"]').length) {
+					$('#total_amount').val($('.custom-inputs[data-name="total_amount"]').val());
+				}
+
 			}
 
 			let is_null_val = false;
@@ -752,15 +758,36 @@
 			}
 
 			// check attachment for duplication
+			// move this on blur fill up attachment
+			
+			// let _vendor = $('.custom-inputs[data-name="vendor"]').val();
+			// let _attachment_exist = false;
+			// $.each(account_attachments, function(i, e) {
 
-			// $.ajax({
-			// 	url : ,
-			// 	method: 'GET' ,
-			// 	success: function(response) {
+			// 	$.ajax({
+			// 		url : '{!! route("requestor.pcv.check-attachment-exist") !!}'+'?vendor='+_vendor+'&date='+e.date+'&ref='+e.ref,
+			// 		method: 'GET' ,
+			// 		async: false ,
+			// 		success: function(response) {
+			// 			if(response.length > 0) _attachment_exist = true;
+			// 		}
+			// 	})
 
+			// });
+
+			// if( _attachment_exist ) {
+					
+			// 	if( i > 0) {
+			// 		$('#docref_0'+i).addClass('is-invalid');
+			// 		$('#docdate_0'+i).addClass('is-invalid');
+			// 	} else {
+			// 		$('#docref').addClass('is-invalid');
+			// 		$('#docdate').addClass('is-invalid');
 			// 	}
-			// })
+			// 	return false;
 
+			// }
+//			return false;
 			// check if can save multiple transaction accounts
 			$('#pcv_form').submit();
 
@@ -1783,7 +1810,7 @@
 
 		    	$('#account-transactions-list tr').find('td').each(function() {
 
-		    		if($(this).data('name') == 'amount') {
+		    		if($(this).data('name') == 'amount' || $(this).data('name') == 'total_amount') {
 			    		_total = _total + parseFloat($(this).text());
 			    	}
 

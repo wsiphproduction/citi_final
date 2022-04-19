@@ -706,7 +706,11 @@
 			$('#pcv_action').val($(this).data('action'));
 
 			if($('#total_amount_display').length > 0){}else {
-				$('#total_amount').val($('.custom-inputs[data-name="amount"]').val());
+				if($('.custom-inputs[data-name="amount"]').length) {
+					$('#total_amount').val($('.custom-inputs[data-name="amount"]').val());
+				} else if($('.custom-inputs[data-name="total_amount"]').length) {
+					$('#total_amount').val($('.custom-inputs[data-name="total_amount"]').val());
+				}
 			}
 
 			let is_null_val = false;
