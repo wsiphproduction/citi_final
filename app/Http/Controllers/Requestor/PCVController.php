@@ -477,7 +477,7 @@ class PCVController extends Controller
 
         $attachments = Attachment::where('vendor', $request->vendor)
             ->where('ref', $request->ref)
-            ->whereDate('date', $request->date)
+            ->whereDate('date', \Carbon\Carbon::parse($request->date))
             ->get();
 
         return response()->json($attachments);

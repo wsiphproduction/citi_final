@@ -199,7 +199,7 @@
 	            	<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-save"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
 	            	Save
 	          	</button>
-	          	<button type="submit" class="btn btn-brand-01 d-block d-lg-inline wd-100p wd-lg-150 btn-savesubmit"
+	          	<button type="button" class="btn btn-brand-01 d-block d-lg-inline wd-100p wd-lg-150 btn-savesubmit"
 	          		data-action="submitted">
 	            	<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-inbox"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg>
 	            	Submit
@@ -377,6 +377,7 @@
 		var pos_items = [];
 		var typingTimer;
 		var doneTypingInterval = 2000;
+		var attachment_eexist = false;
 
 		$(document).ready(function() {
 
@@ -766,36 +767,68 @@
 			// check attachment for duplication
 			// move this on blur fill up attachment
 			
-			let _vendor = $('.custom-inputs[data-name="vendor"]').val();
-			let _attachment_exist = false;
-			$.each(account_attachments, function(i, e) {
-
-				$.ajax({
-					url : '{!! route("requestor.pcv.check-attachment-exist") !!}'+'?vendor='+_vendor+'&date='+e.date+'&ref='+e.ref,
-					method: 'GET' ,
-					async: false ,
-					success: function(response) {
-						if(response.length > 0) _attachment_exist = true;
-					}
-				})
-
-			});
-
-			if( _attachment_exist ) {
+			
+			
+			// if( _attachment_exist ) {
 					
-				if( i > 0) {
-					$('#docref_0'+i).addClass('is-invalid');
-					$('#docdate_0'+i).addClass('is-invalid');
-				} else {
-					$('#docref').addClass('is-invalid');
-					$('#docdate').addClass('is-invalid');
-				}
-				return false;
+			// 	if( i > 0) {
+			// 		$('#docref_0'+i).addClass('is-invalid');
+			// 		$('#docdate_0'+i).addClass('is-invalid');
+			// 	} else {
+			// 		$('#docref').addClass('is-invalid');
+			// 		$('#docdate').addClass('is-invalid');
+			// 	}
+			// 	return false;
 
+			// }
+
+			// $.when.apply(null, _promises).done(function(e){
+			// 	console.log('aw');
+			//    console.log(e);
+			// })
+
+			// console.log(_attachment_exist);
+
+			if(attachment_eexist) {
+				return false;
 			}
-			return false;
 			// check if can save multiple transaction accounts
 			$('#pcv_form').submit();
+
+		});
+
+		$(document).on('blur', '.ref-doc', function() {
+			let _attachment_exist = false;
+			let _vendor = $('.custom-inputs[data-name="vendor"]').val();
+			let _date_no = $(this).attr('id').split("_").reverse()[0];
+			let _date = '';
+			let _ref = $(this).val();
+
+			if(!Array.isArray(_date_no)) {
+				_date = $('#docdate').val();
+			} else {
+				_date = $('#docdate_'+_date_no).val();
+			}
+
+			let _that = $(this);
+
+			$.ajax({
+				url : '{!! route("requestor.pcv.check-attachment-exist") !!}'+'?vendor='+_vendor+'&date='+_date+'&ref='+_ref,
+				method: 'GET' ,
+				async: false ,
+				success: function(res) {
+
+					if(res.length>0) {
+
+						$(_that).addClass('is-invalid');
+						alert('This attachment already exist.');
+						attachment_eexist = true;
+						return false;
+
+					}
+
+				}
+			});
 
 		});
 

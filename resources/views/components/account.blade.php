@@ -194,7 +194,7 @@
 						<div class="col-lg-2">
 							<div class="form-group">
 								<label for="doc-ref-no" class="d-block tx-14">Doc. Ref No.</label>
-								<input type="text" class="form-control doc-reft-data" id="docref">
+								<input type="text" class="form-control doc-reft-data ref-doc" id="docref">
 							</div>
 						</div>
 
