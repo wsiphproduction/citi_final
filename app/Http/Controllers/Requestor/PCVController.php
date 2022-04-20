@@ -476,8 +476,9 @@ class PCVController extends Controller
     public function attachmentExist(Request $request) {
 
         $attachments = Attachment::where('vendor', $request->vendor)
+            ->where('from', 'pcv')
             ->where('ref', $request->ref)
-            ->whereDate('date', \Carbon\Carbon::parse($request->date))
+            ->whereDate('date', \Carbon\Carbon::parse($request->date)->format('Y-m-d'))
             ->get();
 
         return response()->json($attachments);

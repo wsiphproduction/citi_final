@@ -790,6 +790,7 @@
 			// console.log(_attachment_exist);
 
 			if(attachment_eexist) {
+				alert('Your attachment already exist please check');
 				return false;
 			}
 			// check if can save multiple transaction accounts
@@ -797,12 +798,16 @@
 
 		});
 
+		$(document).on('keydown', '.ref-doc', function(){ $(this).removeClass('is-invalid'); });
+
 		$(document).on('blur', '.ref-doc', function() {
 			let _attachment_exist = false;
 			let _vendor = $('.custom-inputs[data-name="vendor"]').val();
 			let _date_no = $(this).attr('id').split("_").reverse()[0];
 			let _date = '';
 			let _ref = $(this).val();
+
+			$(this).removeClass('is-invalid');
 
 			if(!Array.isArray(_date_no)) {
 				_date = $('#docdate').val();
