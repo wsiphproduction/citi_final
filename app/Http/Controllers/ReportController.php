@@ -51,23 +51,20 @@ class ReportController extends Controller
                 return view('pages.report.expenses-report', compact('pcv', 'request', 'from', 'to'));
             } else {
 
-                if($request->has('status') && $request->status != '') {
-                    $status = $request->status;
-                } else {
-                    $status = 'replineshed';
-                }
-
-                $pcfr = Pcfr::where('status', $status)
+                $pcfr = Pcfr::where('status', 'approved')
                     ->whereHas('user', function($query) use ($branch) {
                         $query->whereIn('assign_to', $branch);
                     })
-                    ->whereDate('from', '=', request()->from)
-                    ->whereDate('to', '=', request()->to)
-                    ->first();
+                    ->whereDate('from', '>=', request()->from)
+                    ->whereDate('from', '<=', request()->to)
+                    ->whereDate('to', '>=', request()->from)
+                    ->whereDate('to', '<=', request()->to)
+                    ->get();
                 
                 $request_type = request()->name;
                 $request = request()->all();
 
+                return response()->json($pcfr);
                 return view('pages.report.pcfr-report', compact('pcfr', 'request_type', 'request', 'from', 'to'));
             }
 
@@ -75,5 +72,18 @@ class ReportController extends Controller
 
     }
 
+
+    public function search1(Request $request) {
+
+        $pcfr = Pcfr::where('pcfr_no', request()->pcfr_no)->first();
+        $from = $request->from;
+        $to   = $request->to;
+            
+        $request_type = request()->name;
+        $request = request()->all();
+
+        return view('pages.report.pcfr-report', compact('pcfr', 'request_type', 'request', 'from', 'to'));
+
+    }
 
 }

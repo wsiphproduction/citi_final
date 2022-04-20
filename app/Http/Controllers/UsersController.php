@@ -118,7 +118,6 @@ class UsersController extends Controller
             'lastname'  => 'required|max:50' ,
             'middlename'=> 'max:50' ,
             
-
         ]);
 
         foreach($user->getRoleNames() as $role) {
@@ -137,7 +136,8 @@ class UsersController extends Controller
             'status'            => $request->status ,
             'updated_at'        => \Carbon\Carbon::now() ,
             'updated_by'        => auth()->user()->username ,
-            'store_type'        => $request->store_type
+            'store_type'        => $request->store_type ,
+            'remarks'           => $request->remarks
         ]);
 
         $user->assignRole($request->access);

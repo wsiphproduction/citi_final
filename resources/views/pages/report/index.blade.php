@@ -54,7 +54,7 @@
 					<div class="form-group row">
 						<label for="slip-no" class="col-lg-5 col-form-label">Company</label>
 						<div class="col-lg-7">
-							<select class="form-control custom-select" name="company" id="company"
+							<select class="form-control custom-select search-input" name="company" id="company"
 								@if(auth()->user()->position == 'administrator' || auth()->user()->position == 'Administrator' || 
 								auth()->user()->position == 'audit' || auth()->user()->position == 'Audit') multiple @endif>
 								<option value="">Select</option>
@@ -74,7 +74,7 @@
 					<div class="form-group row">
 						<label for="slip-no" class="col-lg-5 col-form-label">Branch</label>
 						<div class="col-lg-7">
-							<select class="form-control custom-select" name="company" id="branch"
+							<select class="form-control custom-select search-input" name="company" id="branch"
 								@if(auth()->user()->position == 'administrator' || auth()->user()->position == 'Administrator' || 
 								auth()->user()->position == 'audit' || auth()->user()->position == 'Audit') multiple @endif>
 								<option value="">Select</option>
@@ -96,7 +96,7 @@
 					<div class="form-group row">
 						<label for="slip-no" class="col-lg-5 col-form-label">Date From</label>
 						<div class="col-lg-7">
-							<input type="date" id="date_from" class="form-control" value="{{ date('Y-m-d') }}">
+							<input type="date" id="date_from" class="form-control search-input" value="{{ date('Y-m-d') }}">
 						</div>
 					</div>
 				</div>
@@ -105,7 +105,7 @@
 					<div class="form-group row">
 						<label for="slip-no" class="col-lg-5 col-form-label">Date To</label>
 						<div class="col-lg-7">
-							<input type="date" id="date_to" class="form-control" value="{{ date('Y-m-d') }}">
+							<input type="date" id="date_to" class="form-control search-input" value="{{ date('Y-m-d') }}">
 						</div>
 					</div>
 				</div>
@@ -154,26 +154,20 @@
     <script>
 			
     	$(document).on('change', '#name', function(){
-
-    		if($(this).val() == 'petty cash expense') {
+    		$('#for-detailed').empty();
+    		if($(this).val() != 'petty cash expense') {
 
     			_html  = '<div class="form-group row">';
     			_html += '<label for="slip-no" class="col-lg-5 col-form-label">PCFR</label>';
     			_html += '<div class="col-lg-7">';
-    			_html += '<select class="form-control custom-select" name="status" id="status">';
-    			_html += '<option value="saved">Saved</option>';
-    			_html += '<option value="submitted">Submitted</option>';
-    			_html += '<option value="approved">Approved</option>';
-    			_html += '<option value="post to ebs">Post To Ebs</option>';
-    			_html += '<option value="replenished">Replenished</option>';
+    			_html += '<select class="form-control custom-select" name="pcfr_no" id="pcfr_no">';
+    			_html += '<option value="saved">Select</option>';
     			_html += '</select>';
     			_html += '</div></div>'
 
     			$('#for-detailed').append(_html);
 
-    		} else {
-    			$('#for-detailed').empty();
-    		}
+    		} 
 
     	});
 
@@ -205,20 +199,86 @@
     			_url = _url+'&status='+$('#status').val();
     		}
 
-    		$('#report').empty();
+    		if($('#name').val() == 'petty cash expense') {
+	    		
+	    		$('#report').empty();
 
-    		$.ajax({
+	    		$.ajax({
 
-				url 	: _url,
-				method 	: 'GET' ,
-				success : function(res) {
+					url 	: _url,
+					method 	: 'GET' ,
+					success : function(res) {
 
-					console.log(res);
-					$('#report').append(res);
+						console.log(res);
+						$('#report').append(res);
 
-				}
+					}
 
-			});
+				});
+
+	    	} else {
+
+	    		_url = '{!! route("reports.search1") !!}?name='+_name+'&company='+_company+'&branch='+_branch+'&from='+_from+'&to='+_to+'&pcfr_no='+$('#pcfr_no').val();
+
+	    		$('#report').empty();
+	    		
+	    		$.ajax({
+
+					url 	: _url,
+					method 	: 'GET' ,
+					success : function(res) {
+
+						console.log(res);
+						$('#report').append(res);
+
+					}
+
+				});
+
+	    	}
+
+    	});
+
+    	$(document).on('change', '.search-input', function() {
+
+    		let _name = $('#name').val();
+    		let _company = $('#company').val();
+    		let _branch = $('#branch').val();
+    		let _from = $('#date_from').val();
+    		let _to = $('#date_to').val();
+    		let _url = '{!! route("reports.search") !!}?name='+_name+'&company='+_company+'&branch='+_branch+'&from='+_from+'&to='+_to;
+
+    		if($('#name').val() != 'petty cash expense') {
+	    		
+	    		$.ajax({
+
+					url 	: _url,
+					method 	: 'GET' ,
+					success : function(res) {
+
+						if(res.length>0) {
+							console.log('yes');
+
+							$('#pcfr_no').empty();
+
+							var _html = '';
+								_html += '<option value="">Select</option>';
+
+							$.each(res, function(i, o) {
+								console.log(o.pcfr_no);
+								_html += '<option value="'+o.pcfr_no+'">'+o.pcfr_no+'</option>';
+
+							});
+							console.log(_html);
+							$('#pcfr_no').append(_html);
+
+						}
+
+					}
+
+				});
+
+	    	}
 
     	});
 

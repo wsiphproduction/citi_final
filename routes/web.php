@@ -447,6 +447,7 @@ Route::middleware(['web', 'auth'])->group(function () {
 
         Route::get('/', [ReportController::class, 'index'])->name('reports.index');
         Route::get('search', [ReportController::class, 'search'])->name('reports.search');
+        Route::get('search1', [ReportController::class, 'search1'])->name('reports.search1');
 
     });
 

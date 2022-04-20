@@ -29,9 +29,11 @@
 
 	<div class="row">
 		
-		<form method="POST" action="{{ route('users.update', $user->id) }}" class="col-lg-12">
+		<form method="POST" action="{{ route('users.update', $user->id) }}" class="col-lg-12" id="user-form">
 			@csrf
 			@method('PUT')
+
+			<input type="hidden" name="remarks" id="hidden-remarks">
 
 			<div class="row">
 
@@ -169,7 +171,8 @@
 				</div>
 
 				<div class="col-lg-12 mg-t-20">
-					<button type="submit" class="btn btn-brand-01 d-block d-lg-inline wd-100p wd-lg-150">
+					<button type="button" class="btn btn-brand-01 d-block d-lg-inline wd-100p wd-lg-150"
+						data-toggle="modal" data-target="#userUpdateRemarks">
 						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
 						Update
 					</button>					
@@ -180,6 +183,42 @@
 		</form>
 
     </div>
+
+    <div class="modal fade" id="userUpdateRemarks" tabindex="-1" role="dialog" 
+		aria-labelledby="userUpdateRemarks" aria-modal="true">
+
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content tx-14">
+				
+				<div class="modal-header">
+					<h6 class="modal-title" id="exampleModalLabel3">Remarks</h6>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">×</span>
+					</button>
+				</div>
+
+				<div class="modal-body">
+					<div class="row">
+						
+						<div class="col-lg-12">
+							<div class="form-group">
+								<label for="remarks" class="d-block">Remarks</label>
+								<textarea id="user-remarks" class="form-control" rows="3"></textarea>
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+				<div class="modal-footer">
+					<button class="btn btn-brand-01 d-inline-block tx-13 tx-uppercase" id="btn_updateWithRemarks">Update</button>
+					<button type="button" class="btn btn-white tx-13 tx-uppercase" data-target="#userUpdateRemarks" data-toggle="modal" data-dismiss="modal">Cancel</button>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
 
     @if(count($user->audits()->where('event', 'updated')->get()))
 
@@ -199,6 +238,7 @@
     					<th> Created Date and Time </th>
     					<th> Updated By </th>
     					<th> Updated Date and Time </th>
+    					<th> Remarks </th>
     				</thead>
 
     				<tbody>
@@ -207,7 +247,7 @@
     						<td>
     							<ul style="list-style: none; padding: 0;">
     							@foreach($audit->new_values as $key => $value)
-    								@if($key != 'updated_by')
+    								@if($key != 'updated_by' && $key != 'remarks')
 	    								<li>({{ $key }}) - From {{ $audit->old_values[$key] }} - To {{ $value }}</li>
 	    							@endif
     							@endforeach
@@ -224,6 +264,15 @@
     						</td>
     						<td>
     							{{ $audit->updated_at }}
+    						</td>
+    						<td>
+    							
+    							@foreach($audit->new_values as $key => $value)
+    								@if($key == 'remarks')
+	    								{{ $value }} 
+	    							@endif
+    							@endforeach
+
     						</td>
     					</tr>
     					@endforeach
@@ -320,6 +369,21 @@
         		"searching": false,
         		"bLengthChange": false,
 			});
+		});
+
+		$(document).on('click', '#btn_updateWithRemarks', function() {
+
+			let _remarks = $('#user-remarks').val();
+
+			if(_remarks == '') {
+				alert('Remarks is required');
+				return false;
+			}
+
+			$('#hidden-remarks').val(_remarks);
+			$('#user-form').submit();
+
+
 		});
 
     </script>
