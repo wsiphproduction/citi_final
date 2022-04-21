@@ -365,6 +365,7 @@
 		var pos_items = [];
 		var typingTimer;
 		var doneTypingInterval = 2000;
+		var attachment_eexist = false;
 
 		$(document).ready(function() {
 
@@ -747,8 +748,52 @@
 
 			$('#pcv_action').val($(this).data('action'));
 
+			if(attachment_eexist) {
+				alert('Your attachment already exist please check');
+				return false;
+			}
+
 			// check if can save multiple transaction accounts
 			$('#pcv_form').submit();
+
+		});
+
+		$(document).on('keydown', '.ref-doc', function(){ $(this).removeClass('is-invalid'); });
+
+		$(document).on('blur', '.ref-doc', function() {
+			let _attachment_exist = false;
+			let _vendor = $('.custom-inputs[data-name="vendor"]').val();
+			let _date_no = $(this).attr('id').split("_").reverse()[0];
+			let _date = '';
+			let _ref = $(this).val();
+
+			$(this).removeClass('is-invalid');
+
+			if(!Array.isArray(_date_no)) {
+				_date = $('#docdate').val();
+			} else {
+				_date = $('#docdate_'+_date_no).val();
+			}
+
+			let _that = $(this);
+
+			$.ajax({
+				url : '{!! route("requestor.pcv.check-attachment-exist") !!}'+'?vendor='+_vendor+'&date='+_date+'&ref='+_ref,
+				method: 'GET' ,
+				async: false ,
+				success: function(res) {
+
+					if(res.length>0) {
+
+						$(_that).addClass('is-invalid');
+						alert('This attachment already exist.');
+						attachment_eexist = true;
+						return false;
+
+					}
+
+				}
+			});
 
 		});
 
