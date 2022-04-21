@@ -256,7 +256,9 @@
 
                                 <div class="dataTables_responsive">
             
-                                    <thead>
+                                    <table id="account-transactions-list" class="table dataTable no-footer">
+                                            
+                                        <thead>
                                             <tr role="row">
                                                 @if(array_key_exists(0, $pcv->account_transaction['details']))
                                                     @foreach($pcv->account_transaction['details'][0]['items'][0] as $key => $tbl_headers)
@@ -288,6 +290,8 @@
                                             @endforeach
 
                                         </tbody>
+
+                                    </table>
                                 
                                 </div>
 
