@@ -1392,7 +1392,8 @@
 								_html += '<td>'+o.original_qty+'</td>';
 								_html += '<td>'+o.qty_with_pcv+'</td>';
 								if(o.original_qty > o.qty_with_pcv) {
-									_html += '<td data-name="qty_for_installation"><input type="number" step="1" class="form-control" max="'+o.original_qty - o.qty_with_pcv+'"></td>';
+									let _max = parseInt(o.original_qty) - parseInt(o.qty_with_pcv);
+									_html += '<td data-name="qty_for_installation"><input type="number" step="1" class="form-control" max="'+_max+'"></td>';
 								} else {
 									_html += '<td data-name="qty_for_installation"><input disabled type="number" step="1" class="form-control"></td>';
 								}
