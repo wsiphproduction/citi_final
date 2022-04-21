@@ -261,13 +261,13 @@
                                         <thead>
                                             <tr role="row">
                                                 @if(array_key_exists(0, $pcv->account_transaction['details']))
-                                                    @foreach($pcv->account_transaction['details'][0]['items'] as $key => $tbl_headers)
+                                                    @foreach($pcv->account_transaction['details'][0]['items'][0] as $key => $tbl_headers)
                                                     @if($key != 'items')
                                                     <td data-rowname="{{ strtolower(str_replace(' ', '_', $key)) }}" class="tbl-header tx-uppercase"> {{ $key }} </td>
                                                     @endif
                                                     @endforeach
                                                 @else
-                                                    @foreach($pcv->account_transaction['details']['items'] as $key => $tbl_headers)
+                                                    @foreach($pcv->account_transaction['details']['items'][0] as $key => $tbl_headers)
                                                     @if($key != 'items')
                                                     <td data-rowname="{{ strtolower(str_replace(' ', '_', $key)) }}" class="tbl-header tx-uppercase"> {{ $key }} </td>
                                                     @endif
@@ -279,15 +279,14 @@
                                         <tbody>
                                             
                                             @foreach( $pcv->account_transaction['details'] as $transaction )
-
+                                                @foreach( $transaction['items'] as $item )
                                                 <tr>
-
-                                                    <td>{{ $transaction['items']['barcode'] }}</td>
-                                                    <td>{{ $transaction['items']['description'] }}</td>
-                                                    <td>{{ $transaction['items']['qty_for_installation'] }}</td>
+                                                    <td>{{ $item['barcode'] }}</td>
+                                                    <td>{{ $item['description'] }}</td>
+                                                    <td>{{ $item['qty_for_installation'] }}</td>
 
                                                 </tr>
-                                                    
+                                                @endforeach                                                    
                                             @endforeach
 
                                         </tbody>
