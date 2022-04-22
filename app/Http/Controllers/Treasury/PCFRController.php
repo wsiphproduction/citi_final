@@ -86,9 +86,10 @@ class PCFRController extends Controller
 
     public function create() {
 
-        $vendors = Vendor::where('status', 1)
-            ->where('branch_id', auth()->user()->assign_to)
-            ->get();
+        $vendor = \DB::table('comp_branch_selection')
+            ->where('BRANCH_CODE', auth()->user()->assign_to)
+            ->first();
+
         $user = auth()->user();
         $branch = $user->branch;
 
@@ -153,7 +154,7 @@ class PCFRController extends Controller
 
         if(!$pcv_first) return redirect()->back()->with('danger', 'No pcv found. Please create pcv first.');
 
-        return view('pages.pcfr.treasury.create', compact('vendors', 'pcvs', 'pcv_first', 'pcv_last', 'pcvs_sum',
+        return view('pages.pcfr.treasury.create', compact('vendor', 'pcvs', 'pcv_first', 'pcv_last', 'pcvs_sum',
                 'overage_shortage', 'unreplenished', 'total_replenishment', 'pending_replenishment', 'pcf_accounted_for', 
                 'unapproved_pcvs', 'returned_pcvs', 'pcv_accountability'));
 
@@ -237,11 +238,11 @@ class PCFRController extends Controller
     public function edit($id) {
 
         $pcfr = Pcfr::find($id);
-        $vendors = Vendor::where('status', 1)
-            ->where('branch_id', auth()->user()->assign_to)
-            ->get();
+        $vendor = \DB::table('comp_branch_selection')
+            ->where('BRANCH_CODE', auth()->user()->assign_to)
+            ->first();
 
-        return view('pages.pcfr.treasury.edit', compact('pcfr', 'vendors'));
+        return view('pages.pcfr.treasury.edit', compact('pcfr', 'vendor'));
 
     }
 

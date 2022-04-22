@@ -4,156 +4,147 @@
 
 <div id="DivIdToPrint">
 <table class="table" style="margin-bottom: 70px;">
-	<tr>
-		<td>
-			<h3 class="text-center">
-				
-				@if(\Str::contains($request_type, 'summary'))
-					PCFR Summary
-				@else
-					PCFR Detailed
-				@endif
-
-			</h3>
-		</td>
-	</tr>
-	<tr>
-		<td class="text-center">
-			{{ $request['company'] }}
-		</td>
-	</tr>
-	<tr>
-		<td class="text-center">
-			{{ $request['branch'] }}
-		</td>
-	</tr>
-	<tr>
-		<td class="text-center">
-			{{ $from }} - {{ $to }}
-		</td>
-	</tr>
-</table>
-
-<table class="table">
 	
-		<thead>
-			<tr>
-				<td> PCFR No </td>
-				<td> Branch / Company </td>
-				<td> Description </td>
-				<td> Account </td>
-				<td> Amount </td>
-				<td> Status </td>
-			</tr>
-		</thead>
+	<tbody>
+		<tr>
+			<td colspan="6">
+				<h3 class="text-center">
+					
+					@if(\Str::contains($request_type, 'summary'))
+						PCFR Summary
+					@else
+						PCFR Detailed
+					@endif
 
-		<tbody>
-			@php $total = 0; @endphp
-			@if($pcfr)
+				</h3>
+			</td>
+		</tr>
+		<tr>
+			<td class="text-center" colspan="6">
+				{{ $request['company'] }}
+			</td>
+		</tr>
+		<tr>
+			<td class="text-center" colspan="6">
+				{{ $request['branch'] }}
+			</td>
+		</tr>
+		<tr>
+			<td class="text-center" colspan="6">
+				{{ $from }} - {{ $to }}
+			</td>
+		</tr>
+	</tbody>
 	
-				@foreach($pcfr->pcv as $pcv)
+	<tbody>
+		<tr>
+			<td> PCFR No </td>
+			<td> Branch / Company </td>
+			<td> Description </td>
+			<td> Account </td>
+			<td> Amount </td>
+			<td> Status </td>
+		</tr>
+	</tbody>
 
-					<tr>
-						<td> {{ $pcfr->pcfr_no }} </td>
-						<td> {{ $pcfr->branch }} </td>
-						<td> {{ $pcv->description }} </td>
-						<td> {{ $pcv->account_name }} </td>
-						<td> {{ $pcv->amount }} </td>
-						<td> {{ $pcfr->status }} </td>
-					</tr>
+	<tbody>
+		@php $total = 0; @endphp
+		@if($pcfr)
 
-					@php $total = $total + $pcv->amount; @endphp
-				@endforeach
+			@foreach($pcfr->pcv as $pcv)
 
-				
-			@else
 				<tr>
-					<td colspan="6" class="text-center"> No Account Found </td>
+					<td> {{ $pcfr->pcfr_no }} </td>
+					<td> {{ $pcfr->branch }} </td>
+					<td> {{ $pcv->description }} </td>
+					<td> {{ $pcv->account_name }} </td>
+					<td> {{ $pcv->amount }} </td>
+					<td> {{ $pcfr->status }} </td>
 				</tr>
-			@endif
 
-		</tbody>
+				@php $total = $total + $pcv->amount; @endphp
+			@endforeach
 
-		<tfoot>
+			
+		@else
 			<tr>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td> Total Amount </td>
-				<td>{{ $total }}</td>
-				<td></td>
+				<td colspan="6" class="text-center"> No Account Found </td>
 			</tr>
-		</tfoot>
+		@endif
 
+	</tbody>
 
-	</table>
-
+	<tbody>
+		<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td> Total Amount </td>
+			<td>{{ $total }}</td>
+			<td></td>
+		</tr>
+	</tbody>
 
 @if($pcfr)
 @if(\Str::contains($request_type, 'detailed'))
-
-	<div class="col-lg-8 offset-2 mg-t-50">
-
-		<div class="row">
-			
-			<table class="table">
-				
-				<tr>
-					<td width="25%"> Temporary Slip: </td>
-					<td style="border-bottom: 1px solid;" class="text-right" width="20%"> {{ $pcfr->total_temp_slip }}  </td>
-					<td width="10%"></td>
-					<td width="25%"> Total Replenishment: </td>
-					<td style="border-bottom: 1px solid;" class="text-right" width="20%"> {{ $pcfr->total_replenishment }}  </td>
-				</tr>
-				<tr>
-					<td width="25%">  ATM Balance:  </td>
-					<td style="border-bottom: 1px solid;" class="text-right" width="20%"> {{ $pcfr->atm_balance }}  </td>
-					<td width="10%"></td>
-					<td width="25%"> Pending Replenishment: </td>
-					<td style="border-bottom: 1px solid;" class="text-right" width="20%"> {{ $pcfr->total_temp_slip }}  </td>
-				</tr>
-				<tr>
-					<td width="25%"> Cash On Hand: </td>
-					<td style="border-bottom: 1px solid;" class="text-right" width="20%"> {{ $pcfr->cash_on_hand }}  </td>
-					<td width="10%"></td>
-					<td width="25%"> Unreplenished: </td>
-					<td style="border-bottom: 1px solid;" class="text-right" width="20%"> {{ $pcfr->total_unreplenished }}  </td>
+	
+	<tbody>
 					
-				</tr>
-				<tr>
-					<td width="25%"> PCF Accounted For: </td>
-					<td style="border-bottom: 1px solid;" class="text-right" width="20%"> {{ $pcfr->total_accounted }}  </td>
-					<td width="10%"></td>
-					<td width="25%"> Unapproved PCVs: </td>
-					<td style="border-bottom: 1px solid;" class="text-right" width="20%"> {{ $pcfr->total_unapproved_pcv }}  </td>
-				</tr>				
-				<tr>
-					<td width="25%"> PCF Accountability: </td>
-					<td style="border-bottom: 1px solid;" class="text-right" width="20%"> {{ $pcfr->pcf_accountability }}  </td>
-					<td width="10%"></td>
-					<td width="25%"> Returned PCVs:  </td>
-					<td style="border-bottom: 1px solid;" class="text-right" width="20%"> {{ $pcfr->total_returned_pcv }}  </td>
-				</tr>
-				<tr>
-					<td width="25%"> Overage/Shortage: </td>
-					<td style="border-bottom: 1px solid;" class="text-right" width="20%"> {{ $pcfr->pcf_diff }}  </td>					
-				</tr>
-				
-			</table>
+		<tr>
+			<td width="25%"> Temporary Slip: </td>
+			<td style="border-bottom: 1px solid;" class="text-right" width="20%"> {{ $pcfr->total_temp_slip }}  </td>
+			<td width="10%"></td>
+			<td width="25%"> Total Replenishment: </td>
+			<td style="border-bottom: 1px solid;" class="text-right" width="20%"> {{ $pcfr->total_replenishment }}  </td>
+		</tr>
+		<tr>
+			<td width="25%">  ATM Balance:  </td>
+			<td style="border-bottom: 1px solid;" class="text-right" width="20%"> {{ $pcfr->atm_balance }}  </td>
+			<td width="10%"></td>
+			<td width="25%"> Pending Replenishment: </td>
+			<td style="border-bottom: 1px solid;" class="text-right" width="20%"> {{ $pcfr->total_temp_slip }}  </td>
+		</tr>
+		<tr>
+			<td width="25%"> Cash On Hand: </td>
+			<td style="border-bottom: 1px solid;" class="text-right" width="20%"> {{ $pcfr->cash_on_hand }}  </td>
+			<td width="10%"></td>
+			<td width="25%"> Unreplenished: </td>
+			<td style="border-bottom: 1px solid;" class="text-right" width="20%"> {{ $pcfr->total_unreplenished }}  </td>
+			
+		</tr>
+		<tr>
+			<td width="25%"> PCF Accounted For: </td>
+			<td style="border-bottom: 1px solid;" class="text-right" width="20%"> {{ $pcfr->total_accounted }}  </td>
+			<td width="10%"></td>
+			<td width="25%"> Unapproved PCVs: </td>
+			<td style="border-bottom: 1px solid;" class="text-right" width="20%"> {{ $pcfr->total_unapproved_pcv }}  </td>
+		</tr>				
+		<tr>
+			<td width="25%"> PCF Accountability: </td>
+			<td style="border-bottom: 1px solid;" class="text-right" width="20%"> {{ $pcfr->pcf_accountability }}  </td>
+			<td width="10%"></td>
+			<td width="25%"> Returned PCVs:  </td>
+			<td style="border-bottom: 1px solid;" class="text-right" width="20%"> {{ $pcfr->total_returned_pcv }}  </td>
+		</tr>
+		<tr>
+			<td width="25%"> Overage/Shortage: </td>
+			<td style="border-bottom: 1px solid;" class="text-right" width="20%"> {{ $pcfr->pcf_diff }}  </td>					
+		</tr>
 
-		</div>
-
-	</div>
+	</tbody>
+			
 
 @endif
 @endif
+
+</table>
 
 </div>
 
 <div class="col-md-12 text-center mg-t-50">
 	
-	<button class="btn btn-secondary"> Export to Excel </button>
-	<button class="btn btn-primary" onclick='printDiv();'> Print </button>
+	<button class="btn btn-secondary" id="dataContentExportExl"> Export to Excel </button>
+	<button class="btn btn-primary" id="printReport"> Print </button>
 
 </div>
 
@@ -177,4 +168,24 @@
 		setTimeout(function(){newWin.close();},10);
 
 	}
+
+	$(document).on('click', '#printReport', function() {
+		printDiv();
+	});
+
+	$(document).on('click', '#dataContentExportExl', function(){
+		html_table_to_excel('xlsx');
+	});
+
+	function html_table_to_excel(type)
+    {
+        var data = document.getElementById('DivIdToPrint');
+
+        var file = XLSX.utils.table_to_book(data, {sheet: "sheet1"});
+
+        XLSX.write(file, { bookType: type, bookSST: true, type: 'base64' });
+
+        XLSX.writeFile(file, 'file.' + type);
+    }
+
 </script>

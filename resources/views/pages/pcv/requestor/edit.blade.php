@@ -724,7 +724,14 @@
 
 			$.each(account_transactions, function(i, e) {
 				$.each(e, function(o, u){
-					if(u =='' || u == undefined) is_null_val = true;
+
+					if( u =='' || u == undefined ) {
+						if( ( _account_name == 'others' || _account_name == 'Pakyawan' || _account_name == 'Cellphone Expense' ||
+							_account_name == 'Internet & Cable' || _account_name == 'Interbranch Deliveries') && o == 'charge_to' ) {
+						} else {
+							is_null_val = true;
+						}
+					}
 				});
 			});
 
@@ -1159,7 +1166,7 @@
 	                      <td></td>
 	                      <td class="tx-bold align-middle">Total</td>
 	                      <td>
-	                        <input type="number" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" value="00000.00" readonly id="total_amount_display">
+	                        <input type="text" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" value="00000.00" readonly id="total_amount_display">
 	                      </td>
 	                      <td></td>
 	                    </tr>
@@ -1248,7 +1255,13 @@
 		});
 
 		
+		$(document).on('blur', '.custom-inputs', function () {
 
+			if($(this).data('name') == 'amount' || $(this).data('name') == 'total_amount') {
+				$(this).val(accounting.formatNumber($(this).val() , 2, ',', '.'));
+			}
+
+		});
 
 		$(document).on('keyup', '.custom-inputs', function () {
 			
@@ -1628,7 +1641,7 @@
 		                      <td></td>
 		                      <td class="tx-bold align-middle">Total</td>
 		                      <td>
-		                        <input type="number" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" value="00000.00" readonly id="total_amount_display">
+		                        <input type="text" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" value="00000.00" readonly id="total_amount_display">
 		                      </td>
 		                      <td></td>
 		                    </tr>
@@ -1644,7 +1657,7 @@
 		                      <td></td>
 		                      <td class="tx-bold align-middle">Total</td>
 		                      <td>
-		                        <input type="number" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" value="00000.00" readonly id="total_amount_display">
+		                        <input type="text" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" value="00000.00" readonly id="total_amount_display">
 		                      </td>
 		                      <td></td>
 		                    </tr>
@@ -1823,7 +1836,7 @@
 	                      <td></td>
 	                      <td class="tx-bold align-middle">Total</td>
 	                      <td>
-	                        <input type="number" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" value="00000.00" readonly id="total_amount_display">
+	                        <input type="text" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" value="00000.00" readonly id="total_amount_display">
 	                      </td>
 	                      <td></td>
 	                    </tr>
@@ -1911,7 +1924,7 @@
 
 		    }
 			$('#total_amount').val(_total);
-			$('#total_amount_display').val(_total.toFixed(2));
+			$('#total_amount_display').val(accounting.formatNumber(_total));
 
 	    }
 

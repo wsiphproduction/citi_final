@@ -216,3 +216,18 @@
 
 
 @endif
+
+
+<script type="text/javascript">
+	
+	$("#vendor").select2({
+	    tags: true,
+	    tokenSeparators: [',']
+	})
+
+	$("#charge_to").select2({
+	    tags: true,
+	    tokenSeparators: [',']
+	})
+
+</script>
