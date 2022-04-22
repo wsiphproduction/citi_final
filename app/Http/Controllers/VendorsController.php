@@ -86,7 +86,7 @@ class VendorsController extends Controller
                 'name'              => 'required' ,
                 'address'           => 'required' ,
                 'tin'               => 'max:50' ,
-                'contact_number'    => 'required|max:50|numeric' ,
+                'contact_number'    => 'max:50|numeric' ,
                 'branch_id'         => 'required'
             ]);
         } else {
@@ -94,7 +94,7 @@ class VendorsController extends Controller
                 'name'              => 'required' ,
                 'address'           => 'required' ,
                 'tin'               => 'max:50' ,
-                'contact_number'    => 'required|max:50|numeric' ,                
+                'contact_number'    => 'max:50|numeric' ,                
             ]);
 
             $request['branch_id']  = auth()->user()->assign_to;            
@@ -146,7 +146,7 @@ class VendorsController extends Controller
                 'name'              => 'required' ,
                 'address'           => 'required' ,
                 'tin'               => 'max:50' ,
-                'contact_number'    => 'required|numeric|max:50' ,
+                'contact_number'    => 'numeric|max:50' ,
                 'branch_id'         => 'required'
             ]);
         } else {
@@ -154,7 +154,7 @@ class VendorsController extends Controller
                 'name'              => 'required' ,
                 'address'           => 'required' ,
                 'tin'               => 'max:50' ,
-                'contact_number'    => 'required|numeric|max:50' ,                
+                'contact_number'    => 'numeric|max:50' ,                
             ]);
 
             $request['branch_id']  = auth()->user()->assign_to;            
