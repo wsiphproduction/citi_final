@@ -87,6 +87,7 @@ class PCVController extends Controller
         $account_transactions = json_decode($request->pcv_accounts, true);
         $total_amount = 0;
         $user = auth()->user();
+        $request['total_amount'] = str_replace(',', '', $request->total_amount);
 
         $this->validate($request, [
             'ts_no'     => [ 
@@ -183,7 +184,7 @@ class PCVController extends Controller
                     'ref'           => $attachment['ref'] ,
                     'date'          => \Carbon\Carbon::parse($attachment['date']) ,
                     'attachment'    => $attachment['attachment'] ,
-                    'vendor'        => $account_transactions[0]['vendor']
+                    'vendor'        => array_key_exists('vendor' , $account_transactions[0]) ? $account_transactions[0]['vendor']:null
                 ]);
 
                 if(Storage::exists("public/pcv/{$pcv_transaction->pcv_no}/{$attachment['attachment']}")) {
@@ -255,6 +256,7 @@ class PCVController extends Controller
         $attachments = json_decode($request->pcv_attachments, true);
         $account_transactions = json_decode($request->pcv_accounts, true);
         $total_amount = 0;
+        $request['total_amount'] = str_replace(',', '', $request->total_amount);
 
         // revert back the ts balance 
         // if diff ts used upon updating       
@@ -310,7 +312,8 @@ class PCVController extends Controller
                     'type'          => $attachment['type'] ,
                     'ref'           => $attachment['ref'] ,
                     'date'          => \Carbon\Carbon::parse($attachment['date']) ,
-                    'attachment'    => $attachment['attachment'] 
+                    'attachment'    => $attachment['attachment'] ,
+                    'vendor'        => array_key_exists('vendor' , $account_transactions[0]) ? $account_transactions[0]['vendor']:null
                 ]);
 
                 if(Storage::exists("public/pcv/{$pcv->pcv_no}/{$attachment['attachment']}")) {
