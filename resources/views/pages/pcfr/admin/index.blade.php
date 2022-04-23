@@ -100,6 +100,7 @@
 			'use strict'
 
 			$('#example1').DataTable({
+				"aaSorting": [],
 				language: {
 				searchPlaceholder: 'Search',
 				sSearch: '',
