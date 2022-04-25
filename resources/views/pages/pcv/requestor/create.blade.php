@@ -1194,7 +1194,7 @@
 		});
 
 
-		$(document).on('blur', '.account-user-input', function() {
+		$(document).on('focusout', '.account-user-input', function() {
 			
 			if($('#account_name').val() == 'Stripping Charge') {
 
@@ -1219,7 +1219,7 @@
 		});
 
 		
-		$(document).on('blur', '#bill_date_from', function(){
+		$(document).on('focusout', '#bill_date_from', function(){
 
 			let _from = $('#bill_date_from').val();
 			let _to   = $('#bill_date_to').val();
