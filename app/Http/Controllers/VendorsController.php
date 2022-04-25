@@ -85,16 +85,16 @@ class VendorsController extends Controller
             $this->validate($request, [
                 'name'              => 'required' ,
                 'address'           => 'required' ,
-                'tin'               => 'required|max:50' ,
-                'contact_number'    => 'required|max:50' ,
+                'tin'               => 'max:50' ,
+                'contact_number'    => 'max:50' ,
                 'branch_id'         => 'required'
             ]);
         } else {
             $this->validate($request, [
                 'name'              => 'required' ,
                 'address'           => 'required' ,
-                'tin'               => 'required|max:50' ,
-                'contact_number'    => 'required|max:50' ,                
+                'tin'               => 'max:50' ,
+                'contact_number'    => 'max:50' ,                
             ]);
 
             $request['branch_id']  = auth()->user()->assign_to;            
@@ -145,16 +145,16 @@ class VendorsController extends Controller
             $this->validate($request, [
                 'name'              => 'required' ,
                 'address'           => 'required' ,
-                'tin'               => 'required|numeric' ,
-                'contact_number'    => 'required|numeric' ,
+                'tin'               => 'max:50' ,
+                'contact_number'    => 'max:50' ,
                 'branch_id'         => 'required'
             ]);
         } else {
             $this->validate($request, [
                 'name'              => 'required' ,
                 'address'           => 'required' ,
-                'tin'               => 'required|numeric' ,
-                'contact_number'    => 'required|numeric' ,                
+                'tin'               => 'max:50' ,
+                'contact_number'    => 'max:50' ,                
             ]);
 
             $request['branch_id']  = auth()->user()->assign_to;            

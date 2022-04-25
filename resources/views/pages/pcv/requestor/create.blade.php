@@ -552,12 +552,7 @@
 		$(document).on('click', '.btn-savesubmit', function() {
 
 			var ctr = 0;
-			// account_attachments = [];
-			// account_transactions = [];
 			var _account_name = $('#account_name').val().trim();
-			// format data of account
-
-			// if($('#btn-add-account-details').length > 0) {
 
 			if( _account_name == 'Stripping Charge' ||
 				_account_name == 'Delivery Charges') {
@@ -742,10 +737,17 @@
 
 			$.each(account_transactions, function(i, e) {
 				$.each(e, function(o, u){
-					if(u =='' || u == undefined) is_null_val = true;
+
+					if( u =='' || u == undefined ) {
+						if( ( _account_name == 'others' || _account_name == 'Pakyawan' || _account_name == 'Cellphone Expense' ||
+							_account_name == 'Internet & Cable' || _account_name == 'Interbranch Deliveries') && o == 'charge_to' ) {
+						} else {
+							is_null_val = true;
+						}	
+					}
 				});
 			});
-			console.log(account_attachments);
+
 			if(account_attachments.length>0){
 				$.each(account_attachments, function(i, e) {
 					$.each(e, function(o, u){
@@ -753,7 +755,7 @@
 					});
 				});
 			}
-			console.log(account_transactions);
+
 			if(is_null_val || account_transactions.length == 0 ) {
 				if(_account_name == 'Delivery Charges') { 
 					$('#btn-add-account-details').click(); 
@@ -763,29 +765,6 @@
 					return false;
 				}
 			}
-
-			// check attachment for duplication
-			// move this on blur fill up attachment
-			
-			// if( _attachment_exist ) {
-					
-			// 	if( i > 0) {
-			// 		$('#docref_0'+i).addClass('is-invalid');
-			// 		$('#docdate_0'+i).addClass('is-invalid');
-			// 	} else {
-			// 		$('#docref').addClass('is-invalid');
-			// 		$('#docdate').addClass('is-invalid');
-			// 	}
-			// 	return false;
-
-			// }
-
-			// $.when.apply(null, _promises).done(function(e){
-			// 	console.log('aw');
-			//    console.log(e);
-			// })
-
-			// console.log(_attachment_exist);
 
 			if(attachment_eexist) {
 				alert('Your attachment already exist please check');
@@ -1198,7 +1177,7 @@
 	                      <td></td>
 	                      <td class="tx-bold align-middle">Total</td>
 	                      <td>
-	                        <input type="number" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" value="00000.00" readonly id="total_amount_display">
+	                        <input type="text" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" value="00000.00" readonly id="total_amount_display">
 	                      </td>
 	                      <td></td>
 	                    </tr>
@@ -1282,6 +1261,14 @@
 					}
 
 				});
+
+		});
+
+		$(document).on('blur', '.custom-inputs', function () {
+
+			if($(this).data('name') == 'amount' || $(this).data('name') == 'total_amount') {
+				$(this).val(accounting.formatNumber($(this).val() , 2, ',', '.'));
+			}
 
 		});
 
@@ -1617,7 +1604,7 @@
 		                      <td></td>
 		                      <td class="tx-bold align-middle">Total</td>
 		                      <td>
-		                        <input type="number" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" value="00000.00" readonly id="total_amount_display">
+		                        <input type="text" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" value="00000.00" readonly id="total_amount_display">
 		                      </td>
 		                      <td></td>
 		                    </tr>
@@ -1633,7 +1620,7 @@
 		                      <td></td>
 		                      <td class="tx-bold align-middle">Total</td>
 		                      <td>
-		                        <input type="number" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" value="00000.00" readonly id="total_amount_display">
+		                        <input type="text" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" value="00000.00" readonly id="total_amount_display">
 		                      </td>
 		                      <td></td>
 		                    </tr>
@@ -1811,7 +1798,7 @@
 	                      <td></td>
 	                      <td class="tx-bold align-middle">Total</td>
 	                      <td>
-	                        <input type="number" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" value="00000.00" readonly id="total_amount_display">
+	                        <input type="text" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" value="00000.00" readonly id="total_amount_display">
 	                      </td>
 	                      <td></td>
 	                    </tr>
@@ -1899,7 +1886,8 @@
 
 		    }
 			$('#total_amount').val(_total);
-			$('#total_amount_display').val(_total.toFixed(2));
+			console.log(accounting.formatNumber(_total));
+			$('#total_amount_display').val(accounting.formatNumber(_total));
 
 	    }
 

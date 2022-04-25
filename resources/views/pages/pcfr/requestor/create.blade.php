@@ -59,13 +59,8 @@
         <div class="col-lg-6">
             <div class="form-group row">
                 <label for="vendor" class="col-lg-5 col-form-label">Vendor</label>
-                <div class="col-lg-7">
-                	<select class="form-control" name="vendor">
-                		<option value=""> Select Vendor </option>
-                		@foreach($vendors as $vendor)
-                			<option value="{{ $vendor->name }}">{{ $vendor->name }}</option>
-                		@endforeach
-                	</select>
+                <div class="col-lg-7">                	
+                	<input type="text" name="vendor" class="form-control" value="{{ $vendor->VENDOR_SITE_ID }}" readonly>
                 </div>
             </div>
         </div>

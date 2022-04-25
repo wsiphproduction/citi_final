@@ -150,7 +150,9 @@
     <script src="{{ asset('lib/datatables.net-dt/js/dataTables.dataTables.min.js') }}"></script>
     <script src="{{ asset('lib/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
     <script src="{{ asset('lib/datatables.net-responsive-dt/js/responsive.dataTables.min.js') }}"></script>
-    <script src="{{ asset('lib/select2/js/select2.min.js') }}"></script>
+    <script src="{{ asset('lib/select2/js/select2.min.js') }}"></script>	
+	<script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>    
+    
     <script>
 			
     	$(document).on('change', '#name', function(){
@@ -284,6 +286,5 @@
 
 
     </script>
-
 
 @endsection

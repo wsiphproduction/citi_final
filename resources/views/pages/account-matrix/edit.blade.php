@@ -36,7 +36,7 @@
 								<option value=""> Select Account </option>
 								@foreach( \App\Models\Account::getAccounts() as $account )
 									<option value="{{ $account['FLEX_VALUE_MEANING'] }} | {{ $account['DESCRIPTION'] }}"
-										@if($matrix->number == $account['FLEX_VALUE_MEANING']) selected @endif> 
+										@if($matrix->name == $account['DESCRIPTION']) selected @endif> 
 										{{ $account['DESCRIPTION'] }} 
 									</option>
 								@endforeach
