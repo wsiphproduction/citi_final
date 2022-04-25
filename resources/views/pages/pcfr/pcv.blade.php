@@ -58,6 +58,30 @@
                     </div>
                 </div>
 
+                @if( !is_null($pcv->approval_code) )
+
+                    <div class="col-lg-6">
+                        <div class="form-group row">
+                            <label for="pcv-no" class="col-lg-5 col-form-label">Approval Code.</label>
+                            <div class="col-lg-7">
+                                <input type="text" class="form-control bd-0 bd-bottom" id="pcv-no" name="pcv-no" readonly
+                                    value="{{ $pcv->approval_code }}">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="form-group row">
+                            <label for="pcv-no" class="col-lg-5 col-form-label">Approved By.</label>
+                            <div class="col-lg-7">
+                                <input type="text" class="form-control bd-0 bd-bottom" id="pcv-no" name="pcv-no" readonly
+                                    value="{{ $pcv->approved_by }}">
+                            </div>
+                        </div>
+                    </div>
+
+                @endif
+
                 <div class="col-lg-6">
                     <div class="form-group row">
                         <label for="description" class="col-lg-5 col-form-label">Description</label>
@@ -68,12 +92,27 @@
                 </div>
 
                 <div class="col-lg-6">
-                    <div class="form-group row">
-                        <label for="date" class="col-lg-5 col-form-label">Date</label>
-                        <div class="col-lg-7">
-                            <input type="text" class="form-control bd-0 bd-bottom" id="date" name="date" readonly
-                                value="{{ \Carbon\Carbon::parse($pcv->date_created)->toFormattedDateString() }}">
+                    <div class="row">
+                    @if( !is_null($pcv->approval_code) )
+                    <div class="col-lg-12">
+                        <div class="form-group row">
+                            <label for="date" class="col-lg-5 col-form-label">Approved Date</label>
+                            <div class="col-lg-7">
+                                <input type="text" class="form-control bd-0 bd-bottom" id="date" name="date" readonly
+                                    value="{{ \Carbon\Carbon::parse($pcv->approved_date)->toFormattedDateString() }}">
+                            </div>
                         </div>
+                    </div>
+                    @endif
+                    <div class="col-lg-12">
+                        <div class="form-group row">
+                            <label for="date" class="col-lg-5 col-form-label">Date</label>
+                            <div class="col-lg-7">
+                                <input type="text" class="form-control bd-0 bd-bottom" id="date" name="date" readonly
+                                    value="{{ \Carbon\Carbon::parse($pcv->date_created)->toFormattedDateString() }}">
+                            </div>
+                        </div>
+                    </div>
                     </div>
                 </div>
 

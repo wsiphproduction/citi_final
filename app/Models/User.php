@@ -57,6 +57,12 @@ class User extends Authenticatable implements Auditable
 
     }
 
+    public function pcfr() {
+
+        return $this->hasManay(Pcfr::class);
+
+    }
+
     public function branch_group() {
 
         return $this->belongsTo(BranchGroup::class);

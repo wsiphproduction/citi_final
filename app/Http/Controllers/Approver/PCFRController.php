@@ -24,8 +24,7 @@ class PCFRController extends Controller
 
         $user = auth()->user();
        
-        $pcfr = Pcfr::whereIn('status', ['submitted', 'confirmed'])
-            ->whereNull('tl_approved')
+        $pcfr = Pcfr::whereNull('tl_approved')
                 ->whereHas('user', function(Builder $query) use ($user) {
                     $query->where('assign_to', $user->assign_to);
                 })

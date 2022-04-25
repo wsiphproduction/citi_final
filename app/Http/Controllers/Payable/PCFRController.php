@@ -96,18 +96,16 @@ class PCFRController extends Controller
     public function pcvRemove($id, Request $request) {
 
         $pcv = Pcv::find($id);
+        $pcfr = Pcfr::find($pcv->pcfr_id);
+
         $pcv->update([
             'status'            => 'disapproved py' ,
-            'cancelled_by'      => auth()->user()->username ,
-            'cancelled_date'    => \Carbon\Carbon::now() ,
             'remarks'           => $request->remarks ,
             'pcfr_id'           => null ,
             'tl_approved'       => null ,
             'dh_approved'       => null
         ]);
-
-        // update pcfr auto calculations
-        $pcfr = Pcfr::find($request->pcfr_no);
+        
         $this->recomputePcfr($pcfr);
 
         return redirect()->back()->with('success', "PCV No. {$pcv->pcv_no} successfully removed");

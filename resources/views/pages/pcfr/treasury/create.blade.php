@@ -102,14 +102,14 @@
                   	<label for="period-date-from" class="col-lg-5 col-form-label">Period Date From</label>
                   	<div class="col-lg-7">
                     	<input type="text" class="form-control" id="periodDateFrom" name="period_date_from" placeholder="From"
-                    		value="{{ \Carbon\Carbon::parse($pcv_first->date_created)->format('Y-m-d') }}" readonly>
+                    		value="{{ \Carbon\Carbon::parse($pcv_first->date_created)->format('d-m-Y') }}" readonly>
                   	</div>
                 </div>
                 <div class="form-group row mb-0">
                   	<label for="period-date-to" class="col-lg-5 col-form-label">Period Date To</label>
                   	<div class="col-lg-7">
                     	<input type="text" class="form-control" id="periodDateTo" name="period_date_to" placeholder="To"
-                    		value="{{ \Carbon\Carbon::parse($pcv_last->date_created)->format('Y-m-d') }}" readonly>
+                    		value="{{ \Carbon\Carbon::parse($pcv_last->date_created)->format('d-m-Y') }}" readonly>
                   	</div>
                 </div>
             </div>
@@ -173,7 +173,7 @@
             <div class="form-group row">
                 <label for="temporary-slip" class="col-lg-5 col-form-label">Temporary Slip</label>
                 <div class="col-lg-7">
-                  	<input type="number" class="form-control bd-0 bd-bottom text-right" 
+                  	<input type="number" class="form-control text-right" 
                   		id="temporary_slip" name="temporary_slip" >
                 </div>
             </div>
@@ -444,6 +444,7 @@
 		$(document).on('click', '.btn-savesubmit', function() {
 
 			var ctr = 0;
+			account_attachments = [];
 			
 			// format data of attachments
 			$('.attachment-wrapper').each(function(i, o) {

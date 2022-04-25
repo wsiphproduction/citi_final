@@ -23,10 +23,7 @@ class PCFRController extends Controller
 
         $user = auth()->user();
 
-        $pcfr = Pcfr::whereIn('status', [
-                'saved', 'submitted', 'approved', 'post to ebs', 'for replenishment', 'disapproved tl', 'disapproved dh'
-            ])
-            ->whereHas('user', function(Builder $builder) {
+        $pcfr = Pcfr::whereHas('user', function(Builder $builder) {
                 $builder->where('assign_to', auth()->user()->assign_to);
             })
             ->orderBy('created_at', 'DESC')
@@ -103,7 +100,7 @@ class PCFRController extends Controller
         //         $query->where('assign_to', $user->assign_to);
         //     })->sum('running_balance');
 
-        $total_replenishment = Pcfr::where('status', 'approved')
+        $total_replenishment = Pcv::where('status', 'approved')
             ->whereHas('user', function(Builder $query) use ($user) {
                 $query->where('assign_to', $user->assign_to);
             })->doesntHave('pcfr')->sum('amount');
@@ -137,6 +134,7 @@ class PCFRController extends Controller
             ->whereHas('user', function(Builder $query) use ($user) {
                 $query->where('assign_to', $user->assign_to);
             })->doesntHave('pcfr')->get();
+
 
         $pcv_first = Pcv::where('status', 'approved')
             ->whereHas('user', function(Builder $query) use ($user) {
@@ -364,16 +362,16 @@ class PCFRController extends Controller
     public function pcvRemove($id, Request $request) {
 
         $pcv = Pcv::find($id);
+        $pcfr = Pcfr::find($pcv->pcfr_id);
+
         $pcv->update([
-            'status'            => 'cancelled' ,
-            'cancelled_by'      => auth()->user()->username ,
-            'cancelled_date'    => \Carbon\Carbon::now() ,
+            'status'            => 'disapproved th' ,
             'remarks'           => $request->remarks ,
-            'pcfr_id'           => null
+            'pcfr_id'           => null ,
+            'tl_approved'       => null ,
+            'dh_approved'       => null
         ]);
 
-        // update pcfr auto calculations
-        $pcfr = Pcfr::find($request->pcfr_no);
         $this->recomputePcfr($pcfr);
         
         return redirect()->back()->with('success', "PCFR No. {$pcv->pcv_no} is successfully removed");
@@ -391,7 +389,7 @@ class PCFRController extends Controller
         $pcv_accountability = $branch->budget;
 
         // for replenishment
-        $for_replenishment = Pcfr::where('status', 'for replenishment')
+        $for_replenishment = Pcv::where('status', 'approved')
             ->whereHas('user', function(Builder $query) use ($user) {
                 $query->where('assign_to', $user->assign_to);
             })->sum('amount');

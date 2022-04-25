@@ -69,7 +69,7 @@
 
                     @empty
                     	<tr>
-                    		<td class="text-center" colspan="7"> No PCFR Found </td>
+                    		<td class="text-center" colspan="8"> No PCFR Found </td>
                     	</tr>
                     @endforelse
 

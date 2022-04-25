@@ -169,7 +169,7 @@
                                                             <div class="col-lg-12">
                                                                 <div class="form-group">
                                                                     <label for="remarks" class="d-block">Remarks</label>
-                                                                    <textarea id="disapprove-remarks" name="remarks" 
+                                                                    <textarea id="disapprove-remarks" name="remarks" required 
                                                                         class="form-control" rows="3"></textarea>
                                                                 </div>
                                                             </div>
