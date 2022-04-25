@@ -466,7 +466,7 @@
 						setTimeout(function(){
 							$("#docdate").datepicker({
 							    maxDate: new Date()
-							});							
+							});					
 						}, 1000);
 
 					}
@@ -766,8 +766,6 @@
 
 			// check attachment for duplication
 			// move this on blur fill up attachment
-			
-			
 			
 			// if( _attachment_exist ) {
 					
