@@ -43,6 +43,7 @@
                         <th>Account Name</th>
                         <th>Account Number</th>
                         <th>Amount</th>
+                        <th>Approval Code</th>
                         <th>Created By</th>
                         <th>Date Created</th>
                         <th>Updated By</th>
@@ -59,6 +60,7 @@
                             <td> {{ $accnt_matrix->name }} </td>
                             <td> {{ $accnt_matrix->number }} </td>
                             <td> {{ number_format($accnt_matrix->amount, 2) }} </td>
+                            <td> {{ $accnt_matrix->code == 1 ? 'Yes' : 'No' }} </td>
                             <td> {{ $accnt_matrix->created_by }} </td>
                             <td> {{ $accnt_matrix->created_at->toFormattedDateString() }} </td>
                             <td> {{ $accnt_matrix->updated_by }} </td>
