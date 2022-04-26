@@ -596,7 +596,7 @@
 	    	let overage_shortage = $('#overage_shortage').val();
 	   		let pcf_accountability = $('#pcf_accountability').val();
 
-	   		_pcf_accounted_for = _pcf_accounted_for + parseFloat($('#atm_balance').val()) + parseFloat($('#temporary_slip').val());
+	   		_pcf_accounted_for = _pcf_accounted_for + parseFloat($('#cash_on_hand').val()) + parseFloat($('#temporary_slip').val());
 
 
 	   		let new_pcf_accounted_for = parseFloat(atm_bal) + parseFloat(_pcf_accounted_for);
