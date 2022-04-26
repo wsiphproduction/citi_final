@@ -57,7 +57,7 @@
 	                        <td> {{ $pcv->pcv_no }} </td>
 	                        <td> {{ $pcv->description }} </td>
 	                        <td> {{ $pcv->account_name }} </td>
-	                        <td> {{ $pcv->amount }} </td>
+	                        <td> {{ number_format($pcv->amount, 2, '.', ',') }} </td>
 	                        <td>
 	                        	<span class="badge badge-secondary tx-uppercase"> {{ $pcv->status }} </span>
 	                        </td>
@@ -111,7 +111,7 @@
 				lengthMenu: 'Show _MENU_ entries',
 				},
 				columnDefs: [
-				{ targets: 5, orderable: false }
+				{ targets: 6, orderable: false }
 				]
 			});
 

@@ -48,7 +48,7 @@
 	                        <td> {{ \Carbon\Carbon::parse($pcv->date_created)->toFormattedDateString() }} </td>
 	                        <td> {{ $pcv->pcv_no }} </td>
 	                        <td> {{ $pcv->account_name }} </td>
-	                        <td> {{ $pcv->amount }} </td>
+	                        <td> {{ number_format($pcv->amount, 2, '.', ',') }} </td>
 	                        <td>
 	                        	<span class="badge badge-secondary tx-uppercase"> {{ $pcv->status }} </span>
 	                        </td>

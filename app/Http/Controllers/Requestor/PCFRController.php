@@ -21,9 +21,7 @@ class PCFRController extends Controller
 
         $user = auth()->user();
 
-        $pcfr = Pcfr::whereIn('status', [
-                'saved' , 'submitted', 'approved', 'for replenishment', 'replenished', 'disapproved tl', 'disapproved py', 'post to ebs'
-            ])->whereHas('user', function(Builder $builder) use($user) {
+        $pcfr = Pcfr::whereHas('user', function(Builder $builder) use($user) {
                 $builder->where('assign_to', $user->assign_to);
             })
             ->orderBy('date_created', 'DESC')

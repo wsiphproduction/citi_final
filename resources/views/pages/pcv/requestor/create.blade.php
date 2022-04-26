@@ -580,7 +580,7 @@
 						if(_acc_name == undefined) return false;
 
 						if($(this).find('input').length) {					
-							
+
 							_account_trans[_acc_name] = $(this).find('input').val();
 							if($(this).find('input').val() == ''){
 								$(this).find('input').addClass('is-invalid');
@@ -741,6 +741,9 @@
 					if( u =='' || u == undefined ) {
 						if( ( _account_name == 'others' || _account_name == 'Pakyawan' || _account_name == 'Cellphone Expense' ||
 							_account_name == 'Internet & Cable' || _account_name == 'Interbranch Deliveries') && o == 'charge_to' ) {
+
+						} else if( _account_name == 'Delivery Charges' && o == 'pos_no_of_delivery_fee' && u == '') {
+
 						} else {
 							is_null_val = true;
 						}	
@@ -823,7 +826,7 @@
 			if(_account_name == 'Delivery Charges') {
 
 				// check if amount is > 1500
-				if($('.custom-inputs[data-name="amount"]').val() > 1500 ) {
+				if( accounting.unformat($('.custom-inputs[data-name="amount"]').val()) > 1500 ) {
 
 					// pop up approval modal
 					$('#deliveryChargeModal').modal({
@@ -1193,7 +1196,6 @@
 
 		});
 
-
 		$(document).on('focusout', '.account-user-input', function() {
 			
 			if($('#account_name').val() == 'Stripping Charge') {
@@ -1209,7 +1211,6 @@
 
 			}
 
-
 			if($(this).data('name') == 'amount') {
 
 				calculateTotal();
@@ -1217,7 +1218,6 @@
 			}
 
 		});
-
 		
 		$(document).on('focusout', '#bill_date_from', function(){
 
@@ -1226,18 +1226,18 @@
 
 			$.ajax({
 
-					url 	: '{!! env("APP_URL") !!}' + '/pcv/requestor/check-billing-date?from='+_from+'&to='+_to ,
-					method 	: 'GET' ,
-					success : function (res) {
+				url 	: '{!! env("APP_URL") !!}' + '/pcv/requestor/check-billing-date?from='+_from+'&to='+_to ,
+				method 	: 'GET' ,
+				success : function (res) {
 
-						if(res == 'yes') {
-							alert('Billing Date From already covered last payment');
-							resetAccountForm();
-						}
-						
+					if(res == 'yes') {
+						alert('Billing Date From already covered last payment');
+						resetAccountForm();
 					}
+					
+				}
 
-				});
+			});
 
 		});
 
@@ -1462,11 +1462,44 @@
 							// const last2Str = String(res[0].universal_trx_id).slice(-2); 
 							// const last2Num = Number(last2Str);
 
-							$('.custom-inputs[data-name="pos_no_of_delivery_fee"]').val(res[0].universal_trx_id);
+							//$('.custom-inputs[data-name="pos_no_of_delivery_fee"]').val(res[0].universal_trx_id);
 
 						} else {
 
 							$('.custom-inputs[data-name="pos_no_of_purchased_items"]').val('');
+
+							$('#message_content').text('POS No. '+val+' does not exist');
+							$('#for_message').modal({
+								backdrop : 'static' ,
+								show 	 : true
+							});
+
+							setTimeout(function(){ $('#for_message').modal('hide');}, 3000);
+
+						}
+
+					}
+
+				});
+
+			} else if (type == 'pos_no_of_delivery_fee') {
+
+				$.ajax({
+
+					url 		: "{!! route('pos-transactions.search') !!}" + "?search="+val ,
+					method 		: "GET" ,
+					success 	: function(res) {
+
+						if( res.length > 0) {
+
+							// const last2Str = String(res[0].universal_trx_id).slice(-2); 
+							// const last2Num = Number(last2Str);
+
+							//$('.custom-inputs[data-name="pos_no_of_delivery_fee"]').val(res[0].universal_trx_id);
+
+						} else {
+
+							$('.custom-inputs[data-name="pos_no_of_delivery_fee"]').val('');
 
 							$('#message_content').text('POS No. '+val+' does not exist');
 							$('#for_message').modal({
@@ -1744,16 +1777,18 @@
 	    	$('#account-transactions-list tbody').empty();
 
 			let _html = '';		
-
+			console.log(account_transactions);
 			$.each(account_transactions, function (x, y) {
-	
+			
 				_html += '<tr>';	
 				
 				$('.tbl-header').each(function(i, o) {
 						
 					let _row_name = $(this).data('rowname').trim();
+					console.log(_row_name);
+
 					if( _row_name != "action" && _row_name != "line_no") {
-						if( _row_name == 'pos_no_of_purchased_items' ) {
+						if( _row_name == 'pos_no_of_purchased_items' || _row_name == 'pos_no_of_delivery_fee' ) {
 							_html += '<td data-name="'+_row_name+'" >';
 							let _url = "{!! env("APP_URL") !!}"+'/pos-transactions/show/'+account_transactions[x][_row_name];
 							_html += '<a href="'+_url+'" target="_blank">';
@@ -1791,18 +1826,18 @@
 				$('#account-transactions-list').append(
 					`<tfoot>
 	                    <tr role="row">
-	                      <td class="sorting_1"></td>
-	                      <td></td>
-	                      <td></td>
-	                      <td></td>
-	                      <td></td>
-	                      <td class="tx-bold align-middle">Total</td>
-	                      <td>
-	                        <input type="text" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" value="00000.00" readonly id="total_amount_display">
-	                      </td>
-	                      <td></td>
+		                    <td class="sorting_1"></td>
+		                    <td></td>
+		                    <td></td>
+		                    <td></td>
+		                    <td></td>
+		                    <td class="tx-bold align-middle">Total</td>
+		                    <td>
+	                        	<input type="text" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" value="00000.00" readonly id="total_amount_display">
+	                      	</td>
+	                      	<td></td>
 	                    </tr>
-	                  </tfoot>`);
+	                </tfoot>`);
 			}
 
 	    }
@@ -1815,8 +1850,12 @@
 				let _name = $(this).data('name');
 				_data[_name] = $(this).val();
 				if($(this).val() == '' || $(this).val() == undefined) {
-					$(this).addClass('is-invalid');
-					_hasEmptyVal = true;
+					if(_name != 'pos_no_of_delivery_fee'){
+						console.log(_name);
+						console.log('-- from get data --');
+						$(this).addClass('is-invalid');
+						_hasEmptyVal = true;
+					}
 				} else {
 					$(this).removeClass('is-invalid');
 				}
@@ -1864,7 +1903,7 @@
 	    	if($('#account_name').val() == 'Stripping Charge') {
 		    	$('.account-user-input[data-name="amount"]').each(function(e) {
 
-					let _amount = parseFloat($(this).val()); 
+					let _amount = accounting.unformat($(this).val()); 
 
 					if( isNaN(_amount) ) {
 						_amount = 0;
@@ -1878,7 +1917,7 @@
 		    	$('#account-transactions-list tr').find('td').each(function() {
 
 		    		if($(this).data('name') == 'amount' || $(this).data('name') == 'total_amount') {
-			    		_total = _total + parseFloat($(this).text());
+			    		_total = _total + accounting.unformat($(this).text());
 			    	}
 
 		    	});
@@ -1887,7 +1926,7 @@
 		    }
 			$('#total_amount').val(_total);
 			console.log(accounting.formatNumber(_total));
-			$('#total_amount_display').val(accounting.formatNumber(_total));
+			$('#total_amount_display').val(accounting.formatNumber(_total, 2, ',', '.'));
 
 	    }
 

@@ -728,6 +728,8 @@
 					if( u =='' || u == undefined ) {
 						if( ( _account_name == 'others' || _account_name == 'Pakyawan' || _account_name == 'Cellphone Expense' ||
 							_account_name == 'Internet & Cable' || _account_name == 'Interbranch Deliveries') && o == 'charge_to' ) {
+						} else if( _account_name == 'Delivery Charges' && o == 'pos_no_of_delivery_fee' && u == '') {
+
 						} else {
 							is_null_val = true;
 						}
@@ -813,8 +815,7 @@
 			if(_account_name == 'Delivery Charges') {
 
 				// check if amount is > 1500
-				if($('.custom-inputs[data-name="amount"]').val() > 1500 ) {
-
+				if( accounting.unformat($('.custom-inputs[data-name="amount"]').val()) > 1500 ) {	
 					// pop up approval modal
 					$('#deliveryChargeModal').modal({
 						backdrop : 'static' ,
@@ -1209,7 +1210,7 @@
 		});
 
 		
-		$(document).on('blur', '#bill_date_from', function(){
+		$(document).on('focusout', '#bill_date_from', function(){
 
 			let _from = $('#bill_date_from').val();
 			let _to   = $('#bill_date_to').val();
@@ -1232,7 +1233,7 @@
 		});
 
 		
-		$(document).on('blur', '#bill_date_to', function(){
+		$(document).on('focusout', '#bill_date_to', function(){
 
 			let _from = $('#bill_date_from').val();
 			let _to   = $('#bill_date_to').val();
@@ -1458,6 +1459,39 @@
 						} else {
 
 							$('.custom-inputs[data-name="pos_of_items"]').val('');
+
+							$('#message_content').text('POS No. '+val+' does not exist');
+							$('#for_message').modal({
+								backdrop : 'static' ,
+								show 	 : true
+							});
+
+							setTimeout(function(){ $('#for_message').modal('hide');}, 3000);
+
+						}
+
+					}
+
+				});
+
+			} else if (type == 'pos_no_of_delivery_fee') {
+
+				$.ajax({
+
+					url 		: "{!! route('pos-transactions.search') !!}" + "?search="+val ,
+					method 		: "GET" ,
+					success 	: function(res) {
+
+						if( res.length > 0) {
+
+							// const last2Str = String(res[0].universal_trx_id).slice(-2); 
+							// const last2Num = Number(last2Str);
+
+							//$('.custom-inputs[data-name="pos_no_of_delivery_fee"]').val(res[0].universal_trx_id);
+
+						} else {
+
+							$('.custom-inputs[data-name="pos_no_of_delivery_fee"]').val('');
 
 							$('#message_content').text('POS No. '+val+' does not exist');
 							$('#for_message').modal({
@@ -1853,8 +1887,10 @@
 				let _name = $(this).data('name');
 				_data[_name] = $(this).val();
 				if($(this).val() == '' || $(this).val() == undefined) {
-					$(this).addClass('is-invalid');
-					_hasEmptyVal = true;
+					if(_name != 'pos_no_of_delivery_fee'){
+						$(this).addClass('is-invalid');
+						_hasEmptyVal = true;
+					}
 				} else {
 					$(this).removeClass('is-invalid');
 				}
@@ -1902,7 +1938,7 @@
 	    	if($('#account_name').val() == 'Stripping Charge') {
 		    	$('.account-user-input[data-name="amount"]').each(function(e) {
 
-					let _amount = parseFloat($(this).val()); 
+					let _amount = accounting.unformat($(this).val()); 
 
 					if( isNaN(_amount) ) {
 						_amount = 0;
@@ -1916,7 +1952,7 @@
 		    	$('#account-transactions-list tr').find('td').each(function() {
 
 		    		if($(this).data('name') == 'amount') {
-			    		_total = _total + parseFloat($(this).text());
+			    		_total = _total + accounting.unformat($(this).text());
 			    	}
 
 		    	});

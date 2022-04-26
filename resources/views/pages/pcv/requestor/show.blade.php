@@ -164,6 +164,8 @@
                                                             @else
                                                                 @if($key == 'attachment')
                                                                     <td><a href="{{env('APP_URL')}}/storage/pcv/{{$pcv->pcv_no}}/account/{{$d}}" target="_blank"> {{ $d }} </a></td>
+                                                                @elseif($key == 'pos_no_of_purchased_items' || $key == 'pos_no_of_delivery_fee')
+                                                                    <td><a href="{{env('APP_URL')}}/pos-transactions/show/{{$d}}" target="_blank"> {{ $d }} </a></td>
                                                                 @else
                                                                     <td> {{ $d }} </td>
                                                                 @endif
@@ -225,8 +227,8 @@
                                             <td></td>                                            
                                             <td class="tx-bold align-middle">Total</td>
                                             <td>
-                                            <input type="number" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" 
-                                            value="{{ $pcv->amount }}" readonly>
+                                            <input type="text" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" 
+                                            value="{{ number_format($pcv->amount, 2, '.', ',') }}" readonly>
                                             </td>                                        
                                         </tr>
                                     </tfoot>

@@ -59,7 +59,7 @@
                             <td>{{ $slip->ts_no }}</td> 
                             <td>{{ $slip->account_name }}</td> 
                             <td>{{ $slip->description }}</td> 
-                            <td>{{ $slip->amount }}</td>
+                            <td> {{ number_format($slip->amount, 2, '.', ',') }} </td>
                             <td>
                                 @if( !count($slip->pcv) && $slip->created_at->diffInDays(\Carbon\Carbon::now()) >= 3 && count($slip->pcv) == 0)
                                     <strong style="color: red;">{{ $slip->created_at->diffForHumans() }}</strong>

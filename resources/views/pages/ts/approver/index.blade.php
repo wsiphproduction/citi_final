@@ -52,7 +52,7 @@
                             <td>{{ $slip->ts_no }}</td> 
                             <td>{{ $slip->account_name }}</td> 
                             <td>{{ $slip->description }}</td> 
-                            <td>{{ $slip->amount }}</td>
+                            <td> {{ number_format($slip->amount, 2, '.', ',') }} </td>
                             <td>{{ $slip->created_at->diffForHumans() }}</td>
                             <td>
                                 <span class="badge badge-secondary tx-uppercase">{{ $slip->status }}</span>

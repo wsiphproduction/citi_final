@@ -153,7 +153,7 @@
                                         @if(array_key_exists(0, $pcv->account_transaction['details']))
                                         
                                             @foreach( $pcv->account_transaction['details'] as $transaction )
-
+    
                                                 <tr>
                                                     @if(is_array($transaction)) 
 
@@ -163,16 +163,18 @@
                                                             @else
                                                                 @if($key == 'attachment')
                                                                     <td><a href="{{env('APP_URL')}}/storage/pcv/{{$pcv->pcv_no}}/account/{{$d}}" target="_blank"> {{ $d }} </a></td>
+                                                                @elseif($key == 'pos_no_of_purchased_items' || $key == 'pos_no_of_delivery_fee')
+                                                                    <td><a href="{{env('APP_URL')}}/pos-transactions/show/{{$d}}" target="_blank"> {{ $d }} </a></td>
                                                                 @else
                                                                     <td> {{ $d }} </td>
                                                                 @endif
                                                             @endif
                                                         @endforeach
-
+    
                                                     @else
-
+    
                                                         <td>{{ $transaction }}</td>
-
+    
                                                     @endif
                                                 </tr>
                                                     
@@ -181,10 +183,10 @@
                                         @else
                                             <tr>
                                             @foreach( $pcv->account_transaction['details'] as $transaction )
-
+    
                                                 
                                                     @if(is_array($transaction)) 
-
+    
                                                         @foreach($transaction as $key => $d)
                                                             @if(is_array($d))
                                                                 @continue
@@ -196,11 +198,11 @@
                                                                 @endif
                                                             @endif
                                                         @endforeach
-
+    
                                                     @else
-
+    
                                                         <td>{{ $transaction }}</td>
-
+    
                                                     @endif
                                                 
                                                     
@@ -208,6 +210,7 @@
                                             </tr>
                                         
                                         @endif
+
 
                                     </tbody>
 
@@ -219,12 +222,12 @@
                                             <td class="sorting_1"></td>
                                             <td></td>                                        
                                             <td></td>                                                                                
-                                            <td></td>                                                                                    
-                                            <td></td>
+                                            <td></td>                                        
+                                            <td></td>                                            
                                             <td class="tx-bold align-middle">Total</td>
                                             <td>
-                                            <input type="number" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" 
-                                            value="{{ $pcv->amount }}" readonly>
+                                            <input type="text" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" 
+                                            value="{{ number_format($pcv->amount, 2, '.', ',') }}" readonly>
                                             </td>                                        
                                         </tr>
                                     </tfoot>

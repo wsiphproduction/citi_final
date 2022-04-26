@@ -21,8 +21,7 @@ class PCFRController extends Controller
     
         $user = auth()->user();
 
-        $pcfr = Pcfr::whereIn('status', ['approved', 'approved'])
-            ->where('tl_approved', 1)
+        $pcfr = Pcfr::where('tl_approved', 1)
             ->orderBy('created_at', 'DESC')  
             ->get();
 
