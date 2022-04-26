@@ -99,5 +99,20 @@
 		</div>
 
 		<div class="col-lg-6"></div>
+
+		@if($ts->status == 'disapproved tl')
+
+		<div class="col-lg-6">
+			<div class="form-group row">
+				<label for="description" class="col-lg-5 col-form-label">Remarks</label>
+				<div class="col-lg-7">
+					<textarea id="description" name="description" class="form-control" rows="3" readonly>{{ $ts->remarks }}</textarea>
+				</div>
+			</div>
+		</div>
+
+		@endif
+
+		<div class="col-lg-6"></div>
 	
 @endsection

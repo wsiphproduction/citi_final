@@ -77,7 +77,7 @@
                     <div class="form-group row">
                         <label for="description" class="col-lg-5 col-form-label">Description</label>
                         <div class="col-lg-7">
-                            <textarea id="description" name="description" class="form-control bd-0 bd-bottom" rows="3" readonly style="height: 120px;">Sample Description</textarea>
+                            <textarea id="description" name="description" class="form-control bd-0 bd-bottom" rows="3" readonly style="height: 120px;">{{ $pcv->description }}</textarea>
                         </div>
                     </div>
                 </div>
@@ -91,6 +91,19 @@
                         </div>
                     </div>
                 </div>
+
+                @if(\Str::contains($pcv->status , 'disapproved' ) || $pcv->status == 'cancelled' || $pcv->status == 'cancel')
+
+                    <div class="col-lg-6">
+                        <div class="form-group row">
+                            <label for="date" class="col-lg-5 col-form-label">Remarks</label>
+                            <div class="col-lg-7">
+                                <textarea id="description" name="description" class="form-control bd-0 bd-bottom" rows="3" readonly style="height: 120px;">{{ $pcv->remarks }} </textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                @endif
 
                 <div class="col-lg-12">
                     <hr class="mg-t-10 mg-b-40">
