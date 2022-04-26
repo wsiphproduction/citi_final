@@ -41,7 +41,9 @@ class PCFRController extends Controller
         $pcfr = Pcfr::where('status', 'submitted')
             ->whereHas('user', function(Builder $builder) {
                 $builder->where('assign_to', auth()->user()->assign_to);
-            })->get();
+            })
+            ->orderBy('created_at', 'DESC')
+            ->get();
 
         return view('pages.pcfr.treasury.for-approval', compact('pcfr'));
 
@@ -53,7 +55,9 @@ class PCFRController extends Controller
         $temp_slips = TemporarySlip::where('status', 'approved')
             ->whereHas('user', function(Builder $builder) {
                 $builder->where('assign_to', auth()->user()->assign_to);
-            })->get();
+            })
+            ->orderBy('created_at', 'DESC')
+            ->get();
 
         return view('pages.pcfr.treasury.temp-slips', compact('temp_slips'));
 
@@ -65,7 +69,9 @@ class PCFRController extends Controller
         $pcvs = Pcv::where('status', 'approved')
             ->whereHas('user', function(Builder $builder) {
                 $builder->where('assign_to', auth()->user()->assign_to);
-            })->get();
+            })
+            ->orderBy('created_at', 'DESC')
+            ->get();
 
         return view('pages.pcfr.treasury.pcv', compact('pcvs'));
 
