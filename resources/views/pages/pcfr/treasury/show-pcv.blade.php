@@ -105,7 +105,7 @@
 
                 <div data-label="{{ $pcv->account_name }}" class="df-example" id="attachment-outter-wrapper">
 
-                    @if(count($pcv->account_transactions))
+                    @if($pcv->account_transaction)
 
                         <div class="dataTables_responsive">
     
@@ -113,49 +113,107 @@
                                     
                                 <thead>
                                     <tr role="row">
-                                        @foreach($pcv->account_transactions[0]['details'] as $key => $tbl_headers)
+                                        @if(array_key_exists(0, $pcv->account_transaction['details']))
+                                            @foreach($pcv->account_transaction['details'][0] as $key => $tbl_headers)
+                                            @if($key != 'items')
                                             <td data-rowname="{{ strtolower(str_replace(' ', '_', $key)) }}" class="tbl-header tx-uppercase"> {{ $key }} </td>
-                                        @endforeach
+                                            @endif
+                                            @endforeach
+                                        @else
+                                            @foreach($pcv->account_transaction['details'] as $key => $tbl_headers)
+                                            @if($key != 'items')
+                                            <td data-rowname="{{ strtolower(str_replace(' ', '_', $key)) }}" class="tbl-header tx-uppercase"> {{ $key }} </td>
+                                            @endif
+                                            @endforeach
+                                        @endif
                                     </tr>
                                 </thead>
 
                                 <tbody>
                                     
-                                    @foreach( $pcv->account_transactions as $transaction )
+                                    @if(array_key_exists(0, $pcv->account_transaction['details']))
+                                    
+                                        @foreach( $pcv->account_transaction['details'] as $transaction )
 
-                                        <tr>
-                                            @foreach( $transaction['details'] as $detail )
-                                                
-                                                @if(is_array($detail)) 
+                                            <tr>
+                                                @if(is_array($transaction)) 
 
-                                                    <td>{{ json_encode($detail) }}</td>
+                                                    @foreach($transaction as $key => $d)
+                                                        @if(is_array($d))
+                                                            @continue
+                                                        @else
+                                                            @if($key == 'attachment')
+                                                                <td><a href="{{env('APP_URL')}}/storage/pcv/{{$pcv->pcv_no}}/account/{{$d}}" target="_blank"> {{ $d }} </a></td>
+                                                            @elseif($key == 'pos_no_of_purchased_items' || $key == 'pos_no_of_delivery_fee')
+                                                                <td><a href="{{env('APP_URL')}}/pos-transactions/show/{{$d}}" target="_blank"> {{ $d }} </a></td>
+                                                            @else
+                                                                <td> {{ $d }} </td>
+                                                            @endif
+                                                        @endif
+                                                    @endforeach
 
                                                 @else
 
-                                                    <td>{{ $detail }}</td>
+                                                    <td>{{ $transaction }}</td>
 
                                                 @endif
+                                            </tr>
+                                                
+                                        @endforeach
+                                        
+                                    @else
+                                        <tr>
+                                        @foreach( $pcv->account_transaction['details'] as $transaction )
 
-                                            @endforeach
+                                            
+                                                @if(is_array($transaction)) 
+
+                                                    @foreach($transaction as $key => $d)
+                                                        @if(is_array($d))
+                                                            @continue
+                                                        @else
+                                                            @if($key == 'attachment')
+                                                                <td><a href="{{env('APP_URL')}}/storage/pcv/{{$pcv->pcv_no}}/account/{{$d}}" target="_blank"> {{ $d }} </a></td>
+                                                            @else
+                                                                <td> {{ $d }} </td>
+                                                            @endif
+                                                        @endif
+                                                    @endforeach
+
+                                                @else
+
+                                                    <td>{{ $transaction }}</td>
+
+                                                @endif
+                                            
+                                                
+                                        @endforeach
                                         </tr>
+                                    
+                                    @endif
 
-                                    @endforeach
 
                                 </tbody>
 
-                                <tr role="row">
-                                  <td class="sorting_1"></td>
-                                  <td></td>
-                                  <td></td>
-                                  <td></td>
-                                  <td class="tx-bold text-right align-middle">Total Amount</td>
-                                  <td>
-                                    <input type="number" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" 
-                                        value="{{ $pcv->amount }}" readonly >
-                                  </td>
-                                  <td></td>
-                                </tr>
-                              </tfoot>
+                                @if($pcv->account_name == 'Stripping Charge' 
+                                    || $pcv->account_name == 'Delivery Charges' )
+
+                                <tfoot>
+                                    <tr role="row">
+                                        <td class="sorting_1"></td>
+                                        <td></td>                                        
+                                        <td></td>                                                                                
+                                        <td></td>                                        
+                                        <td></td>                                            
+                                        <td class="tx-bold align-middle">Total</td>
+                                        <td>
+                                        <input type="text" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" 
+                                        value="{{ number_format($pcv->amount, 2, '.', ',') }}" readonly>
+                                        </td>                                        
+                                    </tr>
+                                </tfoot>
+
+                                @endif
 
                             </table>
                         
@@ -167,14 +225,77 @@
 
                     @endif
 
-
                 </div>
 
             </div>
 
         </div>
 
-         <br><br>
+        <br><br>
+
+        @if($pcv->account_name == 'Installation')
+            <div class="row" id="account-wrapper">
+
+                <div class="col-lg-12">
+
+                    <div data-label="{{ $pcv->account_name }} Items" class="df-example" id="attachment-outter-wrapper">
+
+                        @if($pcv->account_transaction)
+
+                            <div class="dataTables_responsive">
+        
+                                <table id="account-transactions-list" class="table dataTable no-footer">
+                                    
+                                    <thead>
+                                        <tr role="row">
+                                            @if(array_key_exists(0, $pcv->account_transaction['details']))
+                                                @foreach($pcv->account_transaction['details'][0]['items'][0] as $key => $tbl_headers)
+                                                @if($key != 'items')
+                                                <td data-rowname="{{ strtolower(str_replace(' ', '_', $key)) }}" class="tbl-header tx-uppercase"> {{ $key }} </td>
+                                                @endif
+                                                @endforeach
+                                            @else
+                                                @foreach($pcv->account_transaction['details']['items'][0] as $key => $tbl_headers)
+                                                @if($key != 'items')
+                                                <td data-rowname="{{ strtolower(str_replace(' ', '_', $key)) }}" class="tbl-header tx-uppercase"> {{ $key }} </td>
+                                                @endif
+                                                @endforeach
+                                            @endif
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        
+                                        @foreach( $pcv->account_transaction['details'] as $transaction )
+                                            @foreach( $transaction['items'] as $item )
+                                            <tr>
+                                                <td>{{ $item['barcode'] }}</td>
+                                                <td>{{ $item['description'] }}</td>
+                                                <td>{{ $item['qty_for_installation'] }}</td>
+
+                                            </tr>
+                                            @endforeach                                                    
+                                        @endforeach
+
+                                    </tbody>
+
+                                </table>
+                            
+                            </div>
+
+                        @else
+
+                            <h3 class="text-center"> No Account Transaction Found </h3>
+
+                        @endif
+
+                    </div>
+
+                </div>
+
+            </div>
+        <br><br>    
+        @endif
 
         <div class="row">
         
