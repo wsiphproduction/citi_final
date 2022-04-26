@@ -22,10 +22,7 @@ class PCVController extends Controller
 
     public function index() {
         $user = auth()->user();
-        $pcvs = Pcv::whereIn('status', [
-            'saved', 'approved', 'submitted','confirmed', 'cancel', 'cancelled', 'disapproved','disapproved tl', 
-            'disapproved dept head', 'disapproved dh', 'disapproved py'
-        ])->whereHas('user' , function(Builder $builder) use($user) {
+        $pcvs = Pcv::whereHas('user' , function(Builder $builder) use($user) {
                 if($user->getUserAssignTo() == 'ssc') {
                     $builder->where('assign_to', $user->assign_to)
                         ->where('assign_name', $user->assign_name);
