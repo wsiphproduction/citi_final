@@ -66,8 +66,7 @@ class PCFRController extends Controller
 
     public function pcvs() {
 
-        $pcvs = Pcv::where('status', 'approved')
-            ->whereHas('user', function(Builder $builder) {
+        $pcvs = Pcv::whereHas('user', function(Builder $builder) {
                 $builder->where('assign_to', auth()->user()->assign_to);
             })
             ->orderBy('created_at', 'DESC')
