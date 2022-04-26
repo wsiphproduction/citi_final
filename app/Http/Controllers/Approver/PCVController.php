@@ -104,15 +104,18 @@ class PCVController extends Controller
         $matrix = AccountMatrix::where('name', $pcv->account_name)
             ->where('amount', $pcv->amount)
             ->where('status', 1)
+            ->where('code', 1)
             ->orWhere(function($query) use ($pcv) {
                 $query->where('name', $pcv->account_name)
                     ->where('amount', '<', $pcv->amount)
                     ->where('beyond', 1)
+                    ->where('code', 1)
                     ->where('status', 1);
             })
             ->orWhere(function($query) use ($pcv) {
                 $query->where('name', $pcv->account_name)
                     ->where('regardless', 1)
+                    ->where('code', 1)
                     ->where('status', 1);
             })
             ->get();

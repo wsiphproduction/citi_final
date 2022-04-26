@@ -77,15 +77,18 @@ class TSController extends Controller
         $matrix = AccountMatrix::where('number', $ts->account_code)
             ->where('amount', '=', $ts->amount)
             ->where('status', 1)
+            ->where('code', 1)
             ->orWhere(function($query) use ($ts) {
                 $query->where('number', $ts->account_code)
                     ->where('amount', '<', $ts->amount)
                     ->where('beyond', 1)
+                    ->where('code', 1)
                     ->where('status', 1);
             })
             ->orWhere(function($query) use ($ts) {
                 $query->where('number', $ts->account_code)
                     ->where('regardless', 1)
+                    ->where('code', 1)
                     ->where('status', 1);
             })
             ->get();
