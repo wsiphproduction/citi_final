@@ -174,7 +174,7 @@
                 <label for="temporary-slip" class="col-lg-5 col-form-label">Temporary Slip</label>
                 <div class="col-lg-7">
                   	<input type="number" class="form-control text-right" 
-                  		id="temporary_slip" name="temporary_slip" >
+                  		id="temporary_slip" name="temporary_slip" value="0">
                 </div>
             </div>
         </div>
@@ -379,6 +379,11 @@
 		var account_attachments = [];
 		var current_id = 0;
 		var pcv_ids = {!! $pcvs->pluck('id') !!};
+		var _total_replenishment = $('#total_replenishment').val();
+        var _pending_replenishment = $('#pending_replenishment').val();
+        var _unreplenished = $('#unreplenished').val();
+        var _unapproved_pcvs = $('#unapproved_pcvs').val();
+        var _returned_pcvs = $('#returned_pcvs').val();
 
       	periodFrom = $('#periodDateFrom')
 	      	.datepicker().on('change', function() {
@@ -580,16 +585,21 @@
 
 	    $(document).on('blur', '#atm_balance', function() {
 
+	    	var _pcf_accounted_for = parseFloat(_total_replenishment) + parseFloat(_pending_replenishment) + parseFloat(_unreplenished) + parseFloat(_unapproved_pcvs) + parseFloat(_returned_pcvs);
+
 	    	let atm_bal = $(this).val();
 	    	if(atm_bal == ''){ 
                 atm_bal = 0;
                 $(this).val(0);
             }
+
 	    	let overage_shortage = $('#overage_shortage').val();
-	   		let pcf_accounted_for = $('#pcf_accounted_for').val();
 	   		let pcf_accountability = $('#pcf_accountability').val();
 
-	   		let new_pcf_accounted_for = parseFloat(atm_bal) + parseFloat(pcf_accounted_for);
+	   		_pcf_accounted_for = _pcf_accounted_for + parseFloat($('#atm_balance').val()) + parseFloat($('#temporary_slip').val());
+
+
+	   		let new_pcf_accounted_for = parseFloat(atm_bal) + parseFloat(_pcf_accounted_for);
 	   		let new_overage_shortage = parseFloat(pcf_accountability) - parseFloat(new_pcf_accounted_for);
 
 	    	$('#pcf_accounted_for').val(new_pcf_accounted_for);
@@ -599,17 +609,20 @@
 
 	   	$(document).on('blur', '#cash_on_hand', function() {
 
+	   		var _pcf_accounted_for = parseFloat(_total_replenishment) + parseFloat(_pending_replenishment) + parseFloat(_unreplenished) + parseFloat(_unapproved_pcvs) + parseFloat(_returned_pcvs);
+
 	   		let cash_on_hand = $(this).val();
 	   		if(cash_on_hand == ''){ 
                 cash_on_hand = 0;
                 $(this).val(0);
             }
 
+            _pcf_accounted_for = _pcf_accounted_for + parseFloat($('#atm_balance').val()) + parseFloat($('#temporary_slip').val());
+
 	    	let overage_shortage = $('#overage_shortage').val();
-	   		let pcf_accounted_for = $('#pcf_accounted_for').val();
 	   		let pcf_accountability = $('#pcf_accountability').val();
 
-	   		let new_pcf_accounted_for = parseFloat(cash_on_hand) + parseFloat(pcf_accounted_for);
+	   		let new_pcf_accounted_for = parseFloat(cash_on_hand) + parseFloat(_pcf_accounted_for);
 	   		let new_overage_shortage = parseFloat(pcf_accountability) - parseFloat(new_pcf_accounted_for);
 
 	    	$('#pcf_accounted_for').val(new_pcf_accounted_for);
@@ -619,16 +632,20 @@
 
 	    $(document).on('blur', '#temporary_slip', function() {
 
+	    	var _pcf_accounted_for = parseFloat(_total_replenishment) + parseFloat(_pending_replenishment) + parseFloat(_unreplenished) + parseFloat(_unapproved_pcvs) + parseFloat(_returned_pcvs);
+
 	    	let temp_slip = $(this).val();
 	    	if(temp_slip == ''){ 
                 temp_slip = 0;
                 $(this).val(0);
             }
+	    	
 	    	let overage_shortage = $('#overage_shortage').val();
-	   		let pcf_accounted_for = $('#pcf_accounted_for').val();
 	   		let pcf_accountability = $('#pcf_accountability').val();
 
-	   		let new_pcf_accounted_for = parseFloat(temp_slip) + parseFloat(pcf_accounted_for);
+			_pcf_accounted_for = _pcf_accounted_for + parseFloat($('#atm_balance').val()) + parseFloat($('#cash_on_hand').val());
+
+	   		let new_pcf_accounted_for = parseFloat(temp_slip) + parseFloat(_pcf_accounted_for);
 	   		let new_overage_shortage = parseFloat(pcf_accountability) - parseFloat(new_pcf_accounted_for);
 
 	    	$('#pcf_accounted_for').val(new_pcf_accounted_for);

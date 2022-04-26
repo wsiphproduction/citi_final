@@ -120,7 +120,7 @@
     			lengthMenu: 'Show _MENU_ entries',
     			},
     			columnDefs: [
-    			{ targets: 7, orderable: false }
+    			{ targets: 8, orderable: false }
     			]
     		});
 
