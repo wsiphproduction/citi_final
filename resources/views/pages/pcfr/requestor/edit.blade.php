@@ -385,7 +385,7 @@
                             <div class="col-lg-3">
                                 <div class="form-group">
                                     <label for="doc-ref-date" class="d-block tx-14">Doc. Ref Date</label>
-                                    <input type="date" class="form-control" id="docdate" value="{{ date('Y-m-d') }}">
+                                    <input type="date" class="form-control" id="docdate" value="{{ date('d-m-Y') }}">
                                 </div>
                             </div>
 
@@ -603,7 +603,7 @@
 
 	        $('#type', newElement).attr("id", field.split("_")[0]+"_"+id );
 	        $('#document', newElement).attr("id", field1.split("_")[0]+"_"+id );
-	        $('#docdate', newElement).attr("id", field2.split("_")[0]+"_"+id ).val(new moment().format('YYYY-MM-DD'));
+	        $('#docdate', newElement).attr("id", field2.split("_")[0]+"_"+id ).val(new moment().format('DD-MM-YYYY'));
 	        $('#docref', newElement).attr("id", field3.split("_")[0]+"_"+id ).val('');
 			$('#docrefstring', newElement).attr("id", field4.split("_")[0]+"_"+id ).val('');
 
