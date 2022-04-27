@@ -159,7 +159,7 @@
                           <td class="tx-bold text-right align-middle">Total Amount</td>
                           <td>
                             <input type="text" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" 
-                                value="{{ number_format($pcfr->pcv()->sum('amount'),, 2, '.', ',') }}" readonly="" name="amount" id="amount">
+                                value="{{ number_format($pcfr->pcv()->sum('amount'), 2, '.', ',') }}" readonly="" name="amount" id="amount">
                           </td>
                           <td></td>
                         </tr>
