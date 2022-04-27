@@ -33,6 +33,7 @@
 
                 <thead>
                     <tr>
+                    	<td><input type="checkbox" id="checkAllsubmitted"></td>
                         <td>Date</td>
                         <td>PCV No.</td>
                         <td>Account</td>
@@ -45,6 +46,7 @@
                 <tbody>
                     @forelse( $pcvs as $pcv )
 	                  	<tr>
+	                  		<td><input type="checkbox" class="submittedData" @if($pcv->status != 'submitted') disabled @endif ></td>
 	                        <td> {{ \Carbon\Carbon::parse($pcv->date_created)->toFormattedDateString() }} </td>
 	                        <td> {{ $pcv->pcv_no }} </td>
 	                        <td> {{ $pcv->account_name }} </td>
@@ -76,7 +78,7 @@
 
 @section('pagejs')
 	
-	  <script src="{{ asset('lib/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+	<script src="{{ asset('lib/datatables.net/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('lib/datatables.net-dt/js/dataTables.dataTables.min.js') }}"></script>
     <script src="{{ asset('lib/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
     <script src="{{ asset('lib/datatables.net-responsive-dt/js/responsive.dataTables.min.js') }}"></script>
@@ -93,10 +95,22 @@
 				lengthMenu: 'Show _MENU_ entries',
 				},
 				columnDefs: [
-				{ targets: 5, orderable: false }
+				{ targets: 6, orderable: false }
 				]
 			});
 		});
+
+		$(document).on('click', '#checkAllsubmitted', function() {
+
+			if($(this).is(':checked')) {
+				$('.submittedData').not(':disabled').attr('checked', 'checked');
+			} else {
+				$('.submittedData').attr('checked', false);
+			}
+
+		});
+
+
     </script>
 
 

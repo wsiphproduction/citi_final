@@ -52,7 +52,7 @@
                 
                 <tbody>
                     @forelse( $pcvs as $pcv )
-	                  	<tr>
+	                  	<tr>	                  		
 	                        <td> {{ \Carbon\Carbon::parse($pcv->date_created)->toFormattedDateString() }} </td>
 	                        <td> {{ $pcv->pcv_no }} </td>
 	                        <td> {{ $pcv->description }} </td>

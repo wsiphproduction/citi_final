@@ -152,8 +152,8 @@
 	                      <td></td>
 	                      <td class="tx-bold align-middle">Total Amount</td>
 	                      <td>
-	                        <input type="number" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" 
-	                        	value="{{ $pcvs_sum }}" readonly="" name="amount" id="amount">
+	                        <input type="text" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" 
+	                        	value="{{ number_format($pcvs_sum, 2, '.', ',') }}" readonly="" name="amount" id="amount">
 	                      </td>
 	                      <td></td>
 	                    </tr>
@@ -171,8 +171,8 @@
             <div class="form-group row">
                 <label for="temporary-slip" class="col-lg-5 col-form-label">Temporary Slip</label>
                 <div class="col-lg-7">
-                  	<input type="number" class="form-control text-right" 
-                  		id="temporary_slip" name="temporary_slip" value="0">
+                  	<input type="text" class="form-control text-right" 
+                  		id="temporary_slip" name="temporary_slip" value="0.00">
                 </div>
             </div>
         </div>
@@ -181,9 +181,9 @@
             <div class="form-group row">
                 <label for="total-replenishment" class="col-lg-5 col-form-label">Total Replenishment</label>
                 <div class="col-lg-7">
-                  	<input type="number" class="form-control bd-0 bd-bottom text-right" 
+                  	<input type="text" class="form-control bd-0 bd-bottom text-right" 
                   		id="total_replenishment" name="total_replenishment" 
-                  		value="{{ $total_replenishment }}" readonly>
+                  		value="{{ number_format($total_replenishment, 2, '.', ',') }}" readonly>
                 </div>
             </div>
         </div>
@@ -192,7 +192,7 @@
             <div class="form-group row">
                 <label for="atm-balance" class="col-lg-5 col-form-label">ATM Balance</label>
                 <div class="col-lg-7">
-                  	<input type="number" class="form-control text-right" id="atm_balance" name="atm_balance" min="0" step="1" value="0">
+                  	<input type="text" class="form-control text-right" id="atm_balance" name="atm_balance" min="0" step="1" value="0.00">
                 </div>
             </div>
         </div>
@@ -201,8 +201,8 @@
             <div class="form-group row">
                 <label for="pending-replenishment" class="col-lg-5 col-form-label">Pending Replenishment</label>
                 <div class="col-lg-7">
-                  	<input type="number" class="form-control bd-0 bd-bottom text-right" 
-                  		id="pending_replenishment" name="pending_replenishment" value="{{ $pending_replenishment }}" readonly>
+                  	<input type="text" class="form-control bd-0 bd-bottom text-right" 
+                  		id="pending_replenishment" name="pending_replenishment" value="{{ number_format($pending_replenishment, 2, '.', ',') }}" readonly>
                 </div>
             </div>
         </div>
@@ -211,7 +211,7 @@
             <div class="form-group row">
                 <label for="cash-on-hand" class="col-lg-5 col-form-label">Cash on Hand</label>
                 <div class="col-lg-7">
-                  	<input type="number" class="form-control text-right" id="cash_on_hand" name="cash_on_hand" min="0" step="1" value="0">
+                  	<input type="text" class="form-control text-right" id="cash_on_hand" name="cash_on_hand" min="0" step="1" value="0.00">
                 </div>
             </div>
         </div>
@@ -220,8 +220,8 @@
             <div class="form-group row">
                 <label for="unreplenished" class="col-lg-5 col-form-label">Unreplenished</label>
                 <div class="col-lg-7">
-                  	<input type="number" class="form-control bd-0 bd-bottom text-right" id="unreplenished" 
-                  		name="unreplenished" value="{{ $unreplenished }}" readonly>
+                  	<input type="text" class="form-control bd-0 bd-bottom text-right" id="unreplenished" 
+                  		name="unreplenished" value="{{ number_format($unreplenished, 2, '.', ',') }}" readonly>
                 </div>
             </div>
         </div>
@@ -230,8 +230,8 @@
            	<div class="form-group row">
                 <label for="pcf-accounted-for" class="col-lg-5 col-form-label">PCF Accounted For</label>
                 <div class="col-lg-7">
-                  	<input type="number" class="form-control bd-0 bd-bottom text-right" 
-                  		id="pcf_accounted_for" name="pcf_accounted_for" value="{{ $pcf_accounted_for }}" readonly>
+                  	<input type="text" class="form-control bd-0 bd-bottom text-right" 
+                  		id="pcf_accounted_for" name="pcf_accounted_for" value="{{ number_format($pcf_accounted_for, 2, '.', ',') }}" readonly>
                 </div>
             </div>
         </div>
@@ -240,8 +240,8 @@
           	<div class="form-group row">
 	            <label for="unapproved-pcvs" class="col-lg-5 col-form-label">Unapproved PCVs</label>
 	            <div class="col-lg-7">
-	              	<input type="number" class="form-control bd-0 bd-bottom text-right" 
-	              		id="unapproved_pcvs" name="unapproved_pcvs" value="{{ $unapproved_pcvs }}" readonly>
+	              	<input type="text" class="form-control bd-0 bd-bottom text-right" 
+	              		id="unapproved_pcvs" name="unapproved_pcvs" value="{{ number_format($unapproved_pcvs, 2, '.', ',') }}" readonly>
 	            </div>
           	</div>
         </div>
@@ -250,8 +250,8 @@
 	        <div class="form-group row">
 	            <label for="pcf-accountability" class="col-lg-5 col-form-label">PCF Accountability</label>
 	            <div class="col-lg-7">
-	              	<input type="number" class="form-control bd-0 bd-bottom text-right" 
-	              		id="pcf_accountability" name="pcf_accountability" value="{{ $pcv_accountability }}" readonly>
+	              	<input type="text" class="form-control bd-0 bd-bottom text-right" 
+	              		id="pcf_accountability" name="pcf_accountability" value="{{ number_format($pcv_accountability, 2, '.', ',') }}" readonly>
 	            </div>
 	        </div>
         </div>
@@ -260,8 +260,8 @@
             <div class="form-group row">
                 <label for="returned-pcvs" class="col-lg-5 col-form-label">Returned PCVs</label>
                 <div class="col-lg-7">
-                  	<input type="number" class="form-control bd-0 bd-bottom text-right" 
-                  		id="returned_pcvs" name="returned_pcvs" value="{{ $returned_pcvs }}" readonly>
+                  	<input type="text" class="form-control bd-0 bd-bottom text-right" 
+                  		id="returned_pcvs" name="returned_pcvs" value="{{ number_format($returned_pcvs, 2, '.', ',') }}" readonly>
                 </div>
             </div>
         </div>
@@ -270,8 +270,8 @@
           	<div class="form-group row">
 	            <label for="overage-shortage" class="col-lg-5 col-form-label">Overage/Shortage</label>
 	            <div class="col-lg-7">
-	              	<input type="number" class="form-control bd-0 bd-bottom text-right" 
-	              		id="overage_shortage" name="overage_shortage" value="{{ $overage_shortage }}" readonly>
+	              	<input type="text" class="form-control bd-0 bd-bottom text-right" 
+	              		id="overage_shortage" name="overage_shortage" value="{{ number_format($overage_shortage, 2, '.', ',') }}" readonly>
 	            </div>
           	</div>
         </div>
@@ -585,73 +585,73 @@
 
 	    $(document).on('blur', '#atm_balance', function() {
 
-	    	var _pcf_accounted_for = parseFloat(_total_replenishment) + parseFloat(_pending_replenishment) + parseFloat(_unreplenished) + parseFloat(_unapproved_pcvs) + parseFloat(_returned_pcvs);
+            var _pcf_accounted_for = parseFloat(accounting.unformat(_total_replenishment)) + parseFloat(accounting.unformat(_pending_replenishment)) + parseFloat(accounting.unformat(_unreplenished)) + parseFloat(accounting.unformat(_unapproved_pcvs)) + accounting.unformat(parseFloat(_returned_pcvs));
 
-	    	let atm_bal = $(this).val();
-	    	if(atm_bal == ''){ 
+            let atm_bal = $(this).val();
+            if(atm_bal == ''){ 
                 atm_bal = 0;
                 $(this).val(0);
             }
 
-	    	let overage_shortage = $('#overage_shortage').val();
-	   		let pcf_accountability = $('#pcf_accountability').val();
+            let overage_shortage = $('#overage_shortage').val();
+            let pcf_accountability = accounting.unformat($('#pcf_accountability').val());
 
-	   		_pcf_accounted_for = _pcf_accounted_for + parseFloat($('#cash_on_hand').val()) + parseFloat($('#temporary_slip').val());
+            _pcf_accounted_for = _pcf_accounted_for + parseFloat(accounting.unformat($('#cash_on_hand').val())) + parseFloat(accounting.unformat($('#temporary_slip').val()));
 
 
-	   		let new_pcf_accounted_for = parseFloat(atm_bal) + parseFloat(_pcf_accounted_for);
-	   		let new_overage_shortage = parseFloat(pcf_accountability) - parseFloat(new_pcf_accounted_for);
+            let new_pcf_accounted_for = parseFloat(atm_bal) + parseFloat(_pcf_accounted_for);
+            let new_overage_shortage = parseFloat(pcf_accountability) - parseFloat(new_pcf_accounted_for);
 
-	    	$('#pcf_accounted_for').val(new_pcf_accounted_for);
-	    	$('#overage_shortage').val(new_overage_shortage);
+            $('#pcf_accounted_for').val(accounting.format(new_pcf_accounted_for, 2,',', '.'));
+            $('#overage_shortage').val(accounting.format(new_overage_shortage, 2,',', '.'));
 
-	    });
+        });
 
-	   	$(document).on('blur', '#cash_on_hand', function() {
+        $(document).on('blur', '#cash_on_hand', function() {
 
-	   		var _pcf_accounted_for = parseFloat(_total_replenishment) + parseFloat(_pending_replenishment) + parseFloat(_unreplenished) + parseFloat(_unapproved_pcvs) + parseFloat(_returned_pcvs);
+            var _pcf_accounted_for = parseFloat(accounting.unformat(_total_replenishment)) + parseFloat(accounting.unformat(_pending_replenishment)) + parseFloat(accounting.unformat(_unreplenished)) + parseFloat(accounting.unformat(_unapproved_pcvs)) + accounting.unformat(parseFloat(_returned_pcvs));
 
-	   		let cash_on_hand = $(this).val();
-	   		if(cash_on_hand == ''){ 
+            let cash_on_hand = $(this).val();
+            if(cash_on_hand == ''){ 
                 cash_on_hand = 0;
                 $(this).val(0);
             }
 
-            _pcf_accounted_for = _pcf_accounted_for + parseFloat($('#atm_balance').val()) + parseFloat($('#temporary_slip').val());
+            let overage_shortage = $('#overage_shortage').val();
+            let pcf_accountability = accounting.unformat($('#pcf_accountability').val());
 
-	    	let overage_shortage = $('#overage_shortage').val();
-	   		let pcf_accountability = $('#pcf_accountability').val();
+            _pcf_accounted_for = _pcf_accounted_for + parseFloat(accounting.unformat($('#atm_balance').val())) + parseFloat(accounting.unformat($('#temporary_slip').val()));
 
-	   		let new_pcf_accounted_for = parseFloat(cash_on_hand) + parseFloat(_pcf_accounted_for);
-	   		let new_overage_shortage = parseFloat(pcf_accountability) - parseFloat(new_pcf_accounted_for);
+            let new_pcf_accounted_for = parseFloat(cash_on_hand) + parseFloat(_pcf_accounted_for);
+            let new_overage_shortage = parseFloat(pcf_accountability) - parseFloat(new_pcf_accounted_for);
 
-	    	$('#pcf_accounted_for').val(new_pcf_accounted_for);
-	    	$('#overage_shortage').val(new_overage_shortage);
+            $('#pcf_accounted_for').val(accounting.format(new_pcf_accounted_for, 2,',', '.'));
+            $('#overage_shortage').val(accounting.format(new_overage_shortage, 2,',', '.'));
 
-	    });
+        });
 
-	    $(document).on('blur', '#temporary_slip', function() {
+        $(document).on('blur', '#temporary_slip', function() {
 
-	    	var _pcf_accounted_for = parseFloat(_total_replenishment) + parseFloat(_pending_replenishment) + parseFloat(_unreplenished) + parseFloat(_unapproved_pcvs) + parseFloat(_returned_pcvs);
+            var _pcf_accounted_for = parseFloat(accounting.unformat(_total_replenishment)) + parseFloat(accounting.unformat(_pending_replenishment)) + parseFloat(accounting.unformat(_unreplenished)) + parseFloat(accounting.unformat(_unapproved_pcvs)) + accounting.unformat(parseFloat(_returned_pcvs));
 
-	    	let temp_slip = $(this).val();
-	    	if(temp_slip == ''){ 
+            let temp_slip = $(this).val();
+            if(temp_slip == ''){ 
                 temp_slip = 0;
                 $(this).val(0);
             }
-	    	
-	    	let overage_shortage = $('#overage_shortage').val();
-	   		let pcf_accountability = $('#pcf_accountability').val();
+            
+            let overage_shortage = $('#overage_shortage').val();
+            let pcf_accountability = accounting.unformat($('#pcf_accountability').val());
 
-			_pcf_accounted_for = _pcf_accounted_for + parseFloat($('#atm_balance').val()) + parseFloat($('#cash_on_hand').val());
+            _pcf_accounted_for = _pcf_accounted_for + parseFloat(accounting.unformat($('#atm_balance').val())) + parseFloat(accounting.unformat($('#cash_on_hand').val()));
 
-	   		let new_pcf_accounted_for = parseFloat(temp_slip) + parseFloat(_pcf_accounted_for);
-	   		let new_overage_shortage = parseFloat(pcf_accountability) - parseFloat(new_pcf_accounted_for);
+            let new_pcf_accounted_for = parseFloat(temp_slip) + parseFloat(_pcf_accounted_for);
+            let new_overage_shortage = parseFloat(pcf_accountability) - parseFloat(new_pcf_accounted_for);
 
-	    	$('#pcf_accounted_for').val(new_pcf_accounted_for);
-	    	$('#overage_shortage').val(new_overage_shortage);
+            $('#pcf_accounted_for').val(accounting.format(new_pcf_accounted_for, 2,',', '.'));
+            $('#overage_shortage').val(accounting.format(new_overage_shortage, 2,',', '.'));
 
-	    });
+        });
 
 
 	</script>

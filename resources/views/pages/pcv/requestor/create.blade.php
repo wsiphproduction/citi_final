@@ -1001,7 +1001,7 @@
 					}
 
 					$('#change').val(res.change);					
-					$('#date_created').val(moment(res.date_created).format('YYYY-MM-DD'));
+					$('#date_created').val(moment().format('YYYY-MM-DD'));
 					$('#pcv_accounts').val(JSON.stringify(_aTransactions));
 					
 					let is_others=true;
@@ -1593,6 +1593,7 @@
 
 				$('.custom-inputs').each(function(i, d) {
 					$(this).val(_account_transactions[0][$(this).attr('data-name')]);
+					if( $(this).attr('data-name') == 'vendor' || $(this).attr('data-name') == 'charge_to' ) { $(this).trigger('change'); }
 				});
 
 				if(_account_name == 'Installation') {

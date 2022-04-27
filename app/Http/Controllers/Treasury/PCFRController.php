@@ -179,20 +179,20 @@ class PCFRController extends Controller
             'vendor'                        => $request->vendor ,
             'from'                          => \Carbon\Carbon::parse($request->period_date_from) ,
             'to'                            => \Carbon\Carbon::parse($request->period_date_to) ,
-            'total_temp_slip'               => $request->temporary_slip ,
-            'total_replenishment'           => $request->total_replenishment ,
-            'total_unreplenished'           => $request->unreplenished ,
-            'total_unapproved_pcv'          => $request->unapproved_pcvs ,
-            'total_returned_pcv'            => $request->returned_pcvs ,
-            'total_accounted'               => $request->pcf_accounted_for ,
-            'pcf_accountability'            => $request->pcf_accountability ,
-            'total_pending_replenishment'   => $request->pending_replenishment ,
-            'pcf_diff'                      => $request->overage_shortage ,
-            'atm_balance'                   => $request->atm_balance ,
-            'cash_on_hand'                  => $request->cash_on_hand ,
+            'total_temp_slip'               => floatval(preg_replace('/[^\d.]/', '', $request->temporary_slip)) ,
+            'total_replenishment'           => floatval(preg_replace('/[^\d.]/', '', $request->total_replenishment)) ,
+            'total_unreplenished'           => floatval(preg_replace('/[^\d.]/', '', $request->unreplenished)) ,
+            'total_unapproved_pcv'          => floatval(preg_replace('/[^\d.]/', '', $request->unapproved_pcvs)) ,
+            'total_returned_pcv'            => floatval(preg_replace('/[^\d.]/', '', $request->returned_pcvs)) ,
+            'total_accounted'               => floatval(preg_replace('/[^\d.]/', '', $request->pcf_accounted_for)) ,
+            'pcf_accountability'            => floatval(preg_replace('/[^\d.]/', '', $request->pcf_accountability)) ,
+            'total_pending_replenishment'   => floatval(preg_replace('/[^\d.]/', '', $request->pending_replenishment)) ,
+            'pcf_diff'                      => floatval(preg_replace('/[^\d.]/', '', $request->overage_shortage)) ,
+            'atm_balance'                   => floatval(preg_replace('/[^\d.]/', '', $request->atm_balance)) ,
+            'cash_on_hand'                  => floatval(preg_replace('/[^\d.]/', '', $request->cash_on_hand)) ,
             'status'                        => $request->status ,
             'user_id'                       => auth()->user()->id ,
-            'amount'                        => $request->amount
+            'amount'                        => floatval(preg_replace('/[^\d.]/', '',$request->amount ))
         ]);
 
         if(count($pcv_ids)) {
@@ -258,14 +258,14 @@ class PCFRController extends Controller
         $pcfr = Pcfr::find($id);
 
         $pcfr->update([
-            'vendor'                        => $request->vendor ,
-            'total_accounted'               => $request->pcf_accounted_for ,
-            'pcf_diff'                      => $request->overage_shortage ,
-            'atm_balance'                   => $request->atm_balance ,
-            'doc_type'                      => $request->doc_type , 
-            'cash_on_hand'                  => $request->cash_on_hand ,
-            'status'                        => $request->status ,
-            'amount'                        => $request->amount
+            'vendor'                   => $request->vendor ,
+            'total_accounted'          => floatval(preg_replace('/[^\d.]/', '', $request->pcf_accounted_for)) ,
+            'pcf_diff'                 => floatval(preg_replace('/[^\d.]/', '', $request->overage_shortage)) ,
+            'atm_balance'              => floatval(preg_replace('/[^\d.]/', '', $request->atm_balance)) ,
+            'doc_type'                 => $request->doc_type , 
+            'cash_on_hand'             => floatval(preg_replace('/[^\d.]/', '', $request->cash_on_hand)) ,
+            'status'                   => $request->status ,
+            'amount'                   => floatval(preg_replace('/[^\d.]/', '', $request->amount))
         ]);      
 
         $pcfr->attachments()->delete();

@@ -166,8 +166,8 @@
                           <td></td>
                           <td class="tx-bold align-middle">Total</td>
                           <td>
-                            <input type="number" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" 
-                                value="{{ $pcfr->pcv()->sum('amount') }}" readonly="" name="amount" id="amount">
+                            <input type="text" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" 
+                                value="{{ number_format($pcfr->pcv()->sum('amount'), 2, '.', ',') }}" readonly name="amount" id="amount">
                           </td>
                           <td></td>
                         </tr>
@@ -184,8 +184,8 @@
             <div class="form-group row">
                 <label for="temporary-slip" class="col-lg-5 col-form-label">Temporary Slip</label>
                 <div class="col-lg-7">
-                  	<input type="number" class="form-control bd-0 bd-bottom text-right" 
-                  		id="temporary_slip" name="temporary_slip" value="{{ $pcfr->total_temp_slip }}" readonly>
+                    <input type="text" class="form-control bd-0 bd-bottom text-right" 
+                        id="temporary_slip" name="temporary_slip" value="{{ number_format($pcfr->total_temp_slip, 2, '.', ',') }}" readonly>
                 </div>
             </div>
         </div>
@@ -194,9 +194,9 @@
             <div class="form-group row">
                 <label for="total-replenishment" class="col-lg-5 col-form-label">Total Replenishment</label>
                 <div class="col-lg-7">
-                  	<input type="number" class="form-control bd-0 bd-bottom text-right" 
-                  		id="total_replenishment" name="total_replenishment" 
-                  		value="{{ $pcfr->total_replenishment }}" readonly>
+                    <input type="text" class="form-control bd-0 bd-bottom text-right" 
+                        id="total_replenishment" name="total_replenishment" 
+                        value="{{ number_format($pcfr->total_replenishment, 2, '.', ',') }}" readonly>
                 </div>
             </div>
         </div>
@@ -205,8 +205,8 @@
             <div class="form-group row">
                 <label for="atm-balance" class="col-lg-5 col-form-label">ATM Balance</label>
                 <div class="col-lg-7">
-                  	<input type="number" class="form-control text-right" id="atm_balance" name="atm_balance"
-                  		readonly value="{{ $pcfr->atm_balance }}">
+                    <input type="text" class="form-control text-right" id="atm_balance" name="atm_balance"
+                        readonly value="{{ number_format($pcfr->atm_balance, 2, '.', ',') }}">
                 </div>
             </div>
         </div>
@@ -215,9 +215,9 @@
             <div class="form-group row">
                 <label for="pending-replenishment" class="col-lg-5 col-form-label">Pending Replenishment</label>
                 <div class="col-lg-7">
-                  	<input type="number" class="form-control bd-0 bd-bottom text-right" 
-                  		id="pending_replenishment" name="pending_replenishment" readonly
-                  			value="{{ $pcfr->total_pending_replenishment }}">
+                    <input type="text" class="form-control bd-0 bd-bottom text-right" 
+                        id="pending_replenishment" name="pending_replenishment" readonly
+                            value="{{ number_format($pcfr->total_pending_replenishment, 2, '.', ',') }}">
                 </div>
             </div>
         </div>
@@ -226,8 +226,8 @@
             <div class="form-group row">
                 <label for="cash-on-hand" class="col-lg-5 col-form-label">Cash on Hand</label>
                 <div class="col-lg-7">
-                  	<input type="number" class="form-control text-right" id="cash_on_hand" name="cash_on_hand"
-                  		value="{{ $pcfr->cash_on_hand }}" readonly>
+                    <input type="text" class="form-control text-right" id="cash_on_hand" name="cash_on_hand"
+                        value="{{ number_format($pcfr->cash_on_hand, 2, '.', ',') }}" readonly>
                 </div>
             </div>
         </div>
@@ -236,60 +236,60 @@
             <div class="form-group row">
                 <label for="unreplenished" class="col-lg-5 col-form-label">Unreplenished</label>
                 <div class="col-lg-7">
-                  	<input type="number" class="form-control bd-0 bd-bottom text-right" id="unreplenished" 
-                  		name="unreplenished" value="{{ $pcfr->total_unreplenished }}" readonly>
+                    <input type="text" class="form-control bd-0 bd-bottom text-right" id="unreplenished" 
+                        name="unreplenished" value="{{ number_format($pcfr->total_unreplenished, 2, '.', ',') }}" readonly>
                 </div>
             </div>
         </div>
 
         <div class="col-lg-6">
-           	<div class="form-group row">
-                <label for="pcf-accounted-for" class="col-lg-5 col-form-label">PCF Accounted For</label>
+            <div class="form-group row">
+                <label for="pcf-accounted-for" class="col-lg-5 col-form-label">PCF Accounted For </label>
                 <div class="col-lg-7">
-                  	<input type="number" class="form-control bd-0 bd-bottom text-right" 
-                  		id="pcf_accounted_for" name="pcf_accounted_for" value="{{ $pcfr->total_accounted }}" readonly>
+                    <input type="text" class="form-control bd-0 bd-bottom text-right" 
+                        id="pcf_accounted_for" name="pcf_accounted_for" value="{{ number_format($pcfr->total_accounted, 2, '.', ',') }}" readonly>
                 </div>
             </div>
         </div>
 
         <div class="col-lg-6">
-          	<div class="form-group row">
-	            <label for="unapproved-pcvs" class="col-lg-5 col-form-label">Unapproved PCVs</label>
-	            <div class="col-lg-7">
-	              	<input type="number" class="form-control bd-0 bd-bottom text-right" 
-	              		id="unapproved_pcvs" name="unapproved_pcvs" value="{{ $pcfr->total_unapproved_pcv }}" readonly>
-	            </div>
-          	</div>
+            <div class="form-group row">
+                <label for="unapproved-pcvs" class="col-lg-5 col-form-label">Unapproved PCVs</label>
+                <div class="col-lg-7">
+                    <input type="text" class="form-control bd-0 bd-bottom text-right" 
+                        id="unapproved_pcvs" name="unapproved_pcvs" value="{{ number_format($pcfr->total_unapproved_pcv, 2, '.', ',') }}" readonly>
+                </div>
+            </div>
         </div>
 
         <div class="col-lg-6">
-	        <div class="form-group row">
-	            <label for="pcf-accountability" class="col-lg-5 col-form-label">PCF Accountability</label>
-	            <div class="col-lg-7">
-	              	<input type="number" class="form-control bd-0 bd-bottom text-right" 
-	              		id="pcf_accountability" name="pcf_accountability" value="{{ $pcfr->pcf_accountability }}" readonly>
-	            </div>
-	        </div>
+            <div class="form-group row">
+                <label for="pcf-accountability" class="col-lg-5 col-form-label">PCF Accountability</label>
+                <div class="col-lg-7">
+                    <input type="text" class="form-control bd-0 bd-bottom text-right" 
+                        id="pcf_accountability" name="pcf_accountability" value="{{ number_format($pcfr->pcf_accountability, 2, '.', ',') }}" readonly>
+                </div>
+            </div>
         </div>
 
         <div class="col-lg-6">
             <div class="form-group row">
                 <label for="returned-pcvs" class="col-lg-5 col-form-label">Returned PCVs</label>
                 <div class="col-lg-7">
-                  	<input type="number" class="form-control bd-0 bd-bottom text-right" 
-                  		id="returned_pcvs" name="returned_pcvs" value="{{ $pcfr->total_returned_pcv }}" readonly>
+                    <input type="text" class="form-control bd-0 bd-bottom text-right" 
+                        id="returned_pcvs" name="returned_pcvs" value="{{ number_format($pcfr->total_returned_pcv, 2, '.', ',') }}" readonly>
                 </div>
             </div>
         </div>
 
         <div class="col-lg-6">
-          	<div class="form-group row">
-	            <label for="overage-shortage" class="col-lg-5 col-form-label">Overage/Shortage</label>
-	            <div class="col-lg-7">
-	              	<input type="number" class="form-control bd-0 bd-bottom text-right" 
-	              		id="overage_shortage" name="overage_shortage" value="{{ $pcfr->pcf_diff }}" readonly>
-	            </div>
-          	</div>
+            <div class="form-group row">
+                <label for="overage-shortage" class="col-lg-5 col-form-label">Overage/Shortage</label>
+                <div class="col-lg-7">
+                    <input type="text" class="form-control bd-0 bd-bottom text-right" 
+                        id="overage_shortage" name="overage_shortage" value="{{ number_format($pcfr->pcf_diff, 2, '.', ',') }}" readonly>
+                </div>
+            </div>
         </div>
 
         <div class="col-lg-6"></div>
