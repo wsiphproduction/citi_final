@@ -29,6 +29,11 @@
 	<div class="row">
 
         <div class="col-lg-12">
+
+        	<div class="float-right">
+        		<button class="btn btn-primary btn-sm mb-2" id="approve-all" > Approve All </button>
+        	</div>
+
             <table id="example1" class="table">
 
                 <thead>
@@ -46,7 +51,7 @@
                 <tbody>
                     @forelse( $pcvs as $pcv )
 	                  	<tr>
-	                  		<td><input type="checkbox" class="submittedData" @if($pcv->status != 'submitted') disabled @endif ></td>
+	                  		<td><input type="checkbox" data-id="{{ $pcv->id }}" class="submittedData" @if($pcv->status != 'submitted') disabled @endif ></td>
 	                        <td> {{ \Carbon\Carbon::parse($pcv->date_created)->toFormattedDateString() }} </td>
 	                        <td> {{ $pcv->pcv_no }} </td>
 	                        <td> {{ $pcv->account_name }} </td>
@@ -74,6 +79,61 @@
 
 	</div>
 
+	<div class="modal fade" id="pcvInputApprovalCode" tabindex="-1" role="dialog" 
+		aria-labelledby="pcvInputApprovalCode" aria-modal="true">
+
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content tx-14">
+				
+				<div class="modal-header">
+					<h6 class="modal-title" id="exampleModalLabel3">Input Approval Code</h6>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">×</span>
+					</button>
+				</div>
+
+				<div class="modal-body">
+					<div class="row">
+						
+						<div class="col-lg-12">
+							<div class="form-group">
+								<label for="approval-code" class="d-block">Approval Code</label>
+								<input type="text" class="form-control" id="approval_code">
+								<input type="hidden" id="pcv_id" >
+							</div>
+						</div>
+
+						<div class="col-lg-12">
+							<div class="form-group">
+								<label for="approver-name" class="d-block">Approver's Name</label>
+								<select class="custom-select" id="approver_name">
+									<option value="">--Select--</option>
+									@foreach($area_manager as $manager) 
+										<option value="{{ $manager->username }}"> {{ $manager->username }} </option>
+									@endforeach
+								</select>
+							</div>
+						</div>
+
+						<div class="col-lg-12">
+							<div class="form-group">
+								<label for="remarks" class="d-block">Remarks</label>
+								<textarea id="remarks" name="remarks" class="form-control" rows="3"></textarea>
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+				<div class="modal-footer">
+					<button class="btn btn-brand-01 d-inline-block tx-13 tx-uppercase" id="btn_approval_code">Approve</button>
+					<button type="button" class="btn btn-white tx-13 tx-uppercase" data-target="#pcvInputApprovalCode" data-toggle="modal" data-dismiss="modal">Cancel</button>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
 @endsection
 
 @section('pagejs')
@@ -95,7 +155,7 @@
 				lengthMenu: 'Show _MENU_ entries',
 				},
 				columnDefs: [
-				{ targets: 6, orderable: false }
+					{	 targets: [0, 6], bSortable: false }
 				]
 			});
 		});
@@ -110,6 +170,100 @@
 
 		});
 
+		$(document).on('click', '#approve-all', function() {
+
+			var _prmse = [];
+
+			$('.submittedData').each(function(i, o) {
+
+				if($(this).is(':checked')) {					
+					_prmse.push(
+						$.ajax({
+
+			                url     : "{!! env('APP_URL') !!}/pcv/approver/approve/"+$(this).data('id') ,
+			                method  : 'PUT' ,
+			                async   : false ,
+			                data    : { _token : "{!! csrf_token() !!}" } ,
+			                success : function (res) {
+			                
+			                    if(res.need_code) {
+			                    	
+			                    	$('#pcv_id').val(res.pcv_id);
+
+				                    $('#pcvInputApprovalCode').modal({
+				                        backdrop : 'static' ,
+				                        show : true
+				                    });
+
+				                }
+
+
+			                }
+
+			            })
+		            );
+				}
+
+			});
+
+			$.when(_prmse).done(function(res) {
+				console.log(res.responseJson);
+			});
+
+		});
+
+		$(document).on('click', '#btn_approval_code', function(e) {
+
+            e.preventDefault();
+            let _url = "";
+
+            if($('#approval_code').val() == '') {
+                alert('Approval Code is required');
+                return false;
+            }
+
+            if($('#approver_name').val() == '') {
+                alert('Approver name is required');
+                return false;
+            }
+
+            if($('#remarks').val() == '') {
+                alert('Remarks is required');
+                return false;
+            }
+
+            $.ajax({
+
+                url     : "{!! env('APP_URL') !!}/pcv/approver/approve-with-code/"+$('#pcv_id').val(),
+                method  : 'PUT' ,
+                async   : false ,
+                data    : { 
+                    _token  : "{!! csrf_token() !!}" ,
+                    code    : $('#approval_code').val() ,
+                    name    : $('#approver_name').val() ,
+                    remarks : $('#remarks').val()
+                } ,
+                success : function (res) {
+                
+                    // $('#pcv_message').text(res.message);
+
+                    // $('#pcv_confirm_message').modal({
+                    //     backdrop : 'static' ,
+                    //     show : true
+                    // });
+
+                    $('#approval_code').val('');
+                    $('#approval_code').val('');
+                    $('#remarks').val('');
+                    $('#pcv_id').val('');
+
+                    $('#pcvInputApprovalCode').modal('hide');
+
+                }
+
+            })
+            
+        });
 
     </script>
 

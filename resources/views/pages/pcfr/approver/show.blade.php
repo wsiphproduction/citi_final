@@ -174,7 +174,7 @@
 
         <div class="col-lg-6">
             <div class="form-group row">
-                <label for="temporary-slip" class="col-lg-5 col-form-label">Temporary Slip</label>
+                <label for="temporary-slip" class="col-lg-5 col-form-label">Unliquidated Temporary Slip</label>
                 <div class="col-lg-7">
                     <input type="text" class="form-control bd-0 bd-bottom text-right" 
                         id="temporary_slip" name="temporary_slip" value="{{ number_format($pcfr->total_temp_slip, 2, '.', ',') }}" readonly>
