@@ -11,7 +11,9 @@ class JobRequestController extends Controller
 
     public function search(Request $request) {
 
-        return JobRequest::where('request_no', $request->search)->first();
+        $job_requests = JobRequest::where('request_no', $request->search)->first();
+
+        return $job_requests;
 
     }
 

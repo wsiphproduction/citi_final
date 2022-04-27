@@ -79,6 +79,84 @@
 
 	</div>
 
+	<div class="modal fade" id="pcvInputApprovalCode" tabindex="-1" role="dialog" 
+		aria-labelledby="pcvInputApprovalCode" aria-modal="true">
+
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content tx-14">
+				
+				<div class="modal-header">
+					<h6 class="modal-title" id="exampleModalLabel3">Input Approval Code</h6>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">×</span>
+					</button>
+				</div>
+
+				<div class="modal-body">
+					<div class="row">
+						
+						<div class="col-lg-12">
+							<div class="form-group">
+								<label for="approval-code" class="d-block">Approval Code</label>
+								<input type="text" class="form-control" id="approval_code">
+								<input type="hidden" id="pcv_id" >
+							</div>
+						</div>
+
+						<div class="col-lg-12">
+							<div class="form-group">
+								<label for="approver-name" class="d-block">Approver's Name</label>
+								<select class="custom-select" id="approver_name">
+									<option value="">--Select--</option>
+									@foreach($area_manager as $manager) 
+										<option value="{{ $manager->username }}"> {{ $manager->username }} </option>
+									@endforeach
+								</select>
+							</div>
+						</div>
+
+						<div class="col-lg-12">
+							<div class="form-group">
+								<label for="remarks" class="d-block">Remarks</label>
+								<textarea id="remarks" name="remarks" class="form-control" rows="3"></textarea>
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+				<div class="modal-footer">
+					<button class="btn btn-brand-01 d-inline-block tx-13 tx-uppercase" id="btn_approval_code">Approve</button>
+					<button type="button" class="btn btn-white tx-13 tx-uppercase" data-target="#pcvInputApprovalCode" data-toggle="modal" data-dismiss="modal">Cancel</button>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+	<div class="modal fade effect-scale" id="pcv_confirm_message" tabindex="-1" 
+		role="dialog" aria-labelledby="pcv_confirm_message" 
+		aria-modal="true">
+
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content tx-14">
+				
+				<div class="modal-header">
+					<h6 class="modal-title" id="exampleModalLabel3">Confirmation Message</h6>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">×</span>
+					</button>
+				</div>
+
+				<div class="modal-body">
+					<p class="mb-0" id="pcv_message"></p>
+				</div>
+
+			</div>
+		</div>
+
+	</div>
+
 
 @endsection
 
@@ -90,6 +168,11 @@
     <script src="{{ asset('lib/datatables.net-responsive-dt/js/responsive.dataTables.min.js') }}"></script>
     <script src="{{ asset('lib/select2/js/select2.min.js') }}"></script>
     <script>
+
+    	var _pcvs = [];
+    	var _i = 0;
+    	var _approve_pcvs = [];
+
 		$(function(){
 			'use strict'
 
@@ -118,45 +201,104 @@
 
 		$(document).on('click', '#approve-all', function() {
 
-			var _prmse = [];
-
 			$('.submittedData').each(function(i, o) {
 
 				if($(this).is(':checked')) {					
-					_prmse.push(
-						$.ajax({
-
-			                url     : "{!! env('APP_URL') !!}/pcv/approver/approve/"+$(this).data('id') ,
-			                method  : 'PUT' ,
-			                async   : false ,
-			                data    : { _token : "{!! csrf_token() !!}" } ,
-			                success : function (res) {
-			                
-			                    if(res.need_code) {
-			                    	
-			                    	$('#pcv_id').val(res.pcv_id);
-
-				                    $('#pcvInputApprovalCode').modal({
-				                        backdrop : 'static' ,
-				                        show : true
-				                    });
-
-				                }
-
-
-			                }
-
-			            })
-		            );
+					
+					_pcvs.push($(this).data('id'));
+		           
 				}
 
 			});
 
-			$.when(_prmse).done(function(res) {
-				console.log(res.responseJson);
-			});
+			get_next();
 
 		});
+
+		function get_next() {
+		    
+		    if (!_pcvs[_i]) {
+		    	$('#pcv_message').text("TS " + JSON.stringify(_approve_pcvs) + " is successfully approved");
+		    	$('#pcv_confirm_message').modal({
+                	backdrop : 'static' ,
+                    show : true
+                });
+                setTimeout(function(){
+                	$('#pcv_confirm_message').modal('hide');
+                	location.reload();
+                }, 3000);
+		        return;
+		    }
+		    
+		    $.ajax({
+
+                url     : "{!! env('APP_URL') !!}/pcv/approver/approve/"+_pcvs[_i] ,
+                method  : 'PUT' ,
+                data    : { _token : "{!! csrf_token() !!}" } ,
+                success : function (res) {
+
+                	if(res.need_code) {
+	                    	
+                    	$('#pcv_id').val(res.pcv_id);
+	                    $('#pcvInputApprovalCode').modal({
+	                    	backdrop : 'static' ,
+	                        show : true
+	                    });
+
+	                    _approve_pcvs.push(res.pcv_no);
+
+		            } else {
+
+		            	_i++;
+		            	_approve_pcvs.push(res.pcv_no);
+		            	get_next();
+
+		            }
+
+                } , 
+                error: function (jqXHR, textStatus, errorThrown) {
+		            // Empty most of the time...
+		            _i++;
+		            get_next();
+		        }
+            	 
+
+            });
+
+		}
+
+		// async function approvePcv(id) {
+
+		// 	let _res;
+		// 	console.log(id);
+		// 	_res = await $.ajax({
+
+	 //                url     : "{!! env('APP_URL') !!}/pcv/approver/approve/"+id ,
+	 //                method  : 'PUT' ,
+	 //                async   : false ,
+	 //                data    : { _token : "{!! csrf_token() !!}" ,
+	 //                success : function (res) {
+	 //                	console.log(res);
+	 //                	if(res.need_code) {
+		                    	
+	 //                    	$('#pcv_id').val(res.pcv_id);
+	
+
+		//                     $('#pcvInputApprovalCode').modal({
+		//                         backdrop : 'static' ,
+		//                         show : true
+		//                     });
+
+		// 	            }
+	 //                }
+
+  //           	} 
+
+  //           });
+
+		// 	return _res;
+
+		// }
 
 		$(document).on('click', '#btn_approval_code', function(e) {
 
@@ -198,12 +340,19 @@
                     //     show : true
                     // });
 
-                    $('#approval_code').val('');
+                    $('#approver_name').val($("#approver_name option:first").val());
                     $('#approval_code').val('');
                     $('#remarks').val('');
                     $('#pcv_id').val('');
 
-                    $('#pcvInputApprovalCode').modal('hide');
+                    $("#pcvInputApprovalCode").removeClass("in");
+					$(".modal-backdrop").remove();
+					$('body').removeClass('modal-open');
+					$('body').css('padding-right', '');
+                	$('#pcvInputApprovalCode').modal('hide');
+
+                    _i++;
+                    get_next();
 
                 }
 

@@ -1293,6 +1293,7 @@
 			console.log('called');
 			pos_items = [];
 			$('#pop_ups_inner').empty();
+			
 			if(type == 'slps_no') {
 
 				$.ajax({
@@ -1425,8 +1426,20 @@
 					url 	: '{!! env("APP_URL") !!}' + '/job-request/search?search='+val ,
 					method 	: 'GET' ,
 					success : function (res) {
-
+						$('.custom-inputs[data-name="brand"]').empty();
 						if( res != '' ) {
+							console.log('yes');
+							
+							// $('.custom-inputs[data-name="project_name"]').val(res[0].project_name);
+							// $('.custom-inputs[data-name="project_type"]').val(res[0].project_type);
+							
+							// let _options = '';
+
+							// $.each(res, function(i, o) {
+							// 	_options += '<option value="'+o.brand+'">'+o.brand+'</option>';
+							// });
+							
+							// $('.custom-inputs[data-name="brand"]').append(res.brand);
 
 							$('.custom-inputs[data-name="project_name"]').val(res.project_name);
 							$('.custom-inputs[data-name="project_type"]').val(res.project_type);

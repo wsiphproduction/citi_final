@@ -25,6 +25,17 @@ class PCVController extends Controller
 
         $user = auth()->user();
 
+        if($user->getUserAssignTo() != 'ssc') {
+            $area_manager = User::where('position', 'area head')
+                ->whereHas('branch_group', function($query) {
+                    $branch = auth()->user()->branch;
+                    $query->where('branch', 'LIKE', "%{$branch->name}%");
+                })->get();
+        } else {
+            $area_manager = User::where('position', 'division head')
+                ->where('assign_to', $user->assign_to)->get();
+        }
+
         if( $user->getUserAssignTo() != 'ssc' ) {          
             $pcvs = Pcv::whereIn('status', ['submitted', 'confirmed', 'cancel','approved', 'cancelled']);
         } else {
@@ -55,11 +66,10 @@ class PCVController extends Controller
 
         }
 
-        $pcvs = $pcvs->doesntHave('pcfr')
-            ->orderBy('created_at', 'DESC')
+        $pcvs = $pcvs->orderBy('created_at', 'DESC')
             ->get();
 
-        return view('pages.pcv.approver.index', compact('pcvs'));
+        return view('pages.pcv.approver.index', compact('pcvs', 'area_manager'));
 
     }
 
@@ -162,6 +172,8 @@ class PCVController extends Controller
             return response()->json([
                 'status'        => 'confirmed' ,
                 'need_code'     => true ,
+                'pcv_id'        => $pcv->id ,
+                'pcv_no'        => $pcv->pcv_no ,
                 'message'       => "{$pcv->pcv_no} was successfully confirmed. The requested amount requires an Approval Code. Input Approval Code."
             ]);
 
@@ -188,6 +200,8 @@ class PCVController extends Controller
 
         return response()->json([
             'need_code' =>  false ,
+            'pcv_id'    => $pcv->id ,
+            'pcv_no'    => $pcv->pcv_no ,
             'message'   => "{$pcv->pcv_no} was successfully approved."
         ]);
 
@@ -197,14 +211,14 @@ class PCVController extends Controller
     public function approveWithCode($id, Request $request) {
 
         $pcv = Pcv::find($id);
-        $pcv->update([
-            'approval_code'     => $request->code ,
-            'approver_name'     => $request->name ,
-            'remarks'           => $request->remarks ,
-            'status'            => 'approved' ,
-            'approved_by'       => auth()->user()->username ,
-            'approved_date'     => \Carbon\Carbon::now()
-        ]);
+        // $pcv->update([
+        //     'approval_code'     => $request->code ,
+        //     'approver_name'     => $request->name ,
+        //     'remarks'           => $request->remarks ,
+        //     'status'            => 'approved' ,
+        //     'approved_by'       => auth()->user()->username ,
+        //     'approved_date'     => \Carbon\Carbon::now()
+        // ]);
 
         return response()->json([
             'message'   => "{$pcv->pcv_no} was successfully Approved."

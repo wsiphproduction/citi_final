@@ -16,6 +16,8 @@
 							} elseif( $field['name'] == 'Charge To' ) {			
 								$isChargeTo = true;					
 								$detailss = json_decode(json_encode(\App\Helpers\Helper::chargeTo()->toArray()) , true);	
+							} else {
+								$detailss = [];
 							}
 						@endphp
 
