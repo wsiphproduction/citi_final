@@ -63,6 +63,7 @@
 			<input type="hidden" name="pcv_accounts" id="pcv_accounts" value="{{ old('pcv_accounts') }}" />
 			<input type="hidden" name="pcv_action" id="pcv_action" value="{{ old('pcv_action') }}" />
 			<input type="hidden" name="total_amount" id="total_amount" value="{{ old('total_amount') }}" />
+			<input type="hidden" name="is_copy_from" id="is_copy_from">
 
 		<div class="row">
 
@@ -985,25 +986,26 @@
 				method 		: 'GET' ,
 				success  	: function(res) {
 
-					console.log(res);
 					let _aTransactions = [];
 
 					if(res.account_transaction.details.length>0) {
-						$.each(res.account_transaction.details, function(i, data) {
-							console.log(data);
+						$.each(res.account_transaction.details, function(i, data) {							
 							_aTransactions.push(data);
 						});
 					}
-					console.log(_aTransactions);
+
 					if(res.slip_no!=null) {
 						$('#with-temporary-slip').prop('checked', 'checked');
 						$('#ts_no').val(res.slip_no);
 					}
-
-					$('#change').val(res.change);					
+					console.log('aw');
+					console.log(res.description);
+					let _descriptn = res.description;
 					$('#date_created').val(moment().format('YYYY-MM-DD'));
 					$('#pcv_accounts').val(JSON.stringify(_aTransactions));
-					
+					$('textarea#pcv_description').val(''+res.description+'');
+					$('#is_copy_from').val(res.id);
+
 					let is_others=true;
 
 					$.each($("#account_name option"), function(){ 
@@ -1026,6 +1028,7 @@
 						if($('#pcv_accounts').val() != '')
 							getAccountTransactions();						
 					}, 2000);
+
 
 					$('#copyFrom').modal('hide');
 

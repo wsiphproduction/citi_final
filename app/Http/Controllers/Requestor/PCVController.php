@@ -86,6 +86,15 @@ class PCVController extends Controller
         $user = auth()->user();
         $request['total_amount'] = str_replace(',', '', $request->total_amount);
 
+        if(!is_null($request->is_copy_from)) {
+
+            $copy_from = Pcv::find($request->is_copy_from);
+            if($copy_from && $copy_from->account_name == $request->account_name) {
+                $copy_from->update(['is_copied' => 1]);
+            }
+
+        }
+
         $this->validate($request, [
             'ts_no'     => [ 
                 Rule::requiredIf($request->has('withslip')),  
@@ -385,6 +394,7 @@ class PCVController extends Controller
     public function cancelled() {
 
         $pcv = Pcv::whereIn('status', ['cancelled'])
+            ->where('is_copied', 0)
             ->whereHas('user', function(Builder $builder) {
                 $builder->where('assign_to', auth()->user()->assign_to);
             })
