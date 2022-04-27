@@ -24,8 +24,7 @@ class PCFRController extends Controller
 
         $user = auth()->user();
        
-        $pcfr = Pcfr::whereNull('tl_approved')
-                ->whereHas('user', function(Builder $query) use ($user) {
+        $pcfr = Pcfr::whereHas('user', function(Builder $query) use ($user) {
                     $query->where('assign_to', $user->assign_to);
                 })
                 ->orderBy('created_at', 'DESC')
