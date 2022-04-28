@@ -99,6 +99,9 @@ class AccountMatrixController extends Controller
 
         }
 
+        if(!$request->has('regardless')) $request['regardless'] = 0;
+        if(!$request->has('beyond')) $request['beyond'] = 0;
+
         $this->validate($request, [
 
             'name'      => 'required|unique:account_matrix,name,'. $id ,
