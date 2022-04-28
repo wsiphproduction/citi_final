@@ -53,7 +53,7 @@
          },
          {
             "name": "Brand",
-            "type": "text"
+            "type": "select"
          }
       ],
       "has_attachment_section": true,
