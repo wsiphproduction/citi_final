@@ -211,14 +211,14 @@ class PCVController extends Controller
     public function approveWithCode($id, Request $request) {
 
         $pcv = Pcv::find($id);
-        // $pcv->update([
-        //     'approval_code'     => $request->code ,
-        //     'approver_name'     => $request->name ,
-        //     'remarks'           => $request->remarks ,
-        //     'status'            => 'approved' ,
-        //     'approved_by'       => auth()->user()->username ,
-        //     'approved_date'     => \Carbon\Carbon::now()
-        // ]);
+        $pcv->update([
+            'approval_code'     => $request->code ,
+            'approver_name'     => $request->name ,
+            'remarks'           => $request->remarks ,
+            'status'            => 'approved' ,
+            'approved_by'       => auth()->user()->username ,
+            'approved_date'     => \Carbon\Carbon::now()
+        ]);
 
         return response()->json([
             'message'   => "{$pcv->pcv_no} was successfully Approved."
