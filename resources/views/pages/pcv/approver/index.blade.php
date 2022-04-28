@@ -218,7 +218,7 @@
 		function get_next() {
 		    
 		    if (!_pcvs[_i]) {
-		    	$('#pcv_message').text("TS " + JSON.stringify(_approve_pcvs) + " is successfully approved");
+		    	$('#pcv_message').text("PCV No " + JSON.stringify(_approve_pcvs) + " is successfully approved");
 		    	$('#pcv_confirm_message').modal({
                 	backdrop : 'static' ,
                     show : true
@@ -266,39 +266,6 @@
             });
 
 		}
-
-		// async function approvePcv(id) {
-
-		// 	let _res;
-		// 	console.log(id);
-		// 	_res = await $.ajax({
-
-	 //                url     : "{!! env('APP_URL') !!}/pcv/approver/approve/"+id ,
-	 //                method  : 'PUT' ,
-	 //                async   : false ,
-	 //                data    : { _token : "{!! csrf_token() !!}" ,
-	 //                success : function (res) {
-	 //                	console.log(res);
-	 //                	if(res.need_code) {
-		                    	
-	 //                    	$('#pcv_id').val(res.pcv_id);
-	
-
-		//                     $('#pcvInputApprovalCode').modal({
-		//                         backdrop : 'static' ,
-		//                         show : true
-		//                     });
-
-		// 	            }
-	 //                }
-
-  //           	} 
-
-  //           });
-
-		// 	return _res;
-
-		// }
 
 		$(document).on('click', '#btn_approval_code', function(e) {
 

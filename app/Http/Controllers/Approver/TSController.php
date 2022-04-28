@@ -35,7 +35,18 @@ class TSController extends Controller
             ->orderBy('created_at', 'DESC')
             ->get();
 
-        return view('pages.ts.approver.index', compact('temporary_slips'));
+        if($user->getUserAssignTo() != 'ssc') {
+            $area_manager = User::where('position', 'area head')
+                ->whereHas('branch_group', function($query) {
+                    $branch = auth()->user()->branch;
+                    $query->where('branch', 'LIKE', "%{$branch->name}%");
+                })->get();
+        } else {
+            $area_manager = User::where('position', 'division head')
+                ->where('assign_to', $ts->user->assign_to)->get();
+        }
+
+        return view('pages.ts.approver.index', compact('temporary_slips', 'area_manager'));
 
     }
 
@@ -133,6 +144,8 @@ class TSController extends Controller
             return response()->json([
                 'status'    => 'confirmed' ,
                 'need_code' => true ,
+                'ts_id'         => $ts->id ,
+                'ts_no'         => $ts->ts_no ,
                 'message'   => "{$ts->ts_no} was successfully confirmed. The requested amount requires an Approval Code. Input Approval Code."
             ]);
 
@@ -159,6 +172,8 @@ class TSController extends Controller
                     
         return response()->json([
             'need_code' =>  false ,
+            'ts_id'         => $ts->id ,
+            'ts_no'         => $ts->ts_no ,
             'message'   => "{$ts->ts_no} was successfully Approved."
         ]);
 
