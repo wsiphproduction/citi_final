@@ -201,6 +201,8 @@
 
 		$(document).on('click', '#approve-all', function() {
 
+			_pcvs = [];
+
 			$('.submittedData').each(function(i, o) {
 
 				if($(this).is(':checked')) {					

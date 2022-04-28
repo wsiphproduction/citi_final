@@ -211,6 +211,8 @@
 
         $(document).on('click', '#approve-all', function() {
 
+            _ts = [];
+
             $('.submittedData').each(function(i, o) {
 
                 if($(this).is(':checked')) {                    
