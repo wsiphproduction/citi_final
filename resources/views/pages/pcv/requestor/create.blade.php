@@ -1427,23 +1427,24 @@
 					method 	: 'GET' ,
 					success : function (res) {
 						$('.custom-inputs[data-name="brand"]').empty();
-						if( res != '' ) {
+						if( res.length > 0 ) {
 							console.log('yes');
 							
-							// $('.custom-inputs[data-name="project_name"]').val(res[0].project_name);
-							// $('.custom-inputs[data-name="project_type"]').val(res[0].project_type);
+							$('.custom-inputs[data-name="project_name"]').val(res[0].project_name);
+							$('.custom-inputs[data-name="project_type"]').val(res[0].project_type);
 							
-							// let _options = '';
+							let _options = '';
+								_options += '<option value="">Select Brand</option>';
 
-							// $.each(res, function(i, o) {
-							// 	_options += '<option value="'+o.brand+'">'+o.brand+'</option>';
-							// });
+							$.each(res, function(i, o) {
+								_options += '<option value="'+o.brand+'">'+o.brand+'</option>';
+							});
 							
-							// $('.custom-inputs[data-name="brand"]').append(res.brand);
+							$('.custom-inputs[data-name="brand"]').append(_options);
 
-							$('.custom-inputs[data-name="project_name"]').val(res.project_name);
-							$('.custom-inputs[data-name="project_type"]').val(res.project_type);
-							$('.custom-inputs[data-name="brand"]').val(res.brand);
+							// $('.custom-inputs[data-name="project_name"]').val(res.project_name);
+							// $('.custom-inputs[data-name="project_type"]').val(res.project_type);
+							// $('.custom-inputs[data-name="brand"]').val(res.brand);
 
 						} else {
 

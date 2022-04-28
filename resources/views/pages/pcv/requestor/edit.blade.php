@@ -1415,11 +1415,24 @@
 					method 	: 'GET' ,
 					success : function (res) {
 
-						if( res != '' ) {
+						if( res.length > 0 ) {
+							console.log('yes');
+							
+							$('.custom-inputs[data-name="project_name"]').val(res[0].project_name);
+							$('.custom-inputs[data-name="project_type"]').val(res[0].project_type);
+							
+							let _options = '';
+								_options += '<option value="">Select Brand</option>';
 
-							$('.custom-inputs[data-name="project_name"]').val(res.project_name);
-							$('.custom-inputs[data-name="project_type"]').val(res.project_type);
-							$('.custom-inputs[data-name="brand"]').val(res.brand);
+							$.each(res, function(i, o) {
+								_options += '<option value="'+o.brand+'">'+o.brand+'</option>';
+							});
+							
+							$('.custom-inputs[data-name="brand"]').append(_options);
+
+							// $('.custom-inputs[data-name="project_name"]').val(res.project_name);
+							// $('.custom-inputs[data-name="project_type"]').val(res.project_type);
+							// $('.custom-inputs[data-name="brand"]').val(res.brand);
 
 						} else {
 
