@@ -438,7 +438,7 @@
 
         @endif
 
-        @if($pcv->status == 'approved' && is_null($pcv->pcfr_no))
+        @if($pcv->status == 'approved' && is_null($pcv->pcfr_id))
 
            <a href="javascript:void(0);" class="btn btn-primary d-block d-lg-inline wd-100p wd-lg-150 mg-r-10"
                  data-toggle="modal" data-target="#pcvCancelReason">
