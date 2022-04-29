@@ -111,7 +111,7 @@ class UsersController extends Controller
 
         $this->validate($request, [
 
-            'username'  => 'required|unique:users,username,'.$id ,
+            'username'  => 'required|max:50|unique:users,username,'.$id ,
             'access'    => 'required' ,
             'position'  => 'required' ,
             'firstname' => 'required|max:50' ,
