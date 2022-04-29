@@ -357,6 +357,7 @@
 @section('pagejs')
 	
 	<script type="text/javascript" src="{{ asset('js/moment.js') }}"></script>
+	<script src="{{ asset('lib/select2/js/select2.min.js') }}"></script>
 	<script type="text/javascript">
 		
 		var current_id = 0;
@@ -1611,9 +1612,78 @@
 				$('.custom-inputs').each(function(i, d) {		
 					if( _hasError == "1") {
 						$(this).val(_account_transactions[0][$(this).attr('data-name')]); 
+
+						if($(this).attr('data-name') == 'brand') {
+
+							$.ajax({
+
+								url 	: '{!! env("APP_URL") !!}' + '/job-request/search?search='+_account_transactions[0]['job_request_no'] ,
+								method 	: 'GET' ,
+								success : function (res) {
+									$('.custom-inputs[data-name="brand"]').empty();
+									if( res.length > 0 ) {
+										console.log('yes');
+										
+										$('.custom-inputs[data-name="project_name"]').val(res[0].project_name);
+										$('.custom-inputs[data-name="project_type"]').val(res[0].project_type);
+										
+										let _options = '';
+											_options += '<option value="">Select Brand</option>';
+
+										$.each(res, function(i, o) {
+											if( o.brand ==  _account_transactions[0]['brand'] ) {
+												_options += '<option value="'+o.brand+'" selected>'+o.brand+'</option>';
+											} else {
+												_options += '<option value="'+o.brand+'">'+o.brand+'</option>';
+											}
+										});
+										
+										$('.custom-inputs[data-name="brand"]').append(_options);
+
+									}
+
+								}
+							});
+
+						}
+
 						if( $(this).attr('data-name') == 'vendor' || $(this).attr('data-name') == 'charge_to' ) { $(this).trigger('change'); }
 					} else {
 						$(this).val(_account_transactions[0][0][$(this).attr('data-name')]); 
+
+						if($(this).attr('data-name') == 'brand') {
+
+							$.ajax({
+
+								url 	: '{!! env("APP_URL") !!}' + '/job-request/search?search='+_account_transactions[0][0]['job_request_no'] ,
+								method 	: 'GET' ,
+								success : function (res) {
+									$('.custom-inputs[data-name="brand"]').empty();
+									if( res.length > 0 ) {
+										console.log('yes');
+										
+										$('.custom-inputs[data-name="project_name"]').val(res[0].project_name);
+										$('.custom-inputs[data-name="project_type"]').val(res[0].project_type);
+										
+										let _options = '';
+											_options += '<option value="">Select Brand</option>';
+
+										$.each(res, function(i, o) {
+											if( o.brand ==  _account_transactions[0][0]['brand'] ) {
+												_options += '<option value="'+o.brand+'" selected>'+o.brand+'</option>';
+											} else {
+												_options += '<option value="'+o.brand+'">'+o.brand+'</option>';
+											}
+										});
+										
+										$('.custom-inputs[data-name="brand"]').append(_options);
+
+									}
+
+								}
+							});
+
+						}
 						if( $(this).attr('data-name') == 'vendor' || $(this).attr('data-name') == 'charge_to' ) { $(this).trigger('change'); }
 					}
 				});

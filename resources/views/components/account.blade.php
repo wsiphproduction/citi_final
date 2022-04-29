@@ -163,7 +163,6 @@
 								<option value="statement of account/bill">Statement of Account/Bill</option>
 								<option value="extra labor summary">Extra Labor Summary</option>
 								<option value="completion report">Completion Report</option>
-								<option value="pcv signed">PCV Signed</option>
 								<option value="back office copy">Back Office Copy</option>
 								<option value="out of work authorization form">Out of Work Authorization Form</option>
 								<option value="overtime form">Overtime Form</option>
