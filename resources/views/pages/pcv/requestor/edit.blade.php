@@ -945,7 +945,7 @@
 						_html += '<tr>';
 						_html += '<td><a href="#" data-pcv="'+data.pcv_no+'" class="copy_from_ref">'+ data.pcv_no +'</a></td>';
 						_html += '<td>'+ data.pcv_no +'</td>';
-						_html += '<td>'+ data.date_created +'</td>';	
+						_html += '<td>'+ data.cancelled_date +'</td>';	
 						_html += '<td>'+ data.approved_by +'</td>';																	
 						_html += '<td>'+ data.pcv_no +'</td>';
 						_html += '<td>'+ data.date_created +'</td>';	
