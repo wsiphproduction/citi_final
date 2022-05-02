@@ -92,6 +92,30 @@
                     </div>
                 </div>
 
+                @if( !is_null($pcv->approval_code) )
+
+                    <div class="col-lg-6">
+                        <div class="form-group row">
+                            <label for="pcv-no" class="col-lg-5 col-form-label">Approval Code.</label>
+                            <div class="col-lg-7">
+                                <input type="text" class="form-control bd-0 bd-bottom" id="pcv-no" name="pcv-no" readonly
+                                    value="{{ $pcv->approval_code }}">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="form-group row">
+                            <label for="pcv-no" class="col-lg-5 col-form-label">Approved By.</label>
+                            <div class="col-lg-7">
+                                <input type="text" class="form-control bd-0 bd-bottom" id="pcv-no" name="pcv-no" readonly
+                                    value="{{ $pcv->approved_by }}">
+                            </div>
+                        </div>
+                    </div>
+
+                @endif
+
                 @if(\Str::contains($pcv->status , 'disapproved' ) || $pcv->status == 'cancelled' || $pcv->status == 'cancel')
 
                     <div class="col-lg-6">

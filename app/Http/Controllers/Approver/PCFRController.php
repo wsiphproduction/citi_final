@@ -77,7 +77,7 @@ class PCFRController extends Controller
         $pcfr->update([
             'status'            => $disapprove ,
             'remarks'           => $request->remarks ,
-            'cancelled_by'      => auth()->user()->username ,
+            'cancelled_by'      => auth()->user()->firstname . ' ' . auth()->user()->lastname ,
             'cancelled_date'    => \Carbon\Carbon::now() ,
         ]);
 
@@ -100,7 +100,7 @@ class PCFRController extends Controller
                 $pcfr->update([
                     'tl_approved'       => 1 ,
                     'status'            => 'approved' ,
-                    'approved_by'       => auth()->user()->username ,
+                    'approved_by'       => auth()->user()->firstname . ' ' . auth()->user()->lastname ,
                     'approved_date'     => \Carbon\Carbon::now() ,
                 ]);
 
@@ -127,7 +127,7 @@ class PCFRController extends Controller
             $pcfr->update([
                     'tl_approved'       => 1 ,
                     'status'            => 'approved' ,
-                    'approved_by'       => auth()->user()->username ,
+                    'approved_by'       => auth()->user()->firstname . ' ' . auth()->user()->lastname ,
                     'approved_date'     => \Carbon\Carbon::now() ,
                 ]);
 

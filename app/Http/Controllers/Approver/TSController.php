@@ -164,7 +164,7 @@ class TSController extends Controller
         $ts->update([
             'tl_approved'       => 1 ,
             'status'            => 'approved' ,
-            'approved_by'       => auth()->user()->username ,
+            'approved_by'       => auth()->user()->firstname . ' ' . auth()->user()->lastname,
             'approved_date'     => \Carbon\Carbon::now() ,
         ]);
 
@@ -188,7 +188,7 @@ class TSController extends Controller
             'approver_name'     => $request->name ,
             'remarks'           => $request->remarks ,
             'status'            => 'approved' ,
-            'approved_by'       => auth()->user()->username ,
+            'approved_by'       => auth()->user()->firstname . ' ' . auth()->user()->lastname,
             'approved_date'     => \Carbon\Carbon::now()
         ]);
 
@@ -218,7 +218,7 @@ class TSController extends Controller
         $ts->update([
             'status'            => $disapprove ,
             'remarks'           => $request->remarks ,
-            'cancelled_by'      => auth()->user()->username ,
+            'cancelled_by'      => auth()->user()->firstname . ' ' . auth()->user()->lastname,
             'cancelled_date'    => \Carbon\Carbon::now()
         ]);
 

@@ -192,7 +192,7 @@ class PCVController extends Controller
         $pcv->update([
             'tl_approved'       => 1 ,
             'status'            => 'approved' ,
-            'approved_by'       => $user->username ,
+            'approved_by'       => auth()->user()->firstname . ' ' . auth()->user()->lastname ,
             'approved_date'     => \Carbon\Carbon::now() ,
         ]);
 
@@ -216,7 +216,7 @@ class PCVController extends Controller
             'approver_name'     => $request->name ,
             'remarks'           => $request->remarks ,
             'status'            => 'approved' ,
-            'approved_by'       => auth()->user()->username ,
+            'approved_by'       => auth()->user()->firstname . ' ' . auth()->user()->lastname ,
             'approved_date'     => \Carbon\Carbon::now()
         ]);
 
@@ -261,7 +261,7 @@ class PCVController extends Controller
 
         $pcv->update([
             'status'            => $disapprove ,
-            'cancelled_by'      => auth()->user()->username ,
+            'cancelled_by'      => auth()->user()->firstname . ' ' . auth()->user()->lastname, ,
             'cancelled_date'    => \Carbon\Carbon::now()
         ]);
 
@@ -280,7 +280,7 @@ class PCVController extends Controller
         $pcv->update([
             'status'            => $disapprove ,
             'remarks'           => $request->remarks ,
-            'cancelled_by'      => auth()->user()->username ,
+            'cancelled_by'      => auth()->user()->firstname . ' ' . auth()->user()->lastname, ,
             'cancelled_date'    => \Carbon\Carbon::now()
         ]);
 
