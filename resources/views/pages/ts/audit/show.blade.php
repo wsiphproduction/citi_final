@@ -76,29 +76,33 @@
 			</div>
 		</div>
 
-		<div class="col-lg-6"></div>
+		@if(!is_null($ts->approved_by))
 
-		<div class="col-lg-6">
-			<div class="form-group row">
-				<label for="received_date" class="col-lg-5 col-form-label">Received Date</label>
-				<div class="col-lg-7">
-					<input type="text" class="form-control" id="received_date" name="received_date"
-						value="{{ \Carbon\Carbon::parse($ts->received_date)->toFormattedDateString() }}" readonly>
+			<div class="col-lg-6"></div>
+
+			<div class="col-lg-6">
+				<div class="form-group row">
+					<label for="received_date" class="col-lg-5 col-form-label">Received Date</label>
+					<div class="col-lg-7">
+						<input type="text" class="form-control" id="received_date" name="received_date"
+							value="{{ \Carbon\Carbon::parse($ts->received_date)->toFormattedDateString() }}" readonly>
+					</div>
 				</div>
 			</div>
-		</div>
-		
-		<div class="col-lg-6"></div>
+			
+			<div class="col-lg-6"></div>
 
-		<div class="col-lg-6">
-			<div class="form-group row">
-				<label for="received_by" class="col-lg-5 col-form-label">Received By</label>
-				<div class="col-lg-7">
-					<input type="text" class="form-control" id="received_by" name="received_by"
-						value="{{ $ts->received_by }}" readonly>
+			<div class="col-lg-6">
+				<div class="form-group row">
+					<label for="received_by" class="col-lg-5 col-form-label">Received By</label>
+					<div class="col-lg-7">
+						<input type="text" class="form-control" id="received_by" name="received_by"
+							value="{{ $ts->received_by }}" readonly>
+					</div>
 				</div>
 			</div>
-		</div>
+
+		@endif
 
 		<div class="col-lg-6"></div>
 

@@ -58,18 +58,20 @@
                     </div>
                 </div>
 
-                <div class="col-lg-6">
-                    <div class="form-group row">
-                        <label for="description" class="col-lg-5 col-form-label">Description</label>
-                        <div class="col-lg-7">
-                            <textarea id="description" name="description" class="form-control bd-0 bd-bottom" rows="3" readonly style="height: 120px;">{{ $pcv->description }}</textarea>
+                @if(!is_null($pcv->approved_by))
+                
+                    <div class="col-lg-6">
+                        <div class="form-group row">
+                            <label for="description" class="col-lg-5 col-form-label">Description</label>
+                            <div class="col-lg-7">
+                                <textarea id="description" name="description" class="form-control bd-0 bd-bottom" rows="3" readonly style="height: 120px;">{{ $pcv->description }}</textarea>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="col-lg-6">
+                    <div class="col-lg-6">
 
-                    <div class="form-group row">
+                        <div class="form-group row">
                             <label for="date" class="col-lg-5 col-form-label">Date</label>
                             <div class="col-lg-7">
                                 <input type="text" class="form-control bd-0 bd-bottom" id="date" name="date" readonly
@@ -77,7 +79,9 @@
                             </div>
                         </div>
 
-                </div>
+                    </div>
+                    
+                @endif
 
                 @if( !is_null($pcv->approval_code) )
 
