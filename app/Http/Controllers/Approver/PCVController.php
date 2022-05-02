@@ -261,7 +261,7 @@ class PCVController extends Controller
 
         $pcv->update([
             'status'            => $disapprove ,
-            'cancelled_by'      => auth()->user()->firstname . ' ' . auth()->user()->lastname, ,
+            'cancelled_by'      => auth()->user()->firstname . ' ' . auth()->user()->lastname ,
             'cancelled_date'    => \Carbon\Carbon::now()
         ]);
 
