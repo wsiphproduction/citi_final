@@ -102,7 +102,19 @@
 
 		<div class="col-lg-6"></div>
 
+		<div class="col-lg-6">
+            <div class="form-group row">
+                <label for="pcv-no" class="col-lg-5 col-form-label">Approved By</label>
+                <div class="col-lg-7">
+                    <input type="text" class="form-control bd-0 bd-bottom" id="pcv-no" name="pcv-no" readonly
+                        value="{{ $ts->approved_by }}">
+                </div>
+            </div>
+        </div>
+
 		@if( !is_null($ts->approval_code) )
+			
+			<div class="col-lg-6"></div>
 
             <div class="col-lg-6">
                 <div class="form-group row">
@@ -118,15 +130,17 @@
 
             <div class="col-lg-6">
                 <div class="form-group row">
-                    <label for="pcv-no" class="col-lg-5 col-form-label">Approved By.</label>
+                    <label for="pcv-no" class="col-lg-5 col-form-label">Approval Code By</label>
                     <div class="col-lg-7">
                         <input type="text" class="form-control bd-0 bd-bottom" id="pcv-no" name="pcv-no" readonly
-                            value="{{ $ts->approved_by }}">
+                            value="{{ $ts->approver_name }}">
                     </div>
                 </div>
-            </div>
+            </div>           
 
         @endif
+
+		<div class="col-lg-6"></div>
 
 		@if(\Str::contains($ts->status , 'disapproved'))
 

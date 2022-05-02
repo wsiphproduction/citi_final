@@ -114,17 +114,37 @@
 
                     <div class="col-lg-6">
                         <div class="form-group row">
-                            <label for="pcv-no" class="col-lg-5 col-form-label">Approved By.</label>
+                            <label for="pcv-no" class="col-lg-5 col-form-label">Approval Code By</label>
                             <div class="col-lg-7">
                                 <input type="text" class="form-control bd-0 bd-bottom" id="pcv-no" name="pcv-no" readonly
-                                    value="{{ $pcv->approved_by }}">
+                                    value="{{ $pcv->approver_name }}">
                             </div>
                         </div>
                     </div>
 
                 @endif
 
-                @if(\Str::contains($pcv->status , 'disapproved' ) || $pcv->status == 'cancelled')
+                <div class="col-lg-6">
+                    <div class="form-group row">
+                        <label for="pcv-no" class="col-lg-5 col-form-label">Date Approved</label>
+                        <div class="col-lg-7">
+                            <input type="text" class="form-control bd-0 bd-bottom" id="pcv-no" name="pcv-no" readonly
+                                value="{{ $pcv->approved_date }}">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="form-group row">
+                        <label for="pcv-no" class="col-lg-5 col-form-label">Approved By</label>
+                        <div class="col-lg-7">
+                            <input type="text" class="form-control bd-0 bd-bottom" id="pcv-no" name="pcv-no" readonly
+                                value="{{ $pcv->approved_by }}">
+                        </div>
+                    </div>
+                </div>
+
+                @if(\Str::contains($pcv->status , 'disapproved' ) || $pcv->status == 'cancelled' || $pcv->status == 'cancel')
 
                     <div class="col-lg-6">
                         <div class="form-group row">

@@ -163,7 +163,7 @@ class TSController extends Controller
 
         $ts->update([
             'tl_approved'       => 1 ,
-            'status'            => 'approved' ,
+            'status'            => 'approved' ,   
             'approved_by'       => auth()->user()->firstname . ' ' . auth()->user()->lastname,
             'approved_date'     => \Carbon\Carbon::now() ,
         ]);

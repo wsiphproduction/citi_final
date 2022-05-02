@@ -109,7 +109,7 @@
 								<select class="custom-select" id="approver_name">
 									<option value="">--Select--</option>
 									@foreach($area_manager as $manager) 
-										<option value="{{ $manager->username }}"> {{ $manager->username }} </option>
+										<option value="{{ $manager->firstname }} {{ $manager->lastname }}"> {{ $manager->firstname }} {{ $manager->lastname }} </option>
 									@endforeach
 								</select>
 							</div>
