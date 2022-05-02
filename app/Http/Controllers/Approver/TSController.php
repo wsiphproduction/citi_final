@@ -43,7 +43,7 @@ class TSController extends Controller
                 })->get();
         } else {
             $area_manager = User::where('position', 'division head')
-                ->where('assign_to', $ts->user->assign_to)->get();
+                ->where('assign_to', $user->assign_to)->get();
         }
 
         return view('pages.ts.approver.index', compact('temporary_slips', 'area_manager'));
