@@ -89,7 +89,7 @@
 		<div class="modal-content tx-14">
 			
 			<div class="modal-header">
-				<h6 class="modal-title" id="exampleModalLabel3">Input Approval Code</h6>
+				<h6 class="modal-title" id="exampleModalLabel3">Input Disapproval Remarks</h6>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">×</span>
 				</button>

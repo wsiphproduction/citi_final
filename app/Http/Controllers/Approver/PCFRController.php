@@ -77,8 +77,8 @@ class PCFRController extends Controller
         $pcfr->update([
             'status'            => $disapprove ,
             'remarks'           => $request->remarks ,
-            'cancelled_by'      => auth()->user()->firstname . ' ' . auth()->user()->lastname ,
-            'cancelled_date'    => \Carbon\Carbon::now() ,
+            // 'cancelled_by'      => auth()->user()->firstname . ' ' . auth()->user()->lastname ,
+            // 'cancelled_date'    => \Carbon\Carbon::now() ,
         ]);
 
         return response()->json([

@@ -336,8 +336,8 @@ class PCFRController extends Controller
         $pcfr = Pcfr::find($id);
         $pcfr->update([
             'status'            => 'disapproved th' ,
-            'cancelled_by'      => auth()->user()->username ,
-            'cancelled_date'    => \Carbon\Carbon::now() ,
+            // 'cancelled_by'      => auth()->user()->username ,
+            // 'cancelled_date'    => \Carbon\Carbon::now() ,
             'remarks'           => $request->remarks 
         ]);
 
