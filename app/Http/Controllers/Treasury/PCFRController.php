@@ -338,7 +338,7 @@ class PCFRController extends Controller
             'status'            => 'disapproved th' ,
             'cancelled_by'      => auth()->user()->username ,
             'cancelled_date'    => \Carbon\Carbon::now() ,
-            'tl'                => 0 
+            'remarks'           => $request->remarks 
         ]);
 
         return response()->json([
