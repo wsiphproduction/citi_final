@@ -210,11 +210,11 @@
             "type": "select"
          },
          {
-            "name": "Past Due Amount",
+            "name": "Charge Amount",
             "type": "number"
          },
          {
-            "name": "Amount",
+            "name": "Total Amount",
             "type": "text"
          }
       ],
@@ -292,11 +292,11 @@
             "type": "select"
          },
          {
-            "name": "Past Due Amount",
+            "name": "Charge Amount",
             "type": "number"
          },
          {
-            "name": "Amount",
+            "name": "Total Amount",
             "type": "text"
          }
       ],
