@@ -1542,10 +1542,10 @@
 				console.log(_account_transactions);
 				console.log("========================");
 				console.log(_account_transactions[0]);
-				if(_hasError == "1") {
-					_account_transactions =  _account_transactions;
-				} else {
+				if(_hasError == "1" || _hasDanger == "1") {
 					_account_transactions =  _account_transactions[0];
+				} else {
+					_account_transactions =  _account_transactions;
 				}
 				
 				$.each(_account_transactions, function(i, data){
@@ -1615,6 +1615,7 @@
 			} else {
 
 				let _hasError = "{!! $errors->any() !!}";
+				let _hasDanger = "{!! session()->has('danger') !!}";
 
 				$('.custom-inputs').each(function(i, d) {		
 					if( _hasError == "1") {
