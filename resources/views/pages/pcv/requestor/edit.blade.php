@@ -1541,7 +1541,7 @@
 				} else {
 					_account_transactions =  _account_transactions[0];
 				}
-
+				console.log(_account_transactions);
 				$.each(_account_transactions, function(i, data){
 			
 					let _html = '<tr>';
