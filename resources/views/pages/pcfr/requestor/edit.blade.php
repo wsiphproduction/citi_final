@@ -614,7 +614,7 @@
 
         $(document).on('blur', '#atm_balance', function() {
 
-            var _pcf_accounted_for = accounting.unformat(_total_replenishment) + accounting.unformat(_pending_replenishment) + accounting.unformat(_unreplenished) + accounting.unformat(_unapproved_pcvs) + accounting.unformat(_returned_pcvs);
+            var _pcf_accounted_for = accounting.unformat(_total_replenishment) + accounting.unformat(_unreplenished) + accounting.unformat(_unapproved_pcvs) + accounting.unformat(_returned_pcvs);
 
             let atm_bal = $(this).val();
             if(atm_bal == ''){ 
@@ -639,7 +639,7 @@
 
         $(document).on('blur', '#cash_on_hand', function() {
 
-            var _pcf_accounted_for = accounting.unformat(_total_replenishment) + accounting.unformat(_pending_replenishment) + accounting.unformat(_unreplenished) + accounting.unformat(_unapproved_pcvs) + accounting.unformat(_returned_pcvs);
+            var _pcf_accounted_for = accounting.unformat(_total_replenishment) + accounting.unformat(_unreplenished) + accounting.unformat(_unapproved_pcvs) + accounting.unformat(_returned_pcvs);
 
             let cash_on_hand = $(this).val();
             if(cash_on_hand == ''){ 
@@ -663,7 +663,9 @@
 
         $(document).on('blur', '#temporary_slip', function() {
 
-            var _pcf_accounted_for = accounting.unformat(_total_replenishment) + accounting.unformat(_pending_replenishment) + accounting.unformat(_unreplenished) + accounting.unformat(_unapproved_pcvs) + accounting.unformat(_returned_pcvs);
+            //if(!isNumberKey($(this))) { console.log('aw'); return false; }
+
+            var _pcf_accounted_for = accounting.unformat(_total_replenishment) + accounting.unformat(_unreplenished) + accounting.unformat(_unapproved_pcvs) + accounting.unformat(_returned_pcvs);
 
             let temp_slip = $(this).val();
             if(temp_slip == ''){ 
@@ -792,7 +794,7 @@
             let _base_url = "{!! env('APP_URL') !!}";
 
             $.each(account_attachments, function(i, data){
-
+                console.log(data.date);
                 if( i > 0 ) {
                     
                     nextElement($('#attachment-inner-wrapper'));
@@ -801,7 +803,7 @@
                         $('#type_0'+i).val(data.type);
                         $('#docrefstring_0'+i).val(data.attachment);
                         $('#docrefstring_0'+i).siblings("label").text(data.attachment);
-                        $('#docdata_0'+i).val(moment(data.date).format('YYYY-MM-DD'));
+                        $('#docdate_0'+i).val(moment(data.date).format('YYYY-MM-DD'));
                         $('#docref_0'+i).val(data.ref);
                     } else {
                         $('#type_'+i).val(data.type);
@@ -824,6 +826,16 @@
             });
 
 
+        }
+
+        function isNumberKey(evt) {
+
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            if (charCode != 46 && charCode > 31 
+                && (charCode < 48 || charCode > 57))
+                return false;
+
+            return true;
         }
 
 	</script>
