@@ -1540,14 +1540,21 @@
 
 			if($('#btn-add-account-details').length > 0) {
 
-				$.each(_account_transactions[0], function(i, data){
+				let _hasError = "{!! $errors->any() !!}";
+
+				if(_hasError == 1) {
+					_account_transactions = _account_transactions;
+				} else {
+					_account_transactions = _account_transactions[0];
+				}
+
+				$.each(_account_transactions, function(i, data){
 			
 					let _html = '<tr>';
 
 					$('.tbl-header').each(function(ii, res) {
-						console.log(data);
-						let _row_name = $(this).data('rowname').trim();
 
+						let _row_name = $(this).data('rowname').trim();
 						if(_account_name == 'Stripping Charge') {
 							if( _row_name != 'action') { 
 								if( _row_name == 'rate' ||

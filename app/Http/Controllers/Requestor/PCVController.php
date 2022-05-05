@@ -121,7 +121,7 @@ class PCVController extends Controller
                 })
                 ->first();
 
-            $r_bal = $ts->running_balance  -  ( $request->total_amount - $request->change );
+            $r_bal = 0; //$ts->running_balance  -  ( $request->total_amount - $request->change );
             if( $r_bal < 0 ) {
                 return redirect()->back()->withInput()->with('danger', 'TS amount is less than the amount inputed on the account');
             }
@@ -280,7 +280,7 @@ class PCVController extends Controller
 
             $ts = TemporarySlip::where('ts_no', $request->ts_no)->first();
 
-            $r_bal = $ts->running_balance  -  ( $request->total_amount - $request->change );
+            $r_bal = 0; //$ts->running_balance  -  ( $request->total_amount - $request->change );
 
             if( $r_bal < 0 ) {
                 return redirect()->back()->withInput()->with('danger', 'TS amount is less than the amount inputed on the account');
