@@ -1535,13 +1535,16 @@
 			if($('#btn-add-account-details').length > 0) {
 
 				let _hasError = "{!! $errors->any() !!}";
-
+				console.log(_hasError);
+				console.log(_account_transactions);
+				console.log("========================");
+				console.log(_account_transactions[0]);
 				if(_hasError == "1") {
 					_account_transactions =  _account_transactions;
 				} else {
 					_account_transactions =  _account_transactions[0];
 				}
-				console.log(_account_transactions);
+				
 				$.each(_account_transactions, function(i, data){
 			
 					let _html = '<tr>';
