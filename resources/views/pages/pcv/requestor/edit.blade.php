@@ -1536,7 +1536,7 @@
 
 				let _hasError = "{!! $errors->any() !!}";
 
-				if(_hasError == 1) {
+				if(_hasError == "1") {
 					_account_transactions =  _account_transactions;
 				} else {
 					_account_transactions =  _account_transactions[0];
