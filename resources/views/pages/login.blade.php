@@ -82,12 +82,12 @@
 							
 							<div class="form-group">
 							
-								<div class="d-flex justify-content-between mg-b-5">
+								<!-- <div class="d-flex justify-content-between mg-b-5">
 
 									<label class="mg-b-0-f">Password</label>
 									<a href="{{ route('password.request') }}" class="tx-13">Forgot password?</a>
 
-								</div>
+								</div> -->
 								
 								<input type="password" class="form-control" type="password" name="password" required autocomplete="current-password" />
 							
