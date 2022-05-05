@@ -1618,7 +1618,7 @@
 				let _hasDanger = "{!! session()->has('danger') !!}";
 
 				$('.custom-inputs').each(function(i, d) {		
-					if( _hasError == "1") {
+					if( _hasError == "1" || _hasDanger == "1") {
 						$(this).val(_account_transactions[0][$(this).attr('data-name')]); 
 
 						if($(this).attr('data-name') == 'brand') {
