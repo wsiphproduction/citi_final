@@ -1543,9 +1543,9 @@
 				console.log("========================");
 				console.log(_account_transactions[0]);
 				if(_hasError == "1" || _hasDanger == "1") {
-					_account_transactions =  _account_transactions[0];
-				} else {
 					_account_transactions =  _account_transactions;
+				} else {
+					_account_transactions =  _account_transactions[0];
 				}
 				
 				$.each(_account_transactions, function(i, data){
