@@ -1535,7 +1535,10 @@
 			if($('#btn-add-account-details').length > 0) {
 
 				let _hasError = "{!! $errors->any() !!}";
+				let _hasDanger = "{!! session()->has('danger') !!}";
 				console.log(_hasError);
+				console.log("=======================");
+				console.log(_hasDanger);
 				console.log(_account_transactions);
 				console.log("========================");
 				console.log(_account_transactions[0]);
