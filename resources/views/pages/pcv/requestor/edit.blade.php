@@ -1532,20 +1532,14 @@
 			let _base_url = "{!! env('APP_URL') !!}";
 			let _amount_ctr = 0;
 
-			// if(_account_transactions.hasOwnProperty(0)) {
-			// 	console.log('yes');
-			// } else {
-			// 	console.log('no');
-			// }
-
 			if($('#btn-add-account-details').length > 0) {
 
 				let _hasError = "{!! $errors->any() !!}";
 
 				if(_hasError == 1) {
-					_account_transactions = _account_transactions;
+					_account_transactions =  _account_transactions;
 				} else {
-					_account_transactions = _account_transactions[0];
+					_account_transactions =  _account_transactions[0];
 				}
 
 				$.each(_account_transactions, function(i, data){
