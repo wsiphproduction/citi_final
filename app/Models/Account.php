@@ -14,7 +14,9 @@ class Account extends Model
 
         $jsonString = file_get_contents(base_path('public/data/accounts.json'));
         $accounts = json_decode($jsonString, true);
-
+        
+        asort($accounts);
+        
         return $accounts;
 
     }
@@ -24,6 +26,8 @@ class Account extends Model
         $jsonString = file_get_contents(base_path('public/data/accounts_final.json'));
         $accounts = json_decode($jsonString, true);
 
+        asort($accounts);
+        
         return $accounts;
 
     }
