@@ -354,6 +354,8 @@ class PCFRController extends Controller
 
         $pcfr->update([
             'tl_approved'       => 1 ,
+            'approved_by'       => auth()->user()->firstname . " " . auth()->user()->lastname ,
+            'approved_date'     => \Carbon\Carbon::now() ,
             'status'            => 'approved' 
         ]);
 

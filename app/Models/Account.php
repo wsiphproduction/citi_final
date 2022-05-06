@@ -21,6 +21,15 @@ class Account extends Model
 
     }
 
+    public static function getUnsortedAccounts() {
+
+        $jsonString = file_get_contents(base_path('public/data/accounts.json'));
+        $accounts = json_decode($jsonString, true);
+        
+        return $accounts;
+
+    }
+
     public static function getAccountsFinal() {
 
         $jsonString = file_get_contents(base_path('public/data/accounts_final.json'));
