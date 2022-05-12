@@ -281,7 +281,7 @@ class PCVController extends Controller
                 $ts = TemporarySlip::where('ts_no', $pcv->slip_no)
                     ->whereHas('user', function($query) use ($request) {
                         $query->where('assign_to', auth()->user()->assign_to);
-                    });
+                    })
                     ->first();
                 $prev_amount = 0;
 
