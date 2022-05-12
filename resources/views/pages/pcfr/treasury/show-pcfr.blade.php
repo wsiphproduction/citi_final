@@ -360,7 +360,7 @@
                             <tr role="row">
                                 <td>{{ $attachment->type }}</td>
                                 <td>
-                                    <a href='{{ env('APP_URL')."storage/pcfr/{$pcfr->pcfr_no}/{$attachment->attachment}" }}' target="_blank">
+                                    <a href='{{ env('APP_URL')."/storage/pcfr/{$pcfr->pcfr_no}/{$attachment->attachment}" }}' target="_blank">
                                         {{ $attachment->attachment }}
                                     </a>
                                 </td>
