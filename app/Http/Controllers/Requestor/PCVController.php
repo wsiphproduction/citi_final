@@ -123,7 +123,8 @@ class PCVController extends Controller
 
             $r_bal = $ts->running_balance  -  ( $request->total_amount - $request->change );
             if( $r_bal < 0 ) {
-                return redirect()->back()->withInput()->with('danger', 'TS amount is less than the amount inputed on the account');
+                $r_bal = 0;
+//                return redirect()->back()->withInput()->with('danger', 'TS amount is less than the amount inputed on the account');
             }
 
             $ts->running_balance = $r_bal;
@@ -267,23 +268,50 @@ class PCVController extends Controller
         // if diff ts used upon updating       
         if(!is_null($pcv->slip_no)) {
 
-            $ts = TemporarySlip::where('ts_no', $pcv->slip_no)->first();
-            $last_log = $ts->audits()->latest()->first();
+            // $ts = TemporarySlip::where('ts_no', $pcv->slip_no)->first();
+            // $last_log = $ts->audits()->latest()->first();
 
-            if(array_key_exists("running_balance", $last_log->old_values)) {
-                $ts->running_balance = $last_log->old_values['running_balance'];
-                $ts->save();        
+            // if(array_key_exists("running_balance", $last_log->old_values)) {
+            //     $ts->running_balance = $last_log->old_values['running_balance'];
+            //     $ts->save();        
+            // }
+
+            if($pcv->slip_no == $request->ts_no) {
+
+                $ts = TemporarySlip::where('ts_no', $pcv->slip_no)
+                    ->whereHas('user', function($query) use ($request) {
+                        $query->where('assign_to', auth()->user()->assign_to);
+                    });
+                    ->first();
+                $prev_amount = 0;
+
+                if( $ts->amount < $pcv->amount ) {
+                    $ts->running_balance = $ts->amount;
+                } else {
+                    $ts->running_balance = $pcv->amount;
+                }
+
+                $ts->save();
+
             }
+
         }
 
         if($request->has('withslip')) {
 
-            $ts = TemporarySlip::where('ts_no', $request->ts_no)->first();
+            $ts = TemporarySlip::where('ts_no', $request->ts_no)
+                    ->whereHas('user', function($query) use ($request) {
+                        $query->where('assign_to', auth()->user()->assign_to);
+                    })
+                    ->first();
+
+//            TemporarySlip::where('ts_no', $request->ts_no)->first();
 
             $r_bal = $ts->running_balance  -  ( $request->total_amount - $request->change );
 
             if( $r_bal < 0 ) {
-                return redirect()->back()->withInput()->with('danger', 'TS amount is less than the amount inputed on the account');
+                $r_bal = 0;
+//                return redirect()->back()->withInput()->with('danger', 'TS amount is less than the amount inputed on the account');
             }
 
             $ts->running_balance = $r_bal;
