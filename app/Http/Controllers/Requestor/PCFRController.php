@@ -88,7 +88,7 @@ class PCFRController extends Controller
             })->sum('amount');            
 
 
-        $pcf_accounted_for = $total_replenishment + $pending_replenishment + $unreplenished + $unapproved_pcvs + $returned_pcvs;
+        $pcf_accounted_for = $total_replenishment + $unreplenished + $unapproved_pcvs + $returned_pcvs;
 
         // overage / shortage
         $overage_shortage = $pcv_accountability - $pcf_accounted_for;

@@ -184,6 +184,10 @@
             "type": "date"
          },
          {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
             "name": "Amount",
             "type": "text"
          }
@@ -210,11 +214,11 @@
             "type": "select"
          },
          {
-            "name": "Past Due Amount",
+            "name": "Charge Amount",
             "type": "number"
          },
          {
-            "name": "Amount",
+            "name": "Total Amount",
             "type": "text"
          }
       ],
@@ -266,6 +270,10 @@
             "type": "select"
          },
          {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
             "name": "Amount",
             "type": "text"
          }
@@ -292,11 +300,11 @@
             "type": "select"
          },
          {
-            "name": "Past Due Amount",
+            "name": "Charge Amount",
             "type": "number"
          },
          {
-            "name": "Amount",
+            "name": "Total Amount",
             "type": "text"
          }
       ],
@@ -482,6 +490,10 @@
             "type": "date"
          },
          {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
             "name": "Amount",
             "type": "text"
          }
@@ -542,6 +554,10 @@
             "type": "date"
          },
          {
+            "name": "Charge To",
+            "type": "select"
+         },
+         {
             "name": "Amount",
             "type": "text"
          }
@@ -557,6 +573,10 @@
       "fields": [
          {
             "name": "Vendor",
+            "type": "select"
+         },
+         {
+            "name": "Charge To",
             "type": "select"
          },
          {

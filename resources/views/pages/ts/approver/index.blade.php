@@ -223,7 +223,7 @@
 
             });
 
-            if(_pcvs.length>0) {
+            if(_ts.length>0) {
                 get_next();
             }
 

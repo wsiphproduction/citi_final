@@ -12,6 +12,11 @@ use App\Models\Pcv;
 use App\Models\Pcfr;
 use App\Models\TemporarySlip;
 use App\Models\Attachment;
+use App\Models\APHeader;
+use App\Models\APLine;
+use App\Models\ARHeader;
+use App\Models\ARLine;
+use App\Models\User;
 
 class PCFRController extends Controller
 {
@@ -64,8 +69,6 @@ class PCFRController extends Controller
         $pcfr = Pcfr::find($id);
         $pcfr->update([
             'status'            => 'disapproved py' ,
-            'cancelled_by'      => auth()->user()->username ,
-            'cancelled_date'    => \Carbon\Carbon::now() ,
             'py_staff_approved' => 0 
         ]);
 
@@ -79,6 +82,66 @@ class PCFRController extends Controller
     public function approve($id, Request $request) {
 
         $pcfr = Pcfr::find($id);
+        $pcfr_api_branch = \DB::table('api_branch')->where('store_code', User::find($pcfr->user_id)->assign_to)
+                ->first();
+        $pcfr_api_branch = json_decode(json_encode($pcfr_api_branch), true);
+
+        $apheader = new APHeader;
+        $apheader->operating_unit = $pcfr->user->branch->company_name;
+        $apheader->batch_name = $pcfr->batch_no;
+        $apheader->type = 'standard';
+        $apheader->trading_partner = $pcfr->vendor;
+        $apheader->supplier_num = 'new_column_segment_on_branch';
+        $apheader->supplier_sitename = $pcfr_api_branch['ASSIGNED_STORE'];
+        $apheader->invoice_date = \Carbon\Carbon::now();
+        $apheader->invoicenum = $pcfr->pcfr_no;
+        $apheader->invoice_currency = null;
+        $apheader->invoice_amount = $pcfr->amount;
+        $apheader->gl_date = \Carbon\Carbon::now();
+        $apheader->payment_currency = null;
+        $apheader->payment_date = null;
+        $apheader->description = "{$pcfr->from} - {$pcfr->to} {$pcfr->user->firstname} {$pcfr->user->lastname}  {$pcfr->approved_by} with {$pcfr->pcf_diff}";
+        $apheader->match_action = "receipt";
+        $apheader->terms_date = null;
+        $apheader->terms = "immediate";
+        $apheader->payment_method = null;
+        $apheader->inhouse_status = "completed";
+        $apheader->oracle_status = null;
+        $apheader->save();
+        
+        $latest_apheader = APHeader::latest()->first();
+
+        foreach( $pcfr->pcv as $pcv ) {
+
+            $pcv_user = User::find($pcv->user_id)->first();
+            $pcv_api_branch = \DB::table('api_branch')->where('store_code', User::find($pcfr->user_id)->assign_to)
+                ->first();
+            $pcv_api_branch = json_decode(json_encode($pcv_api_branch), true);
+            $accounts = \App\Models\Account::getUnsortedAccounts();
+            $account_key = array_search("{$pcv->account_name}", array_column($accounts, 'name'));
+            $account_details = $accounts[$account_key];
+
+            $apline = new APLine;
+            $apline->ap_header_id = $latest_apheader->id;
+            $apline->amount = $pcv->amount;
+            $apline->company = $pcv_api_branch['COMPANYID'];
+            $apline->branch = $pcv->user->branch->store_id;
+            $apline->accountno = $account_details['FLEX_VALUE_MEANING']; // check from list of accounts
+            $apline->department = $pcv->user->getUserAssignTo() == 'ssc' ? $pcv->user->assign_name : '0000';
+            $apline->intercompany = '00';
+            $apline->sigment1 = '00';
+            $apline->sigment2 = '0000';
+            $apline->description = "{$pcv->pcv_no} {$pcv->approved_date} {$pcv->account_transaction->details[0]['vendor']} {$pcv->description}";
+            $apline->gl_date = null;
+            $apline->type = 'item';
+            $apline->track_as_asset = null;
+            $apline->asset_book = null;
+            $apline->asset_category = null;
+            $apline->reference1 = null;
+            $apline->reference2 = null;
+            $apline->save();
+
+        }
 
         $pcfr->update([
             'py_staff_approved'     => 1 ,

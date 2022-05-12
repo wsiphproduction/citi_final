@@ -1532,22 +1532,29 @@
 			let _base_url = "{!! env('APP_URL') !!}";
 			let _amount_ctr = 0;
 
-			// if(_account_transactions.hasOwnProperty(0)) {
-			// 	console.log('yes');
-			// } else {
-			// 	console.log('no');
-			// }
-
 			if($('#btn-add-account-details').length > 0) {
 
-				$.each(_account_transactions[0], function(i, data){
+				let _hasError = "{!! $errors->any() !!}";
+				let _hasDanger = "{!! session()->has('danger') !!}";
+				console.log(_hasError);
+				console.log("=======================");
+				console.log(_hasDanger);
+				console.log(_account_transactions);
+				console.log("========================");
+				console.log(_account_transactions[0]);
+				if(_hasError == "1" || _hasDanger == "1") {
+					_account_transactions =  _account_transactions;
+				} else {
+					_account_transactions =  _account_transactions[0];
+				}
+				
+				$.each(_account_transactions, function(i, data){
 			
 					let _html = '<tr>';
 
 					$('.tbl-header').each(function(ii, res) {
-						console.log(data);
-						let _row_name = $(this).data('rowname').trim();
 
+						let _row_name = $(this).data('rowname').trim();
 						if(_account_name == 'Stripping Charge') {
 							if( _row_name != 'action') { 
 								if( _row_name == 'rate' ||
@@ -1608,9 +1615,10 @@
 			} else {
 
 				let _hasError = "{!! $errors->any() !!}";
+				let _hasDanger = "{!! session()->has('danger') !!}";
 
 				$('.custom-inputs').each(function(i, d) {		
-					if( _hasError == "1") {
+					if( _hasError == "1" || _hasDanger == "1") {
 						$(this).val(_account_transactions[0][$(this).attr('data-name')]); 
 
 						if($(this).attr('data-name') == 'brand') {
