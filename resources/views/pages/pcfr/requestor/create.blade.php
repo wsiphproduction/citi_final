@@ -303,7 +303,6 @@
 								<select class="custom-select" id="type">
 									<option selected="">--Select--</option>
 									<option value="ATM Slip">ATM Slip</option>
-									<option value="Withdrawal Slip">Withdrawal Slip</option>
 									<option value="Cash Count Sheet">Cash Count Sheet</option>
 								</select>
 
