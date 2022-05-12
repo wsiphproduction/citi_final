@@ -119,7 +119,7 @@
 
         <img src="{{ asset('img/logo (1).png') }}" alt="Citihardware logo" width="50" style="display: inline-block;">
     
-		<h3 style="display: inline-block;"> Pettey Cash Fund Replenishment </h3>
+		<h3 style="display: inline-block;"> Petty Cash Fund Replenishment </h3>
 		<h5> Temporary Slip </h5>
 		<h6> {{ ucfirst($ts->status) }} </h6>
 
