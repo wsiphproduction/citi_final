@@ -26,7 +26,7 @@
                 </div>
 
                 <div class="col-lg-6">
-                    <div class="form-group row">
+                    <div class="form-group row d-none">
                         <label for="change" class="col-lg-5 col-form-label">Change</label>
                         <div class="col-lg-7">
                             <input type="text" class="form-control bd-0 bd-bottom" id="change" name="change" readonly value="{{ $pcv->change }}">
