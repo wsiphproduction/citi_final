@@ -138,7 +138,7 @@ class PCVController extends Controller
             } elseif( $matrix->beyond == 1 && $matrix->amount < $pcv->amount ) {
                 $matrix_hit = true;
             } elseif( $matrix->regardless == 0 && $matrix->beyond == 0 && $matrix->amount == $pcv->amount ) {
-                matrix_hit = true;
+                $matrix_hit = true;
             }
 
         }
