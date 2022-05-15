@@ -85,26 +85,39 @@ class TSController extends Controller
         $ts = TemporarySlip::find($id);
         $user = auth()->user();
 
-        $matrix = AccountMatrix::where('number', $ts->account_code)
-            ->where('amount', '=', $ts->amount)
-            ->where('status', 1)
-            ->where('code', 1)
-            ->orWhere(function($query) use ($ts) {
-                $query->where('number', $ts->account_code)
-                    ->where('amount', '<', $ts->amount)
-                    ->where('beyond', 1)
-                    ->where('code', 1)
-                    ->where('status', 1);
-            })
-            ->orWhere(function($query) use ($ts) {
-                $query->where('number', $ts->account_code)
-                    ->where('regardless', 1)
-                    ->where('code', 1)
-                    ->where('status', 1);
-            })
-            ->get();
+        $matrix = AccountMatrix::where('name', $ts->account_name)->first();
+            // ->where('amount', $pcv->amount)
+            // ->where('status', 1)
+            // ->where('code', 1)
+            // ->orWhere(function($query) use ($pcv) {
+            //     $query->where('name', $pcv->account_name)
+            //         ->where('amount', '<', $pcv->amount)
+            //         ->where('beyond', 1)
+            //         ->where('code', 1)
+            //         ->where('status', 1);
+            // })
+            // ->orWhere(function($query) use ($pcv) {
+            //     $query->where('name', $pcv->account_name)
+            //         ->where('regardless', 1)
+            //         ->where('code', 1)
+            //         ->where('status', 1);
+            // })
+            // ->get();
+        $matrix_hit = false;
 
-        if(count($matrix)) {
+        if($matrix) {
+
+            if($matrix->regardless == 1) {
+                $matrix_hit = true;
+            } elseif( $matrix->beyond == 1 && $matrix->amount < $ts->amount ) {
+                $matrix_hit = true;
+            } elseif( $matrix->regardless == 0 && $matrix->beyond == 0 && $matrix->amount == $ts->amount ) {
+                matrix_hit = true;
+            }
+
+        }
+
+        if($matrix_hit) {
 
             // if($user->getUserAssignTo() == 'ssc') {
 
