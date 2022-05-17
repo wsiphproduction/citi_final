@@ -131,7 +131,11 @@ class PCFRController extends Controller
             $apline->intercompany = '00';
             $apline->sigment1 = '00';
             $apline->sigment2 = '0000';
-            $apline->description = "{$pcv->pcv_no} {$pcv->approved_date} {$pcv->account_transaction->details[0]['vendor']} {$pcv->description}";
+            if(array_key_exists('vendor', $pcv->account_transaction->details[0])) {
+                $apline->description = "{$pcv->pcv_no} {$pcv->approved_date} {$pcv->account_transaction->details[0]['vendor']} {$pcv->description}";
+            } else {
+                $apline->description = "{$pcv->pcv_no} {$pcv->approved_date} {$pcv->description}";
+            }
             $apline->gl_date = null;
             $apline->type = 'item';
             $apline->track_as_asset = null;
