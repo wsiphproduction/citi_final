@@ -154,7 +154,7 @@
 	                      <td></td>
 	                      <td class="tx-bold align-middle">Total Amount</td>
 	                      <td>
-	                        <input type="number" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" 
+	                        <input type="text" class="form-control tx-brand-01 w-auto d-inline" placeholder="Total" aria-controls="total" 
 	                        	value="{{ number_format($pcvs_sum, 2, '.', ',') }}" readonly="" name="amount" id="amount">
 	                      </td>
 	                      <td></td>
