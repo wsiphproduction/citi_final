@@ -745,6 +745,8 @@
 
 						} else if( _account_name == 'Delivery Charges' && o == 'pos_no_of_delivery_fee' && u == '') {
 
+						} else if( o == 'charge_amount' && u == '') {
+
 						} else {
 							is_null_val = true;
 						}	

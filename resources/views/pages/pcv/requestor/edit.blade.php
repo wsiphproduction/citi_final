@@ -729,12 +729,16 @@
 					if( u =='' || u == undefined ) {
 						if( ( _account_name == 'others' || _account_name == 'Pakyawan' || _account_name == 'Cellphone Expense' ||
 							_account_name == 'Internet & Cable' || _account_name == 'Interbranch Deliveries') && o == 'charge_to' ) {
+
 						} else if( _account_name == 'Delivery Charges' && o == 'pos_no_of_delivery_fee' && u == '') {
+
+						} else if( o == 'charge_amount' && u == '') {
 
 						} else {
 							is_null_val = true;
-						}
+						}	
 					}
+					
 				});
 			});
 
