@@ -68,8 +68,7 @@
 					<div class="form-group row">
 						<label for="password" class="col-lg-3 col-form-label">Password</label>
 						<div class="col-lg-7">
-							<input type="password" class="form-control" id="password" name="password" 
-								readonly value="{{ old('password',$user->password) }}">
+							<input type="password" class="form-control" id="password" name="password">
 						</div>
 					</div>
 				</div>

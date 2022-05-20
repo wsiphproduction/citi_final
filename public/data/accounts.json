@@ -2260,8 +2260,8 @@
       "add_multiple": false
    },
    {
-      "name": "Repairs & Maintenance thers",
-      "DESCRIPTION": "Repairs & Maintenance thers",
+      "name": "Repairs & Maintenance Others",
+      "DESCRIPTION": "Repairs & Maintenance Others",
       "FLEX_VALUE_MEANING": 60813,
       "others": true,
       "fields": [
@@ -2304,8 +2304,8 @@
       "add_multiple": false
    },
    {
-      "name": "Repairs & Maintenance Riview",
-      "DESCRIPTION": "Repairs & Maintenance Riview",
+      "name": "Repairs & Maintenance Review",
+      "DESCRIPTION": "Repairs & Maintenance Review",
       "FLEX_VALUE_MEANING": 60815,
       "others": true,
       "fields": [

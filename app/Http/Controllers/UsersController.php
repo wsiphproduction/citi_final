@@ -148,6 +148,11 @@ class UsersController extends Controller
             $user->restore();
         }
 
+        if(!is_null($request->password)) {
+            $user->password = \Hash::make($request->password);
+            $user->save();
+        }
+
         return redirect()->route('users.index')->with('success', 'User Successfully Updated!');
     }
 
