@@ -286,10 +286,10 @@
                 return false;
             }
 
-            if($('#remarks').val() == '') {
-                alert('Remarks is required');
-                return false;
-            }
+            // if($('#remarks').val() == '') {
+            //     alert('Remarks is required');
+            //     return false;
+            // }
 
             $.ajax({
 

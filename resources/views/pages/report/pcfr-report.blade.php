@@ -40,6 +40,8 @@
 		<tr>
 			<td> PCFR No </td>
 			<td> Branch / Company </td>
+			<td> Vendor Name </td>
+			<td> Batch ID </td>
 			<td> Description </td>
 			<td> Account </td>
 			<td> Amount </td>
@@ -56,6 +58,8 @@
 				<tr>
 					<td> {{ $pcfr->pcfr_no }} </td>
 					<td> {{ $pcfr->branch }} </td>
+					<td> {{ $pcfr->vendor }} </td>
+					<td> {{ $pcfr->batch_no }} </td>
 					<td> {{ $pcv->description }} </td>
 					<td> {{ $pcv->account_name }} </td>
 					<td> {{ $pcv->amount }} </td>

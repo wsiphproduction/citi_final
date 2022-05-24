@@ -356,10 +356,10 @@
             e.preventDefault();
             let _url = "";  
 
-            if($('#disapprove-remarks').val() == '') {
-                alert('Remarks is required');
-                return false;
-            }
+            // if($('#disapprove-remarks').val() == '') {
+            //     alert('Remarks is required');
+            //     return false;
+            // }
 
             $.ajax({
 

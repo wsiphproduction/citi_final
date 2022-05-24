@@ -27,6 +27,7 @@ class PCFRController extends Controller
         $user = auth()->user();
 
         $pcfr = Pcfr::where('tl_approved', 1)
+            ->where('status', 'approved')
             ->orderBy('created_at', 'DESC')  
             ->get();
 
@@ -37,7 +38,7 @@ class PCFRController extends Controller
 
     public function forReplenished() {
 
-        $pcfr = Pcfr::where('status', 'post to ebs')
+        $pcfr = Pcfr::whereIn('status', ['post to ebs', 'for replenishment'])
             ->get();
 
         return view('pages.pcfr.payable.for-replenished', compact('pcfr'));

@@ -24,7 +24,7 @@ class PCFRController extends Controller
         $pcfr = Pcfr::whereHas('user', function(Builder $builder) use($user) {
                 $builder->where('assign_to', $user->assign_to);
             })
-            ->orderBy('date_created', 'DESC')
+            ->orderBy('created_at', 'DESC')
             ->get();
 
         return view('pages.pcfr.requestor.index', compact('pcfr'));
