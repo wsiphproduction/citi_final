@@ -131,7 +131,7 @@ class PCVController extends Controller
             // ->get();
         $matrix_hit = false;
 
-        if($matrix) {
+        if($matrix && matrix->code == 1) {
 
             if($matrix->regardless == 1) {
                 $matrix_hit = true;
