@@ -39,6 +39,7 @@ class PCFRController extends Controller
     public function forReplenished() {
 
         $pcfr = Pcfr::whereIn('status', ['post to ebs', 'for replenishment'])
+            ->orderBy('created_at', 'DESC')  
             ->get();
 
         return view('pages.pcfr.payable.for-replenished', compact('pcfr'));
@@ -49,6 +50,7 @@ class PCFRController extends Controller
     public function replenished() {
 
         $pcfr = Pcfr::where('status', 'replenished')
+            ->orderBy('created_at', 'DESC')  
             ->get();
 
         return view('pages.pcfr.payable.replenished', compact('pcfr'));
